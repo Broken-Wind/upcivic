@@ -37,7 +37,7 @@
             "app/helpers.php"
         ],
         "psr-4": {
-            "App\\": "app/"
+            "Upcivic\\": "app/"
         },
         "classmap": [
             "database/seeds",

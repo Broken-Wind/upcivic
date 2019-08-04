@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Upcivic\Http\Controllers;
 
-use App\Program;
+use Upcivic\Program;
 use Illuminate\Http\Request;
-use App\Template;
-use App\Site;
-use App\Organization;
-use App\Contributor;
-use App\Http\Requests\StoreProgram;
-use App\Meeting;
-use App\Http\Requests\UpdateProgram;
+use Upcivic\Template;
+use Upcivic\Site;
+use Upcivic\Organization;
+use Upcivic\Contributor;
+use Upcivic\Http\Requests\StoreProgram;
+use Upcivic\Meeting;
+use Upcivic\Http\Requests\UpdateProgram;
 
 use DB;
 
@@ -50,7 +50,7 @@ class ProgramController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\StoreProgram;  $request
+     * @param  Upcivic\Http\Requests\StoreProgram;  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreProgram $request)
@@ -161,7 +161,7 @@ class ProgramController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Program  $program
+     * @param  \Upcivic\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function edit(Program $program)
@@ -178,8 +178,8 @@ class ProgramController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  App\Http\Requests\UpdateProgram;  $request
-     * @param  \App\Program  $program
+     * @param  Upcivic\Http\Requests\UpdateProgram;  $request
+     * @param  \Upcivic\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateProgram $request, Program $program)
@@ -204,7 +204,7 @@ class ProgramController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Program  $program
+     * @param  \Upcivic\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function destroy(Program $program)

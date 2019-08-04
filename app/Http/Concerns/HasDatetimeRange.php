@@ -1,5 +1,5 @@
 <?php
-namespace App\Concerns;
+namespace Upcivic\Concerns;
 
 use Carbon\Carbon;
 

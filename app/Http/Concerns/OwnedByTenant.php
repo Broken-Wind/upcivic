@@ -1,8 +1,8 @@
 <?php
-namespace App\Concerns;
+namespace Upcivic\Concerns;
 
-use App\Scopes\TenantOwnedScope;
-use App\Services\TenantManager;
+use Upcivic\Scopes\TenantOwnedScope;
+use Upcivic\Services\TenantManager;
 
 trait OwnedByTenant {
     public static function bootOwnedByTenant() {

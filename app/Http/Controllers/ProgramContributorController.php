@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Upcivic\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\UpdateProgramContributors;
-use App\Contributor;
-use App\Program;
+use Upcivic\Http\Requests\UpdateProgramContributors;
+use Upcivic\Contributor;
+use Upcivic\Program;
 
 class ProgramContributorController extends Controller
 {

@@ -1,14 +1,14 @@
 <?php
-namespace App\Services;
+namespace Upcivic\Services;
 
-use App\Organization;
-use App\Program;
+use Upcivic\Organization;
+use Upcivic\Program;
 use Illuminate\Database\Eloquent\Builder;
-use App\Template;
+use Upcivic\Template;
 
 class TenantManager {
     /*
-     * @var null|App\Tenant
+     * @var null|Upcivic\Tenant
      */
      private $tenant;
 

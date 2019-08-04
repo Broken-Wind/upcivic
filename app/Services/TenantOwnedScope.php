@@ -1,10 +1,10 @@
 <?php
-namespace App\Scopes;
+namespace Upcivic\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use App\Services\TenantManager;
+use Upcivic\Services\TenantManager;
 
 class TenantOwnedScope implements Scope {
     public function apply(Builder $builder, Model $model) {

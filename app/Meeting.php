@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace Upcivic;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use App\Concerns\HasDatetimeRange;
+use Upcivic\Concerns\HasDatetimeRange;
 
 class Meeting extends Model
 {

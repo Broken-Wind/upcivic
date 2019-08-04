@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace Upcivic;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Concerns\HasDatetimeRange;
+use Upcivic\Concerns\HasDatetimeRange;
 
 class Program extends Model
 {

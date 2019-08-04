@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Upcivic\Http\Controllers;
 
-use App\Template;
+use Upcivic\Template;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreTemplate;
-use App\Http\Requests\UpdateTemplate;
+use Upcivic\Http\Requests\StoreTemplate;
+use Upcivic\Http\Requests\UpdateTemplate;
 
 class TemplateController extends Controller
 {
@@ -71,7 +71,7 @@ class TemplateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Template  $template
+     * @param  \Upcivic\Template  $template
      * @return \Illuminate\Http\Response
      */
     public function edit(Template $template)
@@ -85,7 +85,7 @@ class TemplateController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Template  $template
+     * @param  \Upcivic\Template  $template
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateTemplate $request, Template $template)
@@ -115,7 +115,7 @@ class TemplateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Template  $template
+     * @param  \Upcivic\Template  $template
      * @return \Illuminate\Http\Response
      */
     public function destroy(Template $template)

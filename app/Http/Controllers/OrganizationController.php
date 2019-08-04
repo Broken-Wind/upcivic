@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Upcivic\Http\Controllers;
 
-use App\Organization;
+use Upcivic\Organization;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreOrganization;
-use App\Site;
+use Upcivic\Http\Requests\StoreOrganization;
+use Upcivic\Site;
 
 class OrganizationController extends Controller
 {
@@ -24,7 +24,7 @@ class OrganizationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\StoreOrganization  $request
+     * @param  Upcivic\Http\Requests\StoreOrganization  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreOrganization $request)

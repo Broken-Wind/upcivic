@@ -4,7 +4,7 @@
 
 function tenant() {
 
-    return resolve('App\Organization');
+    return resolve('Upcivic\Organization');
 
 }
 

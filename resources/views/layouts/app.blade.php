@@ -76,6 +76,16 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+
+                                    @if(tenant())
+
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
+                                            My Profile
+                                        </a>
+
+                                    @endif
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

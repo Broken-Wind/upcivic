@@ -37,6 +37,10 @@ Route::group(['middleware' => 'verified'], function () {
 
         Route::get('/home', 'TenantController@index')->name('home');
 
+        Route::get('/profile', 'UserController@edit')->name('users.edit');
+
+        Route::put('/users/{user}', 'UserController@update')->name('users.update');
+
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
 
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');

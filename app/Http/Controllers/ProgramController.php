@@ -26,7 +26,9 @@ class ProgramController extends Controller
         //
         $programs = Program::with('meetings')->get()->sortBy('start_datetime');
 
-        return view('tenant.admin.programs.index', compact('programs'));
+        $templateCount = Template::count();
+
+        return view('tenant.admin.programs.index', compact('programs', 'templateCount'));
     }
 
     /**
@@ -60,96 +62,13 @@ class ProgramController extends Controller
 
         DB::transaction(function () use ($validated) {
 
-            foreach ($validated['start_dates'] as $key => $start_date) {
+            foreach ($validated['programs'] as $key => $program) {
 
-                if ($start_date && isset($validated['start_times'][$key])) {
+                $program['organization_id'] = $validated['organization_id'];
 
-                    $template = Template::find($validated['templates'][$key]);
+                $program['site_id'] = $validated['site_id'];
 
-                    $program = Program::create([
-
-                        'name' => $template['name'],
-
-                        'description' => $template['description'],
-
-                        'ages_type' => $validated['ages_types'][$key] ?? $template['ages_type'],
-
-                        'min_age' => $validated['min_ages'][$key] ?? $template['min_age'],
-
-                        'max_age' => $validated['max_ages'][$key] ?? $template['max_age'],
-
-                    ]);
-
-                    $proposer = new Contributor([
-
-                        'internal_name' => $template['internal_name'],
-
-                        'invoice_amount' => $template['invoice_amount'],
-
-                        'invoice_type' => $template['invoice_type'],
-
-                    ]);
-
-                    $proposer['program_id'] = $program['id'];
-
-                    $proposer['organization_id'] = tenant()->id;
-
-                    $proposer->save();
-
-
-                    $contributor = new Contributor([]);
-
-                    $contributor['program_id'] = $program['id'];
-
-                    $contributor['organization_id'] = $validated['organization_id'];
-
-                    if ($contributor['organization_id'] != $proposer['organization_id']) {
-
-                        $contributor->save();
-
-                    }
-
-
-                    $startTime = $validated['start_times'][$key];
-
-                    $endTime = $validated['end_times'][$key] ?? date('H:i:s', strtotime($validated['start_times'][$key] . " +" . $template['meeting_minutes'] . " minutes"));
-
-                    $currentStartDatetime = date('Y-m-d H:i:s', strtotime($validated['start_dates'][$key] . " " . $startTime));
-
-                    $currentEndDatetime = date('Y-m-d H:i:s', strtotime($validated['start_dates'][$key] . " " . $endTime));
-
-                    if (!empty($validated['end_dates'][$key])) {
-
-                        $lastStartDatetime = date('Y-m-d H:i:s', strtotime($validated['end_dates'][$key] . " " . $startTime));
-
-                    } else {
-
-                        $lastStartDatetime = date('Y-m-d H:i:s', strtotime(\Carbon\Carbon::parse($validated['start_dates'][$key])->addDays($template['meeting_count'] * $template['meeting_interval'])));
-
-                    }
-
-                    for ($currentStartDatetime; $currentStartDatetime <= $lastStartDatetime; ($currentStartDatetime = date('Y-m-d H:i:s', strtotime($currentStartDatetime . " +" . $template['meeting_interval'] . "days")))) {
-
-                        $meeting = new Meeting([
-
-                            'start_datetime' => $currentStartDatetime,
-
-                            'end_datetime' => $currentEndDatetime
-
-                        ]);
-
-                        $meeting['program_id'] = $program['id'];
-
-                        $meeting['site_id'] = $validated['site_id'];
-
-                        $meeting->save();
-
-
-                        $currentEndDatetime = date('Y-m-d H:i:s', strtotime($currentEndDatetime . " +" . $template['meeting_interval'] . " days"));
-
-                    }
-
-                }
+                Program::fromTemplate($program);
 
             }
 

@@ -65,7 +65,13 @@
 
                                 <tbody>
 
-                                    @for ($n=0; $n<1; $n++)
+                                    @for ($n=0; $n<6; $n++)
+
+                                        <tr>
+
+                                            <td colspan="3"><h5>Proposal {{ $n+1 }}{{ $n != 0 ? ' (Optional)' : '' }}</h5>
+
+                                        </tr>
 
                                         <tr>
 
@@ -75,7 +81,7 @@
 
                                                     <label for="">Start Date</label>
 
-                                                    <input type="date" class="form-control form-control-sm" name="start_dates[]">
+                                                    <input type="date" class="form-control form-control-sm" name="programs[{{ $n }}][start_date]">
 
                                                 </div>
 
@@ -83,7 +89,7 @@
 
                                                     <label for="">Start Time</label>
 
-                                                    <input type="time" class="form-control form-control-sm" name="start_times[]">
+                                                    <input type="time" class="form-control form-control-sm" name="programs[{{ $n }}][start_time]">
 
                                                 </div>
 
@@ -95,7 +101,7 @@
 
                                                     <label for="">End Date</label>
 
-                                                    <input type="date" class="form-control form-control-sm" name="end_dates[]">
+                                                    <input type="date" class="form-control form-control-sm" name="programs[{{ $n }}][end_date]">
 
                                                 </div>
 
@@ -103,7 +109,7 @@
 
                                                     <label for="">End Time</label>
 
-                                                    <input type="time" class="form-control form-control-sm" name="end_times[]">
+                                                    <input type="time" class="form-control form-control-sm" name="programs[{{ $n }}][end_time]">
 
                                                 </div>
 
@@ -115,7 +121,7 @@
 
                                                     <label for="">Template</label>
 
-                                                    <select class="form-control form-control-sm" name="templates[]" id="">
+                                                    <select class="form-control form-control-sm" name="programs[{{ $n }}][template_id]" id="">
 
                                                             @forelse($templates as $template)
 
@@ -136,14 +142,14 @@
                                                 <label for="">Ages/Grades</label>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <select class="form-control form-control-sm" name="ages_types[]" id="ages_type">
+                                                        <select class="form-control form-control-sm" name="programs[{{ $n }}][ages_type]" id="ages_type">
                                                             <option value="" {{ old("ages_types[{$n}]") == '' ? 'selected' : '' }}>Default</option>
                                                             <option value="ages" {{ old("ages_types[{$n}]") == 'ages' ? 'selected' : '' }}>Ages</option>
                                                             <option value="grades" {{ old("ages_types[{$n}]") == 'grades' ? 'selected' : '' }}>Grades</option>
                                                         </select>
                                                     </div>
-                                                    <input type="number" aria-label="Minimum" placeholder="Minimum" name="min_ages[]" value="{{ old("min_ages[{$n}]") }}" class="form-control form-control-sm">
-                                                    <input type="number" aria-label="Maximum" placeholder="Maximum" name="max_ages[]" value="{{ old("max_ages[{$n}]") }}" class="form-control form-control-sm">
+                                                    <input type="number" aria-label="Minimum" placeholder="Minimum" name="programs[{{ $n }}][min_age]" value="{{ old("min_ages[{$n}]") }}" class="form-control form-control-sm">
+                                                    <input type="number" aria-label="Maximum" placeholder="Maximum" name="programs[{{ $n }}][max_age]" value="{{ old("max_ages[{$n}]") }}" class="form-control form-control-sm">
                                                 </div>
 
                                             </td>

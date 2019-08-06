@@ -6,6 +6,7 @@ use Upcivic\Organization;
 use Illuminate\Http\Request;
 use Upcivic\Http\Requests\StoreOrganization;
 use Upcivic\Site;
+use Upcivic\Program;
 
 class OrganizationController extends Controller
 {
@@ -41,6 +42,8 @@ class OrganizationController extends Controller
             ]);
 
         \Auth::user()->join($organization);
+
+        Program::createExample($organization->fresh());
 
         return redirect('home');
 

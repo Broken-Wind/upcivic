@@ -25,7 +25,7 @@ class TenantManager {
     public function applyGlobalScopes()
     {
 
-        Program::addGlobalScope('tenantAccesibleProgram', function (Builder $builder) {
+        Program::addGlobalScope('TenantAccesibleProgram', function (Builder $builder) {
 
             return $builder->whereHas('contributors', function ($query) {
 
@@ -35,7 +35,7 @@ class TenantManager {
 
         });
 
-        Template::addGlobalScope('tenantOwnedProgram', function ($query) {
+        Template::addGlobalScope('TenantOwnedTemplate', function ($query) {
 
             return $query->where('organization_id', tenant()->id);
 

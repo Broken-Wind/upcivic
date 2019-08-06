@@ -27,12 +27,13 @@ class StoreProgram extends FormRequest
             //
             'organization_id' => 'required|numeric',
             'site_id' => 'nullable|numeric',
-            'templates.*' => 'nullable|numeric',
-            'start_dates.*' => 'nullable|date',
-            'start_times.*' => 'nullable|string',
-            'ages_types.*' => 'nullable|string|alpha|max:10',
-            'min_ages.*' => 'nullable|numeric|between:0,999',
-            'max_ages.*' => 'nullable|numeric|between:0,999',
+            'programs.*' => 'required|array',
+            'programs.*.template_id' => 'nullable|numeric',
+            'programs.*.start_date' => 'nullable|date',
+            'programs.*.start_time' => 'nullable|string',
+            'programs.*.ages_type' => 'nullable|string|alpha|max:10',
+            'programs.*.min_age' => 'nullable|numeric|between:0,999',
+            'programs.*.max_age' => 'nullable|numeric|between:0,999',
         ];
     }
 }

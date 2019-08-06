@@ -14,7 +14,15 @@
 
                     @if($programs->count() > 0)
 
-                        <p><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a new program.</a></p>
+                        @if($templateCount > 0)
+
+                            <p><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a new program.</a></p>
+
+                        @else
+
+                            <p>Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create a template!</a></p>
+
+                        @endif
 
                         <table class="table table-responsive table-striped">
 

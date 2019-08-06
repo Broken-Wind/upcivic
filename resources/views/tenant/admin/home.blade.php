@@ -26,7 +26,7 @@
 
                     <h5>Activity Hosts</h5>
 
-                    <p>Now that you've created a profile for your organization, you may request that your activity providers use our system to propose programs. <a href="{{ tenant()->route('tenant:admin.programs.index') }}">View proposed programs here.</a></p>
+                    <p>Now that you've created a profile for your organization, you may request that your activity providers use our system to propose programs. Once your activity providers have created their accounts and generated proposals, you may <a href="{{ tenant()->route('tenant:admin.programs.index') }}">view proposed programs here.</a></p>
 
 
                 </div>

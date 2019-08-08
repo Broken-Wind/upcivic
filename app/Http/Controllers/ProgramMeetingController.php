@@ -100,6 +100,14 @@ class ProgramMeetingController extends Controller
 
             }
 
+            if (!empty($validated['shift_meetings'])) {
+
+                $meeting['start_datetime'] = Carbon::parse($meeting['start_datetime'])->addDays($validated['shift_meetings'])->format('Y-m-d H:i:s');
+
+                $meeting['end_datetime'] = Carbon::parse($meeting['end_datetime'])->addDays($validated['shift_meetings'])->format('Y-m-d H:i:s');
+
+            }
+
             $meeting['note'] = $validated['meeting_notes'][$id];
 
             $meeting['program_id'] = $program['id'];

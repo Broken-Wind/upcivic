@@ -187,7 +187,7 @@
 
                         <table class="table table-striped">
 
-                            @forelse($program->meetings as $meeting)
+                            @forelse($program->meetings->sortBy('start_datetime') as $meeting)
 
                                 <tr>
 
@@ -284,13 +284,13 @@
 
                             <div class="form-group col-sm-4">
 
-                                <button type="submit" class="btn btn-primary btn-block" name="update_all" value="update_all">Update All Meetings</button>
+                                <button type="submit" class="btn btn-primary btn-block" name="update_selected" value="update_selected">Update Selected Meetings</button>
 
                             </div>
 
                             <div class="form-group col-sm-4">
 
-                                <button type="submit" class="btn btn-primary btn-block" name="update_selected" value="update_selected">Update Selected Meetings</button>
+                                <button type="submit" class="btn btn-primary btn-block" name="update_all" value="update_all">Update All Meetings</button>
 
                             </div>
 

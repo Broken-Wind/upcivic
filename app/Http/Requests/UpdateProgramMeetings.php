@@ -3,9 +3,11 @@
 namespace Upcivic\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Factory;
 
 class UpdateProgramMeetings extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -14,6 +16,25 @@ class UpdateProgramMeetings extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function messages()
+    {
+
+        return [
+
+            'meeting_ids.required' => 'You must select at least one meeting.',
+
+        ];
+    }
+
+    public function validator(Factory $factory)
+    {
+        $validator = $factory->make($this->input(), $this->rules(), $this->messages());
+        $validator->sometimes('meeting_ids', 'required', function($input) {
+            return $input->update_all == null;
+        });
+        return $validator;
     }
 
     /**

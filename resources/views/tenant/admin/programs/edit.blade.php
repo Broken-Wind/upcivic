@@ -70,6 +70,21 @@
 
                         <table class="table table-striped">
 
+                            <tr>
+
+                                <th>
+
+                                    Total Program  Base Fee:
+
+                                </th>
+
+                                <th>
+
+                                    ${{ $program->formatted_base_fee }}
+
+                                </th>
+                            </tr>
+
                             @foreach($program->contributors as $contributor)
                                 <tr>
 
@@ -93,6 +108,8 @@
                                             @if($program->contributors->count() > 1)
 
                                                 <div class="input-group-append">
+
+                                                    <span class="input-group-text text-muted">({{ $contributor['percentage_of_total_fee'] }}%)</span>
 
                                                     <form method="POST" id="destroy_contributor_{{ $contributor->id }}" action="{{ tenant()->route('tenant:admin.programs.contributors.destroy', [$program, $contributor]) }}">
 

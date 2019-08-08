@@ -159,6 +159,12 @@ class Program extends Model
 
     }
 
+    public function getFormattedBaseFeeAttribute()
+    {
+
+        return number_format($this->contributors->pluck('invoice_amount')->sum() / 100, 2);
+    }
+
     public function getSiteAttribute () {
 
         $sites = collect([]);

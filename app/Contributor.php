@@ -36,4 +36,10 @@ class Contributor extends Model
         return $this->belongsTo(Organization::class);
 
     }
+
+    public function getPercentageOfTotalFeeAttribute()
+    {
+
+        return number_format(100 * ($this->invoice_amount / $this->program->contributors->pluck('invoice_amount')->sum()), 1);
+    }
 }

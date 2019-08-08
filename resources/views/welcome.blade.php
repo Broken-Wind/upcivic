@@ -84,7 +84,7 @@
                     {{ config('app.name') }}
                 </div>
 
-                Enrichment Management Software
+                <h4>Manage all your enrichment proposals in one place.</h4>
 
             </div>
         </div>

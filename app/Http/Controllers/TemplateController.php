@@ -65,7 +65,7 @@ class TemplateController extends Controller
 
         $template->save();
 
-        return redirect()->route('tenant:admin.templates.index', tenant()->slug)->withSuccess('Template added successfully.');
+        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Template added successfully.');
     }
 
     /**

@@ -53,7 +53,7 @@ class SiteController extends Controller
 
         ]);
 
-        return redirect()->route('tenant:admin.sites.index', \Auth::user()->organizations()->first()->slug)->withSuccess('Site added successfully.');
+        return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
 
     }
 

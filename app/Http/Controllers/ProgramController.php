@@ -74,7 +74,7 @@ class ProgramController extends Controller
 
         });
 
-        return redirect()->route('tenant:admin.programs.index', \Auth::user()->organizations()->first()->slug)->withSuccess('Program added successfully.');
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program added successfully.');
     }
 
     /**

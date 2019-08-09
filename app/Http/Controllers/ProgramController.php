@@ -87,7 +87,7 @@ class ProgramController extends Controller
     {
         //
 
-        $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
+        $organizations = Organization::published()->whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
 
         $sites = Site::orderBy('name')->get();
 

@@ -40,6 +40,14 @@ class Contributor extends Model
     public function getPercentageOfTotalFeeAttribute()
     {
 
-        return number_format(100 * ($this->invoice_amount / $this->program->contributors->pluck('invoice_amount')->sum()), 1);
+        $sum = $this->program->contributors->pluck('invoice_amount')->sum();
+
+        if ($sum > 0) {
+
+            return number_format(100 * ($this->invoice_amount / $sum), 1);
+
+        }
+
+        return 0;
     }
 }

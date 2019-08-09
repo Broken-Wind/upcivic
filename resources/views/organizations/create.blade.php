@@ -21,23 +21,43 @@
 
                             <input type="text" class="form-control" name="name" id="createOrganization" aria-describedby="createOrganization" placeholder="Acme Rec">
 
-                            <label for="slug">Vanity URL</label>
+                        </div>
 
-                            <div class="input-group">
+                        <div class="form-group mb-3">
 
-                                <div class="input-group-prepend">
+                                <label for="slug">Vanity URL</label>
 
-                                    <span class="input-group-text">{{ config('app.url') }}/</span>
+                                <div class="input-group">
+
+                                    <div class="input-group-prepend">
+
+                                        <span class="input-group-text">{{ config('app.url') }}/</span>
+
+                                    </div>
+
+                                    <input type="text" class="form-control" name="slug" id="slug" aria-describedby="slugHelp" placeholder="acmerec">
 
                                 </div>
 
-                                <input type="text" class="form-control" name="slug" id="slug" aria-describedby="slug" placeholder="acmerec">
-
-                            </div>
-
-                            <small id="createOrganizationHelp" class="form-text text-muted">You must belong to at least one organization to start using {{ config('app.name') }}.</small>
+                                <small id="slugHelp" class="form-text text-muted">Your vanity URL cannot be easily changed. Choose well.</small>
 
                         </div>
+
+
+
+                        <div class="form-group">
+
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" name="publish" id="publishOrganization" value="1">
+                                        Publish this organization immediately
+                                    </label>
+                                </div>
+
+                                <small id="publishOrganization" class="form-text text-muted">If you are just testing {{ config('app.name') }}, we recommend leaving this unchecked for now.</small>
+
+
+                            </div>
 
                         <button type="submit" class="btn btn-primary">Submit</button>
 

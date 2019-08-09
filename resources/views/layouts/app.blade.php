@@ -88,7 +88,7 @@
 
                                     @forelse(Auth::user()->organizations as $organization)
 
-                                        <a class="dropdown-item" href="{{ route('tenant:admin.home', ['tenant' => $organization['slug']]) }}">
+                                        <a class="dropdown-item" href="{{ route('tenant:admin.organizations.edit', ['tenant' => $organization['slug']]) }}">
                                             {{ $organization['name'] }}
                                         </a>
 
@@ -114,6 +114,28 @@
         </nav>
 
         <main class="py-4">
+
+            @if(tenant() && !tenant()->isPublished())
+
+
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8">
+
+                            <div class="alert alert-warning">
+
+                                {{ tenant()['name'] }} is not yet published. If you would like other organizations to be able to find you, please visit your <a href="{{ tenant()->route('tenant:admin.organizations.edit') }}">organization profile</a> to publish it.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            @endif
+
             @yield('content')
         </main>
     </div>

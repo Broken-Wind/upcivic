@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Upcivic\Http\Requests\StoreOrganization;
 use Upcivic\Site;
 use Upcivic\Program;
+use Carbon\Carbon;
+use Upcivic\Http\Requests\UpdateOrganization;
 
 class OrganizationController extends Controller
 {
@@ -39,6 +41,8 @@ class OrganizationController extends Controller
 
             'slug' => $validated['slug'],
 
+            'published_at' => isset($validated['publish']) ? Carbon::now()->format('Y-m-d H:i:s') : null,
+
             ]);
 
         \Auth::user()->join($organization);
@@ -48,5 +52,34 @@ class OrganizationController extends Controller
         return redirect('home');
 
     }
+
+    public function edit()
+    {
+
+        $organization = tenant();
+
+        return view('tenant.admin.organizations.settings', compact('organization'));
+
+    }
+
+
+    public function update(UpdateOrganization $request, Organization $organization)
+    {
+        //
+        $validated = $request->validated();
+
+        $organization->update([
+
+            'name' => $validated['name'],
+
+            'published_at' => isset($validated['publish']) ? Carbon::now()->format('Y-m-d H:i:s') : null,
+
+            ]);
+
+        return back()->withSuccess('Organization updated.');
+
+    }
+
+
 
 }

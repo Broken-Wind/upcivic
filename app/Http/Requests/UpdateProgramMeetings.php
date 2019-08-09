@@ -15,7 +15,7 @@ class UpdateProgramMeetings extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->memberOf(tenant());
     }
 
     public function messages()

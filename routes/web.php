@@ -41,6 +41,10 @@ Route::group(['middleware' => 'verified'], function () {
 
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
 
+        Route::get('/organization_settings', 'OrganizationController@edit')->name('organizations.edit');
+
+        Route::patch('/organizations', 'OrganizationController@update')->name('organizations.update');
+
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
 
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');

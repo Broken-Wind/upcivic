@@ -150,6 +150,13 @@ class Program extends Model
 
     }
 
+    public function contributorsShareInvoiceType()
+    {
+
+        return $this->contributors->where('invoice_type', '!==', null)->pluck('invoice_type')->unique()->count() == 1;
+
+    }
+
     public function delete()
     {
 

@@ -90,20 +90,25 @@
 
                         <table class="table table-striped">
 
-                            <tr>
+                            @if($program->contributors->count() > 1 && $program->contributorsShareInvoiceType())
 
-                                <th>
+                                <tr>
 
-                                    Total Program  Base Fee:
+                                    <th>
 
-                                </th>
+                                        Total Program  Base Fee:
 
-                                <th>
+                                    </th>
 
-                                    ${{ $program->formatted_base_fee }}
+                                    <th>
 
-                                </th>
-                            </tr>
+                                        ${{ $program->formatted_base_fee }}
+
+                                    </th>
+
+                                </tr>
+
+                            @endif
 
                             @foreach($program->contributors as $contributor)
                                 <tr>
@@ -125,7 +130,7 @@
                                                 <option value="per meeting" {{ old("contributors[{$contributor->id}][invoice_type]") == 'per meeting' ? 'selected' : (empty(old("contributors[{$contributor->id}][invoice_type]")) && $contributor['invoice_type'] == 'per meeting' ? 'selected' : '') }}>per meeting</option>
                                             </select>
 
-                                            @if($program->contributors->count() > 1)
+                                            @if($program->contributors->count() > 1 && $program->contributorsShareInvoiceType())
 
                                                 <div class="input-group-append">
 

@@ -33,7 +33,7 @@
                                 <th>Times</th>
                                 <th>Name</th>
                                 <th>Site</th>
-                                <th>Contributors</th>
+                                <th>With</th>
                                 <th></th>
 
                             </thead>
@@ -54,7 +54,7 @@
 
                                     <td>
 
-                                        @foreach($program->contributors as $contributor)
+                                        @foreach($program->contributors->where('organization_id', '!==', tenant()['id']) as $contributor)
 
                                             {{ $contributor->organization->name . (!$loop->last ? ',' :'') }}
 

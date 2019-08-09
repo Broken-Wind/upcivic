@@ -65,6 +65,8 @@ Route::group(['middleware' => 'verified'], function () {
 
         Route::put('/programs/{program}', 'ProgramController@update')->name('programs.update');
 
+        Route::delete('/programs/{program}', 'ProgramController@destroy')->name('programs.destroy');
+
         Route::put('/programs/{program}/contributors', 'ProgramContributorController@update')->name('programs.contributors.update');
 
         Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');

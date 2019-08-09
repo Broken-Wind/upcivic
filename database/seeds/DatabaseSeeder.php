@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
 
             'slug' => 'example',
 
+            'published_at' => Carbon\Carbon::now(),
+
         ]);
 
         $user->join($organization);

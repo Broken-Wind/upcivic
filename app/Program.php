@@ -155,6 +155,8 @@ class Program extends Model
 
         $this->meetings()->delete();
 
+        $this->contributors()->delete();
+
         parent::delete();
 
     }

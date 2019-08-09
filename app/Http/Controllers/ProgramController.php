@@ -129,5 +129,9 @@ class ProgramController extends Controller
     public function destroy(Program $program)
     {
         //
+
+        $program->delete();
+
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
     }
 }

@@ -9,6 +9,14 @@
 
                 <div class="card-body">
 
+                    <form action="{{ tenant()->route('tenant:admin.programs.destroy', [$program]) }}" method="post" id="delete_program">
+
+                        @method('delete')
+
+                        @csrf
+
+                    </form>
+
                     <form method="POST" action="{{ tenant()->route('tenant:admin.programs.update', [$program]) }}">
 
                         @method('put')
@@ -44,7 +52,19 @@
                             <input type="number" aria-label="Maximum" placeholder="Maximum" name="max_age" value="{{ old('max_age') ?: $program['max_age'] }}" class="form-control" required>
                         </div>
 
-                        <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Update Program</button>
+                        <div class="form-row">
+                            <div class="col-md-4">
+
+                                <button type="submit" id="submit" form="delete_program" class="btn btn-danger btn-block"  onClick="return confirm('Are you sure you want to this program? This cannot be undone.');">Delete Program</button>
+
+                            </div>
+                            <div class="col-md-8">
+
+                                <button type="submit" id="submit" class="btn btn-primary btn-block">Update Program</button>
+
+                            </div>
+                        </div>
+
 
                     </form>
                 </div>

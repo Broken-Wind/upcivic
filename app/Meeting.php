@@ -11,6 +11,8 @@ class Meeting extends Model
     //
     use HasDatetimeRange;
 
+    protected $dates = ['start_datetime', 'end_datetime'];
+
     protected $fillable = [
 
         'start_datetime',

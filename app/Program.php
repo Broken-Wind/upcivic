@@ -157,6 +157,28 @@ class Program extends Model
 
     }
 
+    public function getDescriptionOfMeetingsAttribute()
+    {
+
+        return $this['day'] . " " . $this['start_date'] . '-' . $this['end_date'] . ' (' . $this->meetings->count() . ' meetings)';
+
+    }
+
+
+    public function getDayAttribute()
+    {
+
+
+        $days = $this->meetings->map(function ($meeting) {
+
+            return $meeting['start_datetime']->format('l');
+
+        });
+
+        return $days->unique()->count() < 2 ? $days->mode()[0] . 's' : null;
+
+    }
+
     public function delete()
     {
 

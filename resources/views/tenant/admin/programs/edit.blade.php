@@ -4,6 +4,15 @@
 <div class="container">
     <div class="row justify-content-center mb-4">
         <div class="col-md-8">
+
+            <p class="lead">
+
+                {{ $program['name'] }} at {{ $program['site']['name'] }}<br />
+                {{ $program['description_of_meetings'] }}<br />
+                {{ $program['start_time'] }}-{{ $program['end_time'] }}
+
+            </p>
+
             <div class="card">
                 <div class="card-header">Update Program</div>
 

@@ -111,6 +111,8 @@ class ProgramController extends Controller
             'name' => $validated['name'],
             'internal_name' => $validated['internal_name'],
             'description' => $validated['description'],
+            'public_notes' => $validated['public_notes'],
+            'contributor_notes' => $validated['contributor_notes'],
             'ages_type' => $validated['ages_type'],
             'min_age' => $validated['min_age'],
             'max_age' => $validated['max_age'],

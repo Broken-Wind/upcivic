@@ -28,6 +28,8 @@ class UpdateTemplate extends FormRequest
             'name' => 'required|string|max:255',
             'internal_name' => 'nullable|string|max:255',
             'description' => 'required|string',
+            'public_notes' => 'nullable|string',
+            'contributor_notes' => 'nullable|string',
             'ages_type' => 'required|string|alpha|max:10',
             'min_age' => 'required|numeric|between:0,999',
             'max_age' => 'required|numeric|between:0,999',

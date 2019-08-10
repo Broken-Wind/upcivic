@@ -18,6 +18,10 @@ class Program extends Model
 
         'description',
 
+        'public_notes',
+
+        'contributor_notes',
+
         'invoice_amount',
 
         'invoice_type',
@@ -58,91 +62,98 @@ class Program extends Model
 
     public static function fromTemplate($proposal, $template = null)
     {
+        DB::transaction(function () use ($proposal, $template) {
 
-        if ($proposal['start_date'] && $proposal['start_time']) {
+            if ($proposal['start_date'] && $proposal['start_time']) {
 
-            $template = $template ?? Template::find($proposal['template_id']);
+                $template = $template ?? Template::find($proposal['template_id']);
 
-            $program = Program::create([
+                $program = Program::create([
 
-                'name' => $template['name'],
+                    'name' => $template['name'],
 
-                'description' => $template['description'],
+                    'description' => $template['description'],
 
-                'ages_type' => $proposal['ages_type'] ?? $template['ages_type'],
+                    'public_notes' => $template['public_notes'],
 
-                'min_age' => $proposal['min_age'] ?? $template['min_age'],
+                    'contributor_notes' => $template['contributor_notes'],
 
-                'max_age' => $proposal['max_age'] ?? $template['max_age'],
+                    'ages_type' => $proposal['ages_type'] ?? $template['ages_type'],
 
-            ]);
+                    'min_age' => $proposal['min_age'] ?? $template['min_age'],
 
-            $proposer = new Contributor([
-
-                'internal_name' => $template['internal_name'],
-
-                'invoice_amount' => $template['invoice_amount'],
-
-                'invoice_type' => $template['invoice_type'],
-
-            ]);
-
-            $proposer['program_id'] = $program['id'];
-
-            $proposer['organization_id'] = $proposal['proposer_id'] ?? tenant()['id'];
-
-            $proposer->save();
-
-
-            $contributor = new Contributor([]);
-
-            $contributor['program_id'] = $program['id'];
-
-            $contributor['organization_id'] = $proposal['organization_id'];
-
-            if ($contributor['organization_id'] != $proposer['organization_id']) {
-
-                $contributor->save();
-
-            }
-
-
-            $startTime = $proposal['start_time'];
-
-            $endTime = $proposal['end_time'] ?? date('H:i:s', strtotime($proposal['start_time'] . " +" . $template['meeting_minutes'] . " minutes"));
-
-            $currentStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'] . " " . $startTime));
-
-            $currentEndDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'] . " " . $endTime));
-
-            if (!empty($proposal['end_date'])) {
-
-                $lastStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['end_date'] . " " . $startTime));
-
-            } else {
-
-                $lastStartDatetime = date('Y-m-d H:i:s', strtotime(\Carbon\Carbon::parse($proposal['start_date'])->addDays($template['meeting_count'] * $template['meeting_interval'])));
-
-            }
-
-            for ($currentStartDatetime; $currentStartDatetime <= $lastStartDatetime; ($currentStartDatetime = date('Y-m-d H:i:s', strtotime($currentStartDatetime . " +" . $template['meeting_interval'] . "days")))) {
-
-                $meeting = new Meeting([
-
-                    'start_datetime' => $currentStartDatetime,
-
-                    'end_datetime' => $currentEndDatetime
+                    'max_age' => $proposal['max_age'] ?? $template['max_age'],
 
                 ]);
 
-                $meeting['program_id'] = $program['id'];
+                $proposer = new Contributor([
 
-                $meeting['site_id'] = $proposal['site_id'] ?? null;
+                    'internal_name' => $template['internal_name'],
 
-                $meeting->save();
+                    'invoice_amount' => $template['invoice_amount'],
+
+                    'invoice_type' => $template['invoice_type'],
+
+                ]);
+
+                $proposer['program_id'] = $program['id'];
+
+                $proposer['organization_id'] = $proposal['proposer_id'] ?? tenant()['id'];
+
+                $proposer->save();
 
 
-                $currentEndDatetime = date('Y-m-d H:i:s', strtotime($currentEndDatetime . " +" . $template['meeting_interval'] . " days"));
+                $contributor = new Contributor([]);
+
+                $contributor['program_id'] = $program['id'];
+
+                $contributor['organization_id'] = $proposal['organization_id'];
+
+                if ($contributor['organization_id'] != $proposer['organization_id']) {
+
+                    $contributor->save();
+
+                }
+
+
+                $startTime = $proposal['start_time'];
+
+                $endTime = $proposal['end_time'] ?? date('H:i:s', strtotime($proposal['start_time'] . " +" . $template['meeting_minutes'] . " minutes"));
+
+                $currentStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'] . " " . $startTime));
+
+                $currentEndDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'] . " " . $endTime));
+
+                if (!empty($proposal['end_date'])) {
+
+                    $lastStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['end_date'] . " " . $startTime));
+
+                } else {
+
+                    $lastStartDatetime = date('Y-m-d H:i:s', strtotime(\Carbon\Carbon::parse($proposal['start_date'])->addDays($template['meeting_count'] * $template['meeting_interval'])));
+
+                }
+
+                for ($currentStartDatetime; $currentStartDatetime <= $lastStartDatetime; ($currentStartDatetime = date('Y-m-d H:i:s', strtotime($currentStartDatetime . " +" . $template['meeting_interval'] . "days")))) {
+
+                    $meeting = new Meeting([
+
+                        'start_datetime' => $currentStartDatetime,
+
+                        'end_datetime' => $currentEndDatetime
+
+                    ]);
+
+                    $meeting['program_id'] = $program['id'];
+
+                    $meeting['site_id'] = $proposal['site_id'] ?? null;
+
+                    $meeting->save();
+
+
+                    $currentEndDatetime = date('Y-m-d H:i:s', strtotime($currentEndDatetime . " +" . $template['meeting_interval'] . " days"));
+
+                }
 
             }
 

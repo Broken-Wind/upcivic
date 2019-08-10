@@ -14,6 +14,8 @@ class Template extends Model
         'name',
         'internal_name',
         'description',
+        'public_notes',
+        'contributor_notes',
         'min_age',
         'max_age',
         'ages_type',

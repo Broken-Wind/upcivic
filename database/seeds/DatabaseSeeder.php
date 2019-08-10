@@ -46,6 +46,8 @@ class DatabaseSeeder extends Seeder
 
             'name' => 'Example Cooking Camp',
             'description' => 'This is an example program session. Scroll down to see the age range, collaborating organizations, and schedule. If you\'d like to propose a program to another organization, you\'ll need to add a template first. Click "Templates" above, and then create your first program template!',
+            'public_notes' => 'The public notes field is a great place to put important information like special materials needed or prerequisites.',
+            'contributor_notes' => 'Use contributor notes to tell your partners things like room setup preferences and special accommodations required, if any.',
             'min_age' => 7,
             'max_age' => 70,
             'ages_type' => 'ages',

@@ -157,6 +157,37 @@ class Program extends Model
 
     }
 
+    public function getNextMeetingStartDatetimeAttribute()
+    {
+
+        return $this->meetings->sortByDesc('start_datetime')->first()['start_datetime']->addDays($this['meeting_interval'])->format('Y-m-d\TH:i');
+
+    }
+
+    public function getNextMeetingEndDatetimeAttribute()
+    {
+
+        return $this->meetings->sortByDesc('start_datetime')->first()['end_datetime']->addDays($this['meeting_interval'])->format('Y-m-d\TH:i');
+
+    }
+
+    public function getMeetingIntervalAttribute()
+    {
+
+        $meetings = $this->meetings->sortBy('start_datetime');
+
+        $intervals = collect([]);
+
+        for ($i = 0; $i < $meetings->count()-1; $i++){
+
+            $intervals->push($meetings[$i]['start_datetime']->diffInDays($meetings[$i + 1]['start_datetime']));
+
+        }
+
+        return count($intervals->mode()) < $meetings->count() / 3 ? $intervals->mode()[0] : null;
+
+    }
+
     public function getDescriptionOfMeetingsAttribute()
     {
 

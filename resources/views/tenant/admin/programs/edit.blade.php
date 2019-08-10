@@ -363,7 +363,7 @@
 
                                 <label for="new_meeting_start_datetime">Start Date & Time</label>
 
-                                <input type="datetime-local" class="form-control" name="start_datetime">
+                                <input type="datetime-local" class="form-control" name="start_datetime" value="{{ $program['next_meeting_start_datetime'] }}">
 
                             </div>
 
@@ -372,7 +372,7 @@
 
                                 <label for="new_meeting_end_datetime">End Date & Time</label>
 
-                                <input type="datetime-local" class="form-control" name="end_datetime">
+                                <input type="datetime-local" class="form-control" name="end_datetime" value="{{ $program['next_meeting_end_datetime'] }}">
 
                             </div>
 

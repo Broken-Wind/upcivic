@@ -150,10 +150,10 @@ class Program extends Model
 
     }
 
-    public function contributorsShareInvoiceType()
+    public function getSharedInvoiceTypeAttribute()
     {
 
-        return $this->contributors->where('invoice_type', '!==', null)->pluck('invoice_type')->unique()->count() == 1;
+        return $this->contributors->where('invoice_type', '!==', null)->pluck('invoice_type')->unique()->count() == 1 ? $this->contributors[0]['invoice_type'] : null;
 
     }
 

@@ -157,7 +157,7 @@ class Program extends Model
 
             }
 
-        }
+        });
 
     }
 

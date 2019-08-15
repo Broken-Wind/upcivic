@@ -5,10 +5,15 @@ namespace Upcivic;
 use Illuminate\Database\Eloquent\Model;
 use Upcivic\Concerns\HasDatetimeRange;
 use Carbon\Carbon;
+use Upcivic\Concerns\Filterable;
+use DB;
+
 
 class Program extends Model
 {
     use HasDatetimeRange;
+
+    use Filterable;
     //
     protected $fillable = [
 

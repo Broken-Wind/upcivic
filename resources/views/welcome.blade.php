@@ -10,6 +10,7 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <!-- Styles -->
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <style>
             html, body {
                 background-color: #fff;
@@ -84,7 +85,11 @@
                     {{ config('app.name') }}
                 </div>
 
-                <h4>Manage all your enrichment proposals in one place.</h4>
+                <h4 class="mb-5">Manage all your enrichment proposals in one place.</h4>
+
+                <a class="btn btn-primary btn-lg mt-3" href="/register">Get Started</a><br />
+                <small class="text-muted">It's free!</small>
+
 
             </div>
         </div>

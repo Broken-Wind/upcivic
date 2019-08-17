@@ -5,10 +5,15 @@ namespace Upcivic;
 use Illuminate\Database\Eloquent\Model;
 use Upcivic\Concerns\HasDatetimeRange;
 use Carbon\Carbon;
+use Upcivic\Concerns\Filterable;
+use DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class Program extends Model
 {
     use HasDatetimeRange;
+
+    use Filterable;
     //
     protected $fillable = [
 
@@ -33,6 +38,22 @@ class Program extends Model
         'max_age',
 
     ];
+
+    public static function boot()
+    {
+
+        parent::boot();
+
+        static::addGlobalScope('ExcludePastPrograms', function (Builder $builder) {
+
+            return $builder->whereHas('meetings', function ($query) {
+
+                return $query->where('end_datetime', '>', Carbon::now()->subDays(5));
+
+            });
+
+        });
+    }
 
     public static function createExample($organization)
     {
@@ -283,14 +304,14 @@ class Program extends Model
     public function getInternalNameAttribute()
     {
 
-        return $this->contributors()->where('organization_id', tenant()['id'])->first()['internal_name'] ?? $this['name'];
+        return $this->contributors->where('organization_id', tenant()['id'])->first()['internal_name'] ?? $this['name'];
 
     }
 
     public function setInternalNameAttribute($internalName)
     {
 
-        return $this->contributors()->where('organization_id', tenant()['id'])->first()->update(['internal_name' => $internalName]);
+        return $this->contributors->where('organization_id', tenant()['id'])->first()->update(['internal_name' => $internalName]);
 
     }
 
@@ -311,14 +332,14 @@ class Program extends Model
     public function firstMeeting()
     {
 
-        return $this->meetings()->orderBy('start_datetime')->first();
+        return $this->meetings->sortBy('start_datetime')->first();
 
     }
 
     public function lastMeeting()
     {
 
-        return $this->meetings()->orderByDesc('start_datetime')->first();
+        return $this->meetings->sortByDesc('start_datetime')->first();
 
     }
 

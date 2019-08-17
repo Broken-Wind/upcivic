@@ -14,15 +14,45 @@
 
                     @if($programs->count() > 0)
 
-                        @if($templateCount > 0)
+                        @include('tenant.admin.programs.filters_modal')
 
-                            <p><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a new program</a></p>
+                        <div class="form-row mb-4">
 
-                        @else
+                            <div class="col">
 
-                            <p>Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create a template!</a></p>
+                                    @if($templateCount > 0)
 
-                        @endif
+                                        <a class="btn btn-primary" href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a new program</a>
+
+                                    @else
+
+                                        Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create a template!</a>
+
+                                    @endif
+
+                            </div>
+
+                            <div class="col text-right">
+
+                                <form action="{{ URL::current() }}" method="GET">
+
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+
+                                        Set Filters
+
+                                    </button>
+
+                                    <a href="{{ url()->current() }}" class="btn btn-secondary">
+
+                                        Reset Filters
+
+                                    </a>
+
+                                </form>
+
+                            </div>
+
+                        </div>
 
                         <table class="table table-responsive table-striped">
 
@@ -85,7 +115,7 @@
 
                             @endif
 
-                            <li>Ask your partners to propose programs to you via Enrollex!</li>
+                            <li>Ask your partners to propose programs to you via {{ config('app.name') }}!</li>
 
                         </ul>
 

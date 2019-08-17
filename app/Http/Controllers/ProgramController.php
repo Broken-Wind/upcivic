@@ -3,16 +3,14 @@
 namespace Upcivic\Http\Controllers;
 
 use Upcivic\Program;
-use Illuminate\Http\Request;
 use Upcivic\Template;
 use Upcivic\Site;
 use Upcivic\Organization;
-use Upcivic\Contributor;
 use Upcivic\Http\Requests\StoreProgram;
-use Upcivic\Meeting;
 use Upcivic\Http\Requests\UpdateProgram;
 
 use DB;
+use Upcivic\Filters\ProgramFilters;
 
 class ProgramController extends Controller
 {
@@ -21,14 +19,18 @@ class ProgramController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ProgramFilters $programFilters)
     {
         //
-        $programs = Program::with('meetings')->get()->sortBy('start_datetime');
+        $programs = Program::with(['meetings.site', 'contributors'])->filter($programFilters)->get()->sortBy('start_datetime');
+
+        $organizations = Organization::published()->orderBy('name')->get();
+        $sites = Site::orderBy('name')->get();
 
         $templateCount = Template::count();
 
-        return view('tenant.admin.programs.index', compact('programs', 'templateCount'));
+        return view('tenant.admin.programs.index', compact('programs', 'templateCount', 'organizations', 'sites'));
+
     }
 
     /**

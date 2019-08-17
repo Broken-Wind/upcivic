@@ -14,35 +14,45 @@
 
                     @if($programs->count() > 0)
 
-                        <form action="{{ URL::current() }}" method="GET">
+                        @include('tenant.admin.programs.filters_modal')
 
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+                        <div class="form-row mb-4">
 
-                                Set Filters
+                            <div class="col">
 
-                            </button>
+                                    @if($templateCount > 0)
 
-                            <a href="{{ url()->current() }}" class="btn btn-secondary">
+                                        <a class="btn btn-primary" href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a new program</a>
 
-                                Reset Filters
+                                    @else
 
-                            </a>
+                                        Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create a template!</a>
 
-                            <p />
+                                    @endif
 
-                            @include('tenant.admin.programs.filters_modal')
+                            </div>
 
-                        </form>
+                            <div class="col text-right">
 
-                        @if($templateCount > 0)
+                                <form action="{{ URL::current() }}" method="GET">
 
-                            <p><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a new program</a></p>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
 
-                        @else
+                                        Set Filters
 
-                            <p>Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create a template!</a></p>
+                                    </button>
 
-                        @endif
+                                    <a href="{{ url()->current() }}" class="btn btn-secondary">
+
+                                        Reset Filters
+
+                                    </a>
+
+                                </form>
+
+                            </div>
+
+                        </div>
 
                         <table class="table table-responsive table-striped">
 

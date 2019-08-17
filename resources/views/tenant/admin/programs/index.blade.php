@@ -11,10 +11,14 @@
 
                     @include('shared.form_errors')
 
-
-                    @if($programs->count() > 0)
+                    <form id="filters" action="{{ URL::current() }}" method="GET">
 
                         @include('tenant.admin.programs.filters_modal')
+
+                    </form>
+
+
+                    @if($programs->count() > 0)
 
                         <div class="form-row mb-4">
 
@@ -34,9 +38,7 @@
 
                             <div class="col text-right">
 
-                                <form action="{{ URL::current() }}" method="GET">
-
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal" form="filters">
 
                                         Set Filters
 
@@ -48,7 +50,6 @@
 
                                     </a>
 
-                                </form>
 
                             </div>
 

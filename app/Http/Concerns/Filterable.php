@@ -1,11 +1,11 @@
 <?php
 namespace Upcivic\Concerns;
 
-use App\Filters\QueryFilters;
+use Upcivic\Filters\QueryFilters;
 
 trait Filterable
 {
-    public function scopeFilter($query, $filters)
+    public function scopeFilter($query, QueryFilters $filters)
     {
         return $filters->apply($query);
     }

@@ -2,6 +2,8 @@
 namespace Upcivic\Filters;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use phpDocumentor\Reflection\Types\Boolean;
+
 class ProgramFilters extends QueryFilters
 {
     protected $request;
@@ -16,6 +18,20 @@ class ProgramFilters extends QueryFilters
         return $this->builder->whereHas('contributors', function ($query) use ($term) {
             return $query->where('organization_id', $term);
         });
+    }
+
+    public function site($term) {
+
+        return $this->builder->whereHas('meetings', function ($query) use ($term) {
+            return $query->where('site_id', $term);
+        });
+
+    }
+
+    public function past($term) {
+
+        return $term === "true" ? $this->builder->withoutGlobalScope('ExcludePastPrograms') : $this->builder;
+
     }
 
     // public function age($term) {

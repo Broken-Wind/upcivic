@@ -7,7 +7,7 @@ use Upcivic\Concerns\HasDatetimeRange;
 use Carbon\Carbon;
 use Upcivic\Concerns\Filterable;
 use DB;
-
+use Illuminate\Database\Eloquent\Builder;
 
 class Program extends Model
 {
@@ -38,6 +38,22 @@ class Program extends Model
         'max_age',
 
     ];
+
+    public static function boot()
+    {
+
+        parent::boot();
+
+        static::addGlobalScope('ExcludePastPrograms', function (Builder $builder) {
+
+            return $builder->whereHas('meetings', function ($query) {
+
+                return $query->where('end_datetime', '>', Carbon::now()->subDays(5));
+
+            });
+
+        });
+    }
 
     public static function createExample($organization)
     {

@@ -30,6 +30,8 @@ class QueryFilters
 
     public function filters()
     {
-        return $this->request->all();
+        return collect($this->request->all())->filter(function($value) {
+            return null !== $value;
+        })->toArray();
     }
 }

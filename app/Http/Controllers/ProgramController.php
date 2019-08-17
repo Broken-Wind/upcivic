@@ -24,9 +24,13 @@ class ProgramController extends Controller
         //
         $programs = Program::with(['meetings.site', 'contributors'])->filter($programFilters)->get()->sortBy('start_datetime');
 
+        $organizations = Organization::published()->orderBy('name')->get();
+        $sites = Site::orderBy('name')->get();
+
         $templateCount = Template::count();
 
-        return view('tenant.admin.programs.index', compact('programs', 'templateCount'));
+        return view('tenant.admin.programs.index', compact('programs', 'templateCount', 'organizations', 'sites'));
+
     }
 
     /**

@@ -14,6 +14,26 @@
 
                     @if($programs->count() > 0)
 
+                        <form action="{{ URL::current() }}" method="GET">
+
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+
+                                Set Filters
+
+                            </button>
+
+                            <a href="{{ url()->current() }}" class="btn btn-secondary">
+
+                                Reset Filters
+
+                            </a>
+
+                            <p />
+
+                            @include('tenant.admin.programs.filters_modal')
+
+                        </form>
+
                         @if($templateCount > 0)
 
                             <p><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a new program</a></p>

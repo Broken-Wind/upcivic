@@ -115,7 +115,7 @@
 
                             @endif
 
-                            <li>Ask your partners to propose programs to you via Enrollex!</li>
+                            <li>Ask your partners to propose programs to you via {{ config('app.name') }}!</li>
 
                         </ul>
 

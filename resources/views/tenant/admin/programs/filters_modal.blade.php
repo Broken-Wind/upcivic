@@ -112,7 +112,7 @@
 
                                 <input type="checkbox" class="form-check-input" name="past" id="" value="true" {{ isset(request()['past']) && request()['past'] ? 'checked' : '' }}>
 
-                                Show Past Sessions
+                                Include Past Sessions
 
                             </label>
 

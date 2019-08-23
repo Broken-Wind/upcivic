@@ -87,8 +87,18 @@
 
                 <h4 class="mb-5">Manage all your enrichment proposals in one place.</h4>
 
-                <a class="btn btn-primary btn-lg mt-3" href="/register">Get Started</a><br />
-                <small class="text-muted">It's free!</small>
+                @guest
+
+                    <a class="btn btn-primary btn-lg mt-3" href="/register">Get Started</a><br />
+                    <small class="text-muted">It's free!</small>
+
+                @endguest
+
+                @auth
+
+                    <a class="btn btn-primary btn-lg mt-3" href="/home">Visit Dashboard</a><br />
+
+                @endauth
 
 
             </div>

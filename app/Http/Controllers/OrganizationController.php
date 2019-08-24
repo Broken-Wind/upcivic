@@ -49,7 +49,7 @@ class OrganizationController extends Controller
 
         Program::createExample($organization->fresh());
 
-        return redirect('home');
+        return redirect('/home');
 
     }
 

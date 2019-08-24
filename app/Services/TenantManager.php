@@ -21,6 +21,13 @@ class TenantManager {
         return $this->tenant;
     }
 
+    public function forgetTenant()
+    {
+
+        $this->tenant = null;
+
+    }
+
 
     public function applyGlobalScopes()
     {

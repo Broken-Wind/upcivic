@@ -4,6 +4,7 @@
 use Upcivic\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use Upcivic\Organization;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,24 @@ $factory->define(User::class, function (Faker $faker) {
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
     ];
+});
+
+$factory->state(User::class, 'unverifiedEmail', function (User $user) {
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'email_verified_at' => null,
+        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+        'remember_token' => Str::random(10),
+    ];
+
+});
+
+$factory->afterCreatingState(User::class, 'hasOrganization', function (User $user) {
+
+    $organization = factory(Organization::class)->create();
+
+    $user->organizations()->attach($organization);
+
 });

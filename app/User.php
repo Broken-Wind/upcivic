@@ -40,7 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function authToTenant()
     {
 
-        return $this->organizations->contains(tenant()) ?: abort(401, 'This action is unauthorized.');
+        return $this->organizations()->get()->contains(tenant()) ?: abort(401, 'This action is unauthorized.');
 
     }
 

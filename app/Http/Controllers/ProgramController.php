@@ -10,6 +10,7 @@ use Upcivic\Http\Requests\StoreProgram;
 use Upcivic\Http\Requests\UpdateProgram;
 
 use DB;
+use Mixpanel;
 use Upcivic\Filters\ProgramFilters;
 
 class ProgramController extends Controller
@@ -41,6 +42,7 @@ class ProgramController extends Controller
     public function create()
     {
         //
+
         $templates = Template::all()->sortBy('internal_name');
 
         $sites = Site::all()->sortBy('name');

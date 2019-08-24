@@ -176,15 +176,16 @@ class Program extends Model
 
                 }
 
+
+                mixpanel()->track('Proposal created', [
+
+                    'proposing_organization_id' => $proposal['proposer_id'] ?? tenant()['id'],
+
+                ]);
+
             }
 
         });
-
-        mixpanel()->track('Proposal created', [
-
-            'proposing_organization_id' => $proposal['proposer_id'] ?? tenant()['id'],
-
-        ]);
 
     }
 

@@ -180,6 +180,12 @@ class Program extends Model
 
         });
 
+        mixpanel()->track('Proposal created', [
+
+            'proposing_organization_id' => $program['organization_id'],
+
+        ]);
+
     }
 
     public function getSharedInvoiceTypeAttribute()

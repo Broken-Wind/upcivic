@@ -27,7 +27,7 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(User::class, 'unverifiedEmail', function (User $user) {
+$factory->state(User::class, 'unverifiedEmail', function (User $user, Faker $faker) {
 
     return [
         'name' => $faker->name,

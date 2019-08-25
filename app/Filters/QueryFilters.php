@@ -15,6 +15,9 @@ class QueryFilters
     public function apply(Builder $builder)
     {
         $this->builder = $builder;
+
+        $this->setUp();
+
         foreach ($this->filters() as $name => $value) {
             if ( ! method_exists($this, $name)) {
                 continue;

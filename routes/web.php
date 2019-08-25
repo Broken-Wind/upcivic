@@ -61,7 +61,7 @@ Route::group(['middleware' => 'verified'], function () {
 
         Route::get('/programs/create', 'ProgramController@create')->name('programs.create');
 
-        Route::post('/programs/create', 'ProgramController@store')->name('programs.store');
+        Route::post('/programs', 'ProgramController@store')->name('programs.store');
 
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
 

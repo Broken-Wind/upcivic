@@ -39,20 +39,15 @@ class Program extends Model
 
     ];
 
-    public static function boot()
+    public function scopeExcludePast($query)
     {
 
-        parent::boot();
+        return $query->whereHas('meetings', function ($query) {
 
-        static::addGlobalScope('ExcludePastPrograms', function (Builder $builder) {
-
-            return $builder->whereHas('meetings', function ($query) {
-
-                return $query->where('end_datetime', '>', Carbon::now()->subDays(5));
-
-            });
+            return $query->where('end_datetime', '>', Carbon::now()->subDays(5));
 
         });
+
     }
 
     public static function createExample($organization)

@@ -13,6 +13,13 @@ class ProgramFilters extends QueryFilters
         parent::__construct($request);
     }
 
+    public function setUp()
+    {
+
+        return isset($this->request['past']) && $this->request['past'] == true ? $this->builder : $this->builder->excludePast();
+
+    }
+
     public function organization($term) {
 
         return $this->builder->whereHas('contributors', function ($query) use ($term) {
@@ -25,12 +32,6 @@ class ProgramFilters extends QueryFilters
         return $this->builder->whereHas('meetings', function ($query) use ($term) {
             return $query->where('site_id', $term);
         });
-
-    }
-
-    public function past($term) {
-
-        return $term === "true" ? $this->builder->withoutGlobalScope('ExcludePastPrograms') : $this->builder;
 
     }
 

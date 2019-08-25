@@ -9,6 +9,14 @@
 
                 <div class="card-body">
 
+                    <form id="delete_template" method="POST" action="{{ tenant()->route('tenant:admin.templates.destroy', [$template]) }}">
+
+                        @method('delete')
+
+                        @csrf
+
+                    </form>
+
                     <form method="POST" action="{{ tenant()->route('tenant:admin.templates.update', [$template]) }}">
 
                         @method('put')
@@ -88,7 +96,19 @@
                             <input type="number" class="form-control" name="meeting_minutes" value="{{ old('meeting_minutes') ?: $template['meeting_minutes'] }}" id="meeting_minutes" placeholder="180" required>
                         </div>
 
-                        <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Update Template</button>
+                        <div class="form-row">
+                            <div class="col-md-4">
+
+                                <button type="submit" id="submit"  form="delete_template" class="btn btn-lg btn-danger btn-block"  onClick="return confirm('Are you sure you want to this template? This cannot be undone.');">Delete Template</button>
+
+                            </div>
+                            <div class="col-md-8">
+
+                                <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Update Template</button>
+
+                            </div>
+                        </div>
+
 
                     </form>
                 </div>

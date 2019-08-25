@@ -116,14 +116,12 @@ class TemplateController extends Controller
         return back()->withSuccess('Template updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \Upcivic\Template  $template
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Template $template)
     {
         //
+
+        $template->delete();
+
+        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Template has been deleted.');
     }
 }

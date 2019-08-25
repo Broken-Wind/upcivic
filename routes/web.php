@@ -49,11 +49,13 @@ Route::group(['middleware' => 'verified'], function () {
 
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');
 
-        Route::post('/templates/create', 'TemplateController@store')->name('templates.store');
+        Route::post('/templates', 'TemplateController@store')->name('templates.store');
 
         Route::get('/templates/{template}/edit', 'TemplateController@edit')->name('templates.edit');
 
         Route::put('/templates/{template}', 'TemplateController@update')->name('templates.update');
+
+        Route::delete('/templates/{template}', 'TemplateController@destroy')->name('templates.destroy');
 
         Route::get('/programs', 'ProgramController@index')->name('programs.index');
 

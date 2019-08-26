@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Upcivic\Contributor;
 use Upcivic\Organization;
 use Upcivic\Program;
 use Upcivic\Template;
@@ -91,6 +92,55 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['end_time'], '11:00am');
         $this->assertEquals(Carbon::parse($program->meetings[0]['start_datetime'])->diffInDays($program->meetings[1]['start_datetime']), 7);
         $this->assertEquals($program->meetings->count(), 3);
+
+    }
+
+    /** @test */
+    public function user_can_edit_program()
+    {
+
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->states('hasOrganization')->create();
+
+        $organization = $user->organizations()->first();
+
+        $this->assertEquals(0, $organization->templatesWithoutScope->count());
+
+        $program = factory(Program::class)->create();
+
+        $contributor = new Contributor();
+
+        $contributor['organization_id'] = $organization->id;
+
+        $program->contributors()->save($contributor);
+
+
+        $response = $this->actingAs($user)->followingRedirects()->put("/{$organization->slug}/admin/programs/{$program->id}", [
+
+            'name' => 'Sweet Radcamp',
+            'internal_name' => 'Sweet',
+            'description' => 'Radcamp',
+            'public_notes' => 'Cool beens',
+            'contributor_notes' => 'Hot notez',
+            'ages_type' => 'ages',
+            'min_age' => '89',
+            'max_age' => '99',
+
+        ]);
+
+        $program->refresh();
+
+
+        $response->assertStatus(200);
+
+        $this->assertEquals($program['name'], 'Sweet Radcamp');
+        $this->assertEquals($program['internal_name'], 'Sweet');
+        $this->assertEquals($program['description'], 'Radcamp');
+        $this->assertEquals($program['public_notes'], 'Cool beens');
+        $this->assertEquals($program['contributor_notes'], 'Hot notez');
+        $this->assertEquals($program['ages_type'], 'ages');
+        $this->assertEquals($program['min_age'], '89');
+        $this->assertEquals($program['max_age'], '99');
 
     }
 

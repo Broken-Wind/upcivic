@@ -168,12 +168,21 @@ class Program extends Model
 
                 }
 
+                $organizations = $program->contributors->map(function ($contributor) {
 
-                mixpanel()->track('Proposal created', [
+                    return $contributor->organization;
 
-                    'proposing_organization_id' => $proposal['proposer_id'] ?? tenant()['id'],
+                });
 
-                ]);
+                if (!$organizations->pluck('slug')->contains('example')) {
+
+                    mixpanel()->track('Proposal created', [
+
+                        'proposing_organization_id' => $proposal['proposer_id'] ?? tenant()['id'],
+
+                    ]);
+
+                }
 
             }
 

@@ -37,7 +37,7 @@ class Template extends Model
 
     public function getFormattedInvoiceAmountAttribute() {
 
-        return number_format($this->invoice_amount / 100, 2);
+        return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
 
     }
 

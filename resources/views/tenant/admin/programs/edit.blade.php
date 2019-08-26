@@ -53,13 +53,13 @@
                         <div class="form-group">
                             <label for="description">Public Notes</label>
                             <textarea class="form-control" name="public_notes" id="public_notes" aria-describedby="publicNotesHelp" rows="3">{{ old('public_notes') ?: $program['public_notes'] }}</textarea>
-                            <small id="internalNameHelp" class="form-text text-muted">These are notes that should be published alongside the course description.</small>
+                            <small id="internalNameHelp" class="form-text text-muted">These are notes that should be published alongside the course description. Ex: "There is a $20 materials fee due on the first day of this program."</small>
                         </div>
 
                         <div class="form-group">
                             <label for="description">Contributor Notes</label>
                             <textarea class="form-control" name="contributor_notes" id="contributor_notes" aria-describedby="contributorNotesHelp" rows="3">{{ old('contributor_notes') ?: $program['contributor_notes'] }}</textarea>
-                            <small id="contributorNotesHelp" class="form-text text-muted">These notes will be shared with contributors and should not be published.</small>
+                            <small id="contributorNotesHelp" class="form-text text-muted">These notes will be shared with contributors and should not be published. Ex: "Please put us in a room with a projector."</small>
                         </div>
 
                         <div class="input-group mb-3">
@@ -281,7 +281,7 @@
 
                                     <td>
 
-                                        <input type="text" class="form-control form-control-sm" name="meeting_notes[{{ $meeting['id'] }}]" placeholder="" value="{{ $meeting['note'] ?? '' }}">
+                                        <input type="text" class="form-control form-control-sm" name="meeting_notes[{{ $meeting['id'] }}]" placeholder="Notes for contributors" value="{{ $meeting['note'] ?? '' }}">
 
                                     </td>
 
@@ -299,11 +299,34 @@
 
                         </table>
 
+
+                        <div class="form-row">
+
+                            <div class="form-group col-sm-4">
+
+                                <button type="submit" class="btn btn-primary btn-danger btn-block" name="delete_meetings" value=="delete_meetings">Delete Selected Meetings</button>
+
+                            </div>
+
+                            <div class="form-group col-sm-4">
+
+                                <button type="submit" class="btn btn-primary btn-block" name="update_selected" value="update_selected">Update Selected Meetings</button>
+
+                            </div>
+
+                            <div class="form-group col-sm-4">
+
+                                <button type="submit" class="btn btn-primary btn-block" name="update_all" value="update_all">Update All Meetings</button>
+
+                            </div>
+
+                        </div>
+
                         <div class="form-row">
 
                             <div class="form-group col-md-3">
 
-                                <label for=meeting_start_time"">Start</label>
+                                <label for=meeting_start_time"">Start Time</label>
 
                                 <input type="time" class="form-control" name="start_time" id="" placeholder="" value="">
 
@@ -312,7 +335,7 @@
 
                             <div class="form-group col-md-3">
 
-                                <label for="meeting_end_time">End</label>
+                                <label for="meeting_end_time">End Time</label>
 
                                 <input type="time" class="form-control" name="end_time" id="" placeholder="" value="">
 
@@ -339,7 +362,7 @@
                             <div class="form-group col-md-3">
 
                                 <div class="form-group">
-                                    <label for="shift_meetings">Shift Meetings</label>
+                                    <label for="shift_meetings">Shift Meeting Dates</label>
                                     <div class="input-group">
 
                                         <input type="number" class="form-control" name="shift_meetings" value="0">
@@ -353,34 +376,11 @@
 
                         </div>
 
-
-                        <div class="form-row">
-
-                            <div class="form-group col-sm-4">
-
-                                <button type="submit" class="btn btn-primary btn-danger btn-block" name="delete_meetings" value=="delete_meetings">Delete Selected Meetings</button>
-
-                            </div>
-
-                            <div class="form-group col-sm-4">
-
-                                <button type="submit" class="btn btn-primary btn-block" name="update_selected" value="update_selected">Update Selected Meetings</button>
-
-                            </div>
-
-                            <div class="form-group col-sm-4">
-
-                                <button type="submit" class="btn btn-primary btn-block" name="update_all" value="update_all">Update All Meetings</button>
-
-                            </div>
-
-                        </div>
-
                     </form>
 
                     <hr />
 
-                    <h5>Add Meeting</h5>
+                    <h5>Add New Meeting</h5>
 
                     <form method="POST" action="{{ tenant()->route('tenant:admin.programs.meetings.store', [$program]) }}">
 

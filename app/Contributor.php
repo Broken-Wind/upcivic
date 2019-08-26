@@ -19,7 +19,7 @@ class Contributor extends Model
 
     public function getFormattedInvoiceAmountAttribute() {
 
-        return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2) : null;
+        return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
 
     }
 

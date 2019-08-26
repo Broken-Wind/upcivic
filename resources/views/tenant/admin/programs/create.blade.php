@@ -9,7 +9,7 @@
 
                 <div class="card-body">
 
-                    <form method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
+                    <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
 
                         @csrf
 
@@ -167,7 +167,7 @@
 
                         <div class="form-group text-right">
 
-                            <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Propose</button>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Propose</button>
 
                         </div>
 
@@ -179,4 +179,7 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    mixpanel.track_forms("#submit", "Create Proposal");
+</script>
 @endsection

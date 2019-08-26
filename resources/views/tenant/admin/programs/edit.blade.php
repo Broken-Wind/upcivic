@@ -257,7 +257,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Meetings</div>
+                <div class="card-header">Meetings <span class="text-muted ml-1">({{ $program->meetings->count() }} total)</span></div>
 
                 <div class="card-body">
 

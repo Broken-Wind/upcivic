@@ -39,6 +39,8 @@ class TemplateTest extends TestCase
             'meeting_minutes' => '120',
             'meeting_interval' => '7',
             'meeting_count' => '3',
+            'min_enrollments' => '6',
+            'max_enrollments' => '10',
 
         ]);
 
@@ -62,6 +64,9 @@ class TemplateTest extends TestCase
         $this->assertEquals($template['meeting_minutes'], '120');
         $this->assertEquals($template['meeting_interval'], '7');
         $this->assertEquals($template['meeting_count'], '3');
+        $this->assertEquals($template['min_enrollments'], '6');
+        $this->assertEquals($template['max_enrollments'], '10');
+
 
 
     }
@@ -98,6 +103,8 @@ class TemplateTest extends TestCase
             'meeting_minutes' => '321',
             'meeting_interval' => '7',
             'meeting_count' => '3',
+            'min_enrollments' => '93',
+            'max_enrollments' => '933',
 
         ]);
 
@@ -123,6 +130,8 @@ class TemplateTest extends TestCase
         $this->assertEquals($template['meeting_minutes'], '321');
         $this->assertEquals($template['meeting_interval'], '7');
         $this->assertEquals($template['meeting_count'], '3');
+        $this->assertEquals($template['min_enrollments'], '93');
+        $this->assertEquals($template['max_enrollments'], '933');
 
 
     }

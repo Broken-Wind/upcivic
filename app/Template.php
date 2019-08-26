@@ -24,6 +24,8 @@ class Template extends Model
         'meeting_minutes',
         'meeting_interval',
         'meeting_count',
+        'min_enrollments',
+        'max_enrollments',
     ];
 
     public function getInternalNameAttribute()

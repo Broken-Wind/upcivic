@@ -38,6 +38,8 @@ class StoreTemplate extends FormRequest
             'meeting_interval' => 'required|numeric|max:7',
             'meeting_minutes' => 'required|numeric|max:1440',
             'meeting_count' => 'required|numeric|max:100',
+            'min_enrollments' => 'nullable|numeric|between:0,9999',
+            'max_enrollments' => 'nullable|numeric|between:0,9999',
         ];
     }
 }

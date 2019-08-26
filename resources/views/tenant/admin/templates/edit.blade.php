@@ -64,6 +64,23 @@
                             <input type="number" aria-label="Maximum" placeholder="Maximum" name="max_age" value="{{ old('max_age') ?: $template['max_age'] }}" class="form-control" required>
                         </div>
 
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+
+                                <label for="min_enrollments">Minimum Enrollments</label>
+                                <input type="number" class="form-control" name="min_enrollments" placeholder="5" value="{{ old('min_enrollments') ?: $template['min_enrollments'] }}">
+
+                            </div>
+
+                            <div class="form-group col-md-6">
+
+                                <label for="max_enrollments">Maximum Enrollments</label>
+                                <input type="number" class="form-control" name="max_enrollments" placeholder="12" value="{{ old('max_enrollments') ?: $template['max_enrollments'] }}">
+
+                            </div>
+
+                        </div>
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                     <span class="input-group-text">Your Compensation</span>

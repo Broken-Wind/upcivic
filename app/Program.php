@@ -18,24 +18,17 @@ class Program extends Model
     protected $fillable = [
 
         'name',
-
         'internal_name',
-
         'description',
-
         'public_notes',
-
         'contributor_notes',
-
         'invoice_amount',
-
         'invoice_type',
-
         'ages_type',
-
         'min_age',
-
         'max_age',
+        'min_enrollments',
+        'max_enrollments',
 
     ];
 
@@ -99,6 +92,10 @@ class Program extends Model
                     'min_age' => $proposal['min_age'] ?? $template['min_age'],
 
                     'max_age' => $proposal['max_age'] ?? $template['max_age'],
+
+                    'min_enrollments' => $template['min_enrollments'],
+
+                    'max_enrollments' => $template['max_enrollments'],
 
                 ]);
 
@@ -206,6 +203,12 @@ class Program extends Model
 
     public function getMeetingIntervalAttribute()
     {
+
+        if ($this->meetings->count() < 2) {
+
+            return 1;
+
+        }
 
         $meetings = $this->meetings->sortBy('start_datetime');
 

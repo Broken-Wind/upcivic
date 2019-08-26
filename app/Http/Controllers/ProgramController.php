@@ -120,6 +120,8 @@ class ProgramController extends Controller
             'ages_type' => $validated['ages_type'],
             'min_age' => $validated['min_age'],
             'max_age' => $validated['max_age'],
+            'min_enrollments' => $validated['min_enrollments'],
+            'max_enrollments' => $validated['max_enrollments'],
 
         ]);
 

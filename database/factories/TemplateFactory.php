@@ -22,5 +22,8 @@ $factory->define(Template::class, function (Faker $faker) {
         'meeting_minutes' => $faker->numberBetween(1, 1000),
         'meeting_interval' => 1,
         'meeting_count' => 5,
+        'min_enrollments' => 3,
+        'max_enrollments' => 5,
+
     ];
 });

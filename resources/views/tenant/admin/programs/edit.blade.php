@@ -74,6 +74,23 @@
                         </div>
 
                         <div class="form-row">
+                            <div class="form-group col-md-6">
+
+                                <label for="min_enrollments">Minimum Enrollments</label>
+                                <input type="number" class="form-control" name="min_enrollments" placeholder="5" value="{{ old('min_enrollments') ?: $program['min_enrollments'] }}">
+
+                            </div>
+
+                            <div class="form-group col-md-6">
+
+                                <label for="max_enrollments">Maximum Enrollments</label>
+                                <input type="number" class="form-control" name="max_enrollments" placeholder="12" value="{{ old('max_enrollments') ?: $program['max_enrollments'] }}">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-row">
                             <div class="col-md-4">
 
                                 <button type="submit" id="submit" form="delete_program" class="btn btn-danger btn-block"  onClick="return confirm('Are you sure you want to this program? This cannot be undone.');">Delete Program</button>

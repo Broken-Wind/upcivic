@@ -45,6 +45,8 @@ class ProgramTest extends TestCase
             'meeting_minutes' => '120',
             'meeting_interval' => '7',
             'meeting_count' => '3',
+            'min_enrollments' => '11',
+            'max_enrollments' => '111',
 
             'organization_id' => $organization->id,
 
@@ -86,6 +88,8 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['contributor_notes'], 'Contnotes');
         $this->assertEquals($program['min_age'], '12');
         $this->assertEquals($program['max_age'], '13');
+        $this->assertEquals($program['min_enrollments'], '11');
+        $this->assertEquals($program['max_enrollments'], '111');
         $this->assertEquals($program['ages_type'], 'grades');
         $this->assertEquals($program['formatted_base_fee'], '11.99');
         $this->assertEquals($program['start_time'], '9:00am');
@@ -125,6 +129,8 @@ class ProgramTest extends TestCase
             'ages_type' => 'ages',
             'min_age' => '89',
             'max_age' => '99',
+            'min_enrollments' => '393',
+            'max_enrollments' => '494',
 
         ]);
 
@@ -141,6 +147,8 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['ages_type'], 'ages');
         $this->assertEquals($program['min_age'], '89');
         $this->assertEquals($program['max_age'], '99');
+        $this->assertEquals($program['min_enrollments'], '393');
+        $this->assertEquals($program['max_enrollments'], '494');
 
     }
 

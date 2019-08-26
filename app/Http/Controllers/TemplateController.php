@@ -60,6 +60,8 @@ class TemplateController extends Controller
             'meeting_minutes' => $validated['meeting_minutes'],
             'meeting_interval' => $validated['meeting_interval'],
             'meeting_count' => $validated['meeting_count'],
+            'min_enrollments' => $validated['min_enrollments'],
+            'max_enrollments' => $validated['max_enrollments'],
 
         ]);
 
@@ -110,6 +112,8 @@ class TemplateController extends Controller
             'meeting_minutes' => $validated['meeting_minutes'],
             'meeting_interval' => $validated['meeting_interval'],
             'meeting_count' => $validated['meeting_count'],
+            'min_enrollments' => $validated['min_enrollments'],
+            'max_enrollments' => $validated['max_enrollments'],
 
         ]);
 

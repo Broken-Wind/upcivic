@@ -56,6 +56,8 @@ class DatabaseSeeder extends Seeder
             'meeting_minutes' => 180,
             'meeting_interval' => 1,
             'meeting_count' => 5,
+            'min_enrollments' => 5,
+            'max_enrollments' => 12,
 
         ]);
 

@@ -47,7 +47,7 @@ class ProposalSentTest extends TestCase
 
         $this->assertContains('Recipient Organization', $rendered);
 
-        $this->assertContains(config('app.url'), $rendered);
+        $this->assertContains(route('tenant:admin.programs.index', $proposal['recipient_organization']['slug']), $rendered);
 
     }
 

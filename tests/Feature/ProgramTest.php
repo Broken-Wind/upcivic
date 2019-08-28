@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Upcivic\Contributor;
+use Upcivic\Mail\ProposalSent;
 use Upcivic\Organization;
 use Upcivic\Program;
 use Upcivic\Template;
@@ -22,11 +24,14 @@ class ProgramTest extends TestCase
     {
 
         $this->withoutExceptionHandling();
+
+        Mail::fake();
+
         $user = factory(User::class)->states('hasOrganization')->create();
 
         $organization = $user->organizations()->first();
 
-        $organization2 = factory(Organization::class)->create();
+        $organization2 = factory(Organization::class)->states('hasTwoUsers')->create();
 
         $this->assertEquals(0, $organization->templatesWithoutScope->count());
 
@@ -55,7 +60,7 @@ class ProgramTest extends TestCase
 
         $response = $this->actingAs($user)->followingRedirects()->post("/{$organization->slug}/admin/programs", [
 
-            'organization_id' => $organization2->id,
+            'recipient_organization_id' => $organization2->id,
             'site_id' => null,
             'programs' => [
                 0 => [
@@ -78,6 +83,8 @@ class ProgramTest extends TestCase
 
 
         $response->assertStatus(200);
+
+        Mail::assertSent(ProposalSent::class);
 
         $program = Program::first();
 

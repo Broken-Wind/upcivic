@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Upcivic\Concerns\Filterable;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
+use Upcivic\Mail\ProposalSent;
 
 class Program extends Model
 {
@@ -50,7 +51,7 @@ class Program extends Model
 
         $proposal = [
 
-            'organization_id' => $exampleOrg['id'],
+            'recipient_organization_id' => $exampleOrg['id'],
 
             'start_time' => '09:00',
 
@@ -58,7 +59,7 @@ class Program extends Model
 
             'template_id' => $exampleOrg->templatesWithoutScope()->first(),
 
-            'proposer_id' => $organization['id'],
+            'proposing_organization_id' => $organization['id'],
 
         ];
 
@@ -71,6 +72,7 @@ class Program extends Model
 
     public static function fromTemplate($proposal, $template = null)
     {
+
         DB::transaction(function () use ($proposal, $template) {
 
             if ($proposal['start_date'] && $proposal['start_time']) {
@@ -111,7 +113,7 @@ class Program extends Model
 
                 $proposer['program_id'] = $program['id'];
 
-                $proposer['organization_id'] = $proposal['proposer_id'] ?? tenant()['id'];
+                $proposer['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()['id'];
 
                 $proposer->save();
 
@@ -120,7 +122,7 @@ class Program extends Model
 
                 $contributor['program_id'] = $program['id'];
 
-                $contributor['organization_id'] = $proposal['organization_id'];
+                $contributor['organization_id'] = $proposal['recipient_organization_id'];
 
                 if ($contributor['organization_id'] != $proposer['organization_id']) {
 
@@ -178,9 +180,11 @@ class Program extends Model
 
                     mixpanel()->track('Proposal created', [
 
-                        'proposing_organization_id' => $proposal['proposer_id'] ?? tenant()['id'],
+                        'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()['id'],
 
                     ]);
+
+
 
                 }
 

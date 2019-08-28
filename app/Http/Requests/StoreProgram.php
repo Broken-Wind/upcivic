@@ -25,7 +25,7 @@ class StoreProgram extends FormRequest
     {
         return [
             //
-            'organization_id' => 'required|numeric',
+            'recipient_organization_id' => 'required|numeric',
             'site_id' => 'nullable|numeric',
             'programs.*' => 'required|array',
             'programs.*.template_id' => 'nullable|numeric',

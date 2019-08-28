@@ -10,8 +10,10 @@ use Upcivic\Http\Requests\StoreProgram;
 use Upcivic\Http\Requests\UpdateProgram;
 
 use DB;
+use Illuminate\Support\Facades\Auth;
 use Mixpanel;
 use Upcivic\Filters\ProgramFilters;
+use Upcivic\Mail\ProposalSent;
 
 class ProgramController extends Controller
 {
@@ -68,7 +70,7 @@ class ProgramController extends Controller
 
             foreach ($validated['programs'] as $key => $program) {
 
-                $program['organization_id'] = $validated['organization_id'];
+                $program['recipient_organization_id'] = $validated['recipient_organization_id'];
 
                 $program['site_id'] = $validated['site_id'];
 
@@ -77,6 +79,22 @@ class ProgramController extends Controller
             }
 
         });
+
+        $recipientOrganization = Organization::find($validated['recipient_organization_id']);
+
+        $sendingOrganization = tenant();
+
+        $proposal = collect([
+
+            'sender' => Auth::user(),
+
+            'sending_organization' => $sendingOrganization,
+
+            'recipient_organization' => $recipientOrganization,
+
+        ]);
+
+        \Mail::send(new ProposalSent($proposal));
 
         return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program added successfully.');
     }

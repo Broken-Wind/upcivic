@@ -21,7 +21,7 @@
 
                                 <label for="organization_id">Host</label>
 
-                                <select class="form-control" name="organization_id" id="" required>
+                                <select class="form-control" name="recipient_organization_id" id="" required>
 
                                         <option value="">--------</option>
 

@@ -47,7 +47,7 @@ class Program extends Model
     public static function createExample($organization)
     {
 
-        $exampleOrg = Organization::where('slug', 'example')->firstOrFail();
+        $exampleOrg = Organization::where('name', 'Exampleville Parks & Recreation')->firstOrFail();
 
         $proposal = [
 

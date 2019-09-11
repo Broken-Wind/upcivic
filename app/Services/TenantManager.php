@@ -1,7 +1,7 @@
 <?php
 namespace Upcivic\Services;
 
-use Upcivic\Organization;
+use Upcivic\Tenant;
 use Upcivic\Program;
 use Illuminate\Database\Eloquent\Builder;
 use Upcivic\Template;
@@ -12,12 +12,12 @@ class TenantManager {
      */
      private $tenant;
 
-    public function setTenant(?Organization $tenant) {
+    public function setTenant(?Tenant $tenant) {
         $this->tenant = $tenant;
         return $this;
     }
 
-    public function getTenant(): ?Organization {
+    public function getTenant(): ?Tenant {
         return $this->tenant;
     }
 
@@ -36,7 +36,7 @@ class TenantManager {
 
             return $builder->whereHas('contributors', function ($query) {
 
-                return $query->where('organization_id', tenant()->id);
+                return $query->where('organization_id', tenant()->organization_id);
 
             });
 
@@ -44,7 +44,7 @@ class TenantManager {
 
         Template::addGlobalScope('TenantOwnedTemplate', function ($query) {
 
-            return $query->where('organization_id', tenant()->id);
+            return $query->where('organization_id', tenant()->organization_id);
 
         });
 
@@ -52,7 +52,7 @@ class TenantManager {
 
     public function loadTenant($identifier): bool {
 
-        $tenant = Organization::query()->where('slug', '=', $identifier)->first();
+        $tenant = Tenant::query()->where('slug', '=', $identifier)->first();
 
         if ($tenant) {
             $this->setTenant($tenant);

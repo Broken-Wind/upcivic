@@ -4,7 +4,7 @@ namespace Upcivic\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreOrganization extends FormRequest
+class StoreTenant extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreOrganization extends FormRequest
      */
     public function authorize()
     {
-        return !$this->user()->hasOrganization();
+        return !$this->user()->hasTenant();
     }
 
 
@@ -38,8 +38,7 @@ class StoreOrganization extends FormRequest
         return [
             //
             'name' => 'required|unique:organizations|max:255',
-            'slug' => 'required|unique:organizations|max:255|alpha_dash',
-            'publish' => 'nullable|boolean',
+            'slug' => 'required|unique:tenants|max:255|alpha_dash',
         ];
     }
 }

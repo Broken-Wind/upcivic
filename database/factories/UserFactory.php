@@ -4,7 +4,7 @@
 use Upcivic\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
-use Upcivic\Organization;
+use Upcivic\Tenant;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +39,10 @@ $factory->state(User::class, 'unverifiedEmail', function (User $user, Faker $fak
 
 });
 
-$factory->afterCreatingState(User::class, 'hasOrganization', function (User $user) {
+$factory->afterCreatingState(User::class, 'hasTenant', function (User $user) {
 
-    $organization = factory(Organization::class)->create();
+    $tenant = factory(Tenant::class)->create();
 
-    $user->organizations()->attach($organization);
+    $user->tenants()->attach($tenant);
 
 });

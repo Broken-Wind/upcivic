@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Upcivic\Template;
 use Upcivic\User;
+use Upcivic\Tenant;
 
 class TemplateTest extends TestCase
 {
@@ -17,14 +18,14 @@ class TemplateTest extends TestCase
     public function user_can_create_template()
     {
 
-        $user = factory(User::class)->states('hasOrganization')->create();
+        $user = factory(User::class)->states('hasTenant')->create();
 
-        $organization = $user->organizations()->first();
+        $tenant = $user->tenants()->first();
 
-        $this->assertEquals(0, $organization->templatesWithoutScope->count());
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
 
-        $response = $this->actingAs($user)->followingRedirects()->post("/{$organization->slug}/admin/templates", [
+        $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/templates", [
 
             'name' => 'Template Name',
             'internal_name' => 'Internal Name',
@@ -47,9 +48,9 @@ class TemplateTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertEquals(1, $organization->templates->count());
+        $this->assertEquals(1, $tenant->organization->templates->count());
 
-        $template = $organization->templates->first();
+        $template = $tenant->organization->templates->first();
 
         $this->assertEquals($template['name'], 'Template Name');
         $this->assertEquals($template['internal_name'], 'Internal Name');
@@ -75,20 +76,20 @@ class TemplateTest extends TestCase
     public function user_can_edit_template()
     {
 
-        $user = factory(User::class)->states('hasOrganization')->create();
+        $user = factory(User::class)->states('hasTenant')->create();
 
-        $organization = $user->organizations()->first();
+        $tenant = $user->tenants()->first();
 
-        $this->assertEquals(0, $organization->templatesWithoutScope->count());
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
         $template = factory(Template::class)->create([
 
-            'organization_id' => $organization->id,
+            'organization_id' => $tenant->organization_id,
 
         ]);
 
 
-        $response = $this->actingAs($user)->followingRedirects()->put("/{$organization->slug}/admin/templates/{$template->id}", [
+        $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/templates/{$template->id}", [
 
             'name' => 'Dat Tempo',
             'internal_name' => 'Interno',
@@ -111,7 +112,7 @@ class TemplateTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertEquals(1, $organization->templates->count());
+        $this->assertEquals(1, $tenant->organization->templates->count());
 
         $template->refresh();
 
@@ -140,33 +141,33 @@ class TemplateTest extends TestCase
     public function user_can_delete_template()
     {
 
-        $user = factory(User::class)->states('hasOrganization')->create();
+        $user = factory(User::class)->states('hasTenant')->create();
 
-        $organization = $user->organizations()->first();
+        $tenant = $user->tenants()->first();
 
-        $this->assertEquals(0, $organization->templatesWithoutScope->count());
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
         $template = factory(Template::class)->create([
 
-            'organization_id' => $organization->id,
+            'organization_id' => $tenant->organization_id,
 
         ]);
 
-        $organization->refresh();
+        $tenant->refresh();
 
-        $this->assertEquals(1, $organization->templatesWithoutScope->count());
+        $this->assertEquals(1, $tenant->organization->templatesWithoutScope->count());
 
 
 
-        $response = $this->actingAs($user)->followingRedirects()->delete("/{$organization->slug}/admin/templates/{$template->id}");
+        $response = $this->actingAs($user)->followingRedirects()->delete("/{$tenant->slug}/admin/templates/{$template->id}");
 
-        $organization->refresh();
+        $tenant->refresh();
 
 
 
         $response->assertStatus(200);
 
-        $this->assertEquals(0, $organization->templatesWithoutScope->count());
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
         $response->assertSeeText('Template has been deleted.');
 

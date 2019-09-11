@@ -9,7 +9,7 @@ class Organization extends Model
 {
     //
     protected $fillable = [
-        'name', 'slug', 'published_at'
+        'name',
     ];
 
     public function scopePublished($query)
@@ -45,10 +45,6 @@ class Organization extends Model
 
         return $this->hasMany(Template::class)->withoutGlobalScopes();
 
-    }
-
-    public function route($name, $parameters = [], $absolute = true) {
-        return app('url')->route($name, array_merge([$this->slug], $parameters), $absolute);
     }
 
 }

@@ -22,7 +22,7 @@
 
                     <h5>Is your organization new to {{ config('app.name') }}?</h5>
 
-                    <p><a href="/organizations/create">Add your organization.</a></p>
+                    <p><a href="/tenants/create">Add your organization.</a></p>
 
                 </div>
             </div>

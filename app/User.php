@@ -40,37 +40,37 @@ class User extends Authenticatable implements MustVerifyEmail
     public function authToTenant()
     {
 
-        return $this->organizations()->get()->contains(tenant()) ?: abort(401, 'This action is unauthorized.');
+        return $this->tenants()->get()->contains(tenant()) ?: abort(401, 'This action is unauthorized.');
 
     }
 
-    public function organizations()
+    public function tenants()
     {
 
-        return $this->belongsToMany(Organization::class);
+        return $this->belongsToMany(Tenant::class);
 
     }
 
-    public function join(Organization $organization)
+    public function joinTenant(Tenant $tenant)
     {
 
-        $this->organizations()->attach($organization);
+        $this->tenants()->attach($tenant);
 
         return $this;
 
     }
 
-    public function memberOf(Organization $organization)
+    public function memberOfTenant(Tenant $tenant)
     {
 
-        return $this->organizations->contains($organization);
+        return $this->tenants->contains($tenant);
 
     }
 
-    public function hasOrganization()
+    public function hasTenant()
     {
 
-        return $this->organizations()->count() > 0;
+        return $this->tenants()->count() > 0;
 
     }
 }

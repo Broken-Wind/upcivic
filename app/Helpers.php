@@ -5,7 +5,7 @@
 function tenant()
 {
 
-    return resolve('Upcivic\Organization');
+    return resolve('Upcivic\Tenant');
 
 }
 

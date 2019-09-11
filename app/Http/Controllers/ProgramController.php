@@ -27,7 +27,7 @@ class ProgramController extends Controller
         //
         $programs = Program::with(['meetings.site', 'contributors'])->filter($programFilters)->get()->sortBy('start_datetime');
 
-        $organizations = Organization::published()->orderBy('name')->get();
+        $organizations = Organization::orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
 
         $templateCount = Template::count();
@@ -49,7 +49,7 @@ class ProgramController extends Controller
 
         $sites = Site::all()->sortBy('name');
 
-        $organizations = Organization::published()->where('id', '!=', tenant()['id'])->orderBy('name')->get();
+        $organizations = Organization::where('organization_id', '!=', tenant()['id'])->orderBy('name')->get();
 
         return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations'));
 
@@ -109,7 +109,7 @@ class ProgramController extends Controller
     {
         //
 
-        $organizations = Organization::published()->whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
+        $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
 
         $sites = Site::orderBy('name')->get();
 

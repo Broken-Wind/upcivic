@@ -31,7 +31,7 @@ class UserInviteController extends Controller
 
 
 
-        $user->organizations()->attach(tenant());
+        $user->tenants()->attach(tenant());
 
         return back()->withSuccess($validated['email'] . " has been invited to your organization.");
 

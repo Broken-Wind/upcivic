@@ -6,6 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Upcivic\Organization;
+use Upcivic\Tenant;
 use Upcivic\User;
 
 class UserOrganizationTest extends TestCase
@@ -35,7 +36,7 @@ class UserOrganizationTest extends TestCase
         $user = factory(User::class)->create();
 
 
-        $response = $this->actingAs($user)->followingRedirects()->post('/organizations', [
+        $response = $this->actingAs($user)->followingRedirects()->post('/tenants', [
 
             'name' => 'CoolOrg',
 
@@ -53,28 +54,24 @@ class UserOrganizationTest extends TestCase
 
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->states('hasOrganization')->create();
+        $user = factory(User::class)->states('hasTenant')->create();
 
-        $organization = $user->organizations()->first();
+        $tenant = $user->tenants()->first();
 
 
 
-        $response = $this->actingAs($user)->followingRedirects()->patch("/{$organization->slug}/admin/organizations", [
+        $response = $this->actingAs($user)->followingRedirects()->patch("/{$tenant->slug}/admin/settings", [
 
             'name' => 'Bobby Dodgekins',
 
-            'publish' => true,
-
         ]);
 
-        $organization->refresh();
+        $tenant->refresh();
 
 
         $response->assertStatus(200);
 
-        $this->assertEquals('Bobby Dodgekins', $organization->name);
-
-        $this->assertTrue($organization->isPublished());
+        $this->assertEquals('Bobby Dodgekins', $tenant->name);
 
     }
 
@@ -82,7 +79,7 @@ class UserOrganizationTest extends TestCase
     public function user_cannot_edit_organization_if_not_member()
     {
 
-        $user = factory(User::class)->states('hasOrganization')->create();
+        $user = factory(User::class)->states('hasTenant')->create();
 
         $organizationUserDoesNotBelongTo = factory(Organization::class)->create([
 
@@ -90,9 +87,17 @@ class UserOrganizationTest extends TestCase
 
         ]);
 
+        $tenantUserDoesNotBelongTo = factory(Tenant::class)->create([
+
+            'slug' => 'nochangey',
+
+            'organization_id' => $organizationUserDoesNotBelongTo->id,
+
+        ]);
 
 
-        $response = $this->actingAs($user)->followingRedirects()->patch("/{$organizationUserDoesNotBelongTo->slug}/admin/organizations", [
+
+        $response = $this->actingAs($user)->followingRedirects()->patch("/{$tenantUserDoesNotBelongTo->slug}/admin/settings", [
 
             'name' => 'Bobby Dodgekins',
 

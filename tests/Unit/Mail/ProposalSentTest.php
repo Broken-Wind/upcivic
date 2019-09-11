@@ -37,9 +37,13 @@ class ProposalSentTest extends TestCase
 
         ]);
 
+
+
         $email = new ProposalSent($proposal);
 
         $rendered = $email->render();
+
+
 
         $this->assertContains($proposal['sender']->name, $rendered);
 
@@ -47,7 +51,7 @@ class ProposalSentTest extends TestCase
 
         $this->assertContains('Recipient Organization', $rendered);
 
-        $this->assertContains(route('tenant:admin.programs.index', $proposal['recipient_organization']['slug']), $rendered);
+        $this->assertContains(route('root'), $rendered);
 
     }
 

@@ -27,13 +27,13 @@ class ProgramTest extends TestCase
 
         Mail::fake();
 
-        $user = factory(User::class)->states('hasOrganization')->create();
+        $user = factory(User::class)->states('hasTenant')->create();
 
-        $organization = $user->organizations()->first();
+        $tenant = $user->tenants()->first();
 
-        $organization2 = factory(Organization::class)->states('hasTwoUsers')->create();
+        $recipientOrganization = factory(Organization::class)->create();
 
-        $this->assertEquals(0, $organization->templatesWithoutScope->count());
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
         $template = factory(Template::class)->create([
 
@@ -53,14 +53,14 @@ class ProgramTest extends TestCase
             'min_enrollments' => '11',
             'max_enrollments' => '111',
 
-            'organization_id' => $organization->id,
+            'organization_id' => $tenant->organization->id,
 
         ]);
 
 
-        $response = $this->actingAs($user)->followingRedirects()->post("/{$organization->slug}/admin/programs", [
+        $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/programs", [
 
-            'recipient_organization_id' => $organization2->id,
+            'recipient_organization_id' => $recipientOrganization->id,
             'site_id' => null,
             'programs' => [
                 0 => [
@@ -79,7 +79,7 @@ class ProgramTest extends TestCase
 
         ]);
 
-        $organization->refresh();
+        $tenant->refresh();
 
 
         $response->assertStatus(200);
@@ -111,22 +111,23 @@ class ProgramTest extends TestCase
     {
 
         $this->withoutExceptionHandling();
-        $user = factory(User::class)->states('hasOrganization')->create();
 
-        $organization = $user->organizations()->first();
+        $user = factory(User::class)->states('hasTenant')->create();
 
-        $this->assertEquals(0, $organization->templatesWithoutScope->count());
+        $tenant = $user->tenants()->first();
+
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
         $program = factory(Program::class)->create();
 
         $contributor = new Contributor();
 
-        $contributor['organization_id'] = $organization->id;
+        $contributor['organization_id'] = $tenant->organization_id;
 
         $program->contributors()->save($contributor);
 
 
-        $response = $this->actingAs($user)->followingRedirects()->put("/{$organization->slug}/admin/programs/{$program->id}", [
+        $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}", [
 
             'name' => 'Sweet Radcamp',
             'internal_name' => 'Sweet',

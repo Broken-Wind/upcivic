@@ -33,52 +33,26 @@ class OrganizationController extends Controller
     public function store(StoreOrganization $request)
     {
         //
-        $validated = $request->validated();
+        dd('Out of order');
 
-        $organization = Organization::create([
-
-            'name' => $validated['name'],
-
-            'slug' => $validated['slug'],
-
-            'published_at' => isset($validated['publish']) ? Carbon::now()->format('Y-m-d H:i:s') : null,
-
-            ]);
-
-        \Auth::user()->join($organization);
-
-        Program::createExample($organization->fresh());
-
-        return redirect('/home');
-
-    }
-
-    public function edit()
-    {
-
-        $organization = tenant();
-
-        return view('tenant.admin.organizations.settings', compact('organization'));
-
-    }
+    // }
 
 
-    public function update(UpdateOrganization $request, Organization $organization)
-    {
-        //
-        $validated = $request->validated();
+    // public function update(UpdateOrganization $request, Organization $organization)
+    // {
+    //     //
 
-        $organization->update([
+    //     $validated = $request->validated();
 
-            'name' => $validated['name'],
+    //     $organization->update([
 
-            'published_at' => isset($validated['publish']) ? Carbon::now()->format('Y-m-d H:i:s') : null,
+    //         'name' => $validated['name'],
 
-            ]);
+    //     ]);
 
-        return back()->withSuccess('Organization updated.');
+    //     return back()->withSuccess('Organization updated.');
 
-    }
+    // }
 
 
 

@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Auth;
 use Illuminate\Validation\Factory;
 
-class UpdateOrganization extends FormRequest
+class UpdateTenant extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

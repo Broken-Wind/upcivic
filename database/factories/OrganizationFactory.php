@@ -11,8 +11,6 @@ $factory->define(Organization::class, function (Faker $faker) {
         //
         'name' => $faker->company,
 
-        'slug' => $faker->word,
-
     ];
 });
 

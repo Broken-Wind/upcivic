@@ -16,9 +16,9 @@ class UserWithoutTenant
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->organizations->count() > 0) {
+        if (Auth::user()->tenants->count() > 0) {
 
-            return redirect()->route('tenant:admin.home', \Auth::user()->organizations()->first()['slug']);
+            return redirect()->route('tenant:admin.home', \Auth::user()->tenants()->first()['slug']);
         }
         return $next($request);
     }

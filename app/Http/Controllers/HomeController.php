@@ -24,9 +24,9 @@ class HomeController extends Controller
     public function index()
     {
 
-        if (\Auth::user()->hasOrganization()) {
+        if (\Auth::user()->hasTenant()) {
 
-            return redirect()->route('tenant:admin.home', \Auth::user()->organizations()->first()->slug);
+            return redirect()->route('tenant:admin.home', \Auth::user()->tenants()->first()->slug);
 
         }
 

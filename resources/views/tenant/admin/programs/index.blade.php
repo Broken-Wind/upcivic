@@ -85,7 +85,7 @@
 
                                     <td>
 
-                                        @foreach($program->contributors->where('organization_id', '!==', tenant()['id']) as $contributor)
+                                        @foreach($program->contributors->where('organization_id', '!==', tenant()['organization_id']) as $contributor)
 
                                             {{ $contributor->organization->name . (!$loop->last ? ',' :'') }}
 
@@ -110,7 +110,7 @@
 
                             <li><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create a program template?</a></li>
 
-                            @if(tenant()->templates->count() > 0)
+                            @if(tenant()->organization->templates->count() > 0)
 
                                 <li><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Propose a program?</a></li>
 

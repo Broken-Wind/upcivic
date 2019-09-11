@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Upcivic\Organization;
 use Upcivic\User;
+use Upcivic\Tenant;
 
 class AdminDashboardTest extends TestCase
 {
@@ -17,9 +18,9 @@ class AdminDashboardTest extends TestCase
     public function can_visit_dashboard()
     {
 
-        $user = factory(User::class)->states('hasOrganization')->create();
+        $user = factory(User::class)->states('hasTenant')->create();
 
-        $organization = $user->organizations()->first();
+        $tenant = $user->tenants()->first();
 
 
         $response = $this->actingAs($user)->followingRedirects()->get('/home');
@@ -27,11 +28,11 @@ class AdminDashboardTest extends TestCase
 
         $response->assertStatus(200);
 
-        $this->assertEquals(url()->current(), config('app.url') . "/{$organization->slug}/admin/home");
+        $this->assertEquals(url()->current(), config('app.url') . "/{$tenant->slug}/admin/home");
 
         $response->assertSeeText('Welcome to Upcivic!');
 
-        $response->assertSeeText($organization->name);
+        $response->assertSeeText($tenant->name);
 
     }
 
@@ -39,7 +40,7 @@ class AdminDashboardTest extends TestCase
     /** @test */
     public function guest_cannot_visit_home()
     {
-        factory(Organization::class)->create();
+        factory(Tenant::class)->create();
 
 
         $this->followingRedirects()->get('/home');
@@ -55,15 +56,15 @@ class AdminDashboardTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $organization = factory(Organization::class)->create();
+        $tenant = factory(Tenant::class)->create();
 
 
-        $response = $this->actingAs($user)->followingRedirects()->get("/{$organization->slug}/admin/home");
+        $response = $this->actingAs($user)->followingRedirects()->get("/{$tenant->slug}/admin/home");
 
 
         $response->assertStatus(401);
 
-        $response->assertDontSeeText($organization->name);
+        $response->assertDontSeeText($tenant->name);
     }
 
 
@@ -71,10 +72,10 @@ class AdminDashboardTest extends TestCase
     public function guest_cannot_visit_dashboard()
     {
 
-        $organization = factory(Organization::class)->create();
+        $tenant = factory(Tenant::class)->create();
 
 
-        $response = $this->followingRedirects()->get("/{$organization->slug}/admin/home");
+        $response = $this->followingRedirects()->get("/{$tenant->slug}/admin/home");
 
 
 
@@ -82,7 +83,7 @@ class AdminDashboardTest extends TestCase
 
         $this->assertEquals(url()->current(), config('app.url') . "/login");
 
-        $response->assertDontSeeText($organization->name);
+        $response->assertDontSeeText($tenant->name);
 
     }
 }

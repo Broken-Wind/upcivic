@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('root');
 
 Auth::routes(['verify' => true]);
 
@@ -21,9 +21,9 @@ Route::group(['middleware' => 'verified'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('/organizations/create', 'OrganizationController@create')->middleware('tenant.null');
+    Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
 
-    Route::post('/organizations', 'OrganizationController@store')->middleware('tenant.null');
+    Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
 
     Route::group([
 
@@ -41,9 +41,9 @@ Route::group(['middleware' => 'verified'], function () {
 
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
 
-        Route::get('/organization_settings', 'OrganizationController@edit')->name('organizations.edit');
+        Route::get('/settings', 'TenantController@edit')->name('edit');
 
-        Route::patch('/organizations', 'OrganizationController@update')->name('organizations.update');
+        Route::patch('/settings', 'TenantController@update')->name('update');
 
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
 

@@ -4,7 +4,7 @@ namespace Upcivic\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Upcivic\Services\TenantManager;
-use Upcivic\Organization;
+use Upcivic\Tenant;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $manager = new TenantManager;
 
         $this->app->instance(TenantManager::class, $manager);
-        $this->app->bind(Organization::class, function () use ($manager) {
+        $this->app->bind(Tenant::class, function () use ($manager) {
             return $manager->getTenant();
         });
     }

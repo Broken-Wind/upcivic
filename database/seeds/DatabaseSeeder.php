@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Upcivic\Organization;
 use Upcivic\Template;
 use Upcivic\Site;
+use Upcivic\Tenant;
 use Upcivic\User;
 
 class DatabaseSeeder extends Seeder
@@ -32,13 +33,17 @@ class DatabaseSeeder extends Seeder
 
             'name' => 'Exampleville Parks & Recreation',
 
-            'slug' => 'example',
+        ]);
 
-            'published_at' => Carbon\Carbon::now(),
+        $tenant = Tenant::create([
+
+            'organization_id' => $organization->id,
+
+            'slug' => 'example',
 
         ]);
 
-        $user->join($organization);
+        $user->joinTenant($tenant);
 
 
 

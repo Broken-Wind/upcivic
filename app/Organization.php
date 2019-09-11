@@ -12,6 +12,13 @@ class Organization extends Model
         'name',
     ];
 
+    public function administrators()
+    {
+
+        return $this->hasMany(Administrator::class);
+
+    }
+
     public function isClaimed()
     {
 

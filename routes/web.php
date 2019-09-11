@@ -53,6 +53,8 @@ Route::group(['middleware' => 'verified'], function () {
 
         Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
 
+        Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
+
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
 
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');

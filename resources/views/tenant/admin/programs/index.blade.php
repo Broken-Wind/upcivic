@@ -18,7 +18,7 @@
                     </form>
 
 
-                    @if($programs->count() > 0)
+                    @if($programsExist)
 
                         <div class="form-row mb-4">
 

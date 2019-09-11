@@ -12,20 +12,6 @@ class Organization extends Model
         'name',
     ];
 
-    public function scopePublished($query)
-    {
-
-        return $query->whereNotNull('published_at');
-
-    }
-
-    public function isPublished()
-    {
-
-        return $this['published_at'] != null;
-
-    }
-
     public function tenant()
     {
 

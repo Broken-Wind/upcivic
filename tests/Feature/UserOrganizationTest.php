@@ -101,8 +101,6 @@ class UserOrganizationTest extends TestCase
 
             'name' => 'Bobby Dodgekins',
 
-            'publish' => true,
-
         ]);
 
         $organizationUserDoesNotBelongTo->refresh();
@@ -111,8 +109,6 @@ class UserOrganizationTest extends TestCase
         $response->assertStatus(401);
 
         $this->assertEquals('Should not change.', $organizationUserDoesNotBelongTo->name);
-
-        $this->assertFalse($organizationUserDoesNotBelongTo->isPublished());
 
     }
 }

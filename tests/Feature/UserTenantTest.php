@@ -9,13 +9,13 @@ use Upcivic\Organization;
 use Upcivic\Tenant;
 use Upcivic\User;
 
-class UserOrganizationTest extends TestCase
+class UserTenantTest extends TestCase
 {
 
     use RefreshDatabase;
 
     /** @test */
-    public function user_without_organization_prompted_to_create_or_join()
+    public function user_without_tenant_prompted_to_create_or_join()
     {
         $user = factory(User::class)->create();
 
@@ -30,7 +30,7 @@ class UserOrganizationTest extends TestCase
     }
 
     /** @test */
-    public function user_without_organization_can_create_organization()
+    public function user_without_tenant_can_create_tenant()
     {
 
         $user = factory(User::class)->create();
@@ -49,7 +49,7 @@ class UserOrganizationTest extends TestCase
     }
 
     /** @test */
-    public function user_with_organization_can_edit_organization()
+    public function user_with_tenant_can_edit_tenant()
     {
 
         $this->withoutExceptionHandling();
@@ -76,7 +76,7 @@ class UserOrganizationTest extends TestCase
     }
 
     /** @test */
-    public function user_cannot_edit_organization_if_not_member()
+    public function user_cannot_edit_tenant_if_not_member()
     {
 
         $user = factory(User::class)->states('hasTenant')->create();

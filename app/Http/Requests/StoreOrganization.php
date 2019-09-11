@@ -4,7 +4,7 @@ namespace Upcivic\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateOrganization extends FormRequest
+class StoreOrganization extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateOrganization extends FormRequest
     {
         return [
             //
-            'name' => 'required|max:255',
+            'name' => 'required|unique:organizations|max:255',
         ];
     }
 }

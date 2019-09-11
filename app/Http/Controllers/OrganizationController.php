@@ -5,55 +5,56 @@ namespace Upcivic\Http\Controllers;
 use Upcivic\Organization;
 use Illuminate\Http\Request;
 use Upcivic\Http\Requests\StoreOrganization;
-use Upcivic\Site;
-use Upcivic\Program;
-use Carbon\Carbon;
 use Upcivic\Http\Requests\UpdateOrganization;
 
 class OrganizationController extends Controller
 {
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function index()
     {
-        //
-        return view('organizations.create');
+
+        $organizations = Organization::where('id', '!=', tenant()->organization_id)->orderBy('name')->get();
+
+        return view('tenant.admin.organizations.index', compact('organizations'));
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Upcivic\Http\Requests\StoreOrganization  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreOrganization $request)
     {
-        //
-        dd('Out of order');
 
-    // }
+        $validated = $request;
 
+        $organization = Organization::create([
 
-    // public function update(UpdateOrganization $request, Organization $organization)
-    // {
-    //     //
+            'name' => $validated->name,
 
-    //     $validated = $request->validated();
+        ]);
 
-    //     $organization->update([
+        return redirect()->route('tenant:admin.organizations.edit', [\Auth::user()->tenants()->first()->slug, $organization->id]);
 
-    //         'name' => $validated['name'],
+    }
 
-    //     ]);
+    public function edit(Organization $organization)
+    {
 
-    //     return back()->withSuccess('Organization updated.');
+        return view('tenant.admin.organizations.edit', compact('organization'));
 
-    // }
+    }
 
+    public function update(UpdateOrganization $request, Organization $organization)
+    {
 
+        $validated = $request->validated();
+
+        $organization->update([
+
+            'name' => $validated['name'],
+
+        ]);
+
+        return back()->withSuccess('Organization updated!');
+
+    }
 
 }

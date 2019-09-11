@@ -58,6 +58,10 @@
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a>
+                            </li>
+
                         @endif
 
                         <!-- Authentication Links -->

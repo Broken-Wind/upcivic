@@ -12,6 +12,13 @@ class Organization extends Model
         'name',
     ];
 
+    public function isClaimed()
+    {
+
+        return isset($this->tenant) && $this->tenant->users->count() > 0;
+
+    }
+
     public function tenant()
     {
 

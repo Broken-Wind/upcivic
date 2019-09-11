@@ -49,7 +49,7 @@ class ProgramController extends Controller
 
         $sites = Site::all()->sortBy('name');
 
-        $organizations = Organization::where('organization_id', '!=', tenant()['id'])->orderBy('name')->get();
+        $organizations = Organization::emailable()->where('id', '!=', tenant()['organization_id'])->orderBy('name')->get();
 
         return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations'));
 

@@ -12,10 +12,40 @@ class Organization extends Model
         'name',
     ];
 
+    public function scopeEmailable($query)
+    {
+
+        return $query->whereHas('administrators', function ($query) {
+
+            return $query->whereHas('person', function ($query) {
+
+                return $query->whereNotNull('email');
+
+            });
+
+        });
+
+    }
+
+
     public function administrators()
     {
 
         return $this->hasMany(Administrator::class);
+
+    }
+
+    public function emailableContacts()
+    {
+
+        return $this->administrators;
+
+    }
+
+    public function hasEmailableContacts()
+    {
+
+        return $this->administrators->count() > 0 ? true : false;
 
     }
 

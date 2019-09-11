@@ -26,11 +26,10 @@ class Organization extends Model
 
     }
 
-    public function users()
+    public function tenant()
     {
 
-        return $this->belongsToMany(User::class);
-
+        return $this->hasOne(Tenant::class);
     }
 
     public function templates()

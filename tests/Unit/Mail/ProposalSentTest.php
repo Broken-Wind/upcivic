@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Upcivic\Mail\ProposalSent;
 use Upcivic\Organization;
+use Upcivic\Tenant;
 
 class ProposalSentTest extends TestCase
 {
@@ -15,25 +16,37 @@ class ProposalSentTest extends TestCase
     /** @test */
     public function email_content_test()
     {
-        $proposingOrganization = factory(Organization::class)->states('hasTwoUsers')->create([
+        $proposingOrganization = factory(Organization::class)->create([
 
             'name' => 'Proposing Organization',
 
         ]);
 
-        $recipientOrganization = factory(Organization::class)->states('hasTwoUsers')->create([
+        $recipientOrganization = factory(Organization::class)->create([
 
             'name' => 'Recipient Organization',
 
         ]);
 
+        $proposingTenant = factory(Tenant::class)->states('hasTwoUsers')->create([
+
+            'organization_id' => $proposingOrganization->id,
+
+        ]);
+
+        $recipientTenant = factory(Tenant::class)->states('hasTwoUsers')->create([
+
+            'organization_id' => $recipientOrganization->id,
+
+        ]);
+
         $proposal = collect([
 
-            'sender' => $proposingOrganization->users()->first(),
+            'sender' => $proposingTenant->users()->first(),
 
-            'sending_organization' => $proposingOrganization,
+            'sending_organization' => $proposingTenant->organization,
 
-            'recipient_organization' => $recipientOrganization,
+            'recipient_organization' => $recipientTenant->organization,
 
         ]);
 

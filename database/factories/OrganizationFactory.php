@@ -13,10 +13,3 @@ $factory->define(Organization::class, function (Faker $faker) {
 
     ];
 });
-
-
-$factory->afterCreatingState(Organization::class, 'hasTwoUsers', function (Organization $organization, Faker $faker) {
-
-    $organization->users()->saveMany(factory(User::class, 2)->create());
-
-});

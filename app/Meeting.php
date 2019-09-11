@@ -19,8 +19,6 @@ class Meeting extends Model
 
         'end_datetime',
 
-        'note',
-
     ];
 
     public function program()

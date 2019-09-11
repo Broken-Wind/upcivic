@@ -29,7 +29,6 @@ class StoreProgramMeeting extends FormRequest
             'site_id' => 'nullable|numeric',
             'start_datetime' => 'required|date_format:"Y-m-d\TH:i"',
             'end_datetime' => 'required|date_format:"Y-m-d\TH:i"',
-            'note' => 'nullable|string|max:255',
         ];
     }
 }

@@ -279,12 +279,6 @@
 
                                     <td>{{ $meeting->site['name'] }}</td>
 
-                                    <td>
-
-                                        <input type="text" class="form-control form-control-sm" name="meeting_notes[{{ $meeting['id'] }}]" placeholder="Notes for contributors" value="{{ $meeting['note'] ?? '' }}">
-
-                                    </td>
-
                                 </tr>
 
                             @empty
@@ -432,15 +426,6 @@
                                     @endforeach
 
                                 </select>
-
-                            </div>
-
-
-                            <div class="form-group col-md-6">
-
-                                <label for="location_detail">Note</label>
-
-                                <input type="text" class="form-control" name="note" placeholder="Greg in at 11am today">
 
                             </div>
 

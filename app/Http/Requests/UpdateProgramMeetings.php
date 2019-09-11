@@ -52,7 +52,6 @@ class UpdateProgramMeetings extends FormRequest
             'start_time' => 'nullable|date_format:"H:i"',
             'end_time' => 'nullable|date_format:"H:i"',
             'meeting_ids' => 'nullable|array',
-            'meeting_notes.*' => 'nullable|string|max:255',
             'shift_meetings' => 'nullable|numeric',
 
         ];

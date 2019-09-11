@@ -24,8 +24,6 @@ class ProgramMeetingController extends Controller
 
             'end_datetime' => $validated['end_datetime'],
 
-            'note' => $validated['note'],
-
         ]);
 
         $meeting['program_id'] = $program['id'];
@@ -107,8 +105,6 @@ class ProgramMeetingController extends Controller
                 $meeting['end_datetime'] = Carbon::parse($meeting['end_datetime'])->addDays($validated['shift_meetings'])->format('Y-m-d H:i:s');
 
             }
-
-            $meeting['note'] = $validated['meeting_notes'][$id];
 
             $meeting['program_id'] = $program['id'];
 

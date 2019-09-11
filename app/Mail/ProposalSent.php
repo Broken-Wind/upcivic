@@ -35,7 +35,7 @@ class ProposalSent extends Mailable
                     ->subject($this->proposal['sending_organization']['name'] . ' sent you a proposal.')
                     ->replyTo($this->proposal['sender']['email'], $this->proposal['sender']['name']);
 
-        foreach($this->proposal['recipient_organization']->tenant->users as $recipient) {
+        foreach($this->proposal['recipient_organization']->emailableContacts() as $recipient) {
 
             $message->to($recipient['email'], $recipient['name']);
 

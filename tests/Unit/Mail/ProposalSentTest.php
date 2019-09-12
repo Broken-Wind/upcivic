@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Upcivic\Mail\ProposalSent;
 use Upcivic\Organization;
+use Upcivic\Program;
 use Upcivic\Tenant;
 
 class ProposalSentTest extends TestCase
@@ -40,6 +41,8 @@ class ProposalSentTest extends TestCase
 
         ]);
 
+        $program = factory(Program::class)->states('amCamp')->create();
+
         $proposal = collect([
 
             'sender' => $proposingTenant->users()->first(),
@@ -47,6 +50,8 @@ class ProposalSentTest extends TestCase
             'sending_organization' => $proposingTenant->organization,
 
             'recipient_organization' => $recipientTenant->organization,
+
+            'programs' => [$program],
 
         ]);
 

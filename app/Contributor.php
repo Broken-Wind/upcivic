@@ -23,6 +23,13 @@ class Contributor extends Model
 
     }
 
+    public function getNameAttribute()
+    {
+
+        return $this->organization->name;
+
+    }
+
     public function program()
     {
 

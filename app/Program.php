@@ -73,7 +73,9 @@ class Program extends Model
     public static function fromTemplate($proposal, $template = null)
     {
 
-        DB::transaction(function () use ($proposal, $template) {
+        $program = null;
+
+        DB::transaction(function () use ($proposal, $template, &$program) {
 
             if ($proposal['start_date'] && $proposal['start_time']) {
 
@@ -192,6 +194,8 @@ class Program extends Model
 
         });
 
+        return $program;
+
     }
 
     public function getSharedInvoiceTypeAttribute()
@@ -242,6 +246,13 @@ class Program extends Model
     {
 
         return $this['day'] . " " . $this['start_date'] . '-' . $this['end_date'] . ' (' . $this->meetings->count() . ' meetings)';
+
+    }
+
+    public function getDescriptionOfAgeRangeAttribute()
+    {
+
+        return ucfirst("{$this['ages_type']} {$this['min_age']} to {$this['max_age']}");
 
     }
 

@@ -68,7 +68,9 @@ class ProgramController extends Controller
         //
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated) {
+        $programs = collect([]);
+
+        DB::transaction(function () use ($validated, &$programs) {
 
             foreach ($validated['programs'] as $key => $program) {
 
@@ -76,7 +78,13 @@ class ProgramController extends Controller
 
                 $program['site_id'] = $validated['site_id'];
 
-                Program::fromTemplate($program);
+                $newProgram = Program::fromTemplate($program);
+
+                if (!empty($newProgram)) {
+
+                    $programs->push($newProgram);
+
+                }
 
             }
 
@@ -93,6 +101,8 @@ class ProgramController extends Controller
             'sending_organization' => $sendingOrganization,
 
             'recipient_organization' => $recipientOrganization,
+
+            'programs' => $programs,
 
         ]);
 

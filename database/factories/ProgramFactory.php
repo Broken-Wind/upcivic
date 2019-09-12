@@ -5,6 +5,7 @@
 use Carbon\Carbon;
 use Upcivic\Program;
 use Faker\Generator as Faker;
+use Upcivic\Contributor;
 use Upcivic\Meeting;
 use Upcivic\Organization;
 use Upcivic\Site;
@@ -30,44 +31,55 @@ $factory->define(Program::class, function (Faker $faker) {
 });
 
 
-// $factory->afterCreatingState(Program::class, 'amCamp', function (Program $program, Faker $faker) {
+$factory->afterCreatingState(Program::class, 'amCamp', function (Program $program, Faker $faker) {
 
-//     $site = factory(Site::class)->create();
+    $site = factory(Site::class)->create();
 
-//     $organization = factory(Organization::class)->create();
+    $organization = factory(Organization::class)->create();
 
-//     $startDatetime = Carbon::parse('9am +2 weeks');
+    $startDatetime = Carbon::parse('9am +2 weeks');
 
-//     $meetings = collect([]);
+    $meetings = collect([]);
 
-//     for ($m = 1; $m <= 5; $m++) {
+    for ($m = 1; $m <= 5; $m++) {
 
-//         $meeting = Meeting::create([
+        $meeting = Meeting::make([
 
-//             'start_datetime' => $startDatetime,
+            'start_datetime' => $startDatetime,
 
-//             'end_datetime' => Carbon::parse($startDatetime . " +3 hours"),
+            'end_datetime' => Carbon::parse($startDatetime . " +3 hours"),
 
-//             'site_id' => $site->id,
+            'site_id' => $site->id,
 
-//         ]);
+        ]);
 
-//         $meetings->push($meeting);
+        $meeting['program_id'] = $program->id;
 
-//         $startDatetime = Carbon::parse($startDatetime . " +1 day");
+        $meeting->save();
 
-//     }
+        $meetings->push($meeting);
 
-//     $program->meetings()->saveMany($meetings);
+        $startDatetime = Carbon::parse($startDatetime . " +1 day");
 
-//     $program->contributors()->attach($organization, [
+    }
 
-//         'invoice_amount' => 1300,
+    $program->meetings()->saveMany($meetings);
 
-//         'invoice_type' => 'per participant',
+    $contributor = Contributor::make([
 
-//         'internal_name' => 'Intername',
+        'invoice_amount' => 1300,
 
-//     ]);
+        'invoice_type' => 'per participant',
 
-// });
+        'internal_name' => 'Intername',
+
+    ]);
+
+    $contributor['organization_id'] = $organization->id;
+
+    $contributor['program_id'] = $program->id;
+
+    $contributor->save();
+
+
+});

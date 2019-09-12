@@ -21,8 +21,8 @@ class CreateAdministratorsTable extends Migration
             $table->timestamps();
 
 
-            $table->foreign('organization_id')->references('id')->on('organizations');
-            $table->foreign('person_id')->references('id')->on('people');
+            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
         });
     }
 

@@ -14,7 +14,29 @@
                         </div>
                     @endif
 
-                    <h5>Is your organization already using {{ config('app.name') }}?</h5>
+                    @if(Auth::user()->hasRecommendedOrganizations())
+
+                        <h5>Recommended Organizations:</h5>
+
+                        <ul>
+
+                            @foreach(Auth::user()->recommendedOrganizations() as $recommendedOrganization)
+
+                                <li>{{ $recommendedOrganization->name }}</li>
+
+                            @endforeach
+
+                        </ul>
+
+                        <hr />
+
+                        <h5>Is your organization already using {{ config('app.name') }} but not listed above?</h5>
+
+                    @else
+
+                        <h5>Is your organization already using {{ config('app.name') }}?</h5>
+
+                    @endif
 
                     <p>Ask your administrator to invite you!</p>
 

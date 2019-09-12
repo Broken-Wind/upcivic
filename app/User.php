@@ -73,4 +73,26 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->tenants()->count() > 0;
 
     }
+
+    public function hasRecommendedOrganizations()
+    {
+
+        return $this->recommendedOrganizations()->isNotEmpty();
+
+    }
+
+    public function recommendedOrganizations()
+    {
+
+        return Organization::whereHas('administrators', function ($administrator) {
+
+            return $administrator->whereHas('person', function ($person) {
+
+                return $person->where('email', $this['email']);
+
+            });
+
+        })->get();
+
+    }
 }

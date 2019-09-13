@@ -69,5 +69,7 @@ class HomeTest extends TestCase
 
         $response->assertSee('Notrex');
 
+        $response->assertSee(route('organizations.users.store'));
+
     }
 }

@@ -21,7 +21,11 @@ Route::group(['middleware' => 'verified'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::post('/organizations/{organization}/users', 'OrganizationUserController@store')->name('organizations.users.store');
+    Route::get('/organizations/{organization}/tenant', 'OrganizationTenantController@create')->name('organizations.tenant.create');
+
+    Route::post('/organizations/{organization}/tenant', 'OrganizationTenantController@store')->name('organizations.tenant.store');
+
+    Route::post('/organizations/users', 'OrganizationUserController@store')->name('organizations.users.store');
 
     Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
 

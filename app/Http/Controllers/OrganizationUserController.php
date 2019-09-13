@@ -4,21 +4,26 @@ namespace Upcivic\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Upcivic\Http\Requests\StoreOrganizationUser;
 use Upcivic\Organization;
 
 class OrganizationUserController extends Controller
 {
     //
 
-    public function store(Organization $organization)
+    public function store(StoreOrganizationUser $request)
     {
+
+        $validated = $request->validated();
+
+        $organization = Organization::find($validated['organization_id']);
 
         $user = Auth::user();
 
 
         if (!$organization->hasTenant()) {
 
-            return; // redirect() -> OrganizationTenantController@create;
+            return redirect()->route('organizations.tenant.create', $organization);
 
         }
 

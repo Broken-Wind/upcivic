@@ -16,15 +16,15 @@ class HomeTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_see_recommended_organizations()
+    public function user_can_see_existing_organizations()
     {
-        $recommendedOrganization = factory(Organization::class)->create([
+        $organization1 = factory(Organization::class)->create([
 
             'name' => 'Deez Rex',
 
         ]);
 
-        $nonRecommendedOrganization = factory(Organization::class)->create([
+        $organization2 = factory(Organization::class)->create([
 
             'name' => 'Notrex',
 
@@ -43,11 +43,11 @@ class HomeTest extends TestCase
 
         $administrator = Administrator::make([
 
-            'title' => 'SomeGuy',
+            'title' => 'Waverunner',
 
         ]);
 
-        $administrator['organization_id'] = $recommendedOrganization->id;
+        $administrator['organization_id'] = $organization1->id;
 
         $administrator['person_id'] = $person->id;
 
@@ -63,11 +63,11 @@ class HomeTest extends TestCase
         $response = $this->actingAs($user)->get("/home");
 
 
-        $response->assertSeeText('Recommended Organizations:');
+        $response->assertSeeText('Find Your Organization:');
 
-        $response->assertSeeText('Deez Rex');
+        $response->assertSee('Deez Rex');
 
-        $response->assertDontSeeText('Notrex');
+        $response->assertSee('Notrex');
 
     }
 }

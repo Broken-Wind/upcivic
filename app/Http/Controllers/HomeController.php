@@ -3,6 +3,7 @@
 namespace Upcivic\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Upcivic\Organization;
 
 class HomeController extends Controller
 {
@@ -30,6 +31,8 @@ class HomeController extends Controller
 
         }
 
-        return view('home');
+        $organizations = Organization::orderBy('name')->get();
+
+        return view('home', compact('organizations'));
     }
 }

@@ -15,21 +15,6 @@ class UserTenantTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_without_tenant_prompted_to_create_or_join()
-    {
-        $user = factory(User::class)->create();
-
-
-        $response = $this->actingAs($user)->followingRedirects()->get('/home');
-
-
-        $response->assertSeeText("Ask your administrator to invite you");
-
-        $response->assertSeeText("Add your organization");
-
-    }
-
-    /** @test */
     public function user_without_tenant_can_create_tenant()
     {
 

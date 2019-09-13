@@ -14,35 +14,32 @@
                         </div>
                     @endif
 
-                    @if(Auth::user()->hasRecommendedOrganizations())
+                    <h5>Find Your Organization:</h5>
 
-                        <h5>Recommended Organizations:</h5>
+                    <div class="form-row">
+                        <div class="col-md-8">
 
-                        <ul>
+                                <div class="form-group">
+                                    <select class="form-control" name="organization_id">
+                                        @forelse($organizations as $organization)
+                                        <option value="{{ $organization->id }}">{{ $organization->name }}</option>
+                                        @empty
+                                        <option>None found.</option>
+                                        @endforelse
+                                    </select>
+                                </div>
 
-                            @foreach(Auth::user()->recommendedOrganizations() as $recommendedOrganization)
+                            </div>
+                        <div class="col-md-4">
 
-                                <li>{{ $recommendedOrganization->name }}</li>
+                            <button type="button" name="" id="" class="btn btn-primary btn-block">Request to Join</button>
 
-                            @endforeach
-
-                        </ul>
-
-                        <hr />
-
-                        <h5>Is your organization already using {{ config('app.name') }} but not listed above?</h5>
-
-                    @else
-
-                        <h5>Is your organization already using {{ config('app.name') }}?</h5>
-
-                    @endif
-
-                    <p>Ask your administrator to invite you!</p>
+                        </div>
+                    </div>
 
                     <hr />
 
-                    <h5>Is your organization new to {{ config('app.name') }}?</h5>
+                    <h5>Is your organization not listed above?</h5>
 
                     <p><a href="/tenants/create">Add your organization.</a></p>
 

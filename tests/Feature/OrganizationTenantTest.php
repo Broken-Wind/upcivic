@@ -29,6 +29,8 @@ class OrganizationTenantTest extends TestCase
 
         $this->assertEquals(url()->current(), route('organizations.tenant.create', $organization));
 
+        $response->assertSeeText("Since {$organization->name} is unclaimed, you may select its vanity URL below.");
+
         $response->assertSeeText('Not your organization? Go home.');
 
         $response->assertSeeText('Confirm your Organization');

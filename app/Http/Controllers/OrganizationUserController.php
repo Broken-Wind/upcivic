@@ -5,6 +5,7 @@ namespace Upcivic\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Upcivic\Http\Requests\StoreOrganizationUser;
+use Upcivic\Mail\UserRequestsInviteToTenant;
 use Upcivic\Organization;
 
 class OrganizationUserController extends Controller
@@ -36,7 +37,9 @@ class OrganizationUserController extends Controller
 
         }
 
-        //RequestToJoinEmail($user, $organization);
+        \Mail::send(new UserRequestsInviteToTenant($user, $organization->tenant));
+
+        return redirect('home')->withSuccess("We emailed {$organization->name} administrators your request to join. If you need additional assistance, please contact them directly.");
 
     }
 }

@@ -14,6 +14,9 @@
                         </div>
                     @endif
 
+                    @include('shared.form_errors')
+
+
                     <h5>Find Your Organization:</h5>
 
                     <form action="{{ route('organizations.users.store') }}" method="POST">

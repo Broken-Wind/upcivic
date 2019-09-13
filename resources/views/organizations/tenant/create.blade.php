@@ -15,6 +15,12 @@
 
                         @include('shared.form_errors')
 
+                        <div class="alert alert-info">
+
+                            Since {{ $organization->name }} is unclaimed, you may select its vanity URL below.
+
+                        </div>
+
                         <div class="form-group">
 
                             <label for="createOrganization">Your Organization's Name</label>

@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Upcivic\Administrator;
+use Upcivic\Mail\UserRequestsInviteToTenant;
 use Upcivic\Organization;
 use Upcivic\Person;
 use Upcivic\Tenant;
@@ -87,7 +89,51 @@ class OrganizationUserTest extends TestCase
 
         $this->assertEquals(url()->current(), route('organizations.tenant.create', $organization));
 
+    }
 
+    /** @test */
+    public function request_to_join_email_sent_if_user_email_doesnt_match_existing_administrator_email()
+    {
+
+        $this->withoutExceptionHandling();
+
+        Mail::fake();
+
+        $user = factory(User::class)->create([
+
+            'email' => 'goody@two.shoes',
+
+        ]);
+
+        $tenant = factory(Tenant::class)->create();
+
+        $person = factory(Person::class)->create([
+
+            'email' => 'leathery@bad.lose',
+
+        ]);
+
+        $administrator = new Administrator();
+
+        $administrator['person_id'] = $person['id'];
+
+        $administrator['organization_id'] = $tenant->organization['id'];
+
+        $administrator->save();
+
+
+        $response = $this->actingAs($user)->followingRedirects()->post("/organizations/users", ['organization_id' => $tenant->organization->id]);
+
+
+        $response->assertStatus(200);
+
+        $this->assertFalse($user->fresh()->memberOfTenant($tenant));
+
+        Mail::assertSent(UserRequestsInviteToTenant::class);
+
+        $this->assertEquals(url()->current(), route('home'));
+
+        $response->assertSeeText("We emailed {$tenant->name} administrators your request to join. If you need additional assistance, please contact them directly.");
 
     }
 }

@@ -23,17 +23,42 @@
 
                         @csrf
 
+
+
                         <div class="form-row">
                             <div class="col-md-8">
 
                                     <div class="form-group">
                                         <select class="form-control" name="organization_id">
-                                            @forelse($organizations as $organization)
-                                            <option value="{{ $organization->id }}">{{ $organization->name }}</option>
+
+                                            @forelse($recommendedOrganizations as $organization)
+
+                                                @if($loop->first)
+
+                                                    <option class="bg-light" disabled>Recommeded Organizations:</option>
+
+                                                @endif
+
+                                                <option value="{{ $organization['id'] }}">{{ $organization['name'] }}</option>
+
                                             @empty
-                                            <option>None found.</option>
                                             @endforelse
+
+                                            @forelse($allOrganizations as $organization)
+
+                                                @if($loop->first)
+
+                                                    <option class="bg-light" disabled>All Organizations:</option>
+
+                                                @endif
+
+                                                <option value="{{ $organization['id'] }}">{{ $organization['name'] }}</option>
+
+                                            @empty
+                                            @endforelse
+
                                         </select>
+
                                     </div>
 
                                 </div>

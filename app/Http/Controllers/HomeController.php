@@ -31,8 +31,10 @@ class HomeController extends Controller
 
         }
 
-        $organizations = Organization::orderBy('name')->get();
+        $recommendedOrganizations = \Auth::user()->recommendedOrganizations();
 
-        return view('home', compact('organizations'));
+        $allOrganizations = Organization::orderBy('name')->get();
+
+        return view('home', compact('recommendedOrganizations', 'allOrganizations'));
     }
 }

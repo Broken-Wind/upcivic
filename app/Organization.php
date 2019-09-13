@@ -42,10 +42,39 @@ class Organization extends Model
 
     }
 
+    public function hasAdministratorEmail($email)
+    {
+
+        return $this->administrators->pluck('email')->contains($email);
+
+    }
+
     public function hasEmailableContacts()
     {
 
         return $this->administrators->count() > 0 ? true : false;
+
+    }
+
+    public function vacant()
+    {
+
+        $contacts = $this->administrators->count();
+
+        if (isset($this->tenant)) {
+
+            $contacts += $this->tenant->users->count();
+
+        }
+
+        return $contacts == 0;
+
+    }
+
+    public function hasTenant()
+    {
+
+        return isset($this->tenant);
 
     }
 

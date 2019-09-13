@@ -21,6 +21,8 @@ Route::group(['middleware' => 'verified'], function () {
 
     Route::get('/home', 'HomeController@index')->name('home');
 
+    Route::post('/organizations/{organization}/users', 'OrganizationUserController@store')->name('organizations.users.store');
+
     Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
 
     Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');

@@ -44,7 +44,7 @@ class OrganizationTest extends TestCase
         $organization = $tenant->organization;
 
 
-        $this->assertTrue($organization->vacant());
+        $this->assertTrue($organization->isVacant());
 
     }
 
@@ -57,7 +57,7 @@ class OrganizationTest extends TestCase
         $organization = $tenant->organization;
 
 
-        $this->assertFalse($organization->vacant());
+        $this->assertFalse($organization->isVacant());
 
     }
 
@@ -68,7 +68,7 @@ class OrganizationTest extends TestCase
         $organization = factory(Organization::class)->states('hasAdministrator')->create();
 
 
-        $this->assertFalse($organization->vacant());
+        $this->assertFalse($organization->isVacant());
 
     }
 

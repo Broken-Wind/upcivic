@@ -56,7 +56,7 @@ class Organization extends Model
 
     }
 
-    public function vacant()
+    public function isVacant()
     {
 
         $contacts = $this->administrators->count();

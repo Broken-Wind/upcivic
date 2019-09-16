@@ -8,13 +8,9 @@
                 <div class="card-header">Add your Organization</div>
 
                 <div class="card-body">
-
                     <form method="POST" action="/tenants">
-
                         @csrf
-
                         @include('shared.form_errors')
-
                         <div class="form-group">
 
                             <label for="createOrganization">Create your Organization</label>
@@ -43,10 +39,8 @@
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
-
+                        <button type="submit" class="btn btn-primary btn-block">List your Organization</button>
                     </form>
-
                 </div>
             </div>
         </div>

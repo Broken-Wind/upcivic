@@ -21,7 +21,9 @@
 
                                 <tr>
 
-                                        <td>{{ $template->internal_name }}</td>
+                                        <td>{{ $template->name }}</td>
+
+                                        <td>{{ $template->internal_name != $template->name ? $template->internal_name : null }}</td>
 
                                         <td><a href="{{ tenant()->route('tenant:admin.templates.edit', ['template' => $template->id]) }}">Edit</a></td>
 

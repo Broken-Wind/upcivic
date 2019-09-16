@@ -15,6 +15,37 @@ class TemplateTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function can_view_templates_index()
+    {
+
+        $user = factory(User::class)->states('hasTenant')->create();
+
+        $tenant = $user->tenants()->first();
+
+        $templates = factory(Template::class, 5)->create(['organization_id' => $tenant->organization->id]);
+
+
+        $response = $this->actingAs($user)->get("/{$tenant->slug}/admin/templates");
+
+
+        $response->assertStatus(200);
+
+        $response->assertSeeText('Create a new template');
+
+        $response->assertSeeText('Edit');
+
+
+        foreach($templates as $template) {
+
+            $response->assertSeeText($template['name']);
+
+            $response->assertSeeText($template['internal_name']);
+
+        }
+
+    }
+
+    /** @test */
     public function user_can_create_template()
     {
 

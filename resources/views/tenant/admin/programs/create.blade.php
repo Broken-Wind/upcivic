@@ -145,7 +145,7 @@
 
                                                             @forelse($templates as $template)
 
-                                                                <option value="{{ $template->id }}">{{ $template->internal_name }}</option>
+                                                                <option value="{{ $template->id }}">{{ $template->internal_name }}{{ $template->internal_name != $template->name ? " - " . $template->name : null }}</option>
 
                                                             @empty
 

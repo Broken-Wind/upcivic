@@ -20,6 +20,29 @@ class ProgramTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function user_can_see_program_create_view()
+    {
+
+        $user = factory(User::class)->states('hasTenant')->create();
+
+        $tenant = $user->tenants()->first();
+
+        $template = factory(Template::class)->create(['organization_id' => $tenant->organization->id]);
+
+
+        $response = $this->actingAs($user)->followingRedirects()->get("/{$tenant->slug}/admin/programs/create");
+
+
+        $response->assertSeeText('Create Programs');
+
+        $response->assertSeeText('Start Date');
+
+        $response->assertSeeText('Additional Recipient:');
+
+
+    }
+
+    /** @test */
     public function user_can_create_program()
     {
 
@@ -75,6 +98,8 @@ class ProgramTest extends TestCase
                 ],
 
             ],
+
+            'cc_emails' => [],
 
 
         ]);

@@ -27,7 +27,7 @@
 
                                     @foreach ($organizations as $organization)
 
-                                        <option value="{{ $organization['id'] }}">{{ $organization['name'] }}</option>
+                                        <option value="{{ $organization['id'] }}">{{ $organization['name'] }} ({{ $organization->emailableContacts()->pluck('name')->implode(', ') }})</option>
 
                                     @endforeach
 
@@ -53,6 +53,26 @@
 
                             </div>
 
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                  <label for="emailProposalTo">Additional Recipient: <span class="text-muted">(Optional)</span></label>
+                                  <input type="text" class="form-control" name="cc_emails[]" placeholder="email@example.com">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+                                    <label for="emailProposalTo">Additional Recipient: <span class="text-muted">(Optional)</span></label>
+                                    <input type="text" class="form-control" name="cc_emails[]" placeholder="email@example.com">
+                                </div>
+
+                            </div>
                         </div>
 
 

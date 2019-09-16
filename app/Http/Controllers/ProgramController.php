@@ -66,9 +66,10 @@ class ProgramController extends Controller
     public function store(StoreProgram $request)
     {
         //
+
         $validated = $request->validated();
 
-        $programs = collect([]);
+        $programs = collect();
 
         DB::transaction(function () use ($validated, &$programs) {
 
@@ -103,6 +104,8 @@ class ProgramController extends Controller
             'recipient_organization' => $recipientOrganization,
 
             'programs' => $programs,
+
+            'cc_emails' => $validated['cc_emails'],
 
         ]);
 

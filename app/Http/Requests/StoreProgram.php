@@ -34,6 +34,9 @@ class StoreProgram extends FormRequest
             'programs.*.ages_type' => 'nullable|string|alpha|max:10',
             'programs.*.min_age' => 'nullable|numeric|between:0,999',
             'programs.*.max_age' => 'nullable|numeric|between:0,999',
+            'cc_emails.*' => 'nullable|email',
+            'cc_emails' => 'nullable|array',
+
         ];
     }
 }

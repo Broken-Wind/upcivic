@@ -35,9 +35,21 @@ class ProposalSent extends Mailable
                     ->subject($this->proposal['sending_organization']['name'] . ' sent you a proposal.')
                     ->replyTo($this->proposal['sender']['email'], $this->proposal['sender']['name']);
 
-        foreach($this->proposal['recipient_organization']->emailableContacts() as $recipient) {
+        $arrayOfCcEmails = array_filter(array_map(function ($email) {
 
-            $message->to($recipient['email'], $recipient['name']);
+            if ($email !== null) {
+
+                return ['email' => $email, 'name' => null];
+
+            }
+
+        }, $this->proposal['cc_emails'] ?? []));
+
+        $recipients = $this->proposal['recipient_organization']->emailableContacts()->concat($arrayOfCcEmails)->unique('email');
+
+        foreach($recipients as $recipient) {
+
+            $message->to($recipient['email'], $recipient['name'] ?? $recipient['email']);
 
         }
 

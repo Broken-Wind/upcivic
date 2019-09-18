@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Upcivic\Http\Requests\StoreOrganizationTenant;
 use Upcivic\Organization;
+use Upcivic\Program;
 use Upcivic\Tenant;
 
 class OrganizationTenantController extends Controller
@@ -32,6 +33,8 @@ class OrganizationTenantController extends Controller
         ]));
 
         Auth::user()->joinTenant($organization->tenant);
+
+        Program::createExample($organization);
 
         return redirect()->route('home');
 

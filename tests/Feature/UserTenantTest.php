@@ -29,7 +29,7 @@ class UserTenantTest extends TestCase
 
         ]);
 
-        $response->assertSeeText("If you've been invited to propose a program to an organization using Upcivic");
+        $response->assertSeeText("To submit a proposal with an organization or site not yet listed");
 
     }
 

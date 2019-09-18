@@ -22,6 +22,8 @@ class TemplateTest extends TestCase
 
         $tenant = $user->tenants()->first();
 
+        $tenant->organization->update(['name' => 'Dooby Doobah']);
+
         $templates = factory(Template::class, 5)->create(['organization_id' => $tenant->organization->id]);
 
 

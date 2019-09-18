@@ -33,6 +33,8 @@
 
                                 </select>
 
+                            <small class="text-muted">Can't find the organization you'd like to propose to? <a href="{{ tenant()->route('tenant:admin.organizations.index') }}">Add an organization.</a></small>
+
                             </div>
 
                             <div class="form-group col">
@@ -50,6 +52,8 @@
                                     @endforeach
 
                                 </select>
+
+                                <small class="text-muted">Can't find the site you'd like? <a href="{{ tenant()->route('tenant:admin.sites.create') }}">Add a site.</a></small>
 
                             </div>
 

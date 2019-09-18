@@ -20,14 +20,20 @@
 
                     <h5>Activity Providers</h5>
 
-                    <p>If you've been invited to propose a program to an organization using {{ config('app.name') }}, start by clicking <strong>Templates,</strong> then <strong>Create new template.</strong> Once you've created one or more templates, you may propose a program to any {{ config('app.name') }} user by clicking <strong>Schedule</strong> then <strong>Propose a new program</strong>.</p>
-
+                    <ol>
+                        <li>Click <strong>Templates</strong> above, then add a template for each of your programs.</li>
+                        <li>Click <strong>Schedule</strong> to view existing proposed programs and propose new ones.</li>
+                        <li>To submit a proposal with an organization or site not yet listed, click <strong>Organizations</strong> or <strong>Sites</strong> to add them!</li>
+                    </ol>
                     <hr />
 
                     <h5>Activity Hosts</h5>
 
-                    <p>Your next step is to add any of your sites that are not already in our system. Click <strong>Sites,</strong> then, if your sites are not listed, click <strong>add a new site here.</strong> Once you've added sites, you're ready to go! Just ask your activity providers use our system to propose programs. When an organization proposes a new program, you'll see it on your <strong>Schedule</strong> page.</p>
-
+                    <ol>
+                        <li>Click <strong>Schedule</strong> then <strong>Edit</strong> on the example program proposal and note the information we collect automatically from activity providers.</li>
+                        <li>Request that your activity providers submit proposals for free via {{ config('app.name') }}.</li>
+                        <li>Organize, edit, and track proposed programs via the <strong>Schedule</strong> link!</li>
+                    </ol>
 
                 </div>
             </div>

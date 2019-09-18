@@ -25,7 +25,7 @@ class ProgramController extends Controller
     public function index(ProgramFilters $programFilters)
     {
         //
-        $programs = Program::with(['meetings.site', 'contributors'])->filter($programFilters)->get()->sortBy('start_datetime');
+        $programs = Program::with(['meetings.site', 'contributors.organization'])->filter($programFilters)->get()->sortBy('start_datetime');
 
         $programsExist = Program::get()->count() > 0;
 

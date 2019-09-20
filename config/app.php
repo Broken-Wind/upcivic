@@ -173,6 +173,7 @@ return [
         Upcivic\Providers\AuthServiceProvider::class,
         // Upcivic\Providers\BroadcastServiceProvider::class,
         Upcivic\Providers\EventServiceProvider::class,
+        Upcivic\Providers\NovaServiceProvider::class,
         Upcivic\Providers\RouteServiceProvider::class,
 
     ],

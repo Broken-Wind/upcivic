@@ -68,9 +68,9 @@ class TenantController extends Controller
     public function edit()
     {
 
-        $organization = tenant();
+        $tenant = tenant();
 
-        return view('tenant.admin.settings', compact('organization'));
+        return view('tenant.admin.settings', compact('tenant'));
 
     }
 

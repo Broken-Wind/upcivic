@@ -7,11 +7,28 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Upcivic\Organization;
 use Upcivic\Tenant;
+use Upcivic\User;
 
 class OrganizationTest extends TestCase
 {
 
     use RefreshDatabase;
+
+    /** @test */
+    public function users_returns_tenant_users()
+    {
+
+        $tenant = factory(Tenant::class)->states('hasTwoUsers')->create();
+
+
+        $this->assertEquals(2, $tenant->organization->users->count());
+
+        $this->assertEquals($tenant->users[0]['email'], $tenant->organization->users[0]['email']);
+
+        $this->assertEquals($tenant->users[1]['email'], $tenant->organization->users[1]['email']);
+
+
+    }
 
     /** @test */
     public function has_tenant_method_detects_presence_of_tenant()

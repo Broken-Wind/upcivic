@@ -18,6 +18,53 @@ class Tenant extends Model
 
     }
 
+    public function getAggregatedAdministratorsAttribute()
+    {
+
+        $aggregatedAdministrators = $this->users->map(function ($user) {
+
+            return collect([
+
+                'name' => $user['name'],
+
+                'email' => $user['email'],
+
+                'is_user' => true,
+
+                'is_administrator' => false,
+
+            ]);
+
+        });
+        $this->organization->administrators->each(function ($administrator) use ($aggregatedAdministrators) {
+
+            if ($aggregatedAdministrators->contains('email', $administrator['email'])) {
+
+                $aggregatedAdministrators->where('email', $administrator['email'])->first()['is_administrator'] = true;
+
+                return;
+
+            }
+
+            $aggregatedAdministrators->push(collect([
+
+                'name' => $administrator['name'],
+
+                'email' => $administrator['email'],
+
+                'is_user' => false,
+
+                'is_administrator' => true,
+
+            ]));
+
+        });
+
+    return $aggregatedAdministrators;
+
+
+    }
+
     public function getNameAttribute()
     {
 

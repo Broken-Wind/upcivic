@@ -89,6 +89,14 @@ class Organization extends Model
     {
 
         return $this->hasOne(Tenant::class);
+
+    }
+
+    public function getUsersAttribute()
+    {
+
+        return $this->tenant->users;
+
     }
 
     public function templates()

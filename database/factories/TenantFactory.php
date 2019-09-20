@@ -4,7 +4,9 @@
 
 use Upcivic\Tenant;
 use Faker\Generator as Faker;
+use Upcivic\Administrator;
 use Upcivic\Organization;
+use Upcivic\Person;
 use Upcivic\User;
 
 $factory->define(Tenant::class, function (Faker $faker) {
@@ -22,5 +24,25 @@ $factory->define(Tenant::class, function (Faker $faker) {
 $factory->afterCreatingState(Tenant::class, 'hasTwoUsers', function (Tenant $tenant, Faker $faker) {
 
     $tenant->users()->saveMany(factory(User::class, 2)->create());
+
+});
+
+
+
+$factory->afterCreatingState(Tenant::class, 'hasTwoAdministrators', function (Tenant $tenant, Faker $faker) {
+
+    for($i=0; $i<2; $i++) {
+
+        $person = factory(Person::class)->create();
+
+        $administrator = new Administrator(['title' => $faker->title]);
+
+        $administrator['person_id'] = $person['id'];
+
+        $administrator['organization_id'] = $tenant->organization['id'];
+
+        $administrator->save();
+
+    }
 
 });

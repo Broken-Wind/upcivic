@@ -43,7 +43,7 @@ class Administrator extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->sortable(),
+            Text::make('Name'),
             Text::make('Title')->sortable(),
 
 

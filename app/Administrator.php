@@ -3,6 +3,7 @@
 namespace Upcivic;
 
 use Illuminate\Database\Eloquent\Model;
+use Upcivic\Organization;
 
 class Administrator extends Model
 {
@@ -43,6 +44,13 @@ class Administrator extends Model
     {
 
         return $this->belongsTo(Person::class);
+
+    }
+
+    public function organization()
+    {
+
+        return $this->belongsTo(Organization::class);
 
     }
 }

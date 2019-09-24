@@ -5,6 +5,7 @@ namespace Upcivic\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
 
@@ -43,8 +44,9 @@ class Organization extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('name')->sortable(),
+            Text::make('Name')->sortable(),
             HasMany::make('Administrators'),
+            HasOne::make('Tenant'),
         ];
     }
 

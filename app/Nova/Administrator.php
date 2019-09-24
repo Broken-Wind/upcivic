@@ -43,13 +43,12 @@ class Administrator extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name'),
             Text::make('Title')->sortable(),
 
 
             BelongsTo::make('Organization'),
 
-            BelongsTo::make('Person')->hideFromIndex(),
+            BelongsTo::make('Person'),
 
 
 

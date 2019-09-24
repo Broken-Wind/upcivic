@@ -3,6 +3,7 @@
 namespace Upcivic\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Upcivic\Rules\Slug;
 
 class StoreOrganizationTenant extends FormRequest
 {
@@ -25,7 +26,7 @@ class StoreOrganizationTenant extends FormRequest
     {
         return [
             //
-            'slug' => 'required|unique:tenants|max:255|alpha_dash',
+            'slug' => ['required', 'unique:tenants', 'max:255'. 'alpha_dash', new Slug],
         ];
     }
 }

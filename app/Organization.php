@@ -17,11 +17,7 @@ class Organization extends Model
 
         return $query->whereHas('administrators', function ($query) {
 
-            return $query->whereHas('person', function ($query) {
-
-                return $query->whereNotNull('email');
-
-            });
+            return $query->whereNotNull('email');
 
         });
 
@@ -31,7 +27,7 @@ class Organization extends Model
     public function administrators()
     {
 
-        return $this->hasMany(Administrator::class);
+        return $this->belongsToMany(Person::class, 'administrators')->as('administrator')->withPivot('title');
 
     }
 

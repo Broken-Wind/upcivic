@@ -21,12 +21,6 @@ $factory->afterCreatingState(Organization::class, 'hasAdministrator', function (
 
     $person = factory(Person::class)->create();
 
-    $administrator = new Administrator(['title' => $faker->title]);
-
-    $administrator['person_id'] = $person['id'];
-
-    $administrator['organization_id'] = $organization['id'];
-
-    $administrator->save();
+    $organization->administrators()->save($person, ['title' => $faker->title]);
 
 });

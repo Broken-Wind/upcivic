@@ -1,0 +1,207 @@
+[1mdiff --git a/app/Administrator.php b/app/Administrator.php[m
+[1mindex c678f44..a5fca6d 100644[m
+[1m--- a/app/Administrator.php[m
+[1m+++ b/app/Administrator.php[m
+[36m@@ -13,44 +13,4 @@[m [mclass Administrator extends Model[m
+         'title',[m
+ [m
+     ];[m
+[31m-[m
+[31m-    public function getNameAttribute()[m
+[31m-    {[m
+[31m-[m
+[31m-        return $this->person->name;[m
+[31m-[m
+[31m-    }[m
+[31m-    public function getFirstNameAttribute()[m
+[31m-    {[m
+[31m-[m
+[31m-        return $this->person->first_name;[m
+[31m-[m
+[31m-    }[m
+[31m-    public function getLastNameAttribute()[m
+[31m-    {[m
+[31m-[m
+[31m-        return $this->person->last_name;[m
+[31m-[m
+[31m-    }[m
+[31m-[m
+[31m-    public function getEmailAttribute()[m
+[31m-    {[m
+[31m-[m
+[31m-        return $this->person->email;[m
+[31m-[m
+[31m-    }[m
+[31m-[m
+[31m-    public function person()[m
+[31m-    {[m
+[31m-[m
+[31m-        return $this->belongsTo(Person::class);[m
+[31m-[m
+[31m-    }[m
+[31m-[m
+[31m-    public function organization()[m
+[31m-    {[m
+[31m-[m
+[31m-        return $this->belongsTo(Organization::class);[m
+[31m-[m
+[31m-    }[m
+ }[m
+[1mdiff --git a/app/Http/Controllers/OrganizationAdministratorController.php b/app/Http/Controllers/OrganizationAdministratorController.php[m
+[1mindex 6e52b6b..604541b 100644[m
+[1m--- a/app/Http/Controllers/OrganizationAdministratorController.php[m
+[1m+++ b/app/Http/Controllers/OrganizationAdministratorController.php[m
+[36m@@ -27,18 +27,7 @@[m [mclass OrganizationAdministratorController extends Controller[m
+ [m
+         ]);[m
+ [m
+[31m-[m
+[31m-        $administrator = Administrator::make([[m
+[31m-[m
+[31m-            'title' => $validated['title'],[m
+[31m-[m
+[31m-        ]);[m
+[31m-[m
+[31m-        $administrator['organization_id'] = $organization->id;[m
+[31m-[m
+[31m-        $administrator['person_id'] = $person->id;[m
+[31m-[m
+[31m-        $administrator->save();[m
+[32m+[m[32m        $organization->administrators()->save($person, ['title' => $validated['title']]);[m
+ [m
+ [m
+         return back()->withSuccess("Added {$person->name} to {$organization->name}!");[m
+[1mdiff --git a/app/Organization.php b/app/Organization.php[m
+[1mindex eaa4b17..26e1d5c 100644[m
+[1m--- a/app/Organization.php[m
+[1m+++ b/app/Organization.php[m
+[36m@@ -17,11 +17,7 @@[m [mclass Organization extends Model[m
+ [m
+         return $query->whereHas('administrators', function ($query) {[m
+ [m
+[31m-            return $query->whereHas('person', function ($query) {[m
+[31m-[m
+[31m-                return $query->whereNotNull('email');[m
+[31m-[m
+[31m-            });[m
+[32m+[m[32m            return $query->whereNotNull('email');[m
+ [m
+         });[m
+ [m
+[36m@@ -31,7 +27,7 @@[m [mclass Organization extends Model[m
+     public function administrators()[m
+     {[m
+ [m
+[31m-        return $this->hasMany(Administrator::class);[m
+[32m+[m[32m        return $this->belongsToMany(Person::class, 'administrators')->as('administrator')->withPivot('title');[m
+ [m
+     }[m
+ [m
+[1mdiff --git a/app/User.php b/app/User.php[m
+[1mindex 1d607d9..d298193 100644[m
+[1m--- a/app/User.php[m
+[1m+++ b/app/User.php[m
+[36m@@ -56,6 +56,25 @@[m [mclass User extends Authenticatable implements MustVerifyEmail[m
+ [m
+         $this->tenants()->attach($tenant);[m
+ [m
+[32m+[m[32m        $exploded = explode(' ', $this->name);[m
+[32m+[m
+[32m+[m[32m        $firstName = $exploded[0];[m
+[32m+[m
+[32m+[m[32m        $lastName = array_last($exploded);[m
+[32m+[m
+[32m+[m[32m        $person = Person::create([[m
+[32m+[m
+[32m+[m[32m            'first_name' => $firstName,[m
+[32m+[m
+[32m+[m[32m            'last_name' => $lastName,[m
+[32m+[m
+[32m+[m[32m            'email' => $this->email,[m
+[32m+[m
+[32m+[m[32m        ]);[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m
+         return $this;[m
+ [m
+     }[m
+[36m@@ -86,11 +105,7 @@[m [mclass User extends Authenticatable implements MustVerifyEmail[m
+ [m
+         return Organization::whereHas('administrators', function ($administrator) {[m
+ [m
+[31m-            return $administrator->whereHas('person', function ($person) {[m
+[31m-[m
+[31m-                return $person->where('email', $this['email']);[m
+[31m-[m
+[31m-            });[m
+[32m+[m[32m            return $administrator->where('email', $this['email']);[m
+ [m
+         })->get();[m
+ [m
+[1mdiff --git a/database/factories/OrganizationFactory.php b/database/factories/OrganizationFactory.php[m
+[1mindex adf5503..033c815 100644[m
+[1m--- a/database/factories/OrganizationFactory.php[m
+[1m+++ b/database/factories/OrganizationFactory.php[m
+[36m@@ -21,12 +21,6 @@[m [m$factory->afterCreatingState(Organization::class, 'hasAdministrator', function ([m
+ [m
+     $person = factory(Person::class)->create();[m
+ [m
+[31m-    $administrator = new Administrator(['title' => $faker->title]);[m
+[31m-[m
+[31m-    $administrator['person_id'] = $person['id'];[m
+[31m-[m
+[31m-    $administrator['organization_id'] = $organization['id'];[m
+[31m-[m
+[31m-    $administrator->save();[m
+[32m+[m[32m    $organization->administrators()->save($person, ['title' => $faker->title]);[m
+ [m
+ });[m
+[1mdiff --git a/resources/views/tenant/admin/organizations/edit.blade.php b/resources/views/tenant/admin/organizations/edit.blade.php[m
+[1mindex fcbc889..1135f73 100644[m
+[1m--- a/resources/views/tenant/admin/organizations/edit.blade.php[m
+[1m+++ b/resources/views/tenant/admin/organizations/edit.blade.php[m
+[36m@@ -37,25 +37,25 @@[m
+                             <th class="text-center" colspan="3">Administrators</th>[m
+                         </tr>[m
+ [m
+[31m-                        @forelse($organization->administrators as $administrator)[m
+[32m+[m[32m                        @forelse($organization->administrators as $person)[m
+ [m
+                             <tr>[m
+ [m
+                                 <td>[m
+ [m
+[31m-                                    {{ $administrator->name}}[m
+[32m+[m[32m                                    {{ $person->name}}[m
+ [m
+                                 </td>[m
+ [m
+                                 <td>[m
+ [m
+[31m-                                    {{ $administrator->email}}[m
+[32m+[m[32m                                    {{ $person->email}}[m
+ [m
+                                 </td>[m
+ [m
+                                 <td>[m
+ [m
+[31m-                                    {{ $administrator->title}}[m
+[32m+[m[32m                                    {{ $person->administrator->title}}[m
+ [m
+                                 </td>[m
+ [m
+[1mdiff --git a/tests/Feature/OrganizationAdministratorTest.php b/tests/Feature/OrganizationAdministratorTest.php[m
+[1mindex bdc2af6..6e6a879 100644[m
+[1m--- a/tests/Feature/OrganizationAdministratorTest.php[m
+[1m+++ b/tests/Feature/OrganizationAdministratorTest.php[m
+[36m@@ -75,7 +75,7 @@[m [mclass OrganizationAdministratorTest extends TestCase[m
+ [m
+         $this->assertEquals($unclaimedOrganization->administrators()->first()['email'], 'cool@email.com');[m
+ [m
+[31m-        $this->assertEquals($unclaimedOrganization->administrators()->first()['title'], 'Mystery Man');[m
+[32m+[m[32m        $this->assertEquals($unclaimedOrganization->administrators()->first()->administrator['title'], 'Mystery Man');[m
+ [m
+ [m
+     }[m

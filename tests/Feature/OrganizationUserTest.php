@@ -53,13 +53,7 @@ class OrganizationUserTest extends TestCase
 
         ]);
 
-        $administrator = new Administrator();
-
-        $administrator['person_id'] = $person['id'];
-
-        $administrator['organization_id'] = $tenant->organization['id'];
-
-        $administrator->save();
+        $tenant->organization->administrators()->save($person);
 
 
         $response = $this->actingAs($user)->post("/organizations/users", ['organization_id' => $tenant->organization->id]);
@@ -113,13 +107,7 @@ class OrganizationUserTest extends TestCase
 
         ]);
 
-        $administrator = new Administrator();
-
-        $administrator['person_id'] = $person['id'];
-
-        $administrator['organization_id'] = $tenant->organization['id'];
-
-        $administrator->save();
+        $tenant->organization->administrators()->save($person);
 
 
         $response = $this->actingAs($user)->followingRedirects()->post("/organizations/users", ['organization_id' => $tenant->organization->id]);

@@ -75,7 +75,7 @@ class OrganizationAdministratorTest extends TestCase
 
         $this->assertEquals($unclaimedOrganization->administrators()->first()['email'], 'cool@email.com');
 
-        $this->assertEquals($unclaimedOrganization->administrators()->first()['title'], 'Mystery Man');
+        $this->assertEquals($unclaimedOrganization->administrators()->first()->administrator['title'], 'Mystery Man');
 
 
     }
@@ -102,17 +102,8 @@ class OrganizationAdministratorTest extends TestCase
 
         ]);
 
-        $administrator = Administrator::make([
 
-            'title' => 'FakeTitle',
-
-        ]);
-
-        $administrator['organization_id'] = $unclaimedOrganization->fresh()->id;
-
-        $administrator['person_id'] = $person->fresh()->id;
-
-        $administrator->save();
+        $unclaimedOrganization->administrators()->save($person, ['title' => 'FakeTitle']);
 
 
         $response = $this->actingAs($user)->get("/{$tenant->slug}/admin/organizations/{$unclaimedOrganization->id}/edit");

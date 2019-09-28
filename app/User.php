@@ -56,6 +56,25 @@ class User extends Authenticatable implements MustVerifyEmail
 
         $this->tenants()->attach($tenant);
 
+        $exploded = explode(' ', $this->name);
+
+        $firstName = $exploded[0];
+
+        $lastName = array_last($exploded);
+
+        $person = Person::create([
+
+            'first_name' => $firstName,
+
+            'last_name' => $lastName,
+
+            'email' => $this->email,
+
+        ]);
+
+
+
+
         return $this;
 
     }
@@ -86,11 +105,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return Organization::whereHas('administrators', function ($administrator) {
 
-            return $administrator->whereHas('person', function ($person) {
-
-                return $person->where('email', $this['email']);
-
-            });
+            return $administrator->where('email', $this['email']);
 
         })->get();
 

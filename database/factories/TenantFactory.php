@@ -35,13 +35,7 @@ $factory->afterCreatingState(Tenant::class, 'hasTwoAdministrators', function (Te
 
         $person = factory(Person::class)->create();
 
-        $administrator = new Administrator(['title' => $faker->title]);
-
-        $administrator['person_id'] = $person['id'];
-
-        $administrator['organization_id'] = $tenant->organization['id'];
-
-        $administrator->save();
+        $tenant->organization->administrators()->save($person, ['title' => $faker->title]);
 
     }
 

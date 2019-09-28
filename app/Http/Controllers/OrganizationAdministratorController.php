@@ -27,18 +27,7 @@ class OrganizationAdministratorController extends Controller
 
         ]);
 
-
-        $administrator = Administrator::make([
-
-            'title' => $validated['title'],
-
-        ]);
-
-        $administrator['organization_id'] = $organization->id;
-
-        $administrator['person_id'] = $person->id;
-
-        $administrator->save();
+        $organization->administrators()->save($person, ['title' => $validated['title']]);
 
 
         return back()->withSuccess("Added {$person->name} to {$organization->name}!");

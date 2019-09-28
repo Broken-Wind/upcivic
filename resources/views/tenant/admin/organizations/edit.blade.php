@@ -37,25 +37,25 @@
                             <th class="text-center" colspan="3">Administrators</th>
                         </tr>
 
-                        @forelse($organization->administrators as $administrator)
+                        @forelse($organization->administrators as $person)
 
                             <tr>
 
                                 <td>
 
-                                    {{ $administrator->name}}
+                                    {{ $person->name}}
 
                                 </td>
 
                                 <td>
 
-                                    {{ $administrator->email}}
+                                    {{ $person->email}}
 
                                 </td>
 
                                 <td>
 
-                                    {{ $administrator->title}}
+                                    {{ $person->administrator->title}}
 
                                 </td>
 

@@ -41,17 +41,8 @@ class HomeTest extends TestCase
         ]);
 
 
-        $administrator = Administrator::make([
 
-            'title' => 'Waverunner',
-
-        ]);
-
-        $administrator['organization_id'] = $organization1->id;
-
-        $administrator['person_id'] = $person->id;
-
-        $administrator->save();
+        $organization1->administrators()->save($person, ['title' => 'Waverunner']);
 
         $user = factory(User::class)->create([
 

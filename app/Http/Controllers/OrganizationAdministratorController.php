@@ -5,6 +5,7 @@ namespace Upcivic\Http\Controllers;
 use Illuminate\Http\Request;
 use Upcivic\Administrator;
 use Upcivic\Http\Requests\StoreAdministrator;
+use Upcivic\Mail\ListedAsAdministrator;
 use Upcivic\Organization;
 use Upcivic\Person;
 
@@ -29,6 +30,7 @@ class OrganizationAdministratorController extends Controller
 
         $organization->administrators()->save($person, ['title' => $validated['title']]);
 
+        \Mail::send(new ListedAsAdministrator(\Auth::user(), $organization, $person));
 
         return back()->withSuccess("Added {$person->name} to {$organization->name}!");
 

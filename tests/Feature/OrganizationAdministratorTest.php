@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Upcivic\Administrator;
+use Upcivic\Mail\ListedAsAdministrator;
 use Upcivic\Organization;
 use Upcivic\Person;
 use Upcivic\User;
@@ -44,6 +46,8 @@ class OrganizationAdministratorTest extends TestCase
     public function user_can_add_administrator_to_unclaimed_organization()
     {
 
+        Mail::fake();
+
         $this->withoutExceptionHandling();
 
         $user = factory(User::class)->states('hasTenant')->create();
@@ -68,6 +72,8 @@ class OrganizationAdministratorTest extends TestCase
 
 
         $response->assertStatus(200);
+
+        Mail::assertSent(ListedAsAdministrator::class);
 
         $this->assertEquals(1, $unclaimedOrganization->administrators->count());
 

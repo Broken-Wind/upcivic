@@ -56,21 +56,27 @@ class User extends Authenticatable implements MustVerifyEmail
 
         $this->tenants()->attach($tenant);
 
-        $exploded = explode(' ', $this->name);
+        if (!$tenant->organization->administrators->pluck('email')->contains($this->email)) {
 
-        $firstName = $exploded[0];
+            $exploded = explode(' ', $this->name);
 
-        $lastName = array_last($exploded);
+            $firstName = $exploded[0];
 
-        $person = Person::create([
+            $lastName = array_last($exploded);
 
-            'first_name' => $firstName,
+            $person = Person::create([
 
-            'last_name' => $lastName,
+                'first_name' => $firstName,
 
-            'email' => $this->email,
+                'last_name' => $lastName,
 
-        ]);
+                'email' => $this->email,
+
+            ]);
+
+            $tenant->organization->administrators()->save($person);
+
+        }
 
 
 

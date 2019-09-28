@@ -118,4 +118,5 @@ class OrganizationAdministratorTest extends TestCase
         $response->assertSeeText('FakeTitle');
 
     }
+
 }

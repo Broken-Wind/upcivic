@@ -63,13 +63,13 @@ class ProposalSentTest extends TestCase
 
 
 
-        $this->assertContains($proposal['sender']->name, $rendered);
+        $this->assertStringContainsString($proposal['sender']->name, $rendered);
 
-        $this->assertContains('Proposing Organization', $rendered);
+        $this->assertStringContainsString('Proposing Organization', $rendered);
 
-        $this->assertContains('Recipient Organization', $rendered);
+        $this->assertStringContainsString('Recipient Organization', $rendered);
 
-        $this->assertContains(route('root'), $rendered);
+        $this->assertStringContainsString(route('root'), $rendered);
 
     }
 

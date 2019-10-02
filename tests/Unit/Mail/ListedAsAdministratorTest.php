@@ -46,15 +46,15 @@ class ListedAsAdministratorTest extends TestCase
 
 
 
-        $this->assertContains($lister->name, $rendered);
+        $this->assertStringContainsString($lister->name, $rendered);
 
-        $this->assertContains($organization->name, $rendered);
+        $this->assertStringContainsString($organization->name, $rendered);
 
-        $this->assertContains($person->name, $rendered);
+        $this->assertStringContainsString($person->name, $rendered);
 
-        $this->assertContains('President OF THE WORLD!', $rendered);
+        $this->assertStringContainsString('President OF THE WORLD!', $rendered);
 
-        $this->assertContains(route('root'), $rendered);
+        $this->assertStringContainsString(route('root'), $rendered);
 
     }
 

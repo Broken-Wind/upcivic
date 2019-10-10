@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Upcivic\Organization;
 use Upcivic\Template;
 use Upcivic\User;
 use Upcivic\Tenant;
@@ -13,6 +14,26 @@ class TemplateTest extends TestCase
 {
 
     use RefreshDatabase;
+
+    private $validRequest = [
+
+        'name' => 'Template Name',
+        'internal_name' => 'Internal Name',
+        'description' => 'Long description',
+        'public_notes' => 'Pubnotes',
+        'contributor_notes' => 'Contnotes',
+        'min_age' => '12',
+        'max_age' => '13',
+        'ages_type' => 'grades',
+        'invoice_amount' => '11.99',
+        'invoice_type' => 'per participant',
+        'meeting_minutes' => '120',
+        'meeting_interval' => '7',
+        'meeting_count' => '3',
+        'min_enrollments' => '6',
+        'max_enrollments' => '10',
+
+    ];
 
     /** @test */
     public function can_view_templates_index()
@@ -58,25 +79,7 @@ class TemplateTest extends TestCase
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
 
-        $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/templates", [
-
-            'name' => 'Template Name',
-            'internal_name' => 'Internal Name',
-            'description' => 'Long description',
-            'public_notes' => 'Pubnotes',
-            'contributor_notes' => 'Contnotes',
-            'min_age' => '12',
-            'max_age' => '13',
-            'ages_type' => 'grades',
-            'invoice_amount' => '11.99',
-            'invoice_type' => 'per participant',
-            'meeting_minutes' => '120',
-            'meeting_interval' => '7',
-            'meeting_count' => '3',
-            'min_enrollments' => '6',
-            'max_enrollments' => '10',
-
-        ]);
+        $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/templates", $this->validRequest);
 
 
         $response->assertStatus(200);
@@ -203,6 +206,34 @@ class TemplateTest extends TestCase
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
         $response->assertSeeText('Template has been deleted.');
+
+
+    }
+
+
+    /** @test */
+    public function template_is_assigned_to_correct_organization_id()
+    {
+
+        factory(Organization::class)->create();
+
+        $user = factory(User::class)->states('hasTenant')->create();
+
+        $tenant = $user->tenants()->first();
+
+        $this->assertNotEquals($tenant->id, $tenant->organization->id);
+
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
+
+
+
+        $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/templates", $this->validRequest);
+
+        $tenant->refresh();
+
+
+
+        $this->assertEquals(1, $tenant->organization->templatesWithoutScope->count());
 
 
     }

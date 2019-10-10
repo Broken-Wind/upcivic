@@ -4,9 +4,7 @@
 
 use Upcivic\Organization;
 use Faker\Generator as Faker;
-use Upcivic\Administrator;
 use Upcivic\Person;
-use Upcivic\User;
 
 $factory->define(Organization::class, function (Faker $faker) {
     return [

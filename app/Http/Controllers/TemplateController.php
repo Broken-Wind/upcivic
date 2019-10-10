@@ -65,7 +65,7 @@ class TemplateController extends Controller
 
         ]);
 
-        $template->organization_id = tenant()->id;
+        $template->organization_id = tenant()->organization->id;
 
         $template->save();
 

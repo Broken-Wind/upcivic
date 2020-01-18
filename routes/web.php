@@ -25,7 +25,7 @@ Route::group(['middleware' => 'verified'], function () {
         'middleware' => ['tenant'],
         'as' => 'tenant:',
     ], function () {
-        Route::get('/iframe', 'IframeController@index')->name('iframe.index');
+        Route::get('/iframe', 'IframeController@index')->name('iframe.index')->middleware('tenant.public');
     });
     Route::group([
         'prefix' => '/{tenant}/admin',

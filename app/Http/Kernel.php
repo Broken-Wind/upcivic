@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
         'tenant' => \Upcivic\Http\Middleware\IdentifyTenant::class,
         'tenant.auth' => \Upcivic\Http\Middleware\AuthToTenant::class,
         'tenant.null' => \Upcivic\Http\Middleware\UserWithoutTenant::class,
+        'tenant.public' => \Upcivic\Http\Middleware\TenantIsPublic::class,
         'unclaimed' => \Upcivic\Http\Middleware\UnclaimedOrganization::class,
 
     ];

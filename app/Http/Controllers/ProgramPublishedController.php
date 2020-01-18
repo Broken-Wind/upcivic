@@ -20,14 +20,14 @@ class ProgramPublishedController extends Controller
     {
         $validated = $request->validated();
         if (isset($validated['publish_now'])) {
-            $program->publish();
+            $program->getContributorFromTenant()->publish();
             return back()->withSuccess('Program published.');
         }
         if (empty($validated['published_at'])) {
-            $program->unpublish();
+            $program->getContributorFromTenant()->unpublish();
             return back()->withSuccess('Program unpublished.');
         }
-        $program->publish($validated['published_at']);
+        $program->getContributorFromTenant()->publish($validated['published_at']);
         return back()->withSuccess('Program scheduled to publish.');
     }
 

@@ -22,7 +22,7 @@
                         </div>
                     @else
                         <div class="alert alert-info">
-                            Publishing on {{ $program['published_at']->format('F d, Y')}}
+                            Publishing on {{ $program->getContributorFromTenant()['published_at']->format('F d, Y')}}
                         </div>
                     @endif
                 </div>
@@ -106,7 +106,7 @@
                         @csrf
                         <div class="form-group">
                           <label for="published_at">Publish On:</label>
-                          <input type="date" class="form-control" name="published_at" id="published_at" value="{{ !empty($program['published_at']) ? $program['published_at']->format('Y-m-d') : '' }}" aria-describedby="published_at_help">
+                          <input type="date" class="form-control" name="published_at" id="published_at" value="{{ !empty($program->getContributorFromTenant()['published_at']) ? $program->getContributorFromTenant()['published_at']->format('Y-m-d') : '' }}" aria-describedby="published_at_help">
                           <small id="published_at_help" class="form-text text-muted">The date this program should be published</small>
                         </div>
                         <div class="form-row">

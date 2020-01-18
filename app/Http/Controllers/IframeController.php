@@ -15,7 +15,7 @@ class IframeController extends Controller
     public function index(ProgramFilters $programFilters)
     {
         //
-        $programs = Program::with(['meetings.site'])->published()->filter($programFilters)->get()->sortBy('start_datetime');
+        $programs = Program::with(['meetings.site'])->publishedForTenant()->filter($programFilters)->get()->sortBy('start_datetime');
         return view('tenant.iframe.index', compact('programs'));
     }
     public function show(Program $program)

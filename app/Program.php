@@ -26,42 +26,40 @@ class Program extends Model
         'min_enrollments',
         'max_enrollments',
     ];
-    protected $dates = [
-        'published_at',
-    ];
     public function scopeExcludePast($query)
     {
         return $query->whereHas('meetings', function ($query) {
             return $query->where('end_datetime', '>', Carbon::now()->subDays(5));
         });
     }
-    public function scopePublished($query)
+    public function scopePublishedForTenant($query)
     {
-        return $query->where('published_at', '<=', now());
+        return $query->whereHas('contributors', function ($query) {
+            return $query->where('organization_id', tenant()['organization_id'])->where('published_at', '<=', now());
+        });
     }
-    public function scopeUnpublished($query)
+    public function scopeUnpublishedForTenant($query)
     {
-        return $query->where('published_at', '>', now());
+        return $query->whereHas('contributors', function ($query) {
+            return $query->where('organization_id', tenant()['organization_id'])->where('published_at', '<=', now());
+        });
+    }
+    public function getContributorFromTenant($tenant = null)
+    {
+        if (!empty($tenant)) {
+            $organizationId = $tenant['organization_id'];
+        } else {
+            $organizationId = tenant()['organization_id'];
+        }
+        return $this->contributors->where('organization_id', $organizationId)->first();
     }
     public function isPublished()
     {
-        return $this->published_at <= now();
+        return $this->getContributorFromTenant()->isPublished();
     }
     public function willPublish()
     {
-        return !empty($this->published_at);
-    }
-    public function publish($publishedAt = null)
-    {
-        $this['published_at'] = $publishedAt ?? now();
-        $this->save();
-        return $this;
-    }
-    public function unpublish()
-    {
-        $this['published_at'] = null;
-        $this->save();
-        return $this;
+        return $this->getContributorFromTenant()->willPublish();
     }
     public static function createExample($organization)
     {

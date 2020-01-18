@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPublishedAtToPrograms extends Migration
+class AddPublishedAtToContributors extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddPublishedAtToPrograms extends Migration
      */
     public function up()
     {
-        Schema::table('programs', function (Blueprint $table) {
+        Schema::table('contributors', function (Blueprint $table) {
             //
             $table->timestamp('published_at')->nullable();
         });
@@ -26,7 +26,7 @@ class AddPublishedAtToPrograms extends Migration
      */
     public function down()
     {
-        Schema::table('programs', function (Blueprint $table) {
+        Schema::table('contributors', function (Blueprint $table) {
             //
             $table->dropColumn('published_at');
         });

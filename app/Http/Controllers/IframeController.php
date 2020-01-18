@@ -21,6 +21,9 @@ class IframeController extends Controller
     public function show(Program $program)
     {
         //
+        if (!$program->getContributorFromTenant()->isPublished()) {
+            abort(404);
+        }
         return view('tenant.iframe.show', compact('program'));
     }
 }

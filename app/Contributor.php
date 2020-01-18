@@ -45,7 +45,7 @@ class Contributor extends Model
     }
     public function isPublished()
     {
-        return $this['published_at'] <= now();
+        return !empty($this['published_at']) && $this['published_at'] <= now();
     }
     public function willPublish()
     {

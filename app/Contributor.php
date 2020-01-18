@@ -44,6 +44,11 @@ class Contributor extends Model
 
     }
 
+    public function tenant()
+    {
+        return $this->organization->tenant;
+    }
+
     public function getPercentageOfTotalFeeAttribute()
     {
 

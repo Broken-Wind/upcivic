@@ -22,10 +22,11 @@ Route::group(['middleware' => 'verified'], function () {
     Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
     Route::group([
         'prefix' => '/{tenant}',
-        'middleware' => ['tenant'],
+        'middleware' => ['tenant', 'tenant.public'],
         'as' => 'tenant:',
     ], function () {
-        Route::get('/iframe', 'IframeController@index')->name('iframe.index')->middleware('tenant.public');
+        Route::get('/iframe', 'IframeController@index')->name('iframe.index');
+        Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
     });
     Route::group([
         'prefix' => '/{tenant}/admin',

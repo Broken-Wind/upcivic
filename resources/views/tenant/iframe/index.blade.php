@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <a href="/programs/iframe/{{ $program['id'] }}" style="text-decoration:none;">View Details</a>
+                                            <a href="{{ tenant()->route('tenant:iframe.show', ['program' => $program->id]) }}">View Details</a>
                                     </div>
                                 </div>
                             </div>

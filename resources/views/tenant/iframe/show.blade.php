@@ -37,13 +37,17 @@
         </div>
         <div class="card-body">
             @if(isset($program['enrollment_url']))
-                <li>Pricing is determined by {{ $program->organization['name'] }}. Please visit their website or contact them directly for more information. </li>
+                <ul>
+                    <li>Pricing is determined by {{ $program->organization['name'] }}. Please visit their website or contact them directly for more information. </li>
+                </ul>
                 <form action="{{ $program['enrollment_url'] }}" method="GET">
                     <button type="submit" class="btn btn-primary btn-block">Enroll Now <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
                     <small class="form-text text-muted text-center">You will be redirected to the enrollment website of our organization.</small>
                 </form>
             @else
-                <li>We don't yet have enrollment information for this program.</li>
+                <ul>
+                    <li>We don't yet have enrollment information for this program.</li>
+                </ul>
             @endif
                 <hr />
                 @include('tenant.iframe.components.registration_problems')

@@ -32,6 +32,9 @@ class Program extends Model
         'max_enrollments',
 
     ];
+    protected $dates = [
+        'published_at',
+    ];
 
     public function scopeExcludePast($query)
     {
@@ -57,6 +60,25 @@ class Program extends Model
     public function isPublished()
     {
         return $this->published_at <= now();
+    }
+
+    public function willPublish()
+    {
+        return !empty($this->published_at);
+    }
+
+    public function publish($publishedAt = null)
+    {
+        $this['published_at'] = $publishedAt ?? now();
+        $this->save();
+        return $this;
+    }
+
+    public function unpublish()
+    {
+        $this['published_at'] = null;
+        $this->save();
+        return $this;
     }
 
     public static function createExample($organization)

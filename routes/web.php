@@ -21,6 +21,13 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
     Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
     Route::group([
+        'prefix' => '/{tenant}',
+        'middleware' => ['tenant'],
+        'as' => 'tenant:',
+    ], function () {
+        Route::get('/iframe', 'IframeController@index')->name('iframe.index');
+    });
+    Route::group([
         'prefix' => '/{tenant}/admin',
         'middleware' => ['tenant', 'tenant.auth'],
         'as' => 'tenant:admin.',

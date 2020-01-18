@@ -44,6 +44,21 @@ class Program extends Model
 
     }
 
+    public function scopePublished($query)
+    {
+        return $query->where('published_at', '<=', now());
+    }
+
+    public function scopeUnpublished($query)
+    {
+        return $query->where('published_at', '>', now());
+    }
+
+    public function isPublished()
+    {
+        return $this->published_at <= now();
+    }
+
     public static function createExample($organization)
     {
 

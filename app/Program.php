@@ -225,7 +225,7 @@ class Program extends Model
     }
     public function otherContributors()
     {
-        return $this->contributors()->where('organization_id', '!=', tenant()->organization['id'])->get();
+        return $this->contributors->where('organization_id', '!=', tenant()['organization_id']);
     }
     public function hasOtherContributors()
     {

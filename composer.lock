@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea947434aa37e8903107d3573e207420",
+    "content-hash": "07e9c9e523dd191d75a231bcc95559fc",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1601,6 +1601,7 @@
                 "bcmath",
                 "math"
             ],
+            "abandoned": "brick/math",
             "time": "2017-02-16T16:54:46+00:00"
         },
         {
@@ -2446,6 +2447,66 @@
                 "spatie"
             ],
             "time": "2019-09-30T17:32:51+00:00"
+        },
+        {
+            "name": "spatie/laravel-honeypot",
+            "version": "1.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/spatie/laravel-honeypot.git",
+                "reference": "67a89380b26376e821a54278df97850d92c1273f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/spatie/laravel-honeypot/zipball/67a89380b26376e821a54278df97850d92c1273f",
+                "reference": "67a89380b26376e821a54278df97850d92c1273f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "5.8.*|^6.0",
+                "illuminate/encryption": "5.8.*|^6.0",
+                "illuminate/http": "5.8.*|^6.0",
+                "illuminate/support": "5.8.*|^6.0",
+                "illuminate/validation": "5.8.*|^6.0",
+                "nesbot/carbon": "^2.0",
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.8.*|^4.0",
+                "spatie/phpunit-snapshot-assertions": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Spatie\\Honeypot\\HoneypotServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Spatie\\Honeypot\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Freek Van der Herten",
+                    "email": "freek@spatie.be",
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Preventing spam submitted through forms",
+            "homepage": "https://github.com/spatie/laravel-honeypot",
+            "keywords": [
+                "laravel-honeypot",
+                "spatie"
+            ],
+            "time": "2019-09-04T08:28:11+00:00"
         },
         {
             "name": "spatie/once",

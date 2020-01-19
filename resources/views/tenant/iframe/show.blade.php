@@ -17,6 +17,7 @@
             <hr />
             {{ $program['description'] }}
             <hr />
+            <strong>{{ ucfirst($program['ages_type']) }}:</strong> {{ $program['min_age'] }}-{{ $program['max_age'] }}<br />
             @if($program->otherContributors()->count() > 1)
                 <strong>Partners:</strong>
                     @foreach($program->otherContributors() as $contributor)

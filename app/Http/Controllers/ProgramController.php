@@ -22,11 +22,12 @@ class ProgramController extends Controller
     {
         //
         $programs = Program::with(['meetings.site', 'contributors.organization'])->filter($programFilters)->get()->sortBy('start_datetime');
+        $programGroups = Program::groupPrograms($programs);
         $programsExist = Program::get()->count() > 0;
         $organizations = Organization::orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
         $templateCount = Template::count();
-        return view('tenant.admin.programs.index', compact('programs', 'programsExist', 'templateCount', 'organizations', 'sites'));
+        return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites'));
     }
     /**
      * Show the form for creating a new resource.

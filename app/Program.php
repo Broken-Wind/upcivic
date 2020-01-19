@@ -44,6 +44,15 @@ class Program extends Model
             return $query->where('organization_id', tenant()['organization_id'])->where('published_at', '<=', now());
         });
     }
+    public static function groupPrograms($programs)
+    {
+        $programs = $programs->sortBy(function ($program) {
+            return $program->site['name'];
+        });
+        return $programs->groupBy([function ($program) {
+            return $program['start_date'];
+        }]);
+    }
     public function getContributorFromTenant($tenant = null)
     {
         if (!empty($tenant)) {

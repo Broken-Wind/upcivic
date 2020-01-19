@@ -46,9 +46,6 @@ class Program extends Model
     }
     public static function groupPrograms($programs)
     {
-        $programs = $programs->sortBy(function ($program) {
-            return $program->site['name'];
-        });
         return $programs->groupBy([function ($program) {
             return $program['start_date'];
         }]);

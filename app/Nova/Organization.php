@@ -46,7 +46,7 @@ class Organization extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')->sortable(),
-            HasMany::make('Administrators'),
+            HasMany::make('People', 'administrators'),
             HasOne::make('Tenant'),
         ];
     }

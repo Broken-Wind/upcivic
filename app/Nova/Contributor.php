@@ -5,7 +5,6 @@ namespace Upcivic\Nova;
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -47,7 +46,7 @@ class Contributor extends Resource
 
             BelongsTo::make('Program'),
             BelongsTo::make('Organization'),
-            Currency::make('Invoice Amount')->format('%.2n'),
+            Text::make('Invoice Amount'),
             Text::make('Invoice Type'),
 
 

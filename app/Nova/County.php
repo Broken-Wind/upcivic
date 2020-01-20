@@ -4,19 +4,18 @@ namespace Upcivic\Nova;
 
 use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Place;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Site extends Resource
+class County extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = 'Upcivic\Site';
+    public static $model = 'Upcivic\County';
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -31,7 +30,7 @@ class Site extends Resource
      * @var array
      */
     public static $search = [
-        'id',
+        'id','name'
     ];
 
     /**
@@ -44,10 +43,9 @@ class Site extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name'),
-            Place::make('Address'),
-            Text::make('Phone'),
-            BelongsTo::make('County'),
+            Text::make('Name')->sortable(),
+            HasMany::make('Sites'),
+
         ];
     }
 

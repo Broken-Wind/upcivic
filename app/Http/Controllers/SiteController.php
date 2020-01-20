@@ -4,6 +4,7 @@ namespace Upcivic\Http\Controllers;
 
 use Upcivic\Site;
 use Illuminate\Http\Request;
+use Upcivic\County;
 use Upcivic\Http\Requests\StoreSite;
 
 class SiteController extends Controller
@@ -29,7 +30,8 @@ class SiteController extends Controller
     public function create()
     {
         //
-        return view('tenant.admin.sites.create');
+       $counties =  County::orderBy('name')->get();
+        return view('tenant.admin.sites.create', compact('counties'));
     }
 
     /**
@@ -43,15 +45,14 @@ class SiteController extends Controller
         //
         $validated = $request->validated();
 
-        Site::create([
-
+        $site = Site::create([
             'name' => $validated['name'],
-
             'address' => $validated['address'],
-
             'phone' => $validated['phone'],
-
         ]);
+
+        $site->county()->associate($validated['county_id']);
+        $site->save();
 
         return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
 

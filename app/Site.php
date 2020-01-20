@@ -16,4 +16,8 @@ class Site extends Model
     {
         return $this->belongsToMany(Meeting::class);
     }
+    public function county()
+    {
+        return $this->belongsTo(County::class);
+    }
 }

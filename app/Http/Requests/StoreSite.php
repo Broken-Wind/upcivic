@@ -28,6 +28,7 @@ class StoreSite extends FormRequest
             'name' => 'required|string',
             'address' => 'required|string',
             'phone' => 'nullable|string',
+            'county_id' => 'nullable|numeric',
         ];
     }
 }

@@ -31,36 +31,40 @@
             @endif
         </div>
     </div>
-    <p />
-    <div class="card">
-        <div class="card-header">
-            Getting Enrolled:
+    @forelse($program->contributors->sortByDesc('organization.enrollment_url') as $contributor)
+        <p />
+        <div class="card">
+            <div class="card-header">
+                About {{ $contributor['name'] }}
+            </div>
+            <div class="card-body">
+                    @if(!empty($contributor->organization['enrollment_instructions']))
+                        <h5>Special Instructions:</h5>
+                        {{ $contributor->organization['enrollment_instructions'] }}
+                        <hr />
+                    @endif
+                    @if(!empty($contributor->organization['enrollment_url']))
+                        <form action="{{ $contributor->organization['enrollment_url'] }}" method="GET" target="_blank">
+                            <button type="submit" class="btn btn-primary btn-block">Enroll via {{ $contributor->organization['name'] }} <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
+                            <small class="form-text text-muted text-center">You will be redirected to the enrollment website of our partner.</small>
+                        </form>
+                        <hr />
+                    @endif
+                @if($contributor->shouldDisplayOrganizationContacts())
+                    @include('tenant.iframe.components.organization_contacts', ['organization' => $contributor->organization])
+                @endif
+                @if($contributor->name == 'Techsplosion')
+                    <h5>Questions about our programs?</h5>
+                    <ul>
+                        <li>Read our <a href="http://techsplosion.org/summer-camp-descriptions/#{{ $program->enrichmentProgram['standard_name'] }}" target="_blank">camp descriptions</a></li>
+                        <li>Read our <a href="http://techsplosion.org/faq/" target="_blank">FAQ</a></li>
+                        <li>Contact us via camp@techsplosion.org or 415.223.4312 (we can respond to email fastest)</li>
+                    </ul>
+                @endif
+            </div>
         </div>
-        <div class="card-body">
-            @if(isset($program['enrollment_url']))
-                <ul>
-                    <li>Pricing is determined by {{ $program->organization['name'] }}. Please visit their website or contact them directly for more information. </li>
-                </ul>
-                <form action="{{ $program['enrollment_url'] }}" method="GET">
-                    <button type="submit" class="btn btn-primary btn-block">Enroll Now <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
-                    <small class="form-text text-muted text-center">You will be redirected to the enrollment website of our organization.</small>
-                </form>
-            @else
-                <ul>
-                    <li>We don't yet have enrollment information for this program.</li>
-                </ul>
-            @endif
-                <hr />
-                @include('tenant.iframe.components.registration_problems')
-            <hr />
-            <h5>Questions about our programs?</h5>
-            <ul>
-                <li>Read our <a href="http://techsplosion.org/summer-camp-descriptions/#{{ $program->enrichmentProgram['standard_name'] }}" target="_blank">camp descriptions</a></li>
-                <li>Read our <a href="http://techsplosion.org/faq/" target="_blank">FAQ</a></li>
-                <li>Contact us via camp@techsplosion.org or 415.223.4312 (we can respond to email fastest)</li>
-            </ul>
-        </div>
-    </div>
+    @empty
+    @endforelse
     <p />
     @include('tenant.iframe.components.map', ['site' => $program->site])
     <p />

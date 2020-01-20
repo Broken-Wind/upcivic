@@ -228,13 +228,14 @@ class Program extends Model
     {
         return $this->otherContributors()->count() > 0;
     }
-    public function getRegistrationContacts()
+    public function getRegistrationContactsAttribute()
     {
         if (!$this->hasOtherContributors()) {
-            return tenant()['aggregated_administrators'];
+            return tenant()->organization->administrators;
         }
+
         return $this->otherContributors()->map(function ($contributor) {
-            return $contributor->tenant()['aggregated_administrators'];
+            return $contributor->organization->administrators;
         })->flatten(1);
     }
     public function getInternalNameAttribute()

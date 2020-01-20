@@ -27,10 +27,6 @@ class Contributor extends Model
     {
         return $this->belongsTo(Organization::class);
     }
-    public function tenant()
-    {
-        return $this->organization->tenant;
-    }
     public function publish($publishedAt = null)
     {
         $this['published_at'] = $publishedAt ?? now();
@@ -42,6 +38,11 @@ class Contributor extends Model
         $this['published_at'] = null;
         $this->save();
         return $this;
+    }
+
+    public function shouldDisplayOrganizationContacts()
+    {
+        return $this->organization->administrators->count() > 0;
     }
     public function isPublished()
     {

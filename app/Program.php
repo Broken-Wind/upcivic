@@ -24,6 +24,7 @@ class Program extends Model
         'min_age',
         'max_age',
         'min_enrollments',
+        'enrollments',
         'max_enrollments',
     ];
     public function scopeExcludePast($query)

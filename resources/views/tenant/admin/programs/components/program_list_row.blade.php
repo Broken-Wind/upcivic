@@ -23,10 +23,9 @@
         </div>
     </div>
 
-    <form action="" method="POST">
-       @method('PATCH')
+    <form action="{{ tenant()->route('tenant:admin.programs.enrollments.update', [$program])}}" method="POST">
+        @method('PUT')
         @csrf
-        <input type="hidden" name="program_session_id" value="{{ $program['id'] }}">
         <div class="row">
             <div class="col-md-3">
                 {{ $program->site['name'] }}<br />
@@ -47,15 +46,17 @@
                     <input type="number" class="form-control form-control-sm" name="max_enrollments" value="{{ $program['max_enrollments'] ?? 0 }}">
                     &nbsp;
                     <div class="btn-group">
-                        @if(!empty($program['enrollments_via']))
-                            <a class="btn btn-light btn-sm" target="_blank" href="{{ $program['enrollments_via'] }}">
-                                <i class="fas fa-fw fa-external-link-alt"></i>
-                            </a>
-                        @else
-                            <button onClick="return confirm('Do you really want to send an enrollment check email?');" type="submit" class="btn btn-light btn-sm" name="check_enrollments" value="{{ $program['id'] }}">
-                                <i class="fas fa-fw fa-envelope"></i>
-                            </button>
-                        @endif
+                        <!-- Enrollment check buttons
+                            @if(!empty($program['enrollments_via']))
+                                <a class="btn btn-light btn-sm" target="_blank" href="{{ $program['enrollments_via'] }}">
+                                    <i class="fas fa-fw fa-external-link-alt"></i>
+                                </a>
+                            @else
+                                <button onClick="return confirm('Do you really want to send an enrollment check email?');" type="submit" class="btn btn-light btn-sm" name="check_enrollments" value="{{ $program['id'] }}">
+                                    <i class="fas fa-fw fa-envelope"></i>
+                                </button>
+                            @endif
+                        -->
                     <button type="submit" class="btn btn-light btn-sm" name="update_enrollments[{{ $program['id'] }}]" value="update_enrollments"><i class="fas fa-fw fa-save"></i></button>
                     </div>
                 </div>

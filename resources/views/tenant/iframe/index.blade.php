@@ -18,7 +18,8 @@
                                         {{ $program['name'] }}
                                     </div>
                                     <div class="col-sm-4">
-                                        {{ $program->site['name'] }}
+                                        {{ $program->site['name'] }}<br />
+                                        <small>{{ $program->otherContributors()->pluck('name')->implode(', ') }}</small>
                                     </div>
                                 </div>
                                 <div class="row">

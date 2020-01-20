@@ -20,6 +20,13 @@
         </div>
         <div class="col-md-2">
             #{{ $program['id'] }}
+            @if($program->willPublish())
+                <i class="fas fa-fw fa-clock" title="Publishing on {{ $program->getContributorFromTenant()['published_at']->format('F d, Y') }}"></i>
+            @elseif($program->isPublished())
+                <i class="fas fa-fw fa-globe" title="This program is published!"></i>
+            @else
+                <i class="fas fa-fw fa-times" title="This program is not yet scheduled to publish."></i>
+            @endif
         </div>
     </div>
 
@@ -68,7 +75,7 @@
                 </div>
             </div>
             <div class="col-md-2">
-                <!-- Status icon here & action buttons here -->
+                <!-- action buttons here -->
 
                 <a href="{{ tenant()->route('tenant:admin.programs.edit', ['program' => $program->id]) }}">Edit Program</i></a>
 

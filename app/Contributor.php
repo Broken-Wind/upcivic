@@ -50,7 +50,7 @@ class Contributor extends Model
     }
     public function willPublish()
     {
-        return !empty($this['published_at']);
+        return !empty($this['published_at']) && !$this->isPublished();
     }
     public function getPercentageOfTotalFeeAttribute()
     {

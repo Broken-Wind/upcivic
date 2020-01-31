@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 
 class Organization extends Resource
 {
@@ -46,6 +47,8 @@ class Organization extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')->sortable(),
+            Text::make('Enrollment Url'),
+            Textarea::make('Enrollment Instructions'),
             HasMany::make('People', 'administrators'),
             HasOne::make('Tenant'),
         ];

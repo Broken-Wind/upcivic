@@ -35,6 +35,15 @@ class ProgramFilters extends QueryFilters
 
     }
 
+    public function counties($term) {
+        return $this->builder->whereHas('meetings', function ($query) use ($term) {
+            return $query->whereHas('site', function ($query) use ($term) {
+                return $query->whereIn('county_id', explode(',', $term));
+            });
+        });
+
+    }
+
     public function from_date($term) {
 
         return $this->builder->withoutGlobalScope('ExcludePastPrograms')->whereHas('meetings', function ($query) use ($term) {

@@ -6,7 +6,7 @@
     <div class="table-responsive">
         <table class="table bg-white">
             <tbody>
-                @foreach ($programs as $program)
+                @forelse ($programs as $program)
                     <tr>
                         <td>
                             <div class="container text-center">
@@ -30,7 +30,11 @@
                             </div>
                         </div>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td>No programs to show. :(</td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

@@ -8,7 +8,7 @@ use Upcivic\Services\TenantManager;
 
 class TenantOwnedScope implements Scope {
     public function apply(Builder $builder, Model $model) {
-        $builder->where('organization_id', '=', tenant()->id);
+        $builder->where('organization_id', '=', tenant()->organization->id);
     }
 
     public function extend(Builder $builder) {

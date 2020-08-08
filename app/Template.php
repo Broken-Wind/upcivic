@@ -8,7 +8,6 @@ use Upcivic\Concerns\OwnedByTenant;
 class Template extends Model
 {
     //
-    use OwnedByTenant;
 
     protected $fillable = [
         'name',

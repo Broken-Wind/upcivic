@@ -5,6 +5,7 @@ use Upcivic\Tenant;
 use Upcivic\Program;
 use Illuminate\Database\Eloquent\Builder;
 use Upcivic\Template;
+use Upcivic\Scopes\TenantOwnedScope;
 
 class TenantManager {
     /*
@@ -42,11 +43,7 @@ class TenantManager {
 
         });
 
-        Template::addGlobalScope('TenantOwnedTemplate', function ($query) {
-
-            return $query->where('organization_id', tenant()->organization_id);
-
-        });
+        Template::addGlobalScope(new TenantOwnedScope);
 
     }
 

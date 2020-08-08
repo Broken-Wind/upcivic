@@ -105,7 +105,7 @@ class Program extends Model
                     'invoice_type' => $template['invoice_type'],
                 ]);
                 $proposer['program_id'] = $program['id'];
-                $proposer['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()['id'];
+                $proposer['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
                 $proposer->save();
 
                 $contributor = new Contributor([]);

@@ -15,6 +15,6 @@ class DemoProgramController extends Controller
     public function store()
     {
         $this->demoService->regenerateDemoData();
-        return back();
+        return;
     }
 }

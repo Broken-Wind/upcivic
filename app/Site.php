@@ -20,4 +20,8 @@ class Site extends Model
     {
         return $this->belongsTo(County::class);
     }
+    public function locations()
+    {
+        return $this->hasMany(Location::class);
+    }
 }

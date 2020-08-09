@@ -11,7 +11,7 @@ class DemoService {
     {
         $demoProvider = $this->getDemoProviderTenant();
         $demoHost = $this->getDemoHostTenant();
-        $demoSite = $this->getDemoSite();
+        $demoSites = $this->getDemoSites();
 
         Program::whereHas('contributors', function ($query) use ($demoProvider, $demoHost) {
             return $query->where('organization_id', $demoProvider->organization_id)->orWhere('organization_id', $demoHost->organization_id);
@@ -20,25 +20,29 @@ class DemoService {
         $templates = $demoProvider->organization->templates;
 
         for ($week=0; $week<10; $week++) {
-            for ($program=0; $program<20; $program++) {
+            for ($program=0; $program<10; $program++) {
+                $demoSite = rand(1, 10) > 3 ? $demoSites[$program%2] : null;
+                $demoSiteId = $demoSite->id ?? null;
+                $demoLocationId = (rand(1, 10) > 5 && !empty($demoSiteId)) ? $demoSite->locations->random()->id : null;
                 $startDate = Carbon::now()->next('Monday')->addWeeks($week)->toDateString();
                 $template = $templates->random();
                 $proposal = [
                     "start_date" => $startDate,
                     "start_time" => "09:00",
                     "recipient_organization_id" => $demoHost->organization_id,
-                    "site_id" => $demoSite->id
+                    "site_id" => $demoSiteId,
+                    "location_id" => $demoLocationId
                 ];
                 Program::fromTemplate($proposal, $template);
                 if ($template->meeting_minutes == 180) {
-                    $pmTemplate = $templates->where('id', '!=', $template->id)->where('meeting_minutes', 180)->first();
                     $pmProposal = [
                         "start_date" => $startDate,
                         "start_time" => "13:00",
                         "recipient_organization_id" => $demoHost->organization_id,
-                        "site_id" => $demoSite->id
+                        "site_id" => $demoSiteId,
+                        "location_id" => $demoLocationId
                     ];
-                    Program::fromTemplate($pmProposal, $pmTemplate);
+                    Program::fromTemplate($pmProposal, $template);
                 }
             }
         }
@@ -61,8 +65,8 @@ class DemoService {
     {
         return Tenant::where('slug', 'demo-host')->firstOrFail();
     }
-    protected function getDemoSite()
+    public function getDemoSites()
     {
-        return Site::where('name', 'Exampleville Community Center')->firstOrFail();
+        return Site::where('name', 'Demo Recreation Center')->orWhere('name', 'Demo Community Center')->get();
     }
 }

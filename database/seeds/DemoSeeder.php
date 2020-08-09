@@ -25,6 +25,7 @@ class DemoSeeder extends Seeder
     public function run()
     {
         //
+        $this->seedDemoSites();
         $demoHostUser = User::create([
             'name' => 'Demo User',
             'email' => 'demo.host@upcivic.com',
@@ -80,5 +81,11 @@ class DemoSeeder extends Seeder
             $template->organization_id = $demoProviderOrg->id;
             $template->save();
         }
+    }
+
+    protected function seedDemoSites()
+    {
+        factory(Site::class)->states('demoRecCenter')->create(['name' => 'Demo Recreation Center']);
+        factory(Site::class)->states('demoCommunityCenter')->create(['name' => 'Demo Community Center']);
     }
 }

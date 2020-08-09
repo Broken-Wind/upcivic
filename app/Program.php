@@ -131,6 +131,7 @@ class Program extends Model
                     ]);
                     $meeting['program_id'] = $program['id'];
                     $meeting['site_id'] = $proposal['site_id'] ?? null;
+                    $meeting['location_id'] = $proposal['location_id'] ?? null;
                     $meeting->save();
 
                     $currentEndDatetime = date('Y-m-d H:i:s', strtotime($currentEndDatetime . " +" . $template['meeting_interval'] . " days"));
@@ -147,6 +148,20 @@ class Program extends Model
             }
         });
         return $program;
+    }
+    public function getLocationIdAttribute()
+    {
+        $locationIds = $this->meetings->pluck('location_id')->filter(function ($locationId) {
+            return !empty($locationId);
+        });
+        if ($locationIds->isNotEmpty()) {
+            return $locationIds->mode();
+        }
+        $siteId = $this->site->id;
+        if (!empty($siteId)) {
+            return '0_' . $siteId;
+        }
+        return '0';
     }
     public function getSharedInvoiceTypeAttribute()
     {

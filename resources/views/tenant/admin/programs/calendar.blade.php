@@ -30,7 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
     timeZone: 'UTC',
     editable: true,
     initialView: 'resourceTimelineDay',
-    initialDate: '2020-08-02',
+    initialDate: '{{ \Carbon\Carbon::now()->next('monday')->toDateString() }}',
+    eventLimit: 4,
+    resourcesInitiallyExpanded: false,
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -38,19 +40,19 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     resourceAreaHeaderContent: 'Locations',
     views: {
-      resourceTimelineDay: {
-      type: 'resourceTimeline',
-      duration: { weeks: 12 },
-        buttonText: 'timeline',
-        slotDuration: '12:00:00',
-        slotLabelInterval: { weeks: 1},
-        slotMinWidth: 200,
-        slotLabelFormat: [
-          { month: 'long', year: 'numeric' }, // top level of text
-          { week: 'short' } // lower level of text
-        ],
-        firstDay: 1,
-                           }
+        resourceTimelineDay: {
+            type: 'resourceTimeline',
+            duration: { weeks: 12 },
+            buttonText: 'timeline',
+            slotDuration: '12:00:00',
+            slotLabelInterval: { weeks: 1},
+            slotMinWidth: 200,
+            slotLabelFormat: [
+            { month: 'long', year: 'numeric' }, // top level of text
+            { week: 'short' } // lower level of text
+            ],
+            firstDay: 1,
+        }
     },
     events: {!! $events !!},
     resourceGroupField: 'site',

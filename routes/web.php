@@ -9,6 +9,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 })->name('root');
@@ -36,7 +40,9 @@ Route::group(['middleware' => 'verified'], function () {
         'as' => 'tenant:admin.',
     ], function () {
         Route::get('/home', 'TenantController@index')->name('home');
-        // NEED TO MAKE THIS A POST AND ADD AUTHORIZATION Route::get('/demo', 'DemoProgramController@store')->name('demo.store');
+        // NEED TO MAKE THIS A POST AND ADD AUTHORIZATION
+        // Route::get('/demo', 'DemoProgramController@store')->name('demo.store');
+        Route::get('programs/calendar', 'CalendarController@index')->name('calendar.index');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
         Route::get('/settings', 'TenantController@edit')->name('edit');

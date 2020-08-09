@@ -20,6 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <script src="https://kit.fontawesome.com/2f34de0b7e.js" crossorigin="anonymous"></script>
+    @yield('head.additional')
 
 </head>
 <body>

@@ -1,4 +1,7 @@
 @extends('layouts.base')
+@section('head.additional')
+    @yield('head.additional')
+@endsection
 @section('body')
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">

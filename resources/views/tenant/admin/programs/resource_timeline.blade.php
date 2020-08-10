@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
     initialView: 'resourceTimelineDay',
     initialDate: '{{ \Carbon\Carbon::now()->next('monday')->toDateString() }}',
     resourcesInitiallyExpanded: false,
-            businessHours: {
-  // days of week. an array of zero-based day of week integers (0=Sunday)
-  daysOfWeek: [ 1, 2, 3, 4, 5 ], // Monday - Thursday
-},
+    businessHours: {
+        // days of week. an array of zero-based day of week integers (0=Sunday)
+        daysOfWeek: [ 1, 2, 3, 4, 5 ], // Monday - Thursday
+    },
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -56,9 +56,18 @@ document.addEventListener('DOMContentLoaded', function() {
             ],
         }
     },
-    events: {!! $events !!},
+    eventDrop: function(info) {
+        alert(info.event.title + " was dropped on " + info.event.start.toISOString());
+        alert(info.event.extendedProps.testAttribute);
+
+        if (!confirm("Are you sure about this change?")) {
+            info.revert();
+        }
+        console.log(info);
+    },
     resourceGroupField: 'site',
-    resources: {!! $resources !!}
+    events: {!! $events !!},
+    resources: {!! $resources !!},
   });
 
   calendar.render();

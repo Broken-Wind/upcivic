@@ -37,7 +37,8 @@ class ResourceTimelineService {
                 'resourceId' => $program->location_id,
                 'title' => $program->internal_name,
                 'start' => $program->start_datetime,
-                'end' => $program->end_datetime
+                'end' => $program->end_datetime,
+                'testAttribute' => 'works'
             ];
         })->values()->toJson();
     }

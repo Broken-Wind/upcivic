@@ -3,7 +3,7 @@ namespace Upcivic\Services;
 
 use Upcivic\Program;
 
-class CalendarService {
+class ResourceTimelineService {
     protected $demoService;
     public function __construct(DemoService $demoService)
     {

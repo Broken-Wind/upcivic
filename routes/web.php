@@ -42,7 +42,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/home', 'TenantController@index')->name('home');
         // NEED TO MAKE THIS A POST AND ADD AUTHORIZATION
         // Route::get('/demo', 'DemoProgramController@store')->name('demo.store');
-        Route::get('programs/calendar', 'CalendarController@index')->name('calendar.index');
+        Route::get('programs/resource_timeline', 'ResourceTimelineController@index')->name('resource_timeline.index');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
         Route::get('/settings', 'TenantController@edit')->name('edit');

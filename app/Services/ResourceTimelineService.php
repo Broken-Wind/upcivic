@@ -1,8 +1,8 @@
 <?php
 
-namespace Upcivic\Services;
+namespace App\Services;
 
-use Upcivic\Program;
+use App\Program;
 
 class ResourceTimelineService
 {

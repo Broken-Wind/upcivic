@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Filters;
+namespace App\Filters;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;

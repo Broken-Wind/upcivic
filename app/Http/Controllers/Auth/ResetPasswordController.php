@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\ResetsPasswords;
-use Upcivic\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 
 class ResetPasswordController extends Controller
 {

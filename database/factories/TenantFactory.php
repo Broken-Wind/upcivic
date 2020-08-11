@@ -3,11 +3,11 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use Faker\Generator as Faker;
-use Upcivic\Administrator;
-use Upcivic\Organization;
-use Upcivic\Person;
-use Upcivic\Tenant;
-use Upcivic\User;
+use App\Administrator;
+use App\Organization;
+use App\Person;
+use App\Tenant;
+use App\User;
 
 $factory->define(Tenant::class, function (Faker $faker) {
     return [

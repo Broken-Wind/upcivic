@@ -1,15 +1,15 @@
 <?php
 
-namespace Upcivic\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Upcivic\Services\TenantManager;
+use App\Services\TenantManager;
 
 class IdentifyTenant
 {
     /**
-     * @var Upcivic\Services\TenantManager
+     * @var App\Services\TenantManager
      */
     protected $tenantManager;
 

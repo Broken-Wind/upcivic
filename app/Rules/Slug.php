@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Rules;
+namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Route;

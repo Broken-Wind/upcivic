@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Upcivic\Filters\ProgramFilters;
-use Upcivic\Program;
+use App\Filters\ProgramFilters;
+use App\Program;
 
 class IframeController extends Controller
 {

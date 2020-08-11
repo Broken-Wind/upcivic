@@ -1,14 +1,14 @@
 <?php
 
-namespace Upcivic\Mail;
+namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Upcivic\Organization;
-use Upcivic\Person;
-use Upcivic\User;
+use App\Organization;
+use App\Person;
+use App\User;
 
 class ListedAsAdministrator extends Mailable
 {

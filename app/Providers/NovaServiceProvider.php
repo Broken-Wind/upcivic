@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Providers;
+namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Cards\Help;

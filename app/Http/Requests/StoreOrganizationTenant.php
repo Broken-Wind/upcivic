@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Requests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Upcivic\Rules\Slug;
+use App\Rules\Slug;
 
 class StoreOrganizationTenant extends FormRequest
 {

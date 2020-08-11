@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Services\DemoService;
+use App\Services\DemoService;
 
 class DemoProgramController extends Controller
 {

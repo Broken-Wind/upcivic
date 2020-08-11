@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\VerifiesEmails;
-use Upcivic\Http\Controllers\Controller;
-use Upcivic\Providers\RouteServiceProvider;
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 class VerificationController extends Controller
 {
     /*

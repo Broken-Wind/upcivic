@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Organization;
+use App\Organization;
 
 class HomeController extends Controller
 {

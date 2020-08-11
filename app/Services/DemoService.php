@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Services;
+namespace App\Services;
 
 use Carbon\Carbon;
-use Upcivic\Program;
-use Upcivic\Site;
-use Upcivic\Tenant;
+use App\Program;
+use App\Site;
+use App\Tenant;
 
 class DemoService
 {

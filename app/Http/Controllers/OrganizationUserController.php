@@ -1,12 +1,12 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Upcivic\Http\Requests\StoreOrganizationUser;
-use Upcivic\Mail\UserRequestsInviteToTenant;
-use Upcivic\Organization;
+use App\Http\Requests\StoreOrganizationUser;
+use App\Mail\UserRequestsInviteToTenant;
+use App\Organization;
 
 class OrganizationUserController extends Controller
 {

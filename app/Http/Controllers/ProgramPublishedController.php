@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\UpdateProgramPublished;
-use Upcivic\Program;
+use App\Http\Requests\UpdateProgramPublished;
+use App\Program;
 
 class ProgramPublishedController extends Controller
 {
@@ -13,8 +13,8 @@ class ProgramPublishedController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Upcivic\Http\Requests\UpdateProgram;  $request
-     * @param  \Upcivic\Program  $program
+     * @param  App\Http\Requests\UpdateProgram;  $request
+     * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateProgramPublished $request, Program $program)

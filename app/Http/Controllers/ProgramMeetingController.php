@@ -1,14 +1,14 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\DestroyProgramMeetings;
-use Upcivic\Http\Requests\StoreProgramMeeting;
-use Upcivic\Http\Requests\UpdateProgramMeetings;
-use Upcivic\Meeting;
-use Upcivic\Program;
+use App\Http\Requests\DestroyProgramMeetings;
+use App\Http\Requests\StoreProgramMeeting;
+use App\Http\Requests\UpdateProgramMeetings;
+use App\Meeting;
+use App\Program;
 
 class ProgramMeetingController extends Controller
 {

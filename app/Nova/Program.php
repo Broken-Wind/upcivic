@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
@@ -18,7 +18,7 @@ class Program extends Resource
      *
      * @var string
      */
-    public static $model = \Upcivic\Program::class;
+    public static $model = \App\Program::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

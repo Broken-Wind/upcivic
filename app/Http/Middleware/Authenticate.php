@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Upcivic\Services\TenantManager;
+use App\Services\TenantManager;
 
 class Authenticate extends Middleware
 {

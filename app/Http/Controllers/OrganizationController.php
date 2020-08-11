@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\StoreOrganization;
-use Upcivic\Http\Requests\UpdateOrganization;
-use Upcivic\Organization;
+use App\Http\Requests\StoreOrganization;
+use App\Http\Requests\UpdateOrganization;
+use App\Organization;
 
 class OrganizationController extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\County;
-use Upcivic\Http\Requests\StoreSite;
-use Upcivic\Site;
+use App\County;
+use App\Http\Requests\StoreSite;
+use App\Site;
 
 class SiteController extends Controller
 {
@@ -61,7 +61,7 @@ class SiteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function show(Site $site)
@@ -72,7 +72,7 @@ class SiteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function edit(Site $site)
@@ -84,7 +84,7 @@ class SiteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Site $site)
@@ -95,7 +95,7 @@ class SiteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function destroy(Site $site)

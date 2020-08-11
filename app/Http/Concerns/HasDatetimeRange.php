@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Concerns;
+namespace App\Concerns;
 
 use Carbon\Carbon;
 

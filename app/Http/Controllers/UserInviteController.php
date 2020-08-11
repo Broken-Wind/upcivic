@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\StoreUserInvite;
-use Upcivic\User;
+use App\Http\Requests\StoreUserInvite;
+use App\User;
 
 class UserInviteController extends Controller
 {

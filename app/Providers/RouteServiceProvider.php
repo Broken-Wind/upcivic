@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Providers;
+namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +14,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'Upcivic\Http\Controllers';
+    protected $namespace = 'App\Http\Controllers';
 
     /**
      * The path to the "home" route for your application.

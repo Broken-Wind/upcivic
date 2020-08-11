@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\UpdateProgramEnrollment;
-use Upcivic\Program;
+use App\Http\Requests\UpdateProgramEnrollment;
+use App\Program;
 
 class ProgramEnrollmentController extends Controller
 {

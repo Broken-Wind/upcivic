@@ -3,8 +3,8 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
-use Upcivic\Tenant;
-use Upcivic\User;
+use App\Tenant;
+use App\User;
 
 /*
 |--------------------------------------------------------------------------

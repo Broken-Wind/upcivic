@@ -1,12 +1,12 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Upcivic\Program;
-use Upcivic\Services\DemoService;
-use Upcivic\Services\ResourceTimelineService;
+use App\Program;
+use App\Services\DemoService;
+use App\Services\ResourceTimelineService;
 
 class ResourceTimelineController extends Controller
 {

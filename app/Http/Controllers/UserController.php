@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Auth;
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\UpdateUser;
-use Upcivic\User;
+use App\Http\Requests\UpdateUser;
+use App\User;
 
 class UserController extends Controller
 {

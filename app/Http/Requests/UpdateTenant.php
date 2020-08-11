@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Http\Requests;
+namespace App\Http\Requests;
 
 use Auth;
 use Illuminate\Foundation\Http\FormRequest;

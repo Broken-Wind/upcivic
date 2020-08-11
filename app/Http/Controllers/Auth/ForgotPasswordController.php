@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
-use Upcivic\Http\Controllers\Controller;
+use App\Http\Controllers\Controller;
 
 class ForgotPasswordController extends Controller
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Upcivic;
+namespace App;
 
 use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Upcivic\Concerns\Filterable;
-use Upcivic\Concerns\HasDatetimeRange;
-use Upcivic\Mail\ProposalSent;
+use App\Concerns\Filterable;
+use App\Concerns\HasDatetimeRange;
+use App\Mail\ProposalSent;
 
 class Program extends Model
 {

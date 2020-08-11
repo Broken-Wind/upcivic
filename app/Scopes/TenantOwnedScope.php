@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Scopes;
+namespace App\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Upcivic\Services\TenantManager;
+use App\Services\TenantManager;
 
 class TenantOwnedScope implements Scope
 {

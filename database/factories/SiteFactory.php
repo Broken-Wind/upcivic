@@ -3,8 +3,8 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use Faker\Generator as Faker;
-use Upcivic\Location;
-use Upcivic\Site;
+use App\Location;
+use App\Site;
 
 $factory->define(Site::class, function (Faker $faker) {
     return [

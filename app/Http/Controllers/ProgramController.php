@@ -1,18 +1,18 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Mixpanel;
-use Upcivic\Filters\ProgramFilters;
-use Upcivic\Http\Requests\StoreProgram;
-use Upcivic\Http\Requests\UpdateProgram;
-use Upcivic\Mail\ProposalSent;
-use Upcivic\Organization;
-use Upcivic\Program;
-use Upcivic\Site;
-use Upcivic\Template;
+use App\Filters\ProgramFilters;
+use App\Http\Requests\StoreProgram;
+use App\Http\Requests\UpdateProgram;
+use App\Mail\ProposalSent;
+use App\Organization;
+use App\Program;
+use App\Site;
+use App\Template;
 
 class ProgramController extends Controller
 {
@@ -52,7 +52,7 @@ class ProgramController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Upcivic\Http\Requests\StoreProgram;  $request
+     * @param  App\Http\Requests\StoreProgram;  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreProgram $request)
@@ -87,7 +87,7 @@ class ProgramController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Upcivic\Program  $program
+     * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function edit(Program $program)
@@ -102,8 +102,8 @@ class ProgramController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Upcivic\Http\Requests\UpdateProgram;  $request
-     * @param  \Upcivic\Program  $program
+     * @param  App\Http\Requests\UpdateProgram;  $request
+     * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateProgram $request, Program $program)
@@ -129,7 +129,7 @@ class ProgramController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Upcivic\Program  $program
+     * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function destroy(Program $program)

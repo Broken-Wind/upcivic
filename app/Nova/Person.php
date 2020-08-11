@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
@@ -14,7 +14,7 @@ class Person extends Resource
      *
      * @var string
      */
-    public static $model = \Upcivic\Person::class;
+    public static $model = \App\Person::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

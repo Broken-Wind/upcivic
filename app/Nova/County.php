@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
@@ -15,7 +15,7 @@ class County extends Resource
      *
      * @var string
      */
-    public static $model = \Upcivic\County::class;
+    public static $model = \App\County::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

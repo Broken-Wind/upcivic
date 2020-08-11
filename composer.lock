@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4638f179763e03c7891d907eb463ee2",
+    "content-hash": "a60434d49b303e81744582b1fd459e2f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -4877,6 +4877,64 @@
     ],
     "packages-dev": [
         {
+            "name": "andrey-helldar/laravel-app",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andrey-helldar/laravel-app.git",
+                "reference": "5fa8664a5ee141add2a0f1de94191dc2198dcb4c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andrey-helldar/laravel-app/zipball/5fa8664a5ee141add2a0f1de94191dc2198dcb4c",
+                "reference": "5fa8664a5ee141add2a0f1de94191dc2198dcb4c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "^6.0|^7.0|^8.0",
+                "illuminate/filesystem": "^6.0|^7.0|^8.0",
+                "illuminate/support": "^6.0|^7.0|^8.0",
+                "php": "^7.2"
+            },
+            "suggest": {
+                "laravel/helpers": "Provides backwards compatibility for helpers in the latest Laravel release."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Helldar\\LaravelApp\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Helldar\\LaravelApp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                },
+                {
+                    "name": "Andrey Helldar",
+                    "email": "helldar@ai-rus.com"
+                }
+            ],
+            "description": "Provides backwards compatibility for app:name command in the latest Laravel release.",
+            "keywords": [
+                "console",
+                "helpers",
+                "laravel"
+            ],
+            "time": "2020-06-02T10:56:20+00:00"
+        },
+        {
             "name": "barryvdh/laravel-debugbar",
             "version": "v3.4.1",
             "source": {
@@ -5375,6 +5433,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -5421,6 +5480,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {

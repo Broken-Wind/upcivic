@@ -1,13 +1,13 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\StoreTenant;
-use Upcivic\Http\Requests\UpdateTenant;
-use Upcivic\Organization;
-use Upcivic\Program;
-use Upcivic\Tenant;
+use App\Http\Requests\StoreTenant;
+use App\Http\Requests\UpdateTenant;
+use App\Organization;
+use App\Program;
+use App\Tenant;
 
 class TenantController extends Controller
 {
@@ -25,7 +25,7 @@ class TenantController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Upcivic\Http\Requests\StoreTenant  $request
+     * @param  App\Http\Requests\StoreTenant  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTenant $request)

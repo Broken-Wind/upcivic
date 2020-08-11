@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -18,7 +18,7 @@ class Organization extends Resource
      *
      * @var string
      */
-    public static $model = \Upcivic\Organization::class;
+    public static $model = \App\Organization::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

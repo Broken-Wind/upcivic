@@ -4,11 +4,11 @@
 
 use Carbon\Carbon;
 use Faker\Generator as Faker;
-use Upcivic\Contributor;
-use Upcivic\Meeting;
-use Upcivic\Organization;
-use Upcivic\Program;
-use Upcivic\Site;
+use App\Contributor;
+use App\Meeting;
+use App\Organization;
+use App\Program;
+use App\Site;
 
 $factory->define(Program::class, function (Faker $faker) {
     return [

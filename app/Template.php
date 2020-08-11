@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Upcivic\Concerns\OwnedByTenant;
+use App\Concerns\OwnedByTenant;
 
 class Template extends Model
 {

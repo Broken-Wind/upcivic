@@ -19,7 +19,7 @@ abstract class TestCase extends BaseTestCase
         $this->hotfixSqlite();
     }
 
-    public function setUp() :void
+    protected function setUp() :void
     {
         parent::setUp();
 

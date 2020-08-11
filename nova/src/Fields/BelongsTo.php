@@ -5,15 +5,15 @@ namespace Laravel\Nova\Fields;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laravel\Nova\Contracts\RelatableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Http\Requests\ResourceIndexRequest;
 use Laravel\Nova\Rules\Relatable;
 use Laravel\Nova\TrashedStatus;
 
-class BelongsTo extends Field
+class BelongsTo extends Field implements RelatableField
 {
-    use FormatsRelatableDisplayValues;
-    use ResolvesReverseRelation;
+    use FormatsRelatableDisplayValues, ResolvesReverseRelation, DeterminesIfCreateRelationCanBeShown;
 
     /**
      * The field's component.
@@ -93,6 +93,13 @@ class BelongsTo extends Field
     public $singularLabel;
 
     /**
+     * Indicates whether the field should display the "With Trashed" option.
+     *
+     * @var bool
+     */
+    public $displaysWithTrashed = true;
+
+    /**
      * Create a new field.
      *
      * @param  string  $name
@@ -109,6 +116,7 @@ class BelongsTo extends Field
         $this->resourceClass = $resource;
         $this->resourceName = $resource::uriKey();
         $this->belongsToRelationship = $this->attribute;
+        $this->singularLabel = $name;
     }
 
     /**
@@ -169,15 +177,14 @@ class BelongsTo extends Field
     }
 
     /**
-     * Resolve the field's value for display.
+     * Define the callback that should be used to resolve the field's value.
      *
-     * @param  mixed  $resource
-     * @param  string|null  $attribute
-     * @return void
+     * @param  callable  $displayCallback
+     * @return $this
      */
-    public function resolveForDisplay($resource, $attribute = null)
+    public function displayUsing(callable $displayCallback)
     {
-        //
+        return $this->display($displayCallback);
     }
 
     /**
@@ -374,7 +381,7 @@ class BelongsTo extends Field
     /**
      * Set the displayable singular label of the resource.
      *
-     * @return string
+     * @return $this
      */
     public function singularLabel($singularLabel)
     {
@@ -384,21 +391,35 @@ class BelongsTo extends Field
     }
 
     /**
-     * Get additional meta information to merge with the field payload.
+     * hides the "With Trashed" option.
+     *
+     * @return $this
+     */
+    public function withoutTrashed()
+    {
+        $this->displaysWithTrashed = false;
+
+        return $this;
+    }
+
+    /**
+     * Prepare the field for JSON serialization.
      *
      * @return array
      */
-    public function meta()
+    public function jsonSerialize()
     {
         return array_merge([
-            'resourceName' => $this->resourceName,
-            'label' => forward_static_call([$this->resourceClass, 'label']),
-            'singularLabel' => $this->singularLabel ?? $this->name ?? forward_static_call([$this->resourceClass, 'singularLabel']),
-            'belongsToRelationship' => $this->belongsToRelationship,
             'belongsToId' => $this->belongsToId,
-            'searchable' => $this->searchable,
-            'viewable' => $this->viewable,
+            'belongsToRelationship' => $this->belongsToRelationship,
+            'displaysWithTrashed' => $this->displaysWithTrashed,
+            'label' => forward_static_call([$this->resourceClass, 'label']),
+            'resourceName' => $this->resourceName,
             'reverse' => $this->isReverseRelation(app(NovaRequest::class)),
-        ], $this->meta);
+            'searchable' => $this->searchable,
+            'showCreateRelationButton' => $this->createRelationShouldBeShown(app(NovaRequest::class)),
+            'singularLabel' => $this->singularLabel,
+            'viewable' => $this->viewable,
+        ], parent::jsonSerialize());
     }
 }

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('root');
-Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function() {
+Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () {
     Auth::routes(['verify' => true]);
 });
 Route::group([
@@ -75,8 +75,5 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::get('/users/invites/create', 'UserInviteController@create')->name('users.invites.create');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
-
-
-
     });
 });

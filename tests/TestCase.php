@@ -2,11 +2,12 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Database\SQLiteConnection;
-use Illuminate\Database\Schema\{SQLiteBuilder, Blueprint};
-use Illuminate\Support\Fluent;
 use Closure;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\SQLiteBuilder;
+use Illuminate\Database\SQLiteConnection;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Fluent;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -18,16 +19,13 @@ abstract class TestCase extends BaseTestCase
         $this->hotfixSqlite();
     }
 
-    public function setUp() :void
+    protected function setUp() :void
     {
         parent::setUp();
 
         $this->artisan('db:seed', ['--class' => 'DatabaseSeeder']);
-
     }
-    /**
-     *
-     */
+
     public function hotfixSqlite()
     {
         \Illuminate\Database\Connection::resolverFor('sqlite', function ($connection, $database, $prefix, $config) {
@@ -37,6 +35,7 @@ abstract class TestCase extends BaseTestCase
                     if ($this->schemaGrammar === null) {
                         $this->useDefaultSchemaGrammar();
                     }
+
                     return new class($this) extends SQLiteBuilder {
                         protected function createBlueprint($table, Closure $callback = null)
                         {
@@ -52,5 +51,4 @@ abstract class TestCase extends BaseTestCase
             };
         });
     }
-
 }

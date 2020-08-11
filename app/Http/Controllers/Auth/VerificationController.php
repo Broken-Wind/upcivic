@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use Upcivic\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
-
+use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 class VerificationController extends Controller
 {
     /*
@@ -25,7 +25,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.

@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth;
 
-use Upcivic\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use App\Http\Controllers\Controller;
 
 class ResetPasswordController extends Controller
 {
@@ -27,13 +27,4 @@ class ResetPasswordController extends Controller
      */
     protected $redirectTo = '/home';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 }

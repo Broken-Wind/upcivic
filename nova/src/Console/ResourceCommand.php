@@ -74,7 +74,7 @@ class ResourceCommand extends GeneratorCommand
         $model = $this->option('model');
 
         if (is_null($model)) {
-            $model = $this->laravel->getNamespace().$this->argument('name');
+            $model = $this->laravel->getNamespace().str_replace('/', '\\', $this->argument('name'));
         } elseif (! Str::startsWith($model, [
             $this->laravel->getNamespace(), '\\',
         ])) {

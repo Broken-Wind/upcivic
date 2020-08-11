@@ -1,10 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Middleware;
-
-use Closure;
+namespace App\Http\Middleware;
 
 use Auth;
+use Closure;
 
 class AuthToTenant
 {
@@ -17,18 +16,12 @@ class AuthToTenant
      */
     public function handle($request, Closure $next)
     {
-
         if (Auth::user()) {
-
             Auth::user()->authToTenant();
-
         } else {
-
             abort(401, 'This action is unauthorized.');
-
         }
 
         return $next($request);
     }
-
 }

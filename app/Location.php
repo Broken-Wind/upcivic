@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,7 +10,7 @@ class Location extends Model
     protected $fillable = [
         'name',
         'capacity',
-        'notes'
+        'notes',
     ];
 
     public function site()

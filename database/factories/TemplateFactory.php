@@ -3,7 +3,7 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use Faker\Generator as Faker;
-use Upcivic\Template;
+use App\Template;
 
 $factory->define(Template::class, function (Faker $faker) {
     return [

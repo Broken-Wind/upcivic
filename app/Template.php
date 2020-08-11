@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Upcivic\Concerns\OwnedByTenant;
+use App\Concerns\OwnedByTenant;
 
 class Template extends Model
 {
@@ -29,21 +29,16 @@ class Template extends Model
 
     public function getInternalNameAttribute()
     {
-
         return $this->attributes['internal_name'] ?? $this->name;
-
     }
 
-    public function getFormattedInvoiceAmountAttribute() {
-
+    public function getFormattedInvoiceAmountAttribute()
+    {
         return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
-
     }
 
     public function tenant()
     {
-
         return $this->belongsTo(Organization::class, 'organization_id');
-
     }
 }

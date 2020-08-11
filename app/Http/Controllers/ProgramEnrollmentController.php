@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\UpdateProgramEnrollment;
-use Upcivic\Program;
+use App\Http\Requests\UpdateProgramEnrollment;
+use App\Program;
 
 class ProgramEnrollmentController extends Controller
 {
@@ -14,8 +14,9 @@ class ProgramEnrollmentController extends Controller
         $validated = $request->validated();
         $program->update([
             'enrollments' => $validated['enrollments'],
-            'max_enrollments' => $validated['max_enrollments']
+            'max_enrollments' => $validated['max_enrollments'],
         ]);
+
         return back();
     }
 }

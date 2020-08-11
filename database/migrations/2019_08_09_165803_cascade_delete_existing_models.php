@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CascadeDeleteExistingModels extends Migration
 {
@@ -50,9 +50,6 @@ class CascadeDeleteExistingModels extends Migration
             $table->dropForeign('locations_site_id_foreign');
             $table->foreign('site_id')->references('id')->on('sites')->onDelete('cascade');
         });
-
-
-
     }
 
     /**

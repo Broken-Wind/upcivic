@@ -2,15 +2,15 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 use Upcivic\Person;
 
 class PersonTest extends TestCase
 {
-
     use RefreshDatabase;
+
     /** @test */
     public function person_has_a_name()
     {
@@ -22,8 +22,6 @@ class PersonTest extends TestCase
 
         ]);
 
-
         $this->assertEquals($person->name, 'Smitty Johansson');
-
     }
 }

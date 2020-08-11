@@ -1,22 +1,20 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Upcivic\Administrator;
-use Upcivic\Http\Requests\StoreAdministrator;
-use Upcivic\Mail\ListedAsAdministrator;
-use Upcivic\Organization;
-use Upcivic\Person;
+use App\Administrator;
+use App\Http\Requests\StoreAdministrator;
+use App\Mail\ListedAsAdministrator;
+use App\Organization;
+use App\Person;
 
 class OrganizationAdministratorController extends Controller
 {
     //
     public function store(StoreAdministrator $request, Organization $organization)
     {
-
         $validated = $request->validated();
-
 
         $person = Person::create([
 
@@ -33,6 +31,5 @@ class OrganizationAdministratorController extends Controller
         \Mail::send(new ListedAsAdministrator(\Auth::user(), $organization, $person));
 
         return back()->withSuccess("Added {$person->name} to {$organization->name}!");
-
     }
 }

@@ -2,9 +2,9 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use Upcivic\Site;
 use Faker\Generator as Faker;
-use Upcivic\Location;
+use App\Location;
+use App\Site;
 
 $factory->define(Site::class, function (Faker $faker) {
     return [
@@ -54,7 +54,7 @@ $factory->afterCreatingState(Site::class, 'demoRecCenter', function (Site $site,
             'notes' => 'Various seating options available',
         ],
     ];
-    foreach($locationTemplates as $template) {
+    foreach ($locationTemplates as $template) {
         $locations[] = factory(Location::class)->create([
             'name' => $template['name'],
             'site_id' => $site['id'],
@@ -97,7 +97,7 @@ $factory->afterCreatingState(Site::class, 'demoCommunityCenter', function (Site 
             'notes' => '',
         ],
     ];
-    foreach($locationTemplates as $template) {
+    foreach ($locationTemplates as $template) {
         $locations[] = factory(Location::class)->create([
             'name' => $template['name'],
             'site_id' => $site['id'],
@@ -106,4 +106,3 @@ $factory->afterCreatingState(Site::class, 'demoCommunityCenter', function (Site 
         ]);
     }
 });
-

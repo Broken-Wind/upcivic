@@ -2,6 +2,10 @@
   <table
     v-if="resources.length > 0"
     class="table w-full"
+    :class="[
+      `table-${resourceInformation.tableStyle}`,
+      resourceInformation.showColumnBorders ? 'table-grid' : '',
+    ]"
     cellpadding="0"
     cellspacing="0"
     data-testid="resource-table"
@@ -9,12 +13,7 @@
     <thead>
       <tr>
         <!-- Select Checkbox -->
-        <th
-          :class="{
-            'w-16': shouldShowCheckboxes,
-            'w-8': !shouldShowCheckboxes,
-          }"
-        >
+        <th class="w-16" v-if="shouldShowCheckboxes">
           &nbsp;
         </th>
 

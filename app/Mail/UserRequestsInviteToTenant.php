@@ -2,12 +2,12 @@
 
 namespace App\Mail;
 
+use App\Tenant;
+use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\Tenant;
-use App\User;
 
 class UserRequestsInviteToTenant extends Mailable
 {

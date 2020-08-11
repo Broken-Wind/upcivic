@@ -2,9 +2,9 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use Faker\Generator as Faker;
 use App\Location;
 use App\Site;
+use Faker\Generator as Faker;
 
 $factory->define(Site::class, function (Faker $faker) {
     return [

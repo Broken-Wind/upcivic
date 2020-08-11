@@ -113,6 +113,10 @@
             :trashed="trashed"
             :per-page="perPage"
             :per-page-options="perPageOptions"
+            :show-trashed-option="
+              authorizedToForceDeleteAnyResources ||
+              authorizedToRestoreAnyResources
+            "
             :lens="lens"
             @clear-selected-filters="clearSelectedFilters(lens)"
             @filter-changed="filterChanged"
@@ -488,12 +492,14 @@ export default {
      * Sort the resources by the given field.
      */
     orderByField(field) {
-      var direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
-      if (this.currentOrderBy != field.attribute) {
+      let direction = this.currentOrderByDirection == 'asc' ? 'desc' : 'asc'
+
+      if (this.currentOrderBy != field.sortableUriKey) {
         direction = 'asc'
       }
+
       this.updateQueryString({
-        [this.orderByParameter]: field.attribute,
+        [this.orderByParameter]: field.sortableUriKey,
         [this.orderByDirectionParameter]: direction,
       })
     },

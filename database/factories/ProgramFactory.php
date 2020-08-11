@@ -2,13 +2,13 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use Carbon\Carbon;
-use Faker\Generator as Faker;
 use App\Contributor;
 use App\Meeting;
 use App\Organization;
 use App\Program;
 use App\Site;
+use Carbon\Carbon;
+use Faker\Generator as Faker;
 
 $factory->define(Program::class, function (Faker $faker) {
     return [

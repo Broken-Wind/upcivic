@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserInvite;
 use App\User;
+use Illuminate\Http\Request;
 
 class UserInviteController extends Controller
 {

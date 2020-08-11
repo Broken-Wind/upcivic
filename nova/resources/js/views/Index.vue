@@ -177,6 +177,10 @@
             :trashed="trashed"
             :per-page="perPage"
             :per-page-options="perPageOptions"
+            :show-trashed-option="
+              authorizedToForceDeleteAnyResources ||
+              authorizedToRestoreAnyResources
+            "
             @clear-selected-filters="clearSelectedFilters"
             @filter-changed="filterChanged"
             @trashed-changed="trashedChanged"
@@ -1147,9 +1151,9 @@ export default {
 
       return (
         this.resources.length &&
-        `${first + 1}-${first + this.resources.length} ${this.__('of')} ${
-          this.allMatchingResourceCount
-        }`
+        `${Nova.formatNumber(first + 1)}-${Nova.formatNumber(
+          first + this.resources.length
+        )} ${this.__('of')} ${Nova.formatNumber(this.allMatchingResourceCount)}`
       )
     },
 

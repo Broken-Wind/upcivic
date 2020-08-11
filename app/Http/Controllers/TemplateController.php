@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreTemplate;
 use App\Http\Requests\UpdateTemplate;
 use App\Template;
+use Illuminate\Http\Request;
 
 class TemplateController extends Controller
 {

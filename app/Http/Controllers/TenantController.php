@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreTenant;
 use App\Http\Requests\UpdateTenant;
 use App\Organization;
 use App\Program;
 use App\Tenant;
+use Illuminate\Http\Request;
 
 class TenantController extends Controller
 {

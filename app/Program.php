@@ -2,13 +2,13 @@
 
 namespace App;
 
+use App\Concerns\Filterable;
+use App\Concerns\HasDatetimeRange;
+use App\Mail\ProposalSent;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use App\Concerns\Filterable;
-use App\Concerns\HasDatetimeRange;
-use App\Mail\ProposalSent;
 
 class Program extends Model
 {

@@ -2,12 +2,12 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use Faker\Generator as Faker;
 use App\Administrator;
 use App\Organization;
 use App\Person;
 use App\Tenant;
 use App\User;
+use Faker\Generator as Faker;
 
 $factory->define(Tenant::class, function (Faker $faker) {
     return [

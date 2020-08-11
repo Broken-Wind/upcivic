@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Contributor;
 use App\Http\Requests\UpdateProgramContributors;
 use App\Program;
+use Illuminate\Http\Request;
 
 class ProgramContributorController extends Controller
 {

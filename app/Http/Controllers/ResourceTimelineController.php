@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Program;
 use App\Services\DemoService;
 use App\Services\ResourceTimelineService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ResourceTimelineController extends Controller
 {

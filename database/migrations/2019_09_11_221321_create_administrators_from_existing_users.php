@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Arr;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
 
 class CreateAdministratorsFromExistingUsers extends Migration

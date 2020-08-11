@@ -2,10 +2,10 @@
 
 namespace Upcivic;
 
-use Illuminate\Support\Arr;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

@@ -17,7 +17,8 @@
         "league/flysystem-aws-s3-v3": "~1.0",
         "mixpanel/mixpanel-php": "^2.7",
         "spatie/laravel-backup": "^6.4",
-        "spatie/laravel-honeypot": "^1.4"
+        "spatie/laravel-honeypot": "^1.4",
+        "laravel/ui": "^2.0"
     },
     "require-dev": {
         "andrey-helldar/laravel-app": "^1.0",

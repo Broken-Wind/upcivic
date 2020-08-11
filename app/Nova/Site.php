@@ -16,7 +16,7 @@ class Site extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Site';
+    public static $model = \Upcivic\Site::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

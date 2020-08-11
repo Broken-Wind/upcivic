@@ -14,7 +14,7 @@ class Person extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Person';
+    public static $model = \Upcivic\Person::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

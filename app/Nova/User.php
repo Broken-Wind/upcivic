@@ -17,7 +17,7 @@ class User extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\\User';
+    public static $model = \Upcivic\User::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

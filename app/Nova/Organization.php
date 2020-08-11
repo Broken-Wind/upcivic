@@ -18,7 +18,7 @@ class Organization extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Organization';
+    public static $model = \Upcivic\Organization::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

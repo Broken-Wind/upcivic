@@ -15,7 +15,7 @@ class Contributor extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Contributor';
+    public static $model = \Upcivic\Contributor::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

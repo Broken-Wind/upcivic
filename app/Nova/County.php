@@ -15,7 +15,7 @@ class County extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\County';
+    public static $model = \Upcivic\County::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

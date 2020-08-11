@@ -16,7 +16,7 @@ class Tenant extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Tenant';
+    public static $model = \Upcivic\Tenant::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

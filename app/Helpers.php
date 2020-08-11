@@ -2,7 +2,7 @@
 
 function tenant()
 {
-    return resolve('Upcivic\Tenant');
+    return resolve(\Upcivic\Tenant::class);
 }
 
 function mixpanel()

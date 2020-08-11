@@ -18,7 +18,7 @@ class Program extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Program';
+    public static $model = \Upcivic\Program::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

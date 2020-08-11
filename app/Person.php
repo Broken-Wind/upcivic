@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic;
+namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,8 +19,6 @@ class Person extends Model
 
     public function getNameAttribute()
     {
-
-        return $this->first_name . " " . $this->last_name;
-
+        return $this->first_name.' '.$this->last_name;
     }
 }

@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Contracts\Deletable as DeletableContract;
 use Laravel\Nova\Contracts\ListableField;
+use Laravel\Nova\Contracts\RelatableField;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Rules\NotAttached;
 use Laravel\Nova\Rules\RelatableAttachment;
 use Laravel\Nova\TrashedStatus;
 
-class MorphToMany extends Field implements DeletableContract, ListableField
+class MorphToMany extends Field implements DeletableContract, ListableField, RelatableField
 {
-    use Deletable, DetachesPivotModels, FormatsRelatableDisplayValues;
+    use Deletable, DetachesPivotModels, FormatsRelatableDisplayValues, Searchable;
 
     /**
      * The field's component.
@@ -70,13 +71,6 @@ class MorphToMany extends Field implements DeletableContract, ListableField
      * @var string
      */
     public $pivotName;
-
-    /**
-     * Indicates if this relationship is searchable.
-     *
-     * @var bool
-     */
-    public $searchable = false;
 
     /**
      * The displayable singular label of the relation.
@@ -279,19 +273,6 @@ class MorphToMany extends Field implements DeletableContract, ListableField
     }
 
     /**
-     * Specify if the relationship should be searchable.
-     *
-     * @param  bool  $value
-     * @return $this
-     */
-    public function searchable($value = true)
-    {
-        $this->searchable = $value;
-
-        return $this;
-    }
-
-    /**
      * Set the displayable singular label of the resource.
      *
      * @return $this
@@ -304,19 +285,20 @@ class MorphToMany extends Field implements DeletableContract, ListableField
     }
 
     /**
-     * Get additional meta information to merge with the field payload.
+     * Prepare the field for JSON serialization.
      *
      * @return array
      */
-    public function meta()
+    public function jsonSerialize()
     {
         return array_merge([
-            'resourceName' => $this->resourceName,
-            'morphToManyRelationship' => $this->manyToManyRelationship,
-            'searchable' => $this->searchable,
             'listable' => true,
-            'singularLabel' => $this->singularLabel ?? Str::singular($this->name),
+            'morphToManyRelationship' => $this->manyToManyRelationship,
             'perPage'=> $this->resourceClass::$perPageViaRelationship,
-        ], $this->meta);
+            'resourceName' => $this->resourceName,
+            'searchable' => $this->searchable,
+            'withSubtitles' => $this->withSubtitles,
+            'singularLabel' => $this->singularLabel ?? Str::singular($this->name),
+        ], parent::jsonSerialize());
     }
 }

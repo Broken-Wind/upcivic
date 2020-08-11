@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Upcivic\Site;
+use App\County;
+use App\Http\Requests\StoreSite;
+use App\Site;
 use Illuminate\Http\Request;
-use Upcivic\County;
-use Upcivic\Http\Requests\StoreSite;
 
 class SiteController extends Controller
 {
@@ -30,7 +30,8 @@ class SiteController extends Controller
     public function create()
     {
         //
-       $counties =  County::orderBy('name')->get();
+        $counties = County::orderBy('name')->get();
+
         return view('tenant.admin.sites.create', compact('counties'));
     }
 
@@ -55,13 +56,12 @@ class SiteController extends Controller
         $site->save();
 
         return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
-
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function show(Site $site)
@@ -72,7 +72,7 @@ class SiteController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function edit(Site $site)
@@ -84,7 +84,7 @@ class SiteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Site $site)
@@ -95,7 +95,7 @@ class SiteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Upcivic\Site  $site
+     * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
     public function destroy(Site $site)

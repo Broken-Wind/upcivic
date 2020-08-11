@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateTenantsTable extends Migration
 {
@@ -13,7 +13,6 @@ class CreateTenantsTable extends Migration
      */
     public function up()
     {
-
         Schema::create('tenants', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('organization_id');
@@ -21,12 +20,9 @@ class CreateTenantsTable extends Migration
             $table->timestamps();
 
             $table->foreign('organization_id')->references('id')->on('organizations');
-
         });
 
-
         $tenants = DB::table('organizations')->get()->map(function ($organization) {
-
             return [
 
                 'organization_id' => $organization->id,
@@ -38,11 +34,9 @@ class CreateTenantsTable extends Migration
                 'updated_at' => Carbon\Carbon::now(),
 
             ];
-
         })->toArray();
 
         DB::table('tenants')->insert($tenants);
-
     }
 
     /**

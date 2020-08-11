@@ -1,63 +1,59 @@
 <?php
-namespace Upcivic\Services;
 
-use Upcivic\Tenant;
-use Upcivic\Program;
+namespace App\Services;
+
+use App\Program;
+use App\Scopes\TenantOwnedScope;
+use App\Template;
+use App\Tenant;
 use Illuminate\Database\Eloquent\Builder;
-use Upcivic\Template;
-use Upcivic\Scopes\TenantOwnedScope;
 
-class TenantManager {
+class TenantManager
+{
     /*
-     * @var null|Upcivic\Tenant
+     * @var null|App\Tenant
      */
-     private $tenant;
+    private $tenant;
 
-    public function setTenant(?Tenant $tenant) {
+    public function setTenant(?Tenant $tenant)
+    {
         $this->tenant = $tenant;
+
         return $this;
     }
 
-    public function getTenant(): ?Tenant {
+    public function getTenant(): ?Tenant
+    {
         return $this->tenant;
     }
 
     public function forgetTenant()
     {
-
         $this->tenant = null;
-
     }
-
 
     public function applyGlobalScopes()
     {
-
         Program::addGlobalScope('TenantAccesibleProgram', function (Builder $builder) {
-
             return $builder->whereHas('contributors', function ($query) {
-
                 return $query->where('organization_id', tenant()->organization_id);
-
             });
-
         });
 
         Template::addGlobalScope(new TenantOwnedScope);
-
     }
 
-    public function loadTenant($identifier): bool {
-
+    public function loadTenant($identifier): bool
+    {
         $tenant = Tenant::query()->where('slug', '=', $identifier)->first();
 
         if ($tenant) {
             $this->setTenant($tenant);
             $this->applyGlobalScopes();
+
             return true;
         }
 
         return false;
-
     }
- }
+}

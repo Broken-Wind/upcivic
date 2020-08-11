@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Upcivic\Organization;
-use Upcivic\Template;
 use Upcivic\Site;
+use Upcivic\Template;
 use Upcivic\Tenant;
 use Upcivic\User;
 
@@ -15,8 +15,9 @@ class DemoSeeder extends Seeder
         'Soccer Camp (DEMO)',
         'Spanish Camp (DEMO)',
         'STEM Camp (DEMO)',
-        'Arts & Crafts Camp (DEMO)'
+        'Arts & Crafts Camp (DEMO)',
     ];
+
     /**
      * Run the database seeds.
      *
@@ -61,7 +62,7 @@ class DemoSeeder extends Seeder
 
     protected function generateTemplatesFor(Organization $demoProviderOrg)
     {
-        for ($i=0; $i<count(self::TEMPLATE_NAMES); $i++) {
+        for ($i = 0; $i < count(self::TEMPLATE_NAMES); $i++) {
             $template = new Template([
                 'name' => self::TEMPLATE_NAMES[$i],
                 'description' => 'This is an example program session. Scroll down to see the age range, collaborating organizations, and schedule. If you\'d like to propose a program to another organization, you\'ll need to add a template first. Click "Templates" above, and then create your first program template!',

@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Requests;
+namespace App\Http\Requests;
 
+use App\Rules\Slug;
 use Illuminate\Foundation\Http\FormRequest;
-use Upcivic\Rules\Slug;
 
 class StoreOrganizationTenant extends FormRequest
 {
@@ -14,7 +14,7 @@ class StoreOrganizationTenant extends FormRequest
      */
     public function authorize()
     {
-        return !$this->user()->hasTenant();
+        return ! $this->user()->hasTenant();
     }
 
     /**
@@ -26,7 +26,7 @@ class StoreOrganizationTenant extends FormRequest
     {
         return [
             //
-            'slug' => ['required', 'unique:tenants', 'max:255'. 'alpha_dash', new Slug],
+            'slug' => ['required', 'unique:tenants', 'max:255'.'alpha_dash', new Slug],
         ];
     }
 }

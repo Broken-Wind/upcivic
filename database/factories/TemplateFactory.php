@@ -2,8 +2,8 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
+use App\Template;
 use Faker\Generator as Faker;
-use Upcivic\Template;
 
 $factory->define(Template::class, function (Faker $faker) {
     return [

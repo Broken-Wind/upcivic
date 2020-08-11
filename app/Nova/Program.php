@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -18,7 +18,7 @@ class Program extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Program';
+    public static $model = \App\Program::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

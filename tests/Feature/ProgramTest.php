@@ -3,10 +3,10 @@
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
+use Tests\TestCase;
 use Upcivic\Contributor;
 use Upcivic\Mail\ProposalSent;
 use Upcivic\Organization;
@@ -16,36 +16,29 @@ use Upcivic\User;
 
 class ProgramTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /** @test */
     public function user_can_see_program_create_view()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
         $template = factory(Template::class)->create(['organization_id' => $tenant->organization->id]);
 
-
         $response = $this->actingAs($user)->followingRedirects()->get("/{$tenant->slug}/admin/programs/create");
-
 
         $response->assertSeeText('Create Programs');
 
         $response->assertSeeText('Start Date');
 
         $response->assertSeeText('Additional Recipient:');
-
-
     }
 
     /** @test */
     public function user_can_create_program()
     {
-
         $this->withoutExceptionHandling();
 
         Mail::fake();
@@ -80,7 +73,6 @@ class ProgramTest extends TestCase
 
         ]);
 
-
         $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/programs", [
 
             'recipient_organization_id' => $recipientOrganization->id,
@@ -101,11 +93,9 @@ class ProgramTest extends TestCase
 
             'cc_emails' => [],
 
-
         ]);
 
         $tenant->refresh();
-
 
         $response->assertStatus(200);
 
@@ -128,13 +118,11 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['end_time'], '11:00am');
         $this->assertEquals(Carbon::parse($program->meetings[0]['start_datetime'])->diffInDays($program->meetings[1]['start_datetime']), 7);
         $this->assertEquals($program->meetings->count(), 3);
-
     }
 
     /** @test */
     public function user_can_edit_program()
     {
-
         $this->withoutExceptionHandling();
 
         $user = factory(User::class)->states('hasTenant')->create();
@@ -150,7 +138,6 @@ class ProgramTest extends TestCase
         $contributor['organization_id'] = $tenant->organization_id;
 
         $program->contributors()->save($contributor);
-
 
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}", [
 
@@ -169,7 +156,6 @@ class ProgramTest extends TestCase
 
         $program->refresh();
 
-
         $response->assertStatus(200);
 
         $this->assertEquals($program['name'], 'Sweet Radcamp');
@@ -182,8 +168,5 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['max_age'], '99');
         $this->assertEquals($program['min_enrollments'], '393');
         $this->assertEquals($program['max_enrollments'], '494');
-
     }
-
 }
-

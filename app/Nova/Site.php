@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -16,7 +16,7 @@ class Site extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Site';
+    public static $model = \App\Site::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

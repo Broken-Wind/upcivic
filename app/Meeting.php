@@ -1,8 +1,11 @@
 <?php
-namespace Upcivic;
-use Illuminate\Database\Eloquent\Model;
+
+namespace App;
+
+use App\Concerns\HasDatetimeRange;
 use Carbon\Carbon;
-use Upcivic\Concerns\HasDatetimeRange;
+use Illuminate\Database\Eloquent\Model;
+
 class Meeting extends Model
 {
     //
@@ -13,7 +16,8 @@ class Meeting extends Model
         'end_datetime',
     ];
 
-    public function getLinkedPinHtml() {
+    public function getLinkedPinHtml()
+    {
         return $this->site->getLinkedPinHtml();
     }
 
@@ -30,7 +34,7 @@ class Meeting extends Model
     public function site()
     {
         return $this->belongsTo(Site::class)->withDefault([
-            'name' => "Site TBD",
+            'name' => 'Site TBD',
             'address' => 'TBD',
             'phone' => 'TBD',
         ]);
@@ -39,7 +43,7 @@ class Meeting extends Model
     public function getLocationAttribute()
     {
         return $this->location ?? new Location([
-            'name' => "Location TBD"
+            'name' => 'Location TBD',
         ]);
     }
 }

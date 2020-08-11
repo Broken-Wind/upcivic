@@ -1,10 +1,13 @@
 <?php
-namespace Upcivic\Services;
 
-use Upcivic\Program;
+namespace App\Services;
 
-class ResourceTimelineService {
+use App\Program;
+
+class ResourceTimelineService
+{
     protected $demoService;
+
     public function __construct(DemoService $demoService)
     {
         $this->demoService = $demoService;
@@ -17,19 +20,20 @@ class ResourceTimelineService {
                 return [
                     'id' => $location->id,
                     'site' => $location->site->name,
-                    'title' => $location->name
+                    'title' => $location->name,
                 ];
             })->prepend([
-                'id' => '0_' . $site->id,
+                'id' => '0_'.$site->id,
                 'site' => $site->name,
-                'title' => 'Location TBD'
+                'title' => 'Location TBD',
             ]);
         })->flatten(1)->prepend([
             'id' => 0,
             'site' => 'Site TBD',
-            'title' => ' '
+            'title' => ' ',
         ]);
     }
+
     public function getEvents()
     {
         return Program::with(['meetings.site', 'contributors.organization'])->get()->sortBy('start_datetime')->map(function ($program) {
@@ -37,7 +41,8 @@ class ResourceTimelineService {
                 'resourceId' => $program->location_id,
                 'title' => $program->internal_name,
                 'start' => $program->start_datetime,
-                'end' => $program->end_datetime
+                'end' => $program->end_datetime,
+                'testAttribute' => 'works',
             ];
         })->values()->toJson();
     }

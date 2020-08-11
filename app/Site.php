@@ -1,6 +1,9 @@
 <?php
-namespace Upcivic;
+
+namespace App;
+
 use Illuminate\Database\Eloquent\Model;
+
 class Site extends Model
 {
     protected $fillable = [
@@ -8,18 +11,23 @@ class Site extends Model
         'address',
         'phone',
     ];
-    public function getLinkedPinHtml() {
+
+    public function getLinkedPinHtml()
+    {
         return "<a href=\"https://www.google.com/maps/search/?api=1&query={$this['address']}\" target=\"_blank\"><i class=\"fas fa-fw fa-map-marker-alt ml-2\"></i></a>";
     }
+
     //
     public function meetings()
     {
         return $this->belongsToMany(Meeting::class);
     }
+
     public function county()
     {
         return $this->belongsTo(County::class);
     }
+
     public function locations()
     {
         return $this->hasMany(Location::class);

@@ -1,9 +1,9 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Organization;
 use Illuminate\Http\Request;
-use Upcivic\Organization;
 
 class HomeController extends Controller
 {
@@ -24,11 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-
         if (\Auth::user()->hasTenant()) {
-
             return redirect()->route('tenant:admin.home', \Auth::user()->tenants()->first()->slug);
-
         }
 
         $recommendedOrganizations = \Auth::user()->recommendedOrganizations();

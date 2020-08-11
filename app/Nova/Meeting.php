@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Meeting extends Resource
@@ -15,7 +15,7 @@ class Meeting extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Meeting';
+    public static $model = \App\Meeting::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

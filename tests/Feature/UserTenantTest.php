@@ -2,24 +2,21 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 use Upcivic\Organization;
 use Upcivic\Tenant;
 use Upcivic\User;
 
 class UserTenantTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /** @test */
     public function user_without_tenant_can_create_tenant()
     {
-
         $user = factory(User::class)->create();
-
 
         $response = $this->actingAs($user)->followingRedirects()->post('/tenants', [
 
@@ -29,21 +26,17 @@ class UserTenantTest extends TestCase
 
         ]);
 
-        $response->assertSeeText("To submit a proposal with an organization or site not yet listed");
-
+        $response->assertSeeText('To submit a proposal with an organization or site not yet listed');
     }
 
     /** @test */
     public function user_with_tenant_can_edit_tenant()
     {
-
         $this->withoutExceptionHandling();
 
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
-
-
 
         $response = $this->actingAs($user)->followingRedirects()->patch("/{$tenant->slug}/admin/settings", [
 
@@ -53,17 +46,14 @@ class UserTenantTest extends TestCase
 
         $tenant->refresh();
 
-
         $response->assertStatus(200);
 
         $this->assertEquals('Bobby Dodgekins', $tenant->name);
-
     }
 
     /** @test */
     public function user_cannot_edit_tenant_if_not_member()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $organizationUserDoesNotBelongTo = factory(Organization::class)->create([
@@ -80,8 +70,6 @@ class UserTenantTest extends TestCase
 
         ]);
 
-
-
         $response = $this->actingAs($user)->followingRedirects()->patch("/{$tenantUserDoesNotBelongTo->slug}/admin/settings", [
 
             'name' => 'Bobby Dodgekins',
@@ -90,10 +78,8 @@ class UserTenantTest extends TestCase
 
         $organizationUserDoesNotBelongTo->refresh();
 
-
         $response->assertStatus(401);
 
         $this->assertEquals('Should not change.', $organizationUserDoesNotBelongTo->name);
-
     }
 }

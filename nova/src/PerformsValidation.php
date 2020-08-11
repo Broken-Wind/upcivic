@@ -12,6 +12,7 @@ trait PerformsValidation
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return void
+     * @throws \Illuminate\Validation\ValidationException
      */
     public static function validateForCreation(NovaRequest $request)
     {
@@ -41,7 +42,7 @@ trait PerformsValidation
      */
     public static function rulesForCreation(NovaRequest $request)
     {
-        return static::formatRules($request, (new static(static::newModel()))
+        return static::formatRules($request, (self::newResource())
                     ->creationFields($request)
                     ->reject(function ($field) use ($request) {
                         return $field->isReadonly($request);
@@ -60,34 +61,37 @@ trait PerformsValidation
      */
     public static function creationRulesFor(NovaRequest $request, $field)
     {
-        return static::formatRules($request, (new static(static::newModel()))
-                    ->availableFields($request)
-                    ->where('attribute', $field)
-                    ->mapWithKeys(function ($field) use ($request) {
-                        return $field->getCreationRules($request);
-                    })->all());
+        return static::formatRules($request, self::newResource()
+            ->availableFields($request)
+            ->where('attribute', $field)
+            ->mapWithKeys(function ($field) use ($request) {
+                return $field->getCreationRules($request);
+            })->all());
     }
 
     /**
      * Validate a resource update request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource|null  $resource
      * @return void
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public static function validateForUpdate(NovaRequest $request)
+    public static function validateForUpdate(NovaRequest $request, $resource = null)
     {
-        static::validatorForUpdate($request)->validate();
+        static::validatorForUpdate($request, $resource)->validate();
     }
 
     /**
      * Create a validator instance for a resource update request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource|null  $resource
      * @return \Illuminate\Validation\Validator
      */
-    public static function validatorForUpdate(NovaRequest $request)
+    public static function validatorForUpdate(NovaRequest $request, $resource = null)
     {
-        return Validator::make($request->all(), static::rulesForUpdate($request))
+        return Validator::make($request->all(), static::rulesForUpdate($request, $resource))
                 ->after(function ($validator) use ($request) {
                     static::afterValidation($request, $validator);
                     static::afterUpdateValidation($request, $validator);
@@ -98,12 +102,14 @@ trait PerformsValidation
      * Get the validation rules for a resource update request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Laravel\Nova\Resource|null  $resource
      * @return array
      */
-    public static function rulesForUpdate(NovaRequest $request)
+    public static function rulesForUpdate(NovaRequest $request, $resource = null)
     {
-        return static::formatRules($request, (new static(static::newModel()))
-                    ->updateFields($request)
+        $resource = $resource ?? self::newResource();
+
+        return static::formatRules($request, $resource->updateFields($request)
                     ->reject(function ($field) use ($request) {
                         return $field->isReadonly($request);
                     })
@@ -121,7 +127,7 @@ trait PerformsValidation
      */
     public static function updateRulesFor(NovaRequest $request, $field)
     {
-        return static::formatRules($request, (new static(static::newModel()))
+        return static::formatRules($request, self::newResource()
                     ->availableFields($request)
                     ->where('attribute', $field)
                     ->mapWithKeys(function ($field) use ($request) {
@@ -134,6 +140,7 @@ trait PerformsValidation
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return void
+     * @throws \Illuminate\Validation\ValidationException
      */
     public static function validateForAttachment(NovaRequest $request)
     {
@@ -159,7 +166,7 @@ trait PerformsValidation
      */
     public static function rulesForAttachment(NovaRequest $request)
     {
-        return static::formatRules($request, (new static(static::newModel()))
+        return static::formatRules($request, self::newResource()
                     ->creationPivotFields($request, $request->relatedResource)
                     ->mapWithKeys(function ($field) use ($request) {
                         return $field->getCreationRules($request);
@@ -171,6 +178,7 @@ trait PerformsValidation
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return void
+     * @throws \Illuminate\Validation\ValidationException
      */
     public static function validateForAttachmentUpdate(NovaRequest $request)
     {
@@ -196,7 +204,7 @@ trait PerformsValidation
      */
     public static function rulesForAttachmentUpdate(NovaRequest $request)
     {
-        return static::formatRules($request, (new static(static::newModel()))
+        return static::formatRules($request, self::newResource()
                     ->updatePivotFields($request, $request->relatedResource)
                     ->mapWithKeys(function ($field) use ($request) {
                         return $field->getUpdateRules($request);
@@ -238,7 +246,7 @@ trait PerformsValidation
      */
     public static function validationAttributeFor(NovaRequest $request, $field)
     {
-        return (new static(static::newModel()))
+        return self::newResource()
                     ->availableFields($request)
                     ->firstWhere('resourceName', $field)
                     ->getValidationAttribute($request);

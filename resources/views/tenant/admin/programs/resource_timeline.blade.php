@@ -31,8 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
     editable: true,
     initialView: 'resourceTimelineDay',
     initialDate: '{{ \Carbon\Carbon::now()->next('monday')->toDateString() }}',
-    eventLimit: 4,
     resourcesInitiallyExpanded: false,
+    businessHours: {
+        // days of week. an array of zero-based day of week integers (0=Sunday)
+        daysOfWeek: [ 1, 2, 3, 4, 5 ], // Monday - Thursday
+    },
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -44,19 +47,27 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'resourceTimeline',
             duration: { weeks: 12 },
             buttonText: 'timeline',
-            slotDuration: '12:00:00',
-            slotLabelInterval: { weeks: 1},
-            slotMinWidth: 200,
+            slotDuration: { days: 1 },
+            slotLabelInterval: { days: 1 },
+            slotMinWidth: 100,
             slotLabelFormat: [
-            { month: 'long', year: 'numeric' }, // top level of text
-            { week: 'short' } // lower level of text
+                { month: 'long', year: 'numeric' }, // top level of text
+                { month: 'numeric', day: 'numeric' } // lower level of text
             ],
-            firstDay: 1,
         }
     },
-    events: {!! $events !!},
+    eventDrop: function(info) {
+        alert(info.event.title + " was dropped on " + info.event.start.toISOString());
+        alert(info.event.extendedProps.testAttribute);
+
+        if (!confirm("Are you sure about this change?")) {
+            info.revert();
+        }
+        console.log(info);
+    },
     resourceGroupField: 'site',
-    resources: {!! $resources !!}
+    events: {!! $events !!},
+    resources: {!! $resources !!},
   });
 
   calendar.render();

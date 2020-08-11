@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Upcivic\Organization;
-use Upcivic\Template;
 use Upcivic\Site;
+use Upcivic\Template;
 use Upcivic\Tenant;
 use Upcivic\User;
 
@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
         $user = User::create([
 
             'name' => 'Greg Intermaggio',
@@ -44,8 +43,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->joinTenant($tenant);
-
-
 
         $template = new Template([
 
@@ -79,6 +76,5 @@ class DatabaseSeeder extends Seeder
             'address' => '123 Fake St. Exampleville, CA',
 
         ]);
-
     }
 }

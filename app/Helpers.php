@@ -1,18 +1,11 @@
 <?php
 
-
-
 function tenant()
 {
-
-    return resolve('Upcivic\Tenant');
-
+    return resolve(\App\Tenant::class);
 }
 
 function mixpanel()
 {
-
     return Mixpanel::getInstance(config('mixpanel.token'));
-
 }
-

@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -15,7 +15,7 @@ class Contributor extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Contributor';
+    public static $model = \App\Contributor::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -48,7 +48,6 @@ class Contributor extends Resource
             BelongsTo::make('Organization'),
             Text::make('Invoice Amount'),
             Text::make('Invoice Type'),
-
 
         ];
     }

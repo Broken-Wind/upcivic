@@ -1,7 +1,8 @@
 <?php
-namespace Upcivic\Concerns;
 
-use Upcivic\Filters\QueryFilters;
+namespace App\Concerns;
+
+use App\Filters\QueryFilters;
 
 trait Filterable
 {

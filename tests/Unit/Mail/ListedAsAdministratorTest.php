@@ -2,32 +2,30 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 use Upcivic\Mail\ListedAsAdministrator;
 use Upcivic\Organization;
-use Upcivic\User;
 use Upcivic\Person;
+use Upcivic\User;
 
 class ListedAsAdministratorTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /** @test */
     public function email_content_test()
     {
-
         $lister = factory(User::class)->create([
 
-            'email' => 'lister@test.com'
+            'email' => 'lister@test.com',
 
         ]);
 
         $organization = factory(Organization::class)->create([
 
-            'name' => 'JimminyCrickets!'
+            'name' => 'JimminyCrickets!',
 
         ]);
 
@@ -39,12 +37,9 @@ class ListedAsAdministratorTest extends TestCase
 
         $organization->administrators()->save($person, ['title' => 'President OF THE WORLD!']);
 
-
         $email = new ListedAsAdministrator($lister, $organization, $person);
 
         $rendered = $email->render();
-
-
 
         $this->assertStringContainsString($lister->name, $rendered);
 
@@ -55,15 +50,12 @@ class ListedAsAdministratorTest extends TestCase
         $this->assertStringContainsString('President OF THE WORLD!', $rendered);
 
         $this->assertStringContainsString(route('root'), $rendered);
-
     }
 
     public function render($mailable)
     {
-
         $mailable->build();
 
         return view($mailable->view(), $mailable->buildViewData())->render();
-
     }
 }

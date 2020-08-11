@@ -4,11 +4,13 @@ namespace Laravel\Nova;
 
 use BadMethodCallException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Http\Middleware\RedirectIfAuthenticated;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -118,6 +120,13 @@ class Nova
     public static $jsonVariables = [];
 
     /**
+     * The callback used to report Nova's exceptions.
+     *
+     * @var \Closure
+     */
+    public static $reportCallback;
+
+    /**
      * Indicates if Nova should register its migrations.
      *
      * @var bool
@@ -132,13 +141,20 @@ class Nova
     public static $translations = [];
 
     /**
+     * The callback used to sort Nova resources in the sidebar.
+     *
+     * @var \Closure
+     */
+    public static $sortCallback;
+
+    /**
      * Get the current Nova version.
      *
      * @return string
      */
     public static function version()
     {
-        return '2.3.1';
+        return '3.8.2';
     }
 
     /**
@@ -192,15 +208,39 @@ class Nova
      */
     public static function resourceInformation(Request $request)
     {
-        return collect(static::$resources)->map(function ($resource) use ($request) {
+        return static::resourceCollection()->map(function ($resource) use ($request) {
             return array_merge([
                 'uriKey' => $resource::uriKey(),
                 'label' => $resource::label(),
                 'singularLabel' => $resource::singularLabel(),
                 'authorizedToCreate' => $resource::authorizedToCreate($request),
                 'searchable' => $resource::searchable(),
+                'perPageOptions' => $resource::perPageOptions(),
+                'tableStyle' => $resource::tableStyle(),
+                'showColumnBorders' => $resource::showColumnBorders(),
             ], $resource::additionalInformation($request));
         })->values()->all();
+    }
+
+    /**
+     * Return the base collection of Nova resources.
+     *
+     * @return \Laravel\Nova\ResourceCollection
+     */
+    private static function resourceCollection()
+    {
+        return ResourceCollection::make(static::$resources);
+    }
+
+    /**
+     * Return Nova's authorized resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Laravel\Nova\ResourceCollection
+     */
+    public static function authorizedResources(Request $request)
+    {
+        return static::resourceCollection()->authorized($request);
     }
 
     /**
@@ -211,10 +251,9 @@ class Nova
      */
     public static function availableResources(Request $request)
     {
-        return collect(static::$resources)->filter(function ($resource) use ($request) {
-            return $resource::authorizedToViewAny($request) &&
-                   $resource::availableForNavigation($request);
-        })->all();
+        return static::authorizedResources($request)
+            ->sortBy(static::sortResourcesWith())
+            ->all();
     }
 
     /**
@@ -225,10 +264,24 @@ class Nova
      */
     public static function globallySearchableResources(Request $request)
     {
-        return collect(static::availableResources($request))
-                    ->filter(function ($resource) {
-                        return $resource::$globallySearchable;
-                    });
+        return static::authorizedResources($request)
+            ->searchable()
+            ->sortBy(static::sortResourcesWith())
+            ->all();
+    }
+
+    /**
+     * Get the resources available for the given request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return Collection
+     */
+    public static function resourcesForNavigation(Request $request)
+    {
+        return static::authorizedResources($request)
+            ->availableForNavigation($request)
+            ->sortBy(static::sortResourcesWith())
+            ->all();
     }
 
     /**
@@ -239,7 +292,22 @@ class Nova
      */
     public static function resources(array $resources)
     {
-        static::$resources = array_merge(static::$resources, $resources);
+        static::$resources = array_unique(
+            array_merge(static::$resources, $resources)
+        );
+
+        return new static;
+    }
+
+    /**
+     * Replace the registered resources with the given resources.
+     *
+     * @param  array  $resources
+     * @return static
+     */
+    public static function replaceResources(array $resources)
+    {
+        static::$resources = $resources;
 
         return new static;
     }
@@ -266,10 +334,22 @@ class Nova
      */
     public static function groupedResources(Request $request)
     {
-        return collect(static::availableResources($request))
-                    ->groupBy(function ($item, $key) {
-                        return $item::group();
-                    })->sortKeys()->all();
+        return ResourceCollection::make(static::availableResources($request))
+            ->grouped()
+            ->all();
+    }
+
+    /**
+     * Get the grouped resources available for the given request.
+     *
+     * @param  Request  $request
+     * @return \Illuminate\Support\Collection
+     */
+    public static function groupedResourcesForNavigation(Request $request)
+    {
+        return ResourceCollection::make(static::availableResources($request))
+            ->groupedForNavigation($request)
+            ->filter->count();
     }
 
     /**
@@ -292,7 +372,8 @@ class Nova
             );
 
             if (is_subclass_of($resource, Resource::class) &&
-                ! (new ReflectionClass($resource))->isAbstract()) {
+                ! (new ReflectionClass($resource))->isAbstract() &&
+                ! (is_subclass_of($resource, ActionResource::class))) {
                 $resources[] = $resource;
             }
         }
@@ -310,7 +391,7 @@ class Nova
      */
     public static function resourceForKey($key)
     {
-        return collect(static::$resources)->first(function ($value) use ($key) {
+        return static::resourceCollection()->first(function ($value) use ($key) {
             return $value::uriKey() === $key;
         });
     }
@@ -344,7 +425,7 @@ class Nova
             return static::$resourcesByModel[$class];
         }
 
-        $resource = collect(static::$resources)->first(function ($value) use ($class) {
+        $resource = static::resourceCollection()->first(function ($value) use ($class) {
             return $value::$model === $class;
         });
 
@@ -607,7 +688,7 @@ class Nova
      * Get the available dashboard cards for the given request.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public static function allAvailableDashboardCards(NovaRequest $request)
     {
@@ -628,7 +709,7 @@ class Nova
      *
      * @param  string  $dashboard
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public static function availableDashboardCardsForDashboard($dashboard, NovaRequest $request)
     {
@@ -835,6 +916,33 @@ class Nova
     }
 
     /**
+     * Register the callback used to set a custom Nova error reporter.
+     *
+     * @var \Closure
+     *
+     * @param \Closure $callback
+     * @return static
+     */
+    public static function report($callback)
+    {
+        static::$reportCallback = $callback;
+
+        return new static;
+    }
+
+    /**
+     * Enable theming-friendly CSS classes for Nova's built-in Vue components.
+     *
+     * @return static
+     */
+    public static function enableThemingClasses()
+    {
+        static::provideToScript(['themingClasses' => true]);
+
+        return new static;
+    }
+
+    /**
      * Dynamically proxy static method calls.
      *
      * @param  string  $method
@@ -848,5 +956,52 @@ class Nova
         }
 
         return static::${$method};
+    }
+
+    /**
+     * Return the configured ActionResource class.
+     *
+     * @return \Laravel\Nova\Actions\ActionResource
+     */
+    public static function actionResource()
+    {
+        return config('nova.actions.resource');
+    }
+
+    /**
+     * Return a new instance of the configured ActionEvent.
+     *
+     * @return \Laravel\Nova\Actions\ActionEvent
+     */
+    public static function actionEvent()
+    {
+        return static::actionResource()::newModel();
+    }
+
+    /**
+     * Register the callback used to sort Nova resources in the sidebar.
+     *
+     * @var \Closure
+     *
+     * @param \Closure $callback
+     * @return static
+     */
+    public static function sortResourcesBy($callback)
+    {
+        static::$sortCallback = $callback;
+
+        return new static;
+    }
+
+    /**
+     * Get the sorting strategy to use for Nova resources.
+     *
+     * @return array
+     */
+    public static function sortResourcesWith()
+    {
+        return static::$sortCallback ?? function ($resource) {
+            return $resource::label();
+        };
     }
 }

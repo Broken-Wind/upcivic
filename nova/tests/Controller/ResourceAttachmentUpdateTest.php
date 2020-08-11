@@ -3,7 +3,9 @@
 namespace Laravel\Nova\Tests\Controller;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Actions\ActionEvent;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\Fixtures\Role;
 use Laravel\Nova\Tests\Fixtures\RoleAssignment;
 use Laravel\Nova\Tests\Fixtures\User;
@@ -11,7 +13,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceAttachmentUpdateTest extends IntegrationTest
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -223,5 +225,42 @@ class ResourceAttachmentUpdateTest extends IntegrationTest
         $this->assertEquals($user->roles->first->pivot->id, $actionEvent->model_id);
 
         Relation::morphMap([], false);
+    }
+
+    public function test_should_store_action_event_on_correct_connection_when_updating_attachments()
+    {
+        $this->setupActionEventsOnSeparateConnection();
+
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+        $user->roles()->attach($role, ['admin' => 'Y']);
+
+        $this->assertEquals('Y', $user->fresh()->roles->first()->pivot->admin);
+
+        $response = $this->withExceptionHandling()
+            ->postJson('/nova-api/users/'.$user->id.'/update-attached/roles/'.$role->id, [
+                'roles' => $role->id,
+                'admin' => 'N',
+                'pivot-update' => 'N',
+                'viaRelationship' => 'roles',
+            ]);
+
+        $response->assertStatus(200);
+
+        $this->assertCount(1, $user->fresh()->roles);
+        $this->assertEquals($role->id, $user->fresh()->roles->first()->id);
+        $this->assertEquals('N', $user->fresh()->roles->first()->pivot->admin);
+
+        $this->assertCount(0, DB::connection('sqlite')->table('action_events')->get());
+        $this->assertCount(1, DB::connection('sqlite-custom')->table('action_events')->get());
+
+        tap(Nova::actionEvent()->first(), function ($actionEvent) use ($user) {
+            $this->assertEquals('Update Attached', $actionEvent->name);
+            $this->assertEquals('finished', $actionEvent->status);
+
+            $this->assertEquals($user->id, $actionEvent->target_id);
+            $this->assertSubset(['admin' => 'Y'], $actionEvent->original);
+            $this->assertSubset(['admin' => 'N'], $actionEvent->changes);
+        });
     }
 }

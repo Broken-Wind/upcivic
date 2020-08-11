@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,7 @@ class CreateAdministratorsFromExistingUsers extends Migration
 
             $firstName = $exploded[0];
 
-            $lastName = array_last($exploded);
+            $lastName = Arr::last($exploded);
 
             return [
 

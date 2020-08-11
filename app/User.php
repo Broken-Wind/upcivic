@@ -2,6 +2,7 @@
 
 namespace Upcivic;
 
+use Illuminate\Support\Arr;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
             $firstName = $exploded[0];
 
-            $lastName = array_last($exploded);
+            $lastName = Arr::last($exploded);
 
             $person = Person::create([
 

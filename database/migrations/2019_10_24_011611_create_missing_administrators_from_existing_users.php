@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ class CreateMissingAdministratorsFromExistingUsers extends Migration
 
             $firstName = $exploded[0];
 
-            $lastName = count($exploded) > 1 ? array_last($exploded) : '';
+            $lastName = count($exploded) > 1 ? Arr::last($exploded) : '';
 
             return [
 

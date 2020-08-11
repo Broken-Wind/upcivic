@@ -14,9 +14,7 @@ class OrganizationAdministratorController extends Controller
     //
     public function store(StoreAdministrator $request, Organization $organization)
     {
-
         $validated = $request->validated();
-
 
         $person = Person::create([
 
@@ -33,6 +31,5 @@ class OrganizationAdministratorController extends Controller
         \Mail::send(new ListedAsAdministrator(\Auth::user(), $organization, $person));
 
         return back()->withSuccess("Added {$person->name} to {$organization->name}!");
-
     }
 }

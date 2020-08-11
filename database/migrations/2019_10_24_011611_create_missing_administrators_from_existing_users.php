@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateMissingAdministratorsFromExistingUsers extends Migration
 {
@@ -16,12 +16,11 @@ class CreateMissingAdministratorsFromExistingUsers extends Migration
         $administratorEmails = DB::table('people')->get()->pluck('email');
 
         $people = DB::table('users')->whereNotIn('email', $administratorEmails)->get()->map(function ($user) {
-
             $exploded = explode(' ', $user->name);
 
             $firstName = $exploded[0];
 
-            $lastName = count($exploded) > 1 ? array_last($exploded) : "";
+            $lastName = count($exploded) > 1 ? array_last($exploded) : '';
 
             return [
 
@@ -36,22 +35,17 @@ class CreateMissingAdministratorsFromExistingUsers extends Migration
                 'updated_at' => Carbon\Carbon::now(),
 
             ];
-
         })->toArray();
 
         DB::table('people')->insert($people);
 
-
-        $administrators =  collect();
+        $administrators = collect();
 
         DB::table('tenant_user')->get()->each(function ($tenantUser) use ($administratorEmails, $administrators) {
-
             $user = DB::table('users')->find($tenantUser->user_id);
 
             if ($administratorEmails->contains($user->email)) {
-
                 return;
-
             }
 
             $personId = DB::table('people')->where('email', $user->email)->first()->id;
@@ -67,11 +61,9 @@ class CreateMissingAdministratorsFromExistingUsers extends Migration
                 'updated_at' => Carbon\Carbon::now(),
 
             ]);
-
-
         });
 
-        $administrators = $administrators->toArray();;
+        $administrators = $administrators->toArray();
 
         DB::table('administrators')->insert($administrators);
     }
@@ -83,6 +75,5 @@ class CreateMissingAdministratorsFromExistingUsers extends Migration
      */
     public function down()
     {
-
     }
 }

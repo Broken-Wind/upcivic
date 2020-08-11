@@ -34,7 +34,6 @@ class UpdateProgramContributors extends FormRequest
             'newContributor.invoice_type' => 'nullable|string|max:255',
             'newContributor.invoice_amount' => 'nullable|numeric',
 
-
         ];
     }
 }

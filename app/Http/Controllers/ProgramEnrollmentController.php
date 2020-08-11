@@ -14,8 +14,9 @@ class ProgramEnrollmentController extends Controller
         $validated = $request->validated();
         $program->update([
             'enrollments' => $validated['enrollments'],
-            'max_enrollments' => $validated['max_enrollments']
+            'max_enrollments' => $validated['max_enrollments'],
         ]);
+
         return back();
     }
 }

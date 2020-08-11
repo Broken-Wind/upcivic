@@ -2,10 +2,10 @@
 
 namespace Upcivic\Http\Controllers;
 
-use Upcivic\Template;
 use Illuminate\Http\Request;
 use Upcivic\Http\Requests\StoreTemplate;
 use Upcivic\Http\Requests\UpdateTemplate;
+use Upcivic\Template;
 
 class TemplateController extends Controller
 {
@@ -20,7 +20,6 @@ class TemplateController extends Controller
         $templates = Template::all()->sortBy('internal_name');
 
         return view('tenant.admin.templates.index', compact('templates'));
-
     }
 
     /**

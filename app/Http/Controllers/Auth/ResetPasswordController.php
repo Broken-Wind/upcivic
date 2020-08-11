@@ -2,8 +2,8 @@
 
 namespace Upcivic\Http\Controllers\Auth;
 
-use Upcivic\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Upcivic\Http\Controllers\Controller;
 
 class ResetPasswordController extends Controller
 {

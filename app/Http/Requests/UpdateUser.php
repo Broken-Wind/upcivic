@@ -2,9 +2,8 @@
 
 namespace Upcivic\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 use Auth;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUser extends FormRequest
 {
@@ -16,6 +15,7 @@ class UpdateUser extends FormRequest
     public function authorize()
     {
         $user = $this->route('user');
+
         return $user['id'] == Auth::user()['id'];
     }
 

@@ -3,9 +3,9 @@
 namespace Upcivic\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Upcivic\Organization;
 use Upcivic\Person;
 use Upcivic\User;
@@ -33,7 +33,6 @@ class ListedAsAdministrator extends Mailable
         $this->organization = $organization;
 
         $this->person = $person;
-
     }
 
     /**
@@ -44,11 +43,10 @@ class ListedAsAdministrator extends Mailable
     public function build()
     {
         $message = $this->markdown('emails.listed_as_administrator')
-                    ->subject($this->lister['name'] . ' listed you on ' . config('app.name') . ".");
+                    ->subject($this->lister['name'].' listed you on '.config('app.name').'.');
 
         $message->to($this->person['email'], $this->person['name']);
 
         return $message;
-
     }
 }

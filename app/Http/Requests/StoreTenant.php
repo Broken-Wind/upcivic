@@ -14,9 +14,8 @@ class StoreTenant extends FormRequest
      */
     public function authorize()
     {
-        return !$this->user()->hasTenant();
+        return ! $this->user()->hasTenant();
     }
-
 
     public function messages()
     {
@@ -39,7 +38,7 @@ class StoreTenant extends FormRequest
         return [
             //
             'name' => 'required|unique:organizations|max:255',
-            'slug' => ['required', 'unique:tenants', 'max:255'. 'alpha_dash', new Slug],
+            'slug' => ['required', 'unique:tenants', 'max:255'.'alpha_dash', new Slug],
         ];
     }
 }

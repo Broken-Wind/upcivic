@@ -14,7 +14,6 @@ class StoreUserInvite extends FormRequest
     public function authorize()
     {
         return $this->user()->memberOfTenant(tenant());
-
     }
 
     /**

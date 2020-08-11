@@ -15,10 +15,10 @@ class TenantIsPublic
      */
     public function handle($request, Closure $next)
     {
-
-        if (!tenant()->isPublic()) {
+        if (! tenant()->isPublic()) {
             abort(401, 'This action is unauthorized.');
         }
+
         return $next($request);
     }
 }

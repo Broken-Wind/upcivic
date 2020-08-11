@@ -14,16 +14,13 @@ class OrganizationTenantController extends Controller
     //
     public function create(Organization $organization)
     {
-
         abort_if($organization->hasTenant(), 401, 'This action is unauthorized.');
 
         return view('organizations.tenant.create', compact('organization'));
-
     }
 
     public function store(StoreOrganizationTenant $request, Organization $organization)
     {
-
         $validated = $request->validated();
 
         $organization->tenant()->save(new Tenant([
@@ -37,6 +34,5 @@ class OrganizationTenantController extends Controller
         Program::createExample($organization);
 
         return redirect()->route('home');
-
     }
 }

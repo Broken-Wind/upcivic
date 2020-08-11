@@ -3,11 +3,11 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use Carbon\Carbon;
-use Upcivic\Program;
 use Faker\Generator as Faker;
 use Upcivic\Contributor;
 use Upcivic\Meeting;
 use Upcivic\Organization;
+use Upcivic\Program;
 use Upcivic\Site;
 
 $factory->define(Program::class, function (Faker $faker) {
@@ -30,9 +30,7 @@ $factory->define(Program::class, function (Faker $faker) {
     ];
 });
 
-
 $factory->afterCreatingState(Program::class, 'amCamp', function (Program $program, Faker $faker) {
-
     $site = factory(Site::class)->create();
 
     $organization = factory(Organization::class)->create();
@@ -42,12 +40,11 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
     $meetings = collect([]);
 
     for ($m = 1; $m <= 5; $m++) {
-
         $meeting = Meeting::make([
 
             'start_datetime' => $startDatetime,
 
-            'end_datetime' => Carbon::parse($startDatetime . " +3 hours"),
+            'end_datetime' => Carbon::parse($startDatetime.' +3 hours'),
 
             'site_id' => $site->id,
 
@@ -59,8 +56,7 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
 
         $meetings->push($meeting);
 
-        $startDatetime = Carbon::parse($startDatetime . " +1 day");
-
+        $startDatetime = Carbon::parse($startDatetime.' +1 day');
     }
 
     $program->meetings()->saveMany($meetings);
@@ -80,6 +76,4 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
     $contributor['program_id'] = $program->id;
 
     $contributor->save();
-
-
 });

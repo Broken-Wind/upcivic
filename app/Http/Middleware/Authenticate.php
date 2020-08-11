@@ -33,15 +33,11 @@ class Authenticate extends Middleware
     protected function authenticate($request, array $guards)
     {
         try {
-
             parent::authenticate($request, $guards);
-
         } catch (AuthenticationException $e) {
-
             app(TenantManager::class)->forgetTenant();
 
             throw $e;
-
         }
     }
 }

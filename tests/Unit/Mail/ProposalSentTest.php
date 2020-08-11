@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Mail;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 use Upcivic\Mail\ProposalSent;
 use Upcivic\Organization;
 use Upcivic\Program;
@@ -55,13 +55,9 @@ class ProposalSentTest extends TestCase
 
         ]);
 
-
-
         $email = new ProposalSent($proposal);
 
         $rendered = $email->render();
-
-
 
         $this->assertStringContainsString($proposal['sender']->name, $rendered);
 
@@ -70,15 +66,12 @@ class ProposalSentTest extends TestCase
         $this->assertStringContainsString('Recipient Organization', $rendered);
 
         $this->assertStringContainsString(route('root'), $rendered);
-
     }
 
     public function render($mailable)
     {
-
         $mailable->build();
 
         return view($mailable->view(), $mailable->buildViewData())->render();
-
     }
 }

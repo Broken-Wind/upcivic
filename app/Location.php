@@ -10,7 +10,7 @@ class Location extends Model
     protected $fillable = [
         'name',
         'capacity',
-        'notes'
+        'notes',
     ];
 
     public function site()

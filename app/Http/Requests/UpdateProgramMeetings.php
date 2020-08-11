@@ -7,7 +7,6 @@ use Illuminate\Validation\Factory;
 
 class UpdateProgramMeetings extends FormRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -20,7 +19,6 @@ class UpdateProgramMeetings extends FormRequest
 
     public function messages()
     {
-
         return [
 
             'meeting_ids.required' => 'You must select at least one meeting.',
@@ -31,9 +29,10 @@ class UpdateProgramMeetings extends FormRequest
     public function validator(Factory $factory)
     {
         $validator = $factory->make($this->input(), $this->rules(), $this->messages());
-        $validator->sometimes('meeting_ids', 'required', function($input) {
+        $validator->sometimes('meeting_ids', 'required', function ($input) {
             return $input->update_all == null;
         });
+
         return $validator;
     }
 

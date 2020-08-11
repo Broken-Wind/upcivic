@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAdministratorsFromExistingUsers extends Migration
 {
@@ -13,10 +13,7 @@ class CreateAdministratorsFromExistingUsers extends Migration
      */
     public function up()
     {
-
-
         $people = DB::table('users')->get()->map(function ($user) {
-
             $exploded = explode(' ', $user->name);
 
             $firstName = $exploded[0];
@@ -36,14 +33,11 @@ class CreateAdministratorsFromExistingUsers extends Migration
                 'updated_at' => Carbon\Carbon::now(),
 
             ];
-
         })->toArray();
 
         DB::table('people')->insert($people);
 
-
         $administrators = DB::table('tenant_user')->get()->map(function ($tenantUser) {
-
             $user = DB::table('users')->find($tenantUser->user_id);
 
             $personId = DB::table('people')->where('email', $user->email)->first()->id;
@@ -59,11 +53,9 @@ class CreateAdministratorsFromExistingUsers extends Migration
                 'updated_at' => Carbon\Carbon::now(),
 
             ];
-
         })->toArray();
 
         DB::table('administrators')->insert($administrators);
-
     }
 
     /**
@@ -73,10 +65,8 @@ class CreateAdministratorsFromExistingUsers extends Migration
      */
     public function down()
     {
-
         DB::table('people')->truncate();
 
         DB::table('administrators')->truncate();
-
     }
 }

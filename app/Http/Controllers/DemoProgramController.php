@@ -11,10 +11,10 @@ class DemoProgramController extends Controller
     {
         $this->demoService = $demoService;
     }
+
     //
     public function store()
     {
         $this->demoService->regenerateDemoData();
-        return;
     }
 }

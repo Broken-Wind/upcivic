@@ -1,12 +1,15 @@
 <?php
+
 namespace Upcivic\Http\Controllers;
-use Illuminate\Http\Request;
-use Upcivic\Http\Requests\StoreProgramMeeting;
-use Upcivic\Program;
-use Upcivic\Meeting;
-use Upcivic\Http\Requests\UpdateProgramMeetings;
+
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Upcivic\Http\Requests\DestroyProgramMeetings;
+use Upcivic\Http\Requests\StoreProgramMeeting;
+use Upcivic\Http\Requests\UpdateProgramMeetings;
+use Upcivic\Meeting;
+use Upcivic\Program;
+
 class ProgramMeetingController extends Controller
 {
     //
@@ -21,14 +24,14 @@ class ProgramMeetingController extends Controller
         $meeting['site_id'] = $validated['site_id'];
         $meeting->save();
 
-        return back()->withSuccess("Meeting added successfully.");
+        return back()->withSuccess('Meeting added successfully.');
     }
+
     public function update(UpdateProgramMeetings $request, Program $program)
     {
-
         $validated = $request->validated();
         if ($request['delete_meetings']) {
-            if (!isset($validated['meeting_ids'])) {
+            if (! isset($validated['meeting_ids'])) {
                 return back()->withErrors(['error' => 'You must select one or more meetings to delete.']);
             }
             if (count($validated['meeting_ids']) >= $program->meetings->count()) {
@@ -37,7 +40,8 @@ class ProgramMeetingController extends Controller
             Meeting::whereIn('id', $validated['meeting_ids'])->get()->each(function ($meeting) {
                 $meeting->delete();
             });
-            return back()->withSuccess("Meetings removed successfully.");
+
+            return back()->withSuccess('Meetings removed successfully.');
         }
 
         if ($request['update_all']) {
@@ -45,17 +49,17 @@ class ProgramMeetingController extends Controller
         }
         collect($validated['meeting_ids'])->each(function ($id) use ($validated, $program) {
             $meeting = Meeting::find($id);
-            if (!empty($validated['start_time'])) {
+            if (! empty($validated['start_time'])) {
                 $startDatetime = Carbon::parse($meeting['start_datetime'])->format('Y-m-d');
-                $startDatetime = Carbon::parse($startDatetime . " " . $validated['start_time'] . " " . $validated['shift_meetings'] . " days")->format('Y-m-d H:i:s');
+                $startDatetime = Carbon::parse($startDatetime.' '.$validated['start_time'].' '.$validated['shift_meetings'].' days')->format('Y-m-d H:i:s');
                 $meeting['start_datetime'] = $startDatetime;
             }
-            if (!empty($validated['end_time'])) {
+            if (! empty($validated['end_time'])) {
                 $endDatetime = Carbon::parse($meeting['end_datetime'])->format('Y-m-d');
-                $endDatetime = Carbon::parse($endDatetime . " " . $validated['end_time'] . " " . $validated['shift_meetings'] . " days")->format('Y-m-d H:i:s');
+                $endDatetime = Carbon::parse($endDatetime.' '.$validated['end_time'].' '.$validated['shift_meetings'].' days')->format('Y-m-d H:i:s');
                 $meeting['end_datetime'] = $endDatetime;
             }
-            if (!empty($validated['shift_meetings'])) {
+            if (! empty($validated['shift_meetings'])) {
                 $meeting['start_datetime'] = Carbon::parse($meeting['start_datetime'])->addDays($validated['shift_meetings'])->format('Y-m-d H:i:s');
                 $meeting['end_datetime'] = Carbon::parse($meeting['end_datetime'])->addDays($validated['shift_meetings'])->format('Y-m-d H:i:s');
             }
@@ -63,7 +67,7 @@ class ProgramMeetingController extends Controller
             $meeting['site_id'] = $validated['site_id'];
             $meeting->save();
         });
-        return back()->withSuccess("Meetings updated successfully.");
 
+        return back()->withSuccess('Meetings updated successfully.');
     }
 }

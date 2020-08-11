@@ -14,16 +14,12 @@ class TenantController extends Controller
     //
     public function index()
     {
-
         return view('tenant.admin.home');
-
     }
 
     public function create()
     {
-
         return view('tenants.create');
-
     }
 
     /**
@@ -55,25 +51,19 @@ class TenantController extends Controller
 
         $tenant->save();
 
-
-
         \Auth::user()->joinTenant($tenant);
 
         Program::createExample($organization);
 
         return redirect('/home');
-
     }
 
     public function edit()
     {
-
         $tenant = tenant();
 
         return view('tenant.admin.settings', compact('tenant'));
-
     }
-
 
     public function update(UpdateTenant $request, Tenant $tenant)
     {
@@ -88,6 +78,5 @@ class TenantController extends Controller
         ]);
 
         return back()->withSuccess('Organization updated.');
-
     }
 }

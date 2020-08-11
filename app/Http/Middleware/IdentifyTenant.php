@@ -3,14 +3,14 @@
 namespace Upcivic\Http\Middleware;
 
 use Closure;
-use Upcivic\Services\TenantManager;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Upcivic\Services\TenantManager;
 
 class IdentifyTenant
 {
     /**
-    * @var Upcivic\Services\TenantManager
-    */
+     * @var Upcivic\Services\TenantManager
+     */
     protected $tenantManager;
 
     public function __construct(TenantManager $tenantManager)
@@ -27,9 +27,9 @@ class IdentifyTenant
      */
     public function handle($request, Closure $next)
     {
-
         if ($this->tenantManager->loadTenant($request->route('tenant'))) {
             $request->route()->forgetParameter('tenant');
+
             return $next($request);
         }
 

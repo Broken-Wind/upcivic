@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class DropOrganizationUserTable extends Migration
 {
@@ -28,7 +28,6 @@ class DropOrganizationUserTable extends Migration
             $table->unsignedBigInteger('organization_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-
 
             $table->foreign('organization_id')->references('id')->on('organizations');
             $table->foreign('user_id')->references('id')->on('users');

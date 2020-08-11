@@ -1,7 +1,10 @@
 <?php
+
 namespace Upcivic\Filters;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+
 class QueryFilters
 {
     protected $request;
@@ -19,7 +22,7 @@ class QueryFilters
         $this->setUp();
 
         foreach ($this->filters() as $name => $value) {
-            if ( ! method_exists($this, $name)) {
+            if (! method_exists($this, $name)) {
                 continue;
             }
             if (strlen($value)) {
@@ -28,12 +31,13 @@ class QueryFilters
                 $this->$name();
             }
         }
+
         return $this->builder;
     }
 
     public function filters()
     {
-        return collect($this->request->all())->filter(function($value) {
+        return collect($this->request->all())->filter(function ($value) {
             return null !== $value;
         })->toArray();
     }

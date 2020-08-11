@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CascadeDeleteTenantUsers extends Migration
 {
@@ -23,7 +23,6 @@ class CascadeDeleteTenantUsers extends Migration
 
             $table->dropForeign('tenant_user_user_id_foreign');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
         });
     }
 
@@ -44,7 +43,6 @@ class CascadeDeleteTenantUsers extends Migration
 
             $table->dropForeign('tenant_user_user_id_foreign');
             $table->foreign('user_id')->references('id')->on('users');
-
         });
     }
 }

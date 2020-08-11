@@ -1,12 +1,15 @@
 <?php
+
 namespace Upcivic\Filters;
-use Illuminate\Http\Request;
+
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Boolean;
 
 class ProgramFilters extends QueryFilters
 {
     protected $request;
+
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -15,53 +18,44 @@ class ProgramFilters extends QueryFilters
 
     public function setUp()
     {
-
         return isset($this->request['past']) && $this->request['past'] == true ? $this->builder : $this->builder->excludePast();
-
     }
 
-    public function organization($term) {
-
+    public function organization($term)
+    {
         return $this->builder->whereHas('contributors', function ($query) use ($term) {
             return $query->where('organization_id', $term);
         });
     }
 
-    public function site($term) {
-
+    public function site($term)
+    {
         return $this->builder->whereHas('meetings', function ($query) use ($term) {
             return $query->where('site_id', $term);
         });
-
     }
 
-    public function counties($term) {
+    public function counties($term)
+    {
         return $this->builder->whereHas('meetings', function ($query) use ($term) {
             return $query->whereHas('site', function ($query) use ($term) {
                 return $query->whereIn('county_id', explode(',', $term));
             });
         });
-
     }
 
-    public function from_date($term) {
-
+    public function from_date($term)
+    {
         return $this->builder->withoutGlobalScope('ExcludePastPrograms')->whereHas('meetings', function ($query) use ($term) {
-
             return $query->where('end_datetime', '>', $term);
-
         });
-
     }
 
-    public function to_date($term) {
-
+    public function to_date($term)
+    {
         return $this->builder->whereHas('meetings', function ($query) use ($term) {
-
             return $query->where('start_datetime', '<', Carbon::parse($term)->addDay());
-
         });
-
     }
 
     // public function age($term) {

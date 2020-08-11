@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateAdministratorsTable extends Migration
 {
@@ -19,7 +19,6 @@ class CreateAdministratorsTable extends Migration
             $table->unsignedBigInteger('person_id');
             $table->string('title')->nullable();
             $table->timestamps();
-
 
             $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');

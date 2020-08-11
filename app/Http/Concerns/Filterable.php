@@ -1,4 +1,5 @@
 <?php
+
 namespace Upcivic\Concerns;
 
 use Upcivic\Filters\QueryFilters;

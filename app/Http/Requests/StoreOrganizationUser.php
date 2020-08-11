@@ -13,7 +13,7 @@ class StoreOrganizationUser extends FormRequest
      */
     public function authorize()
     {
-        return !$this->user()->hasTenant();
+        return ! $this->user()->hasTenant();
     }
 
     /**

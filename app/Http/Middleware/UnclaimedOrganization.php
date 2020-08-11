@@ -15,7 +15,6 @@ class UnclaimedOrganization
      */
     public function handle($request, Closure $next)
     {
-
         abort_if($request->route('organization')->isClaimed(), 401, 'This action is unauthorized.');
 
         return $next($request);

@@ -2,11 +2,11 @@
 
 namespace Upcivic\Http\Controllers\Auth;
 
-use Upcivic\User;
-use Upcivic\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Upcivic\Http\Controllers\Controller;
+use Upcivic\User;
 
 class RegisterController extends Controller
 {

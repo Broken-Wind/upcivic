@@ -2,9 +2,8 @@
 
 namespace Upcivic\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 use Auth;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Factory;
 
 class UpdateTenant extends FormRequest
@@ -19,14 +18,13 @@ class UpdateTenant extends FormRequest
         return $this->user()->memberOfTenant(tenant());
     }
 
-
-
     public function validator(Factory $factory)
     {
         $validator = $factory->make($this->input(), $this->rules());
-        $validator->sometimes('name', 'unique:organizations', function($input) {
+        $validator->sometimes('name', 'unique:organizations', function ($input) {
             return $input->name !== tenant()['name'];
         });
+
         return $validator;
     }
 

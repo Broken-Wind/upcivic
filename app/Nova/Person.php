@@ -2,12 +2,10 @@
 
 namespace Upcivic\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
-use Laravel\Nova\Http\Requests\NovaRequest;
-
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Person extends Resource
 {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\TenantManager;
 use Closure;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use App\Services\TenantManager;
 
 class IdentifyTenant
 {

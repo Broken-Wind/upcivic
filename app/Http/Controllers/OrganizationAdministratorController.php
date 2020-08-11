@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Administrator;
 use App\Http\Requests\StoreAdministrator;
 use App\Mail\ListedAsAdministrator;
 use App\Organization;
 use App\Person;
+use Illuminate\Http\Request;
 
 class OrganizationAdministratorController extends Controller
 {

@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Illuminate\Support\Facades\Auth;
-use Mixpanel;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
@@ -13,6 +10,9 @@ use App\Organization;
 use App\Program;
 use App\Site;
 use App\Template;
+use DB;
+use Illuminate\Support\Facades\Auth;
+use Mixpanel;
 
 class ProgramController extends Controller
 {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\County;
 use App\Http\Requests\StoreSite;
 use App\Site;
+use Illuminate\Http\Request;
 
 class SiteController extends Controller
 {

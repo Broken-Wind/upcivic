@@ -2,9 +2,9 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use Faker\Generator as Faker;
 use App\Organization;
 use App\Person;
+use Faker\Generator as Faker;
 
 $factory->define(Organization::class, function (Faker $faker) {
     return [

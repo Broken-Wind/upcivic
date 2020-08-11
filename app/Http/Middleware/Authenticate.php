@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\TenantManager;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use App\Services\TenantManager;
 
 class Authenticate extends Middleware
 {

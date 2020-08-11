@@ -2,9 +2,9 @@
 
 namespace App;
 
+use App\Concerns\HasDatetimeRange;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use App\Concerns\HasDatetimeRange;
 
 class Meeting extends Model
 {

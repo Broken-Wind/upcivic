@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Concerns\OwnedByTenant;
+use Illuminate\Database\Eloquent\Model;
 
 class Template extends Model
 {

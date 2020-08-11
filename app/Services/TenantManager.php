@@ -2,11 +2,11 @@
 
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\Program;
 use App\Scopes\TenantOwnedScope;
 use App\Template;
 use App\Tenant;
+use Illuminate\Database\Eloquent\Builder;
 
 class TenantManager
 {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1817e0a8a808ba4f4722243171d40cb8",
+    "content-hash": "b0e8d4a384b81ac849704effe276790b",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1302,7 +1302,7 @@
             "dist": {
                 "type": "path",
                 "url": "./nova",
-                "reference": "4487bd94976fcb353263d9d3ed7f0a3eefebdf47"
+                "reference": "e429ebdbab4483096a974c2ae0091b3c4ff97871"
             },
             "require": {
                 "brick/money": "^0.4.2",
@@ -1553,16 +1553,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "481c0174b9c99b189959e2bb9d6f52188ed1f692"
+                "reference": "6e96f54d82e71f71c4108da33ee96a7f57083710"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/481c0174b9c99b189959e2bb9d6f52188ed1f692",
-                "reference": "481c0174b9c99b189959e2bb9d6f52188ed1f692",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/6e96f54d82e71f71c4108da33ee96a7f57083710",
+                "reference": "6e96f54d82e71f71c4108da33ee96a7f57083710",
                 "shasum": ""
             },
             "require": {
@@ -1634,7 +1634,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2020-08-09T15:57:10+00:00"
+            "time": "2020-08-12T14:23:41+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -3022,30 +3022,30 @@
         },
         {
             "name": "spatie/laravel-honeypot",
-            "version": "1.5.0",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-honeypot.git",
-                "reference": "e7d7f960a214f65458249228d633bfa899a3c7a1"
+                "reference": "5259bfbc5f26e9e92b356245230cec0326bdcd63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-honeypot/zipball/e7d7f960a214f65458249228d633bfa899a3c7a1",
-                "reference": "e7d7f960a214f65458249228d633bfa899a3c7a1",
+                "url": "https://api.github.com/repos/spatie/laravel-honeypot/zipball/5259bfbc5f26e9e92b356245230cec0326bdcd63",
+                "reference": "5259bfbc5f26e9e92b356245230cec0326bdcd63",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "5.8.*|^6.0|^7.0",
-                "illuminate/encryption": "5.8.*|^6.0|^7.0",
-                "illuminate/http": "5.8.*|^6.0|^7.0",
-                "illuminate/support": "5.8.*|^6.0|^7.0",
-                "illuminate/validation": "5.8.*|^6.0|^7.0",
+                "illuminate/contracts": "^7.0",
+                "illuminate/encryption": "^7.0",
+                "illuminate/http": "^7.0",
+                "illuminate/support": "^7.0",
+                "illuminate/validation": "^7.0",
                 "nesbot/carbon": "^2.0",
                 "php": "^7.2"
             },
             "require-dev": {
-                "orchestra/testbench": "3.8.*|^4.0|^5.0",
-                "spatie/phpunit-snapshot-assertions": "^2.0"
+                "orchestra/testbench": "^5.0",
+                "spatie/phpunit-snapshot-assertions": "^3.0"
             },
             "type": "library",
             "extra": {
@@ -3078,7 +3078,7 @@
                 "laravel-honeypot",
                 "spatie"
             ],
-            "time": "2020-03-02T17:18:56+00:00"
+            "time": "2020-04-14T14:35:23+00:00"
         },
         {
             "name": "spatie/once",

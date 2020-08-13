@@ -25,23 +25,15 @@
                         @if(tenant())
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.users.invites.create') }}">Invite Admins</a>
-                            </li>
-
-                            <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Schedule</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Templates</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a>
                             </li>
 
                         @endif
@@ -70,6 +62,10 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>
+
+										<a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.invites.create') }}">
+											Invite Admins
+										</a>
 
                                     @endif
 

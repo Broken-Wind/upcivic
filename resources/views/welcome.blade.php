@@ -89,8 +89,7 @@
 
                 @guest
 
-                    <a class="btn btn-primary btn-lg mt-3" href="/register">Get Started</a><br />
-                    <small class="text-muted">It's free!</small>
+                    <a class="btn btn-outline-secondary btn-lg mt-3" href="/register">Get Started</a>
 
                 @endguest
 

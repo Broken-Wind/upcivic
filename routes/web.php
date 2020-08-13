@@ -13,9 +13,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('root');
+Route::get('/', 'IndexController@index')->name('root');
 Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () {
     Auth::routes(['verify' => true]);
 });
@@ -48,7 +46,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');
         /**
-         * Disabling the ability to add organizations without users. 
+         * Disabling the ability to add organizations without users.
          * This functionality will most likely return soon, but not for the MVP.
          * Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
          * Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');

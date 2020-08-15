@@ -8,13 +8,14 @@ use App\Organization;
 use App\Program;
 use App\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TenantController extends Controller
 {
     //
     public function index()
     {
-        return view('tenant.admin.home');
+        return redirect()->route('tenant:admin.programs.index', Auth::user()->tenants()->first()->slug);
     }
 
     public function create()

@@ -33,8 +33,6 @@
 
                                 </select>
 
-                            <small class="text-muted">Can't find the organization you'd like to propose to? <a href="{{ tenant()->route('tenant:admin.organizations.index') }}">Add an organization.</a></small>
-
                             </div>
 
                             <div class="form-group col">

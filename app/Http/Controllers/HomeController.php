@@ -25,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         if (\Auth::user()->hasTenant()) {
-            return redirect()->route('tenant:admin.programs.index', \Auth::user()->tenants()->first()->slug);
+            return redirect()->route('tenant:admin.resource_timeline.index', \Auth::user()->tenants()->first()->slug);
         }
 
         $recommendedOrganizations = \Auth::user()->recommendedOrganizations();

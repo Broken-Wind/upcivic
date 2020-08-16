@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'IndexController@index')->name('root');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () {
     Auth::routes(['verify' => true]);
 });

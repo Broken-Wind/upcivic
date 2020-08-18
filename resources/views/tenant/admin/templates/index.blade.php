@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Templates</div>
+                <div class="card-header">Programs</div>
 
                 <div class="card-body">
 
@@ -13,7 +13,7 @@
 
                     @if($templates->count() > 0)
 
-                    <p><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create a new template</a></p>
+                    <p><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a></p>
 
                         <table class="table table-responsive table-striped">
 
@@ -35,7 +35,7 @@
 
                     @else
 
-                        No templates yet. <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Create one?</a>
+                        No programs yet. <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
 
                     @endif
 

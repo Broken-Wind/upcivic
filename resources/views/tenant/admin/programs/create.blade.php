@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Proposals</div>
+                <div class="card-header">Propose Programs</div>
 
                 <div class="card-body">
 
@@ -68,7 +68,6 @@
                             </div>
 
                             <div class="col-md-6">
-
                                 <div class="form-group">
                                     <label for="emailProposalTo">Additional Recipient: <span class="text-muted">(Optional)</span></label>
                                     <input type="text" class="form-control" name="cc_emails[]" placeholder="email@example.com">
@@ -77,101 +76,26 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
 
-                        <div class="table">
+                            <label for="">Program</label>
 
-                            <table class="table-sm text-center" style="width:100%;">
+                            <select class="form-control form-control-sm" name="programs[0][template_id]" id="">
 
-                                <tbody>
-                                        <tr>
+                                    @forelse($templates as $template)
 
-                                            <td>
+                                        <option value="{{ $template->id }}">{{ $template->internal_name }}{{ $template->internal_name != $template->name ? " - " . $template->name : null }}</option>
 
-                                                <div class="form-group">
+                                    @empty
 
-                                                    <label for="">Start Date</label>
+                                        <option disabled>No templates</option>
 
-                                                    <input type="date" class="form-control form-control-sm" name="programs[0][start_date]">
+                                    @endforelse
 
-                                                </div>
-
-                                                <div class="form-group">
-
-                                                    <label for="">Start Time</label>
-
-                                                    <input type="time" class="form-control form-control-sm" name="programs[0][start_time]">
-
-                                                </div>
-
-                                            </td>
-
-                                            <td>
-
-                                                <div class="form-group">
-
-                                                    <label for="">End Date</label>
-
-                                                    <input type="date" class="form-control form-control-sm" name="programs[0][end_date]">
-
-                                                </div>
-
-                                                <div class="form-group">
-
-                                                    <label for="">End Time</label>
-
-                                                    <input type="time" class="form-control form-control-sm" name="programs[0][end_time]">
-
-                                                </div>
-
-                                            </td>
-
-                                            <td>
-
-                                                <div class="form-group">
-
-                                                    <label for="">Program</label>
-
-                                                    <select class="form-control form-control-sm" name="programs[0][template_id]" id="">
-
-                                                            @forelse($templates as $template)
-
-                                                                <option value="{{ $template->id }}">{{ $template->internal_name }}{{ $template->internal_name != $template->name ? " - " . $template->name : null }}</option>
-
-                                                            @empty
-
-                                                                <option disabled>No templates</option>
-
-                                                            @endforelse
-
-                                                    </select>
-                                                </div>
-
-
-
-
-                                                <label for="">Ages/Grades</label>
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <select class="form-control form-control-sm" name="programs[0][ages_type]" id="ages_type">
-                                                            <option value="" {{ old("ages_types[0]") == '' ? 'selected' : '' }}>Default</option>
-                                                            <option value="ages" {{ old("ages_types[0]") == 'ages' ? 'selected' : '' }}>Ages</option>
-                                                            <option value="grades" {{ old("ages_types[0]") == 'grades' ? 'selected' : '' }}>Grades</option>
-                                                        </select>
-                                                    </div>
-                                                    <input type="number" aria-label="Minimum" placeholder="Minimum" name="programs[0][min_age]" value="{{ old("min_ages[0]") }}" class="form-control form-control-sm">
-                                                    <input type="number" aria-label="Maximum" placeholder="Maximum" name="programs[0][max_age]" value="{{ old("max_ages[0]") }}" class="form-control form-control-sm">
-                                                </div>
-
-                                            </td>
-
-                                        </tr>
-
-                                </tbody>
-
-                            </table>
-
+                            </select>
                         </div>
-						<button onclick="addMore()" type="button" class="btn btn-link addMore">Add more</button>
+
+                        <proposal-component></proposal-component>
 
                         <div class="form-group text-right">
 
@@ -187,12 +111,4 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    mixpanel.track_forms("#submit", "Create Proposal");
-	function addMore() {
-        var itm = document.getElementsByClassName("table-sm text-center")[0].firstElementChild;
-        var cln = itm.cloneNode(true);
-		document.getElementsByClassName("table-sm text-center")[0].appendChild(cln);
-	}
-</script>
 @endsection

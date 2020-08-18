@@ -14,8 +14,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'IndexController@index')->name('root');
+Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () {
     Auth::routes(['verify' => true]);
+});
+Route::group([
+    'prefix' => '/{tenant}',
+    'middleware' => ['tenant', 'tenant.auth'],
+    'as' => 'tenant:',
+], function () {
+    Route::get('/', 'PublicTenantController@index');
 });
 Route::group([
     'prefix' => '/{tenant}',
@@ -37,10 +45,11 @@ Route::group(['middleware' => 'verified'], function () {
         'middleware' => ['tenant', 'tenant.auth'],
         'as' => 'tenant:admin.',
     ], function () {
+        Route::get('/', 'TenantController@index')->name('index');
         Route::get('/home', 'TenantController@index')->name('home');
         // NEED TO MAKE THIS A POST AND ADD AUTHORIZATION
         // Route::get('/demo', 'DemoProgramController@store')->name('demo.store');
-        Route::get('programs/resource_timeline', 'ResourceTimelineController@index')->name('resource_timeline.index');
+        Route::get('/resource_timeline', 'ResourceTimelineController@index')->name('resource_timeline.index');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
         Route::get('/settings', 'TenantController@edit')->name('edit');

@@ -25,6 +25,6 @@ class ResourceTimelineController extends Controller
         $resources = $this->resourcetimelineService->getResources();
         $events = $this->resourcetimelineService->getEvents();
 
-        return view('tenant.admin.programs.resource_timeline', compact('resources', 'events'));
+        return view('tenant.admin.resource_timeline.index', compact('resources', 'events'));
     }
 }

@@ -80,21 +80,9 @@
 
                         <div class="table">
 
-
-                            <small class="form-text text-muted">Blank end dates/times will pull the defaults from the selected template.</small>
-
                             <table class="table-sm text-center" style="width:100%;">
 
                                 <tbody>
-
-                                    @for ($n=0; $n<6; $n++)
-
-                                        <tr>
-
-                                            <td colspan="3"><h5>Proposal {{ $n+1 }}{{ $n != 0 ? ' (Optional)' : '' }}</h5>
-
-                                        </tr>
-
                                         <tr>
 
                                             <td>
@@ -103,7 +91,7 @@
 
                                                     <label for="">Start Date</label>
 
-                                                    <input type="date" class="form-control form-control-sm" name="programs[{{ $n }}][start_date]">
+                                                    <input type="date" class="form-control form-control-sm" name="programs[0][start_date]">
 
                                                 </div>
 
@@ -111,7 +99,7 @@
 
                                                     <label for="">Start Time</label>
 
-                                                    <input type="time" class="form-control form-control-sm" name="programs[{{ $n }}][start_time]">
+                                                    <input type="time" class="form-control form-control-sm" name="programs[0][start_time]">
 
                                                 </div>
 
@@ -123,7 +111,7 @@
 
                                                     <label for="">End Date</label>
 
-                                                    <input type="date" class="form-control form-control-sm" name="programs[{{ $n }}][end_date]">
+                                                    <input type="date" class="form-control form-control-sm" name="programs[0][end_date]">
 
                                                 </div>
 
@@ -131,7 +119,7 @@
 
                                                     <label for="">End Time</label>
 
-                                                    <input type="time" class="form-control form-control-sm" name="programs[{{ $n }}][end_time]">
+                                                    <input type="time" class="form-control form-control-sm" name="programs[0][end_time]">
 
                                                 </div>
 
@@ -141,9 +129,9 @@
 
                                                 <div class="form-group">
 
-                                                    <label for="">Template</label>
+                                                    <label for="">Program</label>
 
-                                                    <select class="form-control form-control-sm" name="programs[{{ $n }}][template_id]" id="">
+                                                    <select class="form-control form-control-sm" name="programs[0][template_id]" id="">
 
                                                             @forelse($templates as $template)
 
@@ -164,28 +152,26 @@
                                                 <label for="">Ages/Grades</label>
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <select class="form-control form-control-sm" name="programs[{{ $n }}][ages_type]" id="ages_type">
-                                                            <option value="" {{ old("ages_types[{$n}]") == '' ? 'selected' : '' }}>Default</option>
-                                                            <option value="ages" {{ old("ages_types[{$n}]") == 'ages' ? 'selected' : '' }}>Ages</option>
-                                                            <option value="grades" {{ old("ages_types[{$n}]") == 'grades' ? 'selected' : '' }}>Grades</option>
+                                                        <select class="form-control form-control-sm" name="programs[0][ages_type]" id="ages_type">
+                                                            <option value="" {{ old("ages_types[0]") == '' ? 'selected' : '' }}>Default</option>
+                                                            <option value="ages" {{ old("ages_types[0]") == 'ages' ? 'selected' : '' }}>Ages</option>
+                                                            <option value="grades" {{ old("ages_types[0]") == 'grades' ? 'selected' : '' }}>Grades</option>
                                                         </select>
                                                     </div>
-                                                    <input type="number" aria-label="Minimum" placeholder="Minimum" name="programs[{{ $n }}][min_age]" value="{{ old("min_ages[{$n}]") }}" class="form-control form-control-sm">
-                                                    <input type="number" aria-label="Maximum" placeholder="Maximum" name="programs[{{ $n }}][max_age]" value="{{ old("max_ages[{$n}]") }}" class="form-control form-control-sm">
+                                                    <input type="number" aria-label="Minimum" placeholder="Minimum" name="programs[0][min_age]" value="{{ old("min_ages[0]") }}" class="form-control form-control-sm">
+                                                    <input type="number" aria-label="Maximum" placeholder="Maximum" name="programs[0][max_age]" value="{{ old("max_ages[0]") }}" class="form-control form-control-sm">
                                                 </div>
 
                                             </td>
 
                                         </tr>
 
-                                    @endfor
-
                                 </tbody>
 
                             </table>
 
                         </div>
-
+						<button onclick="addMore()" type="button" class="btn btn-link addMore">Add more</button>
 
                         <div class="form-group text-right">
 
@@ -203,5 +189,10 @@
 </div>
 <script type="text/javascript">
     mixpanel.track_forms("#submit", "Create Proposal");
+	function addMore() {
+        var itm = document.getElementsByClassName("table-sm text-center")[0].firstElementChild;
+        var cln = itm.cloneNode(true);
+		document.getElementsByClassName("table-sm text-center")[0].appendChild(cln);
+	}
 </script>
 @endsection

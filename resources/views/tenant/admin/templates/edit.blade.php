@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Update Program Template</div>
+                <div class="card-header">Update Program</div>
 
                 <div class="card-body">
 
@@ -121,7 +121,7 @@
                             </div>
                             <div class="col-md-8">
 
-                                <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Update Template</button>
+                                <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Update Program</button>
 
                             </div>
                         </div>

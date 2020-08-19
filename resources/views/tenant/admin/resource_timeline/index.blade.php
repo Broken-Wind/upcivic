@@ -19,6 +19,30 @@
 </style>
 @endsection
 @section('content')
+<div class="modal fade" id="fullCalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <div id="contributors"></div>
+            <div id="description_of_meetings"></div>
+            <div id="program_times"></div>
+            <div id="meetings"></div>
+            <div id="description"></div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 <div id='calendar'></div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.css" integrity="sha256-/rB/IDulpFpJSHjrUgRHzB99AnJh3RBNrUOpF+4QIKA=" crossorigin="anonymous">
 <script type="application/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.min.js" integrity="sha256-U+VlpMlWIzzE74RY4mZL4MixQg66XWfjEWW2VUxHgcE=" crossorigin="anonymous"></script>
@@ -28,7 +52,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     timeZone: 'UTC',
-    editable: true,
+    editable: false, // don't allow event dragging
+    eventResourceEditable: true, // except for between resources
     initialView: 'resourceTimelineDay',
     initialDate: '{{ \Carbon\Carbon::now()->next('monday')->toDateString() }}',
     resourcesInitiallyExpanded: false,
@@ -56,14 +81,10 @@ document.addEventListener('DOMContentLoaded', function() {
             ],
         }
     },
-    eventDrop: function(info) {
-        alert(info.event.title + " was dropped on " + info.event.start.toISOString());
-        alert(info.event.extendedProps.testAttribute);
-
-        if (!confirm("Are you sure about this change?")) {
-            info.revert();
-        }
-        console.log(info);
+    eventClick:  function(info) {
+        $('#modal-title').html(info.event.title);
+        $('#modal-body').html(info.event.description);
+        $('#fullCalModal').modal();
     },
     resourceGroupField: 'site',
     events: {!! $events !!},
@@ -72,5 +93,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   calendar.render();
 });
+
 </script>
 @endsection

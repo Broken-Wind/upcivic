@@ -77,11 +77,10 @@ class ProgramController extends Controller
             'sending_organization' => $sendingOrganization,
             'recipient_organization' => $recipientOrganization,
             'programs' => $programs,
-            'cc_emails' => $validated['cc_emails'],
         ]);
-        \Mail::send(new ProposalSent($proposal));
+        //\Mail::send(new ProposalSent($proposal));
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program added successfully.');
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Proposal added successfully.');
     }
 
     /**

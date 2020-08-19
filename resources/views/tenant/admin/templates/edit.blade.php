@@ -26,7 +26,7 @@
                         @include('shared.form_errors')
 
                         <div class="form-group">
-                            <label for="name">Program Name</label>
+                            <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" value="{{ old('name') ?: $template['name'] }}" id="name" placeholder="Adventures in Coding" required>
                         </div>
 
@@ -114,16 +114,8 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="col-md-4">
-
-                                <button type="submit" id="submit"  form="delete_template" class="btn btn-lg btn-danger btn-block"  onClick="return confirm('Are you sure you want to this template? This cannot be undone.');">Delete Template</button>
-
-                            </div>
-                            <div class="col-md-8">
-
-                                <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Update Program</button>
-
-                            </div>
+                            <button type="submit" id="submit" class="btn btn-primary mx-1">Update Program</button>
+                            <button type="submit" id="submit"  form="delete_template" class="btn btn-danger"  onClick="return confirm('Are you sure you want to this template? This cannot be undone.');">Delete Program</button>
                         </div>
 
 

@@ -8,6 +8,8 @@
 .env.backup
 .phpunit.result.cache
 .todo
+.idea/
+*.swp
 Homestead.json
 Homestead.yaml
 npm-debug.log

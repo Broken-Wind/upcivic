@@ -1,19 +1,17 @@
 <div class="container-fluid mb-2 pb-0 alert bg-white">
     <div class="row mb-2">
         <div class="col-md-3">
+            {{ $program['id'] }} - {{ $program['internal_name'] }}
+        </div>
+        <div class="col-md-3">
             <div class="row">
                 <div class="col-auto">
-                    <strong>
-                        {{ $program['short_start_date'] . " - " . $program['short_end_date'] }}
-                    </strong>
+                    {{ $program['short_start_date'] . " - " . $program['short_end_date'] }}
                 </div>
                 <div class="col-auto">
                     {{ $program['start_time'] . " - " . $program['end_time'] }}
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            {{ $program['id'] }} - {{ $program['internal_name'] }}
         </div>
         <div class="col-md-3">
             <!-- Current instructors here -->
@@ -39,15 +37,18 @@
                 {{ $program->site['name'] }}<br />
                 <small class="text-muted mt-0 pt-0">
                     @forelse($program->otherContributors() as $contributor)
-                        {{ $contributor->organization['name'] }},
+                        {{ $contributor->organization['name'] }}
                     @empty
                     @endforelse
-                    {{ $program['description_of_age_range'] }}
                 </small>
             </div>
+            <div class="col-md-3">
+                Enrollments {{ $program['min_enrollments'] ?? 0 }} to {{ $program['max_enrollments'] ?? 0 }}
+            </div>
+            {{--
             <div class="col-md-4">
                 <div class="form-group input-group mb-0 pb-0">
-                    <input type="number" class="form-control form-control-sm" name="enrollments" value="{{ $program['enrollments'] ?? 0 }}">
+                    <input type="number" class="form-control form-control-sm" name="enrollments" value="{{ $program['min_enrollments'] ?? 0 }}">
                     &nbsp;
                     <span style="margin-top:2px">/</span>
                     &nbsp;
@@ -70,14 +71,16 @@
                 </div>
                 <small class="text-muted mt-0 pt-0"><!-- Enrollments last updated here --></small>
             </div>
+
             <div class="col-md-3">
                 <div class="form-row">
                     <!-- Add instructors here -->
                 </div>
+            --}}
+            <div class="col-md-3">
+                {{ $program['description_of_age_range'] }}
             </div>
-            <div class="col-md-2">
-                <!-- action buttons here -->
-
+            <div class="col-md-3 text-right md-2">
                 <a href="{{ tenant()->route('tenant:admin.programs.edit', ['program' => $program->id]) }}">
                     <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>

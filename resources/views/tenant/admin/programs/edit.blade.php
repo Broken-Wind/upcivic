@@ -30,7 +30,7 @@
                 </div>
                 <div class="row mb-4">
                     <div class="col-md-9">
-                        <button type="submit" form="propose_program" id="submit" class="btn btn-primary">Propose</button>
+                        <button type="submit" form="propose_program" id="submit" class="btn btn-primary">Send Proposal</button>
                     </div>
                 </div>
                 <div class="card">

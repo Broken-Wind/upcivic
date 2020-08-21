@@ -82,13 +82,14 @@ class ProgramController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function send(Request $request, Program $program) {
-        dd($request);
-        $recipientOrganization = Organization::find($request['recipient_organization_id']);
         $sendingOrganization = tenant()->organization;
+        $recipientOrganizations = $program->contributors()->where('organization_id', '!=', $sendingOrganization->id)->get()->map(function ($contributor) {
+            return $contributor->organization;
+        });
         $proposal = collect([
             'sender' => Auth::user(),
             'sending_organization' => $sendingOrganization,
-            'recipient_organization' => $recipientOrganization,
+            'recipient_organizations' => $recipientOrganizations,
             'programs' => [$program],
         ]);
 
@@ -96,7 +97,7 @@ class ProgramController extends Controller
 
         \Mail::send(new ProposalSent($proposal));
 
-        return withSuccess('Proposal sent successfully.');
+        return back()->withSuccess('Proposal sent successfully.');
     }
 
     /**

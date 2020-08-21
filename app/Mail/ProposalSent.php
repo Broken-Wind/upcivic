@@ -41,7 +41,9 @@ class ProposalSent extends Mailable
             }
         }, $this->proposal['cc_emails'] ?? []));
 
-        $recipients = $this->proposal['recipient_organization']->emailableContacts()->concat($arrayOfCcEmails)->unique('email');
+        $recipients = $this->proposal['recipient_organizations']->map(function ($organization) {
+            return $organization->emailableContacts();
+        })->concat($arrayOfCcEmails)->flatten()->unique('email');
 
         foreach ($recipients as $recipient) {
             $message->to($recipient['email'], $recipient['name'] ?? $recipient['email']);

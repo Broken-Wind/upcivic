@@ -37,10 +37,19 @@ class ResourceTimelineService
     public function getEvents()
     {
         return Program::with(['meetings.site', 'contributors.organization'])->get()->sortBy('start_datetime')->map(function ($program) {
-            $contributors = $program->contributors->map(function ($contributor) {
+            $otherContributors = $program->contributors->where('organization_id', '!=', tenant()->organization_id)->map(function ($contributor) {
                 return [
                     'organization_id' => $contributor->organization_id,
-                    'organization_name' => $contributor->organization->name,
+                    'name' => $contributor->organization->name,
+                ];
+            });
+            $meetings = $program->meetings->map(function ($meeting) {
+                return [
+                    'start_date' => $meeting->start_date,
+                    'end_date' => $meeting->end_date,
+                    'start_time' => $meeting->start_time,
+                    'end_time' => $meeting->end_time,
+                    'site' => $meeting->site->name
                 ];
             });
             return [
@@ -54,7 +63,8 @@ class ResourceTimelineService
                 'min_age' => $program->min_age,
                 'max_age' => $program->max_age,
                 'ages_type' => $program->ages_type,
-                'contributors' => $contributors,
+                'other_contributors' => $otherContributors,
+                'meetings' => $meetings
             ];
         })->values()->toJson();
     }

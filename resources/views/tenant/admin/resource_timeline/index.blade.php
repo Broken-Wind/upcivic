@@ -29,10 +29,10 @@
           </button>
         </div>
         <div class="modal-body" id="modal-body">
-            <div id="contributors"></div>
-            <div id="description_of_meetings"></div>
-            <div id="program_times"></div>
-            <div id="meetings"></div>
+            <div id="description-of-meetings"></div>
+            <div id="program-times"></div>
+            <div id="contributors-container"></div>
+            <div id="meetings-container"></div>
             <div id="description"></div>
 
         </div>
@@ -82,8 +82,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     },
     eventClick:  function(info) {
-        $('#modal-title').html(info.event.title);
-        $('#modal-body').html(info.event.description);
+        const event = info.event;
+        $('#modal-title').html(event.title);
+        $('#description-of-meetings').html(event.extendedProps.description_of_meetings);
+        $('#program-times').html(event.extendedProps.program_times);
+        let contributors = [];
+        for (const contributor in event.extendedProps.other_contributors) {
+            contributors.push(event.extendedProps.other_contributors[contributor].name);
+        }
+        $('#contributors-container').html('With ' + contributors.join(', '));
+        let meetings = [];
+        for (const meeting in event.extendedProps.meetings) {
+            meetings.push(event.extendedProps.meetings[meeting].start_date);
+        }
+        $('#meetings-container').html('Meets: ' + meetings.join(', '));
         $('#fullCalModal').modal();
     },
     resourceGroupField: 'site',

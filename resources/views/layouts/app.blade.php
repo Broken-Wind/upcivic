@@ -15,7 +15,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto"><li class="nav-item dropdown">
+                    <ul class="navbar-nav"><li class="nav-item dropdown">
 
                     </ul>
 

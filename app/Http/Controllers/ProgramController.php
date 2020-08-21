@@ -11,6 +11,7 @@ use App\Program;
 use App\Site;
 use App\Template;
 use DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mixpanel;
 
@@ -70,17 +71,32 @@ class ProgramController extends Controller
                 }
             }
         });
-        $recipientOrganization = Organization::find($validated['recipient_organization_id']);
-        $sendingOrganization = tenant();
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Proposal added successfully.');
+    }
+
+    /**
+     * Send a Proposal and set Program status to Sent
+     *
+     * @param UpdateProgram $request
+     * @param Program $program
+     * @return \Illuminate\Http\Response
+     */
+    public function send(Request $request, Program $program) {
+        dd($request);
+        $recipientOrganization = Organization::find($request['recipient_organization_id']);
+        $sendingOrganization = tenant()->organization;
         $proposal = collect([
             'sender' => Auth::user(),
             'sending_organization' => $sendingOrganization,
             'recipient_organization' => $recipientOrganization,
-            'programs' => $programs,
+            'programs' => [$program],
         ]);
-        //\Mail::send(new ProposalSent($proposal));
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Proposal added successfully.');
+        // TODO: Set status to Sent and disable editing from the contributors. If status sent, block sending again
+
+        \Mail::send(new ProposalSent($proposal));
+
+        return withSuccess('Proposal sent successfully.');
     }
 
     /**

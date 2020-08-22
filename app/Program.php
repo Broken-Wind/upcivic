@@ -112,19 +112,20 @@ class Program extends Model
                     'min_enrollments' => $template['min_enrollments'],
                     'max_enrollments' => $template['max_enrollments'],
                 ]);
-                $proposer = new Contributor([
+
+                $proposingContributor = new Contributor([
                     'internal_name' => $template['internal_name'],
                     'invoice_amount' => $template['invoice_amount'],
                     'invoice_type' => $template['invoice_type'],
                 ]);
-                $proposer['program_id'] = $program['id'];
-                $proposer['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
-                $proposer->save();
+                $proposingContributor['program_id'] = $program['id'];
+                $proposingContributor['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
+                $proposingContributor->save();
 
                 $contributor = new Contributor([]);
                 $contributor['program_id'] = $program['id'];
                 $contributor['organization_id'] = $proposal['recipient_organization_id'];
-                if ($contributor['organization_id'] != $proposer['organization_id']) {
+                if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
                     $contributor->save();
                 }
 

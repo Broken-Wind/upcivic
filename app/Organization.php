@@ -79,4 +79,9 @@ class Organization extends Model
     {
         return $this->hasMany(Template::class)->withoutGlobalScopes();
     }
+
+    public function proposals()
+    {
+        return $this->belongsToMany(Program::class, 'proposers');
+    }
 }

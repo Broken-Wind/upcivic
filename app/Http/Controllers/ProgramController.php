@@ -71,7 +71,9 @@ class ProgramController extends Controller
                 }
             }
         });
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Proposal added successfully.');
+        $program = $programs->first();
+
+        return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program]);
     }
 
     /**
@@ -108,7 +110,6 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
-        //
         $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
 
@@ -153,6 +154,6 @@ class ProgramController extends Controller
         //
         $program->delete();
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
+        return Redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
     }
 }

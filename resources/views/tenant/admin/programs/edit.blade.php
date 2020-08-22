@@ -28,14 +28,19 @@
                         @endif
                     </div>
                 </div>
-                <form method="POST" action="{{ tenant()->route('tenant:admin.programs.send', [$program]) }}">
-                    @csrf
-                    <div class="row mb-4">
-                        <div class="col-md-9">
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <form method="POST" action="{{ tenant()->route('tenant:admin.programs.send', [$program]) }}">
+                            @csrf
                             <button type="submit" class="btn btn-primary">Send Proposal</button>
-                        </div>
+                        </form>
                     </div>
-                </form>
+                    <!--
+                    <div class="col-md-2">
+                        <a href="" class="btn btn-secondary">Cancel</a>
+                    </div>
+                    -->
+                </div>
                 <div class="card">
                     <div class="card-header">Program</div>
                     <div class="card-body">

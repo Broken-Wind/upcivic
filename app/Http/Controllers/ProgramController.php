@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Filters\ProgramFilters;
+use App\Http\Requests\RejectProgram;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
+use App\Mail\ProgramRejected;
 use App\Mail\ProposalSent;
 use App\Organization;
 use App\Program;
@@ -149,6 +151,16 @@ class ProgramController extends Controller
         ]);
 
         return back()->withSuccess('Program updated successfully.');
+    }
+
+    public function reject(RejectProgram $request)
+    {
+        $validated = $request->validated();
+        $program = Program::findOrFail($validated['reject_program_id']);
+        $reason = $validated['rejection_reason'];
+        \Mail::send(new ProgramRejected($program, $reason, Auth::user()));
+        $program->delete();
+        return back()->withSuccess('Program rejected.');
     }
 
     /**

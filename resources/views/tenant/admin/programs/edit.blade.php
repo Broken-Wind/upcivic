@@ -203,6 +203,7 @@
                                 <td>{{ $meeting['start_time'] . "-" . $meeting['end_time'] }}</td>
                                 <td>{{ $meeting->site['name'] }}</td>
                             </tr>
+<<<<<<< HEAD
                         @empty
                             <tr>
                                 <td>Error! Please contact support.</td>
@@ -218,6 +219,48 @@
                             @endif
                             <input type="time" class="form-control" name="start_time" id="" placeholder=""
                                    value="">
+=======
+                        </table>
+                        <button type="submit" form="update_program_contributors" id="submit" class="btn btn-primary btn-lg btn-block">Update Contributors</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Meetings <span class="text-muted ml-1">({{ $program->meetings->count() }} total)</span></div>
+                <div class="card-body">
+                    <form method="POST" action="{{ tenant()->route('tenant:admin.programs.meetings.update', [$program]) }}">
+                        @csrf
+                        <table class="table table-striped">
+                            @forelse($program->meetings->sortBy('start_datetime') as $meeting)
+                                <tr>
+                                    <td><input type="checkbox" name="meeting_ids[]" value="{{ $meeting['id'] }}"></td>
+                                    <td >{{ $meeting['start_date'] }}{{ $meeting['start_date'] != $meeting['end_date'] ? '-' . $meeting['end_date'] : '' }}</td>
+                                    <td>{{ $meeting['start_time'] . "-" . $meeting['end_time'] }}</td>
+                                    <td>{{ $meeting->site['name'] }}</td>
+                                    <td>{{ $meeting->location['name'] }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td>Error! Please contact support.</td>
+                                </tr>
+                            @endforelse
+                        </table>
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-4">
+                                <button type="submit" class="btn btn-primary btn-danger btn-block" name="delete_meetings" value=="delete_meetings">Delete Selected Meetings</button>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <button type="submit" class="btn btn-primary btn-block" name="update_selected" value="update_selected">Update Selected Meetings</button>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <button type="submit" class="btn btn-primary btn-block" name="update_all" value="update_all">Update All Meetings</button>
+                            </div>
+>>>>>>> WIP dragging events will now update site and location, and change event title to: 'To be pooptinued'
                         </div>
 
                         <div class="form-group mx-1">

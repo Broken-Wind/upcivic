@@ -41,6 +41,13 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
     Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
     Route::group([
+        'prefix' => '/{tenant}/api',
+        'middleware' => ['tenant'],
+        'as' => 'tenant:api.',
+    ], function () {
+        Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
+    });
+    Route::group([
         'prefix' => '/{tenant}/admin',
         'middleware' => ['tenant', 'tenant.auth'],
         'as' => 'tenant:admin.',

@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('head.additional')
+<meta name="csrf-token" content="@csrf">
 <style type="text/css">
     html, body {
     margin: 0;
@@ -62,6 +63,22 @@ document.addEventListener('DOMContentLoaded', function() {
             ],
         }
     },
+    eventDrop: function(info) {
+        // if (!confirm("Are you sure about this change?")) {
+        //     info.revert();
+        // }
+        var event = info.event;
+        var resources = event.getResources();
+        var resourceIds = resources.map(function(resource) { return resource.id });
+        updateLocations({
+            program_id: info.event.id,
+            location_ids: resourceIds
+        }).then(data => {
+            event.setProp('title', data.title);
+            console.log(data); // JSON data parsed by `data.json()` call
+        });
+        console.log(resourceIds);
+    },
     eventClick:  function(info) {
         const event = info.event;
         $('#reject-program-id').val(event.id);
@@ -87,6 +104,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
   calendar.render();
 });
+
+async function updateLocations(data = {}) {
+  // Default options are marked with *
+  url = "{{ route('tenant:api.programs.locations.update', 'demo-host') }}";
+  const response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data) // body data type must match "Content-Type" header
+  });
+  return response.json(); // parses JSON response into native JavaScript objects
+}
 
 </script>
 @endsection

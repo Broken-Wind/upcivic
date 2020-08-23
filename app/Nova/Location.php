@@ -4,27 +4,25 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Site extends Resource
+class Location extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Site::class;
+    public static $model = \App\Location::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
      * The columns that should be searched.
@@ -45,12 +43,9 @@ class Site extends Resource
     public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name')->sortable(),
-            Place::make('Address')->sortable(),
-            Text::make('Phone')->sortable(),
-            BelongsTo::make('County')->sortable(),
-            HasMany::make('Locations')
+            BelongsTo::make('Site')
         ];
     }
 

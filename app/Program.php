@@ -29,6 +29,7 @@ class Program extends Model
         'min_enrollments',
         'enrollments',
         'max_enrollments',
+        'proposing_organization_id'
     ];
 
     public function scopeExcludePast($query)
@@ -111,8 +112,9 @@ class Program extends Model
                     'max_age' => $proposal['max_age'] ?? $template['max_age'],
                     'min_enrollments' => $template['min_enrollments'],
                     'max_enrollments' => $template['max_enrollments'],
-                ]);
+                    'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()->organization_id,
 
+                ]);
                 $proposingContributor = new Contributor([
                     'internal_name' => $template['internal_name'],
                     'invoice_amount' => $template['invoice_amount'],
@@ -319,5 +321,10 @@ class Program extends Model
     public function lastMeeting()
     {
         return $this->meetings->sortByDesc('start_datetime')->first();
+    }
+
+    public function proposers()
+    {
+        return $this->belongsTo(Organization::class, 'proposing_organization_id');
     }
 }

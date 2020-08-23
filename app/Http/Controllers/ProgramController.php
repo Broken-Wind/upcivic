@@ -10,6 +10,7 @@ use App\Organization;
 use App\Program;
 use App\Site;
 use App\Template;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -95,6 +96,9 @@ class ProgramController extends Controller
             'programs' => [$program],
         ]);
 
+        $program->proposed_at = Carbon::now();
+        $program->save();
+
         // TODO: Set status to Sent and disable editing from the contributors. If status sent, block sending again
 
         \Mail::send(new ProposalSent($proposal));
@@ -110,6 +114,8 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
+        abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
+
         $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
 
@@ -126,6 +132,8 @@ class ProgramController extends Controller
     public function update(UpdateProgram $request, Program $program)
     {
         //
+        abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
+
         $validated = $request->validated();
         $program->update([
             'name' => $validated['name'],

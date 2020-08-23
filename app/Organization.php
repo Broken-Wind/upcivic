@@ -82,6 +82,6 @@ class Organization extends Model
 
     public function proposals()
     {
-        return $this->belongsToMany(Program::class, 'proposers');
+        return $this->hasMany(Program::class, 'proposing_organization_id');
     }
 }

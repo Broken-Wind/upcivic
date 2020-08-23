@@ -320,6 +320,11 @@ class Program extends Model
         return $this->contributors->where('organization_id', tenant()['id'])->first()['internal_name'] ?? $this['name'];
     }
 
+    public function getTimelineTitleAttribute()
+    {
+        return '[' . $this->id . '] ' . $this->internal_name;
+    }
+
     public function setInternalNameAttribute($internalName)
     {
         return $this->contributors->where('organization_id', tenant()['id'])->first()->update(['internal_name' => $internalName]);

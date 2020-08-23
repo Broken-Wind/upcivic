@@ -55,7 +55,7 @@ class ResourceTimelineService
             return [
                 'id' => $program->id,
                 'resourceId' => $program->location_id,
-                'title' => $program->internal_name . " at " . $program->site->name,
+                'title' => $program->timeline_title,
                 'description_of_meetings' => $program->description_of_meetings,
                 'program_times' => $program['start_time'] . '-' . $program['end_time'],
                 'start' => $program->start_datetime,

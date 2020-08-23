@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var event = info.event;
         var resources = event.getResources();
         var resourceIds = resources.map(function(resource) { return resource.id });
+        event.setProp('title', event.title + ' -saving');
         updateLocations({
             program_id: info.event.id,
             location_ids: resourceIds

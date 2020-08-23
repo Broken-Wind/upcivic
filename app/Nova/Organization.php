@@ -51,6 +51,7 @@ class Organization extends Resource
             Textarea::make('Enrollment Instructions'),
             HasMany::make('People', 'administrators'),
             HasOne::make('Tenant'),
+            BelongsToMany::make('Sites'),
         ];
     }
 

@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Place;
@@ -50,7 +51,8 @@ class Site extends Resource
             Place::make('Address')->sortable(),
             Text::make('Phone')->sortable(),
             BelongsTo::make('County')->sortable(),
-            HasMany::make('Locations')
+            HasMany::make('Locations'),
+            BelongsToMany::make('Organizations')
         ];
     }
 

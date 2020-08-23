@@ -15,7 +15,7 @@ class ResourceTimelineService
 
     public function getResources()
     {
-        return $this->demoService->getDemoSites()->map(function ($site) {
+        return tenant()->organization->sites->map(function ($site) {
             return $site->locations->map(function ($location) {
                 return [
                     'id' => $location->id,

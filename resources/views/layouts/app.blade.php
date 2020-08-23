@@ -23,10 +23,16 @@
                     <ul class="navbar-nav ml-auto">
 
                         @if(tenant())
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
-                            </li>
+                            @if ($_SERVER['REQUEST_URI'] == "{{ tenant()->route('tenant:admin.programs.index') }}")
+                                dd($_SERVER['REQUEST_URI'])
+                                <li class="nav-item active">
+                                    <a class="nav-link" style="color: red" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
+                                </li>
+                            @endif
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Programs</a>

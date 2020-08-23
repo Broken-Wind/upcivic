@@ -12,6 +12,12 @@
                         </p>
                     </div>
                     <div class="col-md-3">
+                        @if($program['proposed_at'] != null)
+                            <div class="alert alert-warning" role="alert">
+                                Proposal sent on {{$program['proposed_at']}}
+                            </div>
+                        @endif
+                        {{--
                         @if(!$program->willPublish())
                             <div class="alert alert-info">
                                 This program is not scheduled to publish.
@@ -26,32 +32,40 @@
                                 on {{ $program->getContributorFromTenant()['published_at']->format('F d, Y')}}
                             </div>
                         @endif
+                        --}}
                     </div>
                 </div>
                 <div class="row mb-4">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <form method="POST" action="{{ tenant()->route('tenant:admin.programs.send', [$program]) }}">
+                            @if($program['proposed_at'] != null)
+                                <fieldset disabled="disabled"/>
+                            @else
+                                <!--
+                                <a href="{{tenant()->route('tenant:admin.programs.index')}}" class="btn btn-light">Cancel</a>
+                                -->
+                                <button type="submit" class="btn btn-primary">Send Proposal</button>
+                            @endif
                             @csrf
-                            <button type="submit" class="btn btn-primary">Send Proposal</button>
                         </form>
                     </div>
-                    <!--
-                    <div class="col-md-2">
-                        <a href="" class="btn btn-secondary">Cancel</a>
-                    </div>
-                    -->
                 </div>
                 <div class="card">
                     <div class="card-header">Program</div>
                     <div class="card-body">
-                        <form action="{{ tenant()->route('tenant:admin.programs.destroy', [$program]) }}" method="post"
-                              id="delete_program">
+                        <form action="{{ tenant()->route('tenant:admin.programs.destroy', [$program]) }}" method="post" id="delete_program">
                             @method('delete')
                             @csrf
+                            @if($program['proposed_at'] != null)
+                                <fieldset disabled="disabled"/>
+                            @endif
                         </form>
                         <form method="POST" action="{{ tenant()->route('tenant:admin.programs.update', [$program]) }}">
                             @method('put')
                             @csrf
+                            @if($program['proposed_at'] != null)
+                                <fieldset disabled="disabled"/>
+                                    @endif
                             @include('shared.form_errors')
                             <div class="form-group">
                                 <label for="name">Name</label>
@@ -143,6 +157,9 @@
                         <form method="POST"
                               action="{{ tenant()->route('tenant:admin.programs.meetings.update', [$program]) }}">
                             @csrf
+                            @if($program['proposed_at'] != null)
+                                <fieldset disabled="disabled"/>
+                            @endif
                             <table class="table table-striped">
                                 @forelse($program->meetings->sortBy('start_datetime') as $meeting)
                                     <tr>
@@ -162,16 +179,25 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for=meeting_start_time"">Start Time</label>
+                                    @if($program['proposed_at'] != null)
+                                        <fieldset disabled="disabled"/>
+                                    @endif
                                     <input type="time" class="form-control" name="start_time" id="" placeholder=""
                                            value="">
                                 </div>
 
                                 <div class="form-group mx-1">
+                                    @if($program['proposed_at'] != null)
+                                        <fieldset disabled="disabled"/>
+                                    @endif
                                     <label for="meeting_end_time">End Time</label>
                                     <input type="time" class="form-control" name="end_time" id="" placeholder=""
                                            value="">
                                 </div>
                                 <div class="form-group mx-1">
+                                    @if($program['proposed_at'] != null)
+                                        <fieldset disabled="disabled"/>
+                                    @endif
                                     <label for="site_id">Site</label>
                                     <select class="form-control" name="site_id">
                                         <option value="">-----</option>
@@ -182,6 +208,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
+                                    @if($program['proposed_at'] != null)
+                                        <fieldset disabled="disabled"/>
+                                    @endif
                                     <label for="shift_meetings">Shift Meeting Dates</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" name="shift_meetings" value="0">
@@ -190,6 +219,9 @@
                                 </div>
                             </div>
                             <div class="form-row">
+                                @if($program['proposed_at'] != null)
+                                    <fieldset disabled="disabled"/>
+                                @endif
                                 <button type="submit" class="btn btn-secondary" name="update_all" value="update_all">
                                     Update All
                                 </button>
@@ -205,6 +237,9 @@
                         <form method="POST"
                               action="{{ tenant()->route('tenant:admin.programs.meetings.store', [$program]) }}">
                             @csrf
+                            @if($program['proposed_at'] != null)
+                                <fieldset disabled="disabled"/>
+                            @endif
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label for="new_meeting_start_datetime">Start Date & Time</label>
@@ -246,6 +281,9 @@
                               action="{{ tenant()->route('tenant:admin.programs.contributors.update', [$program]) }}">
                             @method('put')
                             @csrf
+                            @if($program['proposed_at'] != null)
+                                <fieldset disabled="disabled"/>
+                            @endif
                         </form>
                         <table class="table table-striped">
                             @if($program['shared_invoice_type'])
@@ -354,7 +392,7 @@
                 </div>
             </div>
         </div>
-
+        <!--
         <div class="row justify-content-center mb-4">
             <div class="col-md-8">
                 <div class="card">
@@ -385,5 +423,6 @@
                 </div>
             </div>
         </div>
+        -->
     </div>
 @endsection

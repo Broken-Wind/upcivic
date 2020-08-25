@@ -54,7 +54,7 @@
                 padding: 25px;
                 font-size: 1.125rem;
                 font-weight: 500;
-				text-decoration: none;
+                text-decoration: none;
             }
 
             .m-b-md {

@@ -29,8 +29,8 @@ class AddProposingOrganizationId extends Migration
     {
         Schema::table('programs', function (Blueprint $table) {
             //
-            $table->dropForeign('programs_proposing_organization_id_foreign');
             $table->foreign('proposing_organization_id')->references('id')->on('organizations');
+            $table->dropForeign('despatch_discrepancies_programs_proposing_organization_id_foreign');
         });
     }
 }

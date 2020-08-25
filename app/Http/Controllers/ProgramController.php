@@ -162,6 +162,6 @@ class ProgramController extends Controller
         //
         $program->delete();
 
-        return Redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
     }
 }

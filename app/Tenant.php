@@ -50,7 +50,7 @@ class Tenant extends Model
 
     public function isPublic()
     {
-        return $this['id'] == 3;
+        return $this['id'] == 2 && $this['slug'] == 'techsplosion';
     }
 
     public function organization()

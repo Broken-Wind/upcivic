@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use function GuzzleHttp\Psr7\_caseless_remove;
 
 class Program extends Model
 {
@@ -74,6 +75,27 @@ class Program extends Model
     public function isPublished()
     {
         return $this->getContributorFromTenant()->isPublished();
+    }
+
+    public function isAccepted()
+    {
+        return false;
+    }
+
+    public function isProposalSent()
+    {
+        if (!empty($this['proposed_at'])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function canBePublished()
+    {
+        if ($this->isProposalSent() && $this->isAccepted()) {
+            return true;
+        }
+        return false;
     }
 
     public function willPublish()
@@ -323,7 +345,7 @@ class Program extends Model
         return $this->meetings->sortByDesc('start_datetime')->first();
     }
 
-    public function proposers()
+    public function proposer()
     {
         return $this->belongsTo(Organization::class, 'proposing_organization_id');
     }

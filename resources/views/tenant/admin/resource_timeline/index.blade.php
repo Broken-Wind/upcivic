@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('head.additional')
-<meta name="csrf-token" content="@csrf">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style type="text/css">
     html, body {
     margin: 0;

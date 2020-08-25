@@ -12,7 +12,15 @@
                         </p>
                     </div>
                     <div class="col-md-3">
-                        @if($program['proposed_at'] != null)
+                        @if($program['is_accepted'] != null and $program->isPublished())
+                            <div class="alert alert-primary">
+                                Schedule details are published to your website
+                            </div>
+                        @elseif($program['is_accepted'] != null)
+                            <div class="alert alert-success" role="alert">
+                                Proposal accepted at {{$program['proposed_at']}}
+                            </div>
+                        @elseif($program['proposed_at'] != null)
                             <div class="alert alert-warning" role="alert">
                                 Proposal sent on {{$program['proposed_at']}}
                             </div>
@@ -35,13 +43,46 @@
                         --}}
                     </div>
                 </div>
+                @if($program['proposed_at'] != null and $program['is_accepted'] != null)
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <form method="POST" id="publish_program"
+                                  action="{{ tenant()->route('tenant:admin.programs.published.update', [$program]) }}">
+                                @method('put')
+                                @csrf
+                                <!--
+                                <div class="form-group">
+                                    <label for="published_at">Publish On:</label>
+                                    <input type="date" class="form-control" name="published_at" id="published_at"
+                                           value="{{ !empty($program->getContributorFromTenant()['published_at']) ? $program->getContributorFromTenant()['published_at']->format('Y-m-d') : '' }}"
+                                           aria-describedby="published_at_help">
+                                    <small id="published_at_help" class="form-text text-muted">The date this program should
+                                        be published</small>
+                                </div>
+                                -->
+                                <div class="form-row">
+                                    <div class="col-md-4">
+                                        <!--
+                                        <button type="submit" id="update_publish_date" name="update_publish_date" class="btn btn-secondary mx-1">Update </button>
+                                        -->
+                                        @if($program->isPublished())
+                                            <button type="submit" id="unpublish_now" name="unpublish_now" value="1" class="btn btn-secondary">Unpublish</button>
+                                        @else
+                                            <button type="submit" id="publish_now" name="publish_now" value="1" class="btn btn-primary">Publish</button>
+                                        @endif
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                @endif
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <form method="POST" action="{{ tenant()->route('tenant:admin.programs.send', [$program]) }}">
                             @if($program['proposed_at'] != null)
                                 <fieldset disabled="disabled"/>
                             @else
-                                <!--
+                            <!--
                                 <a href="{{tenant()->route('tenant:admin.programs.index')}}" class="btn btn-light">Cancel</a>
                                 -->
                                 <button type="submit" class="btn btn-primary">Send Proposal</button>
@@ -392,37 +433,6 @@
                 </div>
             </div>
         </div>
-        <!--
-        <div class="row justify-content-center mb-4">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Publishing</div>
-                    <div class="card-body">
-                        <form method="POST" id="publish_program"
-                              action="{{ tenant()->route('tenant:admin.programs.published.update', [$program]) }}">
-                            @method('put')
-                            @csrf
-                            <div class="form-group">
-                                <label for="published_at">Publish On:</label>
-                                <input type="date" class="form-control" name="published_at" id="published_at"
-                                       value="{{ !empty($program->getContributorFromTenant()['published_at']) ? $program->getContributorFromTenant()['published_at']->format('Y-m-d') : '' }}"
-                                       aria-describedby="published_at_help">
-                                <small id="published_at_help" class="form-text text-muted">The date this program should
-                                    be published</small>
-                            </div>
-                            <div class="form-row">
-                                <button type="submit" id="update_publish_date" name="update_publish_date"
-                                        class="btn btn-secondary mx-1">Update
-                                </button>
-                                <button type="submit" id="publish_now" name="publish_now" value="1"
-                                        class="btn btn-success">Publish Now
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
+
     </div>
 @endsection

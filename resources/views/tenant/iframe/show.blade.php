@@ -6,7 +6,7 @@
     <p />
     <div class="card">
         <div class="card-header">
-            Session Information <text class="text-muted"><em> - {{ tenant()['name'] }} Barcode #{{ $program['id'] }}</em></type>
+            Session Information <text class="text-muted"><em> - {{ tenant()['name'] }} Barcode #{{ $program['id'] }}</em></text>
         </div>
         <div class="card-body">
             <p class="lead">

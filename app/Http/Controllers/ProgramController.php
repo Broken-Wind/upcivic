@@ -10,7 +10,9 @@ use App\Organization;
 use App\Program;
 use App\Site;
 use App\Template;
+use Carbon\Carbon;
 use DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mixpanel;
 
@@ -70,18 +72,38 @@ class ProgramController extends Controller
                 }
             }
         });
-        $recipientOrganization = Organization::find($validated['recipient_organization_id']);
-        $sendingOrganization = tenant();
+        $program = $programs->first();
+
+        return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program]);
+    }
+
+    /**
+     * Send a Proposal and set Program status to Sent
+     *
+     * @param UpdateProgram $request
+     * @param Program $program
+     * @return \Illuminate\Http\Response
+     */
+    public function send(Request $request, Program $program) {
+        $sendingOrganization = tenant()->organization;
+        $recipientOrganizations = $program->contributors()->where('organization_id', '!=', $sendingOrganization->id)->get()->map(function ($contributor) {
+            return $contributor->organization;
+        });
         $proposal = collect([
             'sender' => Auth::user(),
             'sending_organization' => $sendingOrganization,
-            'recipient_organization' => $recipientOrganization,
-            'programs' => $programs,
-            'cc_emails' => $validated['cc_emails'],
+            'recipient_organizations' => $recipientOrganizations,
+            'programs' => [$program],
         ]);
+
+        $program->proposed_at = Carbon::now();
+        $program->save();
+
+        // TODO: Set status to Sent and disable editing from the contributors. If status sent, block sending again
+
         \Mail::send(new ProposalSent($proposal));
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program added successfully.');
+        return back()->withSuccess('Proposal sent successfully.');
     }
 
     /**
@@ -92,7 +114,8 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
-        //
+        abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
+
         $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
 
@@ -109,6 +132,8 @@ class ProgramController extends Controller
     public function update(UpdateProgram $request, Program $program)
     {
         //
+        abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
+
         $validated = $request->validated();
         $program->update([
             'name' => $validated['name'],

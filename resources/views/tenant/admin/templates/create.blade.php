@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Create a Program Template</div>
+                <div class="card-header">Add Program</div>
 
                 <div class="card-body">
 
@@ -16,7 +16,7 @@
                         @include('shared.form_errors')
 
                         <div class="form-group">
-                            <label for="name">Program Name</label>
+                            <label for="name">Name</label>
                             <input type="text" class="form-control" name="name" value="{{ old('name') }}" id="name" placeholder="Adventures in Coding" required>
                         </div>
 
@@ -103,7 +103,7 @@
                             <input type="number" class="form-control" name="meeting_minutes" value="{{ old('meeting_minutes') }}" id="meeting_minutes" placeholder="180" required>
                         </div>
 
-                        <button type="submit" id="submit" class="btn btn-primary btn-lg btn-block">Create Template</button>
+                        <button type="submit" id="submit" class="btn btn-primary">Add Program</button>
 
                     </form>
                 </div>

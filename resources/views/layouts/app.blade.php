@@ -15,7 +15,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto"><li class="nav-item dropdown">
+                    <ul class="navbar-nav"><li class="nav-item dropdown">
 
                     </ul>
 
@@ -25,15 +25,11 @@
                         @if(tenant())
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Schedule</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Programs</a>
                             </li>
 
                         @endif
@@ -41,11 +37,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Log in') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign up') }}</a>
                                 </li>
                             @endif
                         @else

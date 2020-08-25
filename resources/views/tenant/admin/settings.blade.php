@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card mb-4">
-                <div class="card-header">Edit {{ $tenant['name'] }}</div>
+                <div class="card-header">Info</div>
 
                 <div class="card-body">
 
@@ -37,7 +37,7 @@
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-secondary">Update</button>
 
                     </form>
 
@@ -45,7 +45,7 @@
             </div>
 
             <div class="card mb-4">
-                <div class="card-header">{{ $tenant['name'] }} Administrators</div>
+                <div class="card-header">Administrators</div>
                 <div class="card-body">
 
                     <table class="table table-striped">
@@ -77,6 +77,20 @@
                         @endforelse
                     </table>
 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header">Publishing</div>
+                <div class="card-body">
+                    <p> Embed this code snippet to your website to inform your users in <b>real-time</b> about upcoming programs schedules.</p>
+                    <div class="bg-light text-center">
+                        <code>&lt;iframe src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"/&gt;</code>
+                    </div>
+                    <hr/>
+                    <p> Preview </p>
+                    <iframe src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"/>
                 </div>
             </div>
         </div>

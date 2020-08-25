@@ -22,5 +22,5 @@
         </table>
     </div>
 @else
-    None yet. :(
+    No meetings
 @endif

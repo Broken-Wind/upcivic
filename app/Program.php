@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use function GuzzleHttp\Psr7\_caseless_remove;
 
 class Program extends Model
 {
@@ -29,6 +30,7 @@ class Program extends Model
         'min_enrollments',
         'enrollments',
         'max_enrollments',
+        'proposing_organization_id'
     ];
 
     public function scopeExcludePast($query)
@@ -75,6 +77,27 @@ class Program extends Model
         return $this->getContributorFromTenant()->isPublished();
     }
 
+    public function isAccepted()
+    {
+        return false;
+    }
+
+    public function isProposalSent()
+    {
+        if (!empty($this['proposed_at'])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function canBePublished()
+    {
+        if ($this->isProposalSent() && $this->isAccepted()) {
+            return true;
+        }
+        return false;
+    }
+
     public function willPublish()
     {
         return $this->getContributorFromTenant()->willPublish();
@@ -111,20 +134,22 @@ class Program extends Model
                     'max_age' => $proposal['max_age'] ?? $template['max_age'],
                     'min_enrollments' => $template['min_enrollments'],
                     'max_enrollments' => $template['max_enrollments'],
+                    'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()->organization_id,
+
                 ]);
-                $proposer = new Contributor([
+                $proposingContributor = new Contributor([
                     'internal_name' => $template['internal_name'],
                     'invoice_amount' => $template['invoice_amount'],
                     'invoice_type' => $template['invoice_type'],
                 ]);
-                $proposer['program_id'] = $program['id'];
-                $proposer['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
-                $proposer->save();
+                $proposingContributor['program_id'] = $program['id'];
+                $proposingContributor['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
+                $proposingContributor->save();
 
                 $contributor = new Contributor([]);
                 $contributor['program_id'] = $program['id'];
                 $contributor['organization_id'] = $proposal['recipient_organization_id'];
-                if ($contributor['organization_id'] != $proposer['organization_id']) {
+                if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
                     $contributor->save();
                 }
 
@@ -318,5 +343,10 @@ class Program extends Model
     public function lastMeeting()
     {
         return $this->meetings->sortByDesc('start_datetime')->first();
+    }
+
+    public function proposer()
+    {
+        return $this->belongsTo(Organization::class, 'proposing_organization_id');
     }
 }

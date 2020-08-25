@@ -51,12 +51,10 @@
 
             .links > a {
                 color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
+                padding: 25px;
+                font-size: 1.125rem;
+                font-weight: 500;
                 text-decoration: none;
-                text-transform: uppercase;
             }
 
             .m-b-md {
@@ -71,10 +69,10 @@
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ route('login') }}">Log in</a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+                            <a href="{{ route('register') }}">Sign up</a>
                         @endif
                     @endauth
                 </div>
@@ -89,7 +87,7 @@
 
                 @guest
 
-                    <a class="btn btn-outline-secondary btn-lg mt-3" href="/register">Get Started</a>
+                    <a class="btn btn-outline-secondary btn-lg mt-3" href="/register">Get started</a>
 
                 @endguest
 

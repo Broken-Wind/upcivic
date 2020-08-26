@@ -5,8 +5,8 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Upcivic\Organization;
-use Upcivic\User;
+use App\Organization;
+use App\User;
 
 class OrganizationTenantTest extends TestCase
 {

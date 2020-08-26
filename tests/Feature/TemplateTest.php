@@ -5,10 +5,10 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Upcivic\Organization;
-use Upcivic\Template;
-use Upcivic\Tenant;
-use Upcivic\User;
+use App\Organization;
+use App\Template;
+use App\Tenant;
+use App\User;
 
 class TemplateTest extends TestCase
 {

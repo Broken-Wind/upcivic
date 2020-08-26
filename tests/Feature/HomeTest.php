@@ -5,10 +5,10 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Upcivic\Administrator;
-use Upcivic\Organization;
-use Upcivic\Person;
-use Upcivic\User;
+use App\Administrator;
+use App\Organization;
+use App\Person;
+use App\User;
 
 class HomeTest extends TestCase
 {

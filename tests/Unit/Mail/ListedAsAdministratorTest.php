@@ -5,10 +5,10 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Upcivic\Mail\ListedAsAdministrator;
-use Upcivic\Organization;
-use Upcivic\Person;
-use Upcivic\User;
+use App\Mail\ListedAsAdministrator;
+use App\Organization;
+use App\Person;
+use App\User;
 
 class ListedAsAdministratorTest extends TestCase
 {

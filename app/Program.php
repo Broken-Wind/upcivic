@@ -16,6 +16,9 @@ class Program extends Model
     use HasDatetimeRange;
     use Filterable;
     //
+    public const EVENT_APPROVED_COLOR = '#007bff';
+    public const EVENT_UNAPPROVED_COLOR = '#ffc107';
+
     protected $fillable = [
         'name',
         'internal_name',
@@ -77,9 +80,9 @@ class Program extends Model
         return $this->getContributorFromTenant()->isPublished();
     }
 
-    public function isAccepted()
+    public function isApprovedByAllContributors()
     {
-        return false;
+        return $this->contributors->where('approved_at', null)->count() == 0;
     }
 
     public function isProposalSent()
@@ -92,7 +95,7 @@ class Program extends Model
 
     public function canBePublished()
     {
-        if ($this->isProposalSent() && $this->isAccepted()) {
+        if ($this->isProposalSent() && $this->isApprovedByAllContributors()) {
             return true;
         }
         return false;
@@ -353,5 +356,9 @@ class Program extends Model
     public function proposer()
     {
         return $this->belongsTo(Organization::class, 'proposing_organization_id');
+    }
+
+    public function getEventColor(){
+        return $this->isApprovedByAllContributors() ? self::EVENT_APPROVED_COLOR : self::EVENT_UNAPPROVED_COLOR;
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\RejectProgram;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
+use App\Mail\ProgramApproved;
 use App\Mail\ProposalSent;
 use App\Organization;
 use App\Program;
@@ -172,6 +173,7 @@ class ProgramController extends Controller
         $program = Program::findOrFail($validated['approve_program_id']);
         Auth::user()->approveProgram($program);
 
+        \Mail::send(new ProgramApproved($program, Auth::user()));
         return back()->withSuccess('Program approved.');
     }
 

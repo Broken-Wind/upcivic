@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     timeZone: 'UTC',
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
+    eventColor: '{{\App\Program::EVENT_UNAPPROVED_COLOR}}',
     initialView: 'resourceTimelineDay',
     initialDate: '{{ \Carbon\Carbon::now()->toDateString() }}',
     resourcesInitiallyExpanded: true,

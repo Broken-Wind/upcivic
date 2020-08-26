@@ -15,11 +15,11 @@
         <!-- Alerts and main actions -->
         <div class="row mb-4">
             <div class="col-6">
-                @if($program->isAccepted() && $program->isPublished())
+                @if($program->isApprovedByAllContributors() && $program->isPublished())
                     <div class="alert alert-primary">
                         Schedule details are published to your website
                     </div>
-                @elseif($program->isAccepted())
+                @elseif($program->isApprovedByAllContributors())
                     <div class="alert alert-success" role="alert">
                         Proposal accepted
                     </div>
@@ -43,7 +43,7 @@
                     </div>
                 @endif
                --}}
-                @if($program->isProposalSent() && $program->isAccepted())
+                @if($program->isProposalSent() && $program->isApprovedByAllContributors())
                     <form method="POST" id="publish_program" action="{{ tenant()->route('tenant:admin.programs.published.update', [$program]) }}">
                         @method('put')
                         @csrf

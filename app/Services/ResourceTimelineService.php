@@ -64,7 +64,9 @@ class ResourceTimelineService
                 'max_age' => $program->max_age,
                 'ages_type' => $program->ages_type,
                 'other_contributors' => $otherContributors,
-                'meetings' => $meetings
+                'meetings' => $meetings,
+                'backgroundColor' => $program->getEventColor(),
+                'borderColor' => $program->getEventColor(),
             ];
         })->values()->toJson();
     }

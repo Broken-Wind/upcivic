@@ -80,6 +80,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/programs/create', 'ProgramController@create')->name('programs.create');
         Route::post('/programs', 'ProgramController@store')->name('programs.store');
         Route::post('/programs/reject', 'ProgramController@reject')->name('programs.reject');
+        Route::post('/programs/approve', 'ProgramController@approve')->name('programs.approve');
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
         Route::put('/programs/{program}/enrollments', 'ProgramEnrollmentController@update')->name('programs.enrollments.update');
         Route::put('/programs/{program}', 'ProgramController@update')->name('programs.update');

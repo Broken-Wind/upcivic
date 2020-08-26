@@ -99,6 +99,9 @@ class ProgramController extends Controller
         ]);
 
         $program->proposed_at = Carbon::now();
+
+        Auth::user()->approveProgram($program);
+
         $program->save();
 
         // TODO: Set status to Sent and disable editing from the contributors. If status sent, block sending again
@@ -161,6 +164,15 @@ class ProgramController extends Controller
         \Mail::send(new ProgramRejected($program, $reason, Auth::user()));
         $program->delete();
         return back()->withSuccess('Program rejected.');
+    }
+
+    public function approve(Request $request)
+    {
+        $validated = $request;
+        $program = Program::findOrFail($validated['approve_program_id']);
+        Auth::user()->approveProgram($program);
+
+        return back()->withSuccess('Program approved.');
     }
 
     /**

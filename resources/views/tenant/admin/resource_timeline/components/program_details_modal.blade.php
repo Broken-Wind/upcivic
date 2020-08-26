@@ -18,7 +18,13 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-danger" id="reject-program" data-dismiss="modal">Reject</button>
-            <button type="button" class="btn btn-primary">Accept</button>
+
+            <form action="{{ tenant()->route('tenant:admin.programs.approve') }}" method="post">
+                @csrf
+                <input type="hidden" name="approve_program_id" id="approve-program-id" value="" />
+                <button type="submit" class="btn btn-primary" id="accept-program">Approve</button>
+            </form>
+
             </div>
         </div>
     </div>

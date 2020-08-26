@@ -32,7 +32,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td>No programs to show. :(</td>
+                        <td>No programs added yet.</td>
                     </tr>
                 @endforelse
             </tbody>

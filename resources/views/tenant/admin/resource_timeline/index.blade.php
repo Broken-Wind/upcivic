@@ -37,30 +37,26 @@ document.addEventListener('DOMContentLoaded', function() {
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
     initialView: 'resourceTimelineDay',
-    initialDate: '{{ \Carbon\Carbon::now()->next('monday')->toDateString() }}',
-    resourcesInitiallyExpanded: false,
+    initialDate: '{{ \Carbon\Carbon::now()->toDateString() }}',
+    resourcesInitiallyExpanded: true,
     businessHours: {
         // days of week. an array of zero-based day of week integers (0=Sunday)
         daysOfWeek: [ 1, 2, 3, 4, 5 ], // Monday - Thursday
-    },
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'resourceTimelineDay,resourceTimeGridDay'
     },
     resourceAreaHeaderContent: 'Locations',
     views: {
         resourceTimelineDay: {
             type: 'resourceTimeline',
-            duration: { weeks: 12 },
+            duration: { weeks: 1 },
             buttonText: 'timeline',
-            slotDuration: { days: 1 },
+            slotDuration: { days: 0 },
             slotLabelInterval: { days: 1 },
             slotMinWidth: 100,
             slotLabelFormat: [
                 { month: 'long', year: 'numeric' }, // top level of text
                 { month: 'numeric', day: 'numeric' } // lower level of text
             ],
+            resourceAreaWidth: '20%',
         }
     },
     eventDrop: function(info) {
@@ -83,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     eventClick:  function(info) {
         const event = info.event;
         $('#reject-program-id').val(event.id);
+        $('#approve-program-id').val(event.id);
         $('.program-title').html(event.title);
         $('#description-of-meetings').html(event.extendedProps.description_of_meetings);
         $('#program-times').html(event.extendedProps.program_times);

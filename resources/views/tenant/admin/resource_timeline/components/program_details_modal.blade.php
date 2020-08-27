@@ -10,6 +10,7 @@
             <div class="modal-body" id="modal-body">
                 <input type="hidden" name="details_program_id" id="details-program-id" value="" />
                 <div id="description-of-meetings"></div>
+                <div id="site-location"></div>
                 <div id="program-times"></div>
                 <div id="ages-string"></div>
                 <div id="contributors-container"></div>

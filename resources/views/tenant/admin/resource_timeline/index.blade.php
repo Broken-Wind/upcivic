@@ -94,6 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#meetings-container').html('Meets: ' + meetings.join(', '));
         $('#proposed-at').html('Proposed At: ' + event.extendedProps.proposed_at);
         $('#ages-string').html(event.extendedProps.ages_string);
+        $('#site-location').html(event.getResources()[0].extendedProps.site + ' ' + event.getResources()[0].title);
+
+
         $('#program-details-modal').modal();
     },
     resourceGroupField: 'site',

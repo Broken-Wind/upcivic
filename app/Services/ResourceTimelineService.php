@@ -65,8 +65,11 @@ class ResourceTimelineService
                 'ages_type' => $program->ages_type,
                 'other_contributors' => $otherContributors,
                 'meetings' => $meetings,
+                'min_enrollments' => $program->min_enrollments,
+                'max_enrollments' => $program->max_enrollments,
                 'backgroundColor' => $program->getEventColor(),
                 'borderColor' => $program->getEventColor(),
+                'proposed_at' => !empty($program->proposed_at) ? $program->proposed_at->format('m/d/Y g:ia') : 'N/A',
             ];
         })->values()->toJson();
     }

@@ -3,8 +3,8 @@
 <div class="container">
     @include('shared.form_errors')
     <form id="filters" action="{{ URL::current() }}" method="GET">
-                                                             @include('tenant.admin.programs.filters_modal')
-                                                             </form>
+        @include('tenant.admin.programs.filters_modal')
+    </form>
 
     @if($programsExist)
         <div class="form-row mb-4">

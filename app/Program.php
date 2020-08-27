@@ -19,6 +19,8 @@ class Program extends Model
     public const EVENT_APPROVED_COLOR = '#007bff';
     public const EVENT_UNAPPROVED_COLOR = '#ffc107';
 
+    protected $dates = ['proposed_at'];
+
     protected $fillable = [
         'name',
         'internal_name',
@@ -325,7 +327,7 @@ class Program extends Model
 
     public function getTimelineTitleAttribute()
     {
-        return '[' . $this->id . '] ' . $this->internal_name;
+        return $this->internal_name . ' (max: ' . $this->max_enrollments . ')';
     }
 
     public function setInternalNameAttribute($internalName)
@@ -356,6 +358,11 @@ class Program extends Model
     public function proposer()
     {
         return $this->belongsTo(Organization::class, 'proposing_organization_id');
+    }
+
+    public function isProposed()
+    {
+        return $this->proposed_at != null;
     }
 
     public function getEventColor(){

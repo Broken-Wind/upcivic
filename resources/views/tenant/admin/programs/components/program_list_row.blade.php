@@ -11,9 +11,15 @@
             </div>
         </div>
         <div class="col-md-4">
+            @if ($program->isProposed())
+            <a href="{{ tenant()->route('tenant:admin.programs.show', ['program' => $program->id]) }}">
+                {{ $program['id'] }} - {{ $program['internal_name'] }}
+            </a>
+            @else
             <a href="{{ tenant()->route('tenant:admin.programs.edit', ['program' => $program->id]) }}">
                 {{ $program['id'] }} - {{ $program['internal_name'] }}
             </a>
+            @endif
         </div>
         <!--
         <div class="col-md-2">
@@ -85,7 +91,7 @@
                 @if($program['proposed_at'] == null)
                     <div class="alert-info font-weight-bold">Not Sent</div>
                 @else
-                    <div class="alert-warning font-weight-bold">Sent</div>
+                    <div class="alert-warning font-weight-bold">Proposed</div>
                 @endif
             </div>
             <div class="col-md-1 text-right">

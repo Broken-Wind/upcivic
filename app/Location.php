@@ -23,6 +23,6 @@ class Location extends Model
         if (empty($this->capacity)) {
             return $this->name;
         }
-        return $this->name .' (Max: ' . $this->capacity . ')';
+        return $this->name .' (max: ' . $this->capacity . ')';
     }
 }

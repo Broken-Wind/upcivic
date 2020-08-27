@@ -128,6 +128,13 @@ class ProgramController extends Controller
         return view('tenant.admin.programs.edit', compact('program', 'organizations', 'sites'));
     }
 
+    public function show(Program $program)
+    {
+        $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
+        $sites = Site::orderBy('name')->get();
+
+        return view('tenant.admin.programs.show', compact('program', 'organizations', 'sites'));
+    }
     /**
      * Update the specified resource in storage.
      *

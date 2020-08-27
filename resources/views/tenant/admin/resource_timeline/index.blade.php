@@ -92,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
             meetings.push(event.extendedProps.meetings[meeting].start_date);
         }
         $('#meetings-container').html('Meets: ' + meetings.join(', '));
+        $('#proposed-at').html('Proposed At: ' + event.extendedProps.proposed_at);
         $('#program-details-modal').modal();
     },
     resourceGroupField: 'site',

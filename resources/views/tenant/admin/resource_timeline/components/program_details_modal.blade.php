@@ -14,6 +14,7 @@
                 <div id="contributors-container"></div>
                 <div id="meetings-container"></div>
                 <div id="description"></div>
+                <div id="proposed-at"></div>
 
             </div>
             <div class="modal-footer">

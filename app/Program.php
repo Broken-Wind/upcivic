@@ -368,4 +368,9 @@ class Program extends Model
     public function getEventColor(){
         return $this->isApprovedByAllContributors() ? self::EVENT_APPROVED_COLOR : self::EVENT_UNAPPROVED_COLOR;
     }
+
+    public function getAgesStringAttribute()
+    {
+        return ucfirst($this->ages_type) . ' ' . $this->min_age . '-' . $this->max_age;
+    }
 }

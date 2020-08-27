@@ -11,6 +11,7 @@
                 <input type="hidden" name="details_program_id" id="details-program-id" value="" />
                 <div id="description-of-meetings"></div>
                 <div id="program-times"></div>
+                <div id="ages-string"></div>
                 <div id="contributors-container"></div>
                 <div id="meetings-container"></div>
                 <div id="description"></div>

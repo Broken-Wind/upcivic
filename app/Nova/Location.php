@@ -45,6 +45,7 @@ class Location extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Name')->sortable(),
+            Text::make('Capacity'),
             BelongsTo::make('Site')
         ];
     }

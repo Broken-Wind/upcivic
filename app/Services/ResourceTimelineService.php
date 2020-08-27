@@ -20,7 +20,7 @@ class ResourceTimelineService
                 return [
                     'id' => $location->id,
                     'site' => $location->site->name,
-                    'title' => $location->name,
+                    'title' => $location->event_title,
                 ];
             })->prepend([
                 'id' => '0_'.$site->id,

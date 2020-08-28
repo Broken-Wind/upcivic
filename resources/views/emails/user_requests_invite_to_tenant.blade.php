@@ -5,7 +5,7 @@ If this person is not an administrator of {{ $tenant['name'] }}, you may ignore 
 
 
 @component('mail::button', ['url' => $tenant->route('tenant:admin.users.invites.create', ['email' => $requestor['email']])])
-Send {{ $requestor['name'] }} An Invite
+Grant {{ $requestor['name'] }} Access
 @endcomponent
 
 @endcomponent

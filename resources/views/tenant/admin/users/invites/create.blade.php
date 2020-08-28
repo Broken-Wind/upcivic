@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="card mb-4">
-        <div class="card-header">Invite administrators to {{ tenant()->name }}</div>
+        <div class="card-header">Add users to {{ tenant()->name }}</div>
 
         <div class="card-body">
 
@@ -15,12 +15,10 @@
 
                 <div class="form-group">
                   <label for="email">User Email</label>
-                  <input type="text"
-                    class="form-control" name="email" id="email" aria-describedby="userEmail" placeholder="" value="{{ $email }}">
-                  <small id="userEmail" class="form-text text-muted">To invite a user to your organization, they must first create and verify an account with {{ config('app.name') }}</small>
+                  <input type="text" class="form-control" name="email" id="email" aria-describedby="userEmail" placeholder="" value="{{ $email }}">
                 </div>
 
-                <button type="submit" id="submit" class="btn btn-primary">Invite Administrator</button>
+                <button type="submit" id="submit" class="btn btn-primary">Grant Access</button>
 
             </form>
 

@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="program-title" id="reject-modal-title"></h5>
+            <h5 class="organization-title" id="organization-modal-title">Organization</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -12,7 +12,7 @@
                 <form method="POST" action="{{ tenant()->route('tenant:admin.organizations.store') }}">
                     @csrf
                     <div class="form-group">
-                        <label for="organization-name">Organization Name</label>
+                        <label for="organization-name">Name</label>
                         <input type="text" class="form-control" name="name" id="organization-name" required  placeholder="Fakeville Community Center">
                     </div>
                     <div class="form-group">
@@ -31,7 +31,7 @@
                         <label for="administrator-title">Title</label>
                         <input type="text" class="form-control" name="administrator[title]" id="administrator-title"  placeholder="Recreation Supervisor">
                     </div>
-                    <button type="submit" class="btn btn-primary mb-2">Add New Organization</button>
+                    <button type="submit" class="btn btn-primary mb-2">Add Organization</button>
                 </form>
             </div>
         </div>

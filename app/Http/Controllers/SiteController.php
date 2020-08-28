@@ -55,7 +55,8 @@ class SiteController extends Controller
         $site->county()->associate($validated['county_id']);
         $site->save();
 
-        return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
+        // return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
+        return back();
     }
 
     /**

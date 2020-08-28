@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Contributor;
+use App\County;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\RejectProgram;
 use App\Http\Requests\StoreProgram;
@@ -52,8 +53,9 @@ class ProgramController extends Controller
         $templates = Template::all()->sortBy('internal_name');
         $sites = Site::all()->sortBy('name');
         $organizations = Organization::emailable()->where('id', '!=', tenant()['organization_id'])->orderBy('name')->get();
+        $counties = County::orderBy('name')->get();
 
-        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations'));
+        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations', 'counties'));
     }
 
     /**

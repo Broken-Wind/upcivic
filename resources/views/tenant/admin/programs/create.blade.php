@@ -2,15 +2,16 @@
 @section('head.additional')
 
 @include('tenant.admin.organizations.components.add_organization_modal')
+@include('tenant.admin.sites.components.add_site_modal')
 
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header">Add Proposal</div>
+        <div class="card-header">Add Site</div>
 
         <div class="card-body">
 
-            <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
+            <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.sites.store') }}">
 
                 @csrf
 
@@ -53,7 +54,7 @@
 
                         </select>
 
-                        <small id="add-organization" class="text-muted">Can't find the organization you'd like? <a href="" data-toggle="modal" data-target="#add-organization-modal">Add an organization.</a></small>
+                        <small id="add-organization" class="text-muted">Can't find the organization you'd like? <a href="" data-toggle="modal" data-target="#add-organization-modal">Add an organization</a></small>
 
                     </div>
 
@@ -72,6 +73,8 @@
                             @endforeach
 
                         </select>
+
+                        <small id="add-site" class="text-muted">Can't find the site you'd like? <a href="" data-toggle="modal" data-target="#add-site-modal">Add an site</a></small>
 
                     </div>
 

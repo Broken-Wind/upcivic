@@ -20,6 +20,7 @@
 @section('content')
 @include('tenant.admin.resource_timeline.components.program_details_modal')
 @include('tenant.admin.resource_timeline.components.reject_program_modal')
+@include('tenant.admin.resource_timeline.components.approve_program_modal')
 <div id='calendar'></div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.css" integrity="sha256-/rB/IDulpFpJSHjrUgRHzB99AnJh3RBNrUOpF+4QIKA=" crossorigin="anonymous">
 <script type="application/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.min.js" integrity="sha256-U+VlpMlWIzzE74RY4mZL4MixQg66XWfjEWW2VUxHgcE=" crossorigin="anonymous"></script>
@@ -28,6 +29,21 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('reject-program').addEventListener('click', function () {
         $('#reject-program-modal').modal();
     });
+
+    document.getElementById('approve-program').addEventListener('click', function () {
+        let programId = $('#approve-program-id').val();
+        let event = calendar.getEventById(programId);
+        if (event.extendedProps.needs_manual_approval) {
+            $('#approve-program-modal').modal();
+        } else {
+            approveProgram({
+                program_id: programId
+            }).then(data => {
+                console.log(data); // JSON data parsed by `data.json()` call
+            });
+        }
+    });
+
   var calendarEl = document.getElementById('calendar');
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -96,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#ages-string').html(event.extendedProps.ages_string);
         $('#site-location').html(event.getResources()[0].extendedProps.site + ' ' + event.getResources()[0].title);
 
-
         $('#program-details-modal').modal();
     },
     resourceGroupField: 'site',
@@ -108,23 +123,32 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function updateLocations(data = {}) {
-  // Default options are marked with *
-  url = "{{ route('tenant:api.programs.locations.update', 'demo-host') }}";
-  const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
-  });
-  return response.json(); // parses JSON response into native JavaScript objects
+    url = "{{ route('tenant:api.programs.locations.update', 'demo-host') }}";
+    return asyncRequest(data, url);
+}
+
+async function approveProgram(data = {}) {
+    url = "{{ route('tenant:api.programs.approve', 'demo-host') }}";
+    return asyncRequest(data, url);
+}
+
+async function asyncRequest(data = {}, url) {
+    // Default options are marked with *
+    const response = await fetch(url, {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(data) // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
 }
 
 </script>

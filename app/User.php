@@ -106,4 +106,18 @@ class User extends Authenticatable implements MustVerifyEmail
 
        $contributor->save();
     }
+
+    public function approveProgramForContributor(Program $program, Contributor $contributor, Person $person){
+
+        $contributor->approved_by_user_id = $this->id;
+        $contributor->approved_at = Carbon::now();
+
+        ManualApproval::create([
+                'contributor_id' => $contributor->id,
+                'person_id' => $person->id
+            ]);
+
+        $contributor->save();
+    }
+
 }

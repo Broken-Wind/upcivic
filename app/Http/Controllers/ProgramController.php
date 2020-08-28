@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contributor;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\RejectProgram;
 use App\Http\Requests\StoreProgram;
@@ -10,6 +11,7 @@ use App\Mail\ProgramRejected;
 use App\Mail\ProgramApproved;
 use App\Mail\ProposalSent;
 use App\Organization;
+use App\Person;
 use App\Program;
 use App\Site;
 use App\Template;
@@ -176,12 +178,20 @@ class ProgramController extends Controller
 
     public function approve(Request $request)
     {
-        $validated = $request;
-        $program = Program::findOrFail($validated['approve_program_id']);
-        Auth::user()->approveProgram($program);
+        try {
+            $validated = $request;
+            $program = Program::findOrFail($validated['program_id']);
 
-        \Mail::send(new ProgramApproved($program, Auth::user()));
-        return back()->withSuccess('Program approved.');
+            $contributor = Contributor::find(24);
+            $person = Person::find(2);
+
+            Auth::user()->approveProgramForContributor($program, $contributor, $person);
+
+            \Mail::send(new ProgramApproved($program, Auth::user()));
+        } catch (\Exception $e) {
+            return json_encode($e->getMessage());
+        }
+        return json_encode(['program_is_fully_approved' => $program->isFullyApproved()]);
     }
 
     /**

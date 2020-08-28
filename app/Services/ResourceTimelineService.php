@@ -68,6 +68,7 @@ class ResourceTimelineService
                 'backgroundColor' => $program->getEventColor(),
                 'borderColor' => $program->getEventColor(),
                 'proposed_at' => !empty($program->proposed_at) ? $program->proposed_at->format('m/d/Y g:ia') : 'N/A',
+                'needs_manual_approval' => $program->needsManualApproval(),
             ];
         })->values()->toJson();
     }

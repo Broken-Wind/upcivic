@@ -17,17 +17,12 @@
                 <div id="meetings-container"></div>
                 <div id="description"></div>
                 <div id="proposed-at"></div>
-
             </div>
+
             <div class="modal-footer">
-            <button type="button" class="btn btn-danger" id="reject-program" data-dismiss="modal">Reject</button>
-
-            <form action="{{ tenant()->route('tenant:admin.programs.approve') }}" method="post">
-                @csrf
+                <button type="button" class="btn btn-danger" id="reject-program" data-dismiss="modal">Reject</button>
                 <input type="hidden" name="approve_program_id" id="approve-program-id" value="" />
-                <button type="submit" class="btn btn-primary" id="accept-program">Approve</button>
-            </form>
-
+                <button type="button" class="btn btn-primary" id="approve-program" data-dismiss="modal">Approve</button>
             </div>
         </div>
     </div>

@@ -16,6 +16,9 @@ class Contributor extends Model
         'published_at',
     ];
 
+    protected const APPROVED_CLASS_STRING = "alert-warning";
+    protected const UNAPPROVED_CLASS_STRING = "alert-danger";
+
     public function getFormattedInvoiceAmountAttribute()
     {
         return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
@@ -75,5 +78,24 @@ class Contributor extends Model
         }
 
         return 0;
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by_user_id')->withDefault([
+            'first_name' => '',
+            'last_name' => '',
+            'email' => '',
+        ]);
+    }
+
+    public function getClassStringAttribute()
+    {
+        return $this->approved_by_user_id ? self::APPROVED_CLASS_STRING : self::UNAPPROVED_CLASS_STRING;
+    }
+
+    public function getStatusStringAttribute()
+    {
+        return $this->approved_by_user_id ? 'Marked Approved by ' . $this->approver->name : 'Pending Approval';
     }
 }

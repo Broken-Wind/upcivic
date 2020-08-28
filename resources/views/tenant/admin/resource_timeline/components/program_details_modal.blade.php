@@ -8,21 +8,54 @@
             </button>
             </div>
             <div class="modal-body" id="modal-body">
-                <input type="hidden" name="details_program_id" id="details-program-id" value="" />
+                <input type="hidden" name="details_program_id" value="" />
                 <div id="description-of-meetings"></div>
                 <div id="site-location"></div>
                 <div id="program-times"></div>
                 <div id="ages-string"></div>
-                <div id="contributors-container"></div>
                 <div id="meetings-container"></div>
                 <div id="description"></div>
                 <div id="proposed-at"></div>
+
+                <table class="table table-sm mt-4">
+                    <thead>
+                        <tr>
+                            <th>
+                                <h3 style="font-size:1.5rem">Overall Status</h3>
+                            </th>
+                            <td>
+                                <div id="program-overall-status">
+                                </div>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody id="program-contributors-rows">
+                        <tr>
+                            <th>Demo Host</th>
+                            <td>
+                                <div class="alert-danger font-weight-bold text-center">Pending Approval</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Demo Activity Provider</th>
+                            <td>
+                                <div class="alert-warning font-weight-bold text-center" title="Marked approved on 8/28/20 by Greg Intermaggio">Marked Approved</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form method="POST" action="{{ tenant()->route('tenant:admin.programs.approve') }}" id="approve-program-form">
+                    @csrf
+                    <input type="hidden" name="approve_program_id" id="approve-program-id" value="" />
+                    <div class="form-group">
+                      <select class="form-control form-control-sm" name="contributor_id" id="program-contributor-actions"></select>
+                    </div>
+                </form>
             </div>
 
-            <div class="modal-footer">
+            <div class="modal-footer" style="">
                 <button type="button" class="btn btn-danger" id="reject-program" data-dismiss="modal">Reject</button>
-                <input type="hidden" name="approve_program_id" id="approve-program-id" value="" />
-                <button type="button" class="btn btn-primary" id="approve-program" data-dismiss="modal">Approve</button>
+                <button type="submit" class="btn btn-primary" id="approve-program" form-id="approve-program-form">Update</button>
             </div>
         </div>
     </div>

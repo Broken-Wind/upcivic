@@ -46,8 +46,8 @@ Route::group(['middleware' => 'verified'], function () {
         'as' => 'tenant:api.',
     ], function () {
         Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
-        Route::post('/programs/approve', 'ProgramController@approve')->name('programs.approve');
         Route::get('/organizations', 'OrganizationController@add')->name('organizations.add');
+        Route::post('/programs/contributors', 'ProgramContributorController@index')->name('programs.contributors.index');
     });
     Route::group([
         'prefix' => '/{tenant}/admin',
@@ -81,6 +81,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/programs', 'ProgramController@index')->name('programs.index');
         Route::get('/programs/create', 'ProgramController@create')->name('programs.create');
         Route::post('/programs', 'ProgramController@store')->name('programs.store');
+        Route::post('/programs/approve', 'ProgramController@approve')->name('programs.approve');
         Route::post('/programs/reject', 'ProgramController@reject')->name('programs.reject');
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
         Route::get('/programs/{program}', 'ProgramController@show')->name('programs.show');

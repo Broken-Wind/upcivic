@@ -30,20 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#reject-program-modal').modal();
     });
 
-    document.getElementById('approve-program').addEventListener('click', function () {
-        let programId = $('#approve-program-id').val();
-        let event = calendar.getEventById(programId);
-        if (event.extendedProps.needs_manual_approval) {
-            $('#approve-program-modal').modal();
-        } else {
-            approveProgram({
-                program_id: programId
-            }).then(data => {
-                console.log(data); // JSON data parsed by `data.json()` call
-            });
-        }
-    });
-
   var calendarEl = document.getElementById('calendar');
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -95,14 +81,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const event = info.event;
         $('#reject-program-id').val(event.id);
         $('#approve-program-id').val(event.id);
-        $('.program-title').html(event.title);
+        $('.program-title').html(event.id + ' ' + event.title);
         $('#description-of-meetings').html(event.extendedProps.description_of_meetings);
         $('#program-times').html(event.extendedProps.program_times);
-        let contributors = [];
-        for (const contributor in event.extendedProps.other_contributors) {
-            contributors.push(event.extendedProps.other_contributors[contributor].name);
-        }
-        $('#contributors-container').html('With ' + contributors.join(', '));
+        populateOverallStatus(event);
+        populateContributorsTable(event);
+        populateContributorActionsForm(event);
         let meetings = [];
         for (const meeting in event.extendedProps.meetings) {
             meetings.push(event.extendedProps.meetings[meeting].start_date);
@@ -122,13 +106,58 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
 });
 
+function populateOverallStatus(event) {
+    document.getElementById('program-overall-status').innerHTML = `<div style="font-size:1.5rem" class="${event.extendedProps.status_class_string} font-weight-bold text-center">${event.extendedProps.status_string}</div>`
+}
+function populateContributorsTable(event) {
+    let contributorRows = [];
+    event.extendedProps.contributors.forEach(contributor => {
+        contributorRows.push(getContributorRow(contributor));
+    });
+    document.getElementById('program-contributors-rows').innerHTML = contributorRows;
+}
+
+function getContributorRow(contributor) {
+    return `<tr>
+                <th>${contributor.name}</th>
+                <td>${getContributorFlag(contributor)}</td>
+            </tr>`;
+}
+
+function getContributorFlag(contributor) {
+    return `<div class="${contributor.class_string} font-weight-bold text-center">${contributor.status_string}</div>`;
+}
+
+function populateContributorActionsForm(event) {
+    if (event.extendedProps.is_fully_approved) {
+        document.getElementById('approve-program-form').style.display = 'none';
+    } else {
+        document.getElementById('approve-program-form').style.display = 'block';
+        let actionOptions = [];
+        const defaultActionOptions = [
+                                        `<option value="approve_all">Mark Approved by All Contributors</option>`,
+                                    ];
+        event.extendedProps.contributors.forEach(contributor => {
+            if (!contributor.approved_by) {
+                actionOptions.push(getContributorActionOption(contributor));
+            }
+        });
+        actionOptions = actionOptions.concat(defaultActionOptions);
+        document.getElementById('program-contributor-actions').innerHTML = actionOptions;
+    }
+}
+
+function getContributorActionOption(contributor) {
+    return `<option value="${contributor.id}">Mark Approved By ${contributor.name}</option>`;
+}
+
 async function updateLocations(data = {}) {
     url = "{{ route('tenant:api.programs.locations.update', 'demo-host') }}";
     return asyncRequest(data, url);
 }
 
 async function approveProgram(data = {}) {
-    url = "{{ route('tenant:api.programs.approve', 'demo-host') }}";
+    url = "";
     return asyncRequest(data, url);
 }
 

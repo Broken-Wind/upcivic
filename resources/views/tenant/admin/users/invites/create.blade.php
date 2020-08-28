@@ -16,7 +16,7 @@
                 <div class="form-group">
                   <label for="email">User Email</label>
                   <input type="text"
-                    class="form-control" name="email" id="email" aria-describedby="userEmail" placeholder="">
+                    class="form-control" name="email" id="email" aria-describedby="userEmail" placeholder="" value="{{ $email }}">
                   <small id="userEmail" class="form-text text-muted">To invite a user to your organization, they must first create and verify an account with {{ config('app.name') }}</small>
                 </div>
 

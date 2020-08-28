@@ -46,7 +46,6 @@ Route::group(['middleware' => 'verified'], function () {
         'as' => 'tenant:api.',
     ], function () {
         Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
-        Route::get('/organizations', 'OrganizationController@add')->name('organizations.add');
         Route::post('/programs/contributors', 'ProgramContributorController@index')->name('programs.contributors.index');
     });
     Route::group([
@@ -63,11 +62,11 @@ Route::group(['middleware' => 'verified'], function () {
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');
+        Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');
         /**
          * Disabling the ability to add organizations without users.
          * This functionality will most likely return soon, but not for the MVP.
          * Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
-         * Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');
          * Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
          * Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
          * Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');

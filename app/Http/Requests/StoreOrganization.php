@@ -26,6 +26,11 @@ class StoreOrganization extends FormRequest
         return [
             //
             'name' => 'required|unique:organizations|max:255',
+            'administrator' => 'nullable|array',
+            'administrator.first_name' => 'required|string',
+            'administrator.last_name' => 'required|string',
+            'administrator.email' => 'required|email',
+            'administrator.title' => 'nullable|string',
         ];
     }
 }

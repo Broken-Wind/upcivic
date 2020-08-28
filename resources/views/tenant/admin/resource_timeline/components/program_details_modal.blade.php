@@ -44,7 +44,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <form method="POST" action="{{ tenant()->route('tenant:admin.programs.approve') }}" id="approve-program-form">
+                <form method="POST" action="{{ tenant()->route('tenant:admin.programs.approve') }}" id="approve-program-form" name="approve-program-form">
                     @csrf
                     <input type="hidden" name="approve_program_id" id="approve-program-id" value="" />
                     <div class="form-group">
@@ -55,7 +55,7 @@
 
             <div class="modal-footer" style="">
                 <button type="button" class="btn btn-danger" id="reject-program" data-dismiss="modal">Reject</button>
-                <button type="submit" class="btn btn-primary" id="approve-program" form-id="approve-program-form">Update</button>
+                <button type="submit" class="btn btn-primary" id="approve-program" form="approve-program-form">Update</button>
             </div>
         </div>
     </div>

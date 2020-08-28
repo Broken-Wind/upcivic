@@ -204,7 +204,7 @@ class Program extends Model
         if ($locationIds->isNotEmpty()) {
             return $locationIds->mode();
         }
-        $siteId = $this->site->id;
+        $siteId = $this->site->id ?? null;
         if (! empty($siteId)) {
             return '0_'.$siteId;
         }

@@ -6,12 +6,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
-use Upcivic\Administrator;
-use Upcivic\Mail\UserRequestsInviteToTenant;
-use Upcivic\Organization;
-use Upcivic\Person;
-use Upcivic\Tenant;
-use Upcivic\User;
+use App\Administrator;
+use App\Mail\UserRequestsInviteToTenant;
+use App\Organization;
+use App\Person;
+use App\Tenant;
+use App\User;
 
 class OrganizationUserTest extends TestCase
 {

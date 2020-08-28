@@ -5,10 +5,10 @@ namespace Tests\Unit\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Upcivic\Mail\ProposalSent;
-use Upcivic\Organization;
-use Upcivic\Program;
-use Upcivic\Tenant;
+use App\Mail\ProposalSent;
+use App\Organization;
+use App\Program;
+use App\Tenant;
 
 class ProposalSentTest extends TestCase
 {

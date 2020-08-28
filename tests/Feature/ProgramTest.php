@@ -7,12 +7,12 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
-use Upcivic\Contributor;
-use Upcivic\Mail\ProposalSent;
-use Upcivic\Organization;
-use Upcivic\Program;
-use Upcivic\Template;
-use Upcivic\User;
+use App\Contributor;
+use App\Mail\ProposalSent;
+use App\Organization;
+use App\Program;
+use App\Template;
+use App\User;
 
 class ProgramTest extends TestCase
 {

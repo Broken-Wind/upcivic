@@ -5,9 +5,9 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Upcivic\Person;
-use Upcivic\Tenant;
-use Upcivic\User;
+use App\Person;
+use App\Tenant;
+use App\User;
 
 class UserTest extends TestCase
 {

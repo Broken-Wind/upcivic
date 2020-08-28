@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Upcivic\Organization;
-use Upcivic\Site;
-use Upcivic\Template;
-use Upcivic\Tenant;
-use Upcivic\User;
+use App\Organization;
+use App\Site;
+use App\Template;
+use App\Tenant;
+use App\User;
 
 class DatabaseSeeder extends Seeder
 {

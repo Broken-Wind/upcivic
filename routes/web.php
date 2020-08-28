@@ -18,6 +18,15 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () {
     Auth::routes(['verify' => true]);
 });
+
+Route::group(['middleware' => 'verified'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/organizations/{organization}/tenant', 'OrganizationTenantController@create')->name('organizations.tenant.create');
+    Route::post('/organizations/{organization}/tenant', 'OrganizationTenantController@store')->name('organizations.tenant.store');
+    Route::post('/organizations/users', 'OrganizationUserController@store')->name('organizations.users.store');
+    Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
+    Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
+});
 Route::group([
     'prefix' => '/{tenant}',
     'middleware' => ['tenant', 'tenant.auth'],
@@ -34,12 +43,6 @@ Route::group([
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
 });
 Route::group(['middleware' => 'verified'], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/organizations/{organization}/tenant', 'OrganizationTenantController@create')->name('organizations.tenant.create');
-    Route::post('/organizations/{organization}/tenant', 'OrganizationTenantController@store')->name('organizations.tenant.store');
-    Route::post('/organizations/users', 'OrganizationUserController@store')->name('organizations.users.store');
-    Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
-    Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
     Route::group([
         'prefix' => '/{tenant}/api',
         'middleware' => ['tenant'],

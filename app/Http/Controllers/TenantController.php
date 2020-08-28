@@ -15,7 +15,7 @@ class TenantController extends Controller
     //
     public function index()
     {
-        return redirect()->route('tenant:admin.resource_timeline.index', Auth::user()->tenants()->first()->slug);
+        return redirect()->route('tenant:admin.programs.index', Auth::user()->tenants()->first()->slug);
     }
 
     public function create()
@@ -54,9 +54,9 @@ class TenantController extends Controller
 
         \Auth::user()->joinTenant($tenant);
 
-        Program::createExample($organization);
+        // Program::createExample($organization);
 
-        return redirect('/home');
+        return redirect()->route('home');
     }
 
     public function edit()

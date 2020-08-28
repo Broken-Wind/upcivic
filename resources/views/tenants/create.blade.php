@@ -39,7 +39,7 @@
 
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block">List your Organization</button>
+                        <button type="submit" class="btn btn-primary">Add your Organization</button>
                     </form>
                 </div>
             </div>

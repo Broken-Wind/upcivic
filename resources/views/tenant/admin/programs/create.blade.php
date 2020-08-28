@@ -1,4 +1,41 @@
 @extends('layouts.app')
+@section('head.additional')
+
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+@include('tenant.admin.organizations.components.add_organization_modal')
+<script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('add-organization').addEventListener('click', function () {
+            $('#add-organization-modal').modal();
+        });
+    });
+
+    async function createOrganization(data = {}) {
+        url = "{{ route('tenant:api.organizations.add', 'demo-host') }}";
+        return asyncRequest(data, url);
+    }
+
+    async function asyncRequest(data = {}, url) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+</script>
+
 
 @section('content')
 <div class="container">
@@ -49,6 +86,8 @@
                             @endforeach
 
                         </select>
+
+                        <small id="add-organization" class="text-muted">Can't find the organization you'd like? <a href="{{ route('tenant:api.organizations.add', 'demo-host') }}">Add an organization.</a></small>
 
                     </div>
 

@@ -47,6 +47,7 @@ Route::group(['middleware' => 'verified'], function () {
     ], function () {
         Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
         Route::post('/programs/approve', 'ProgramController@approve')->name('programs.approve');
+        Route::get('/organizations', 'OrganizationController@add')->name('organizations.add');
     });
     Route::group([
         'prefix' => '/{tenant}/admin',

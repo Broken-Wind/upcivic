@@ -46,4 +46,15 @@ class OrganizationController extends Controller
 
         return back()->withSuccess('Organization updated!');
     }
+
+    public function add(Request $request)
+    {
+        try {
+            $validated = $request;
+
+        } catch (\Exception $e) {
+            return json_encode($e->getMessage());
+        }
+        return json_encode(['hello' => 'hello']);
+    }
 }

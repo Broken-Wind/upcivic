@@ -178,20 +178,22 @@ class ProgramController extends Controller
 
     public function approve(Request $request)
     {
-        try {
-            $validated = $request;
-            $program = Program::findOrFail($validated['program_id']);
+        $validated = $request;
+        $program = Program::findOrFail($validated['approve_program_id']);
 
-            $contributor = Contributor::find(24);
-            $person = Person::find(2);
-
-            Auth::user()->approveProgramForContributor($program, $contributor, $person);
-
-            \Mail::send(new ProgramApproved($program, Auth::user()));
-        } catch (\Exception $e) {
-            return json_encode($e->getMessage());
+        if ($validated['contributor_id'] == 'approve_all') {
+            $contributors = $program->contributors;
+        } else {
+            $contributors = $program->contributors->where('id', $validated['contributor_id']);
         }
-        return json_encode(['program_is_fully_approved' => $program->isFullyApproved()]);
+            foreach($contributors as $contributor) {
+                Auth::user()->approveProgramForContributor($program, $contributor);
+            }
+
+
+        \Mail::send(new ProgramApproved($program, Auth::user()));
+
+        return back();
     }
 
     /**

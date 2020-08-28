@@ -37,10 +37,13 @@ class ResourceTimelineService
     public function getEvents()
     {
         return Program::with(['meetings.site', 'contributors.organization'])->get()->sortBy('start_datetime')->map(function ($program) {
-            $otherContributors = $program->contributors->where('organization_id', '!=', tenant()->organization_id)->map(function ($contributor) {
+            $contributors = $program->contributors->map(function ($contributor) {
                 return [
-                    'organization_id' => $contributor->organization_id,
+                    'id' => $contributor->id,
                     'name' => $contributor->organization->name,
+                    'approved_by' => $contributor->approver->name,
+                    'class_string' => $contributor->class_string,
+                    'status_string' => $contributor->status_string
                 ];
             });
             $meetings = $program->meetings->map(function ($meeting) {
@@ -61,14 +64,16 @@ class ResourceTimelineService
                 'start' => $program->start_datetime,
                 'end' => $program->end_datetime,
                 'ages_string' => $program->ages_string,
-                'other_contributors' => $otherContributors,
+                'contributors' => $contributors,
                 'meetings' => $meetings,
                 'min_enrollments' => $program->min_enrollments,
                 'max_enrollments' => $program->max_enrollments,
                 'backgroundColor' => $program->getEventColor(),
                 'borderColor' => $program->getEventColor(),
                 'proposed_at' => !empty($program->proposed_at) ? $program->proposed_at->format('m/d/Y g:ia') : 'N/A',
-                'needs_manual_approval' => $program->needsManualApproval(),
+                'status_string' => $program->status_string,
+                'status_class_string' => $program->status_class_string,
+                'is_fully_approved' => $program->isFullyApproved(),
             ];
         })->values()->toJson();
     }

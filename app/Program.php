@@ -19,6 +19,9 @@ class Program extends Model
     public const EVENT_APPROVED_COLOR = '#007bff';
     public const EVENT_UNAPPROVED_COLOR = '#ffc107';
 
+    protected const APPROVED_CLASS_STRING = "alert-warning";
+    protected const UNAPPROVED_CLASS_STRING = "alert-danger";
+
     protected $dates = ['proposed_at'];
 
     protected $fillable = [
@@ -381,5 +384,15 @@ class Program extends Model
 
     public function isFullyApproved() {
         return $this->contributors->where('approved_at', null)->count() == 0;
+    }
+
+    public function getStatusClassStringAttribute()
+    {
+        return $this->isFullyApproved() ? self::APPROVED_CLASS_STRING : self::UNAPPROVED_CLASS_STRING;
+    }
+
+    public function getStatusStringAttribute()
+    {
+        return $this->isFullyApproved() ? 'Fully Approved' : 'Pending Approval';
     }
 }

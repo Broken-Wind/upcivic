@@ -44,6 +44,7 @@ return [
     |
     */
 
+    // Because of our url path wildcards, setting this to the standard /nova will cause a tenant not found error
     'path' => '/admin/nova',
 
     /*

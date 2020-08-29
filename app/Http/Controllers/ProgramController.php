@@ -181,7 +181,7 @@ class ProgramController extends Controller
 
     public function approve(ApproveProgram $request)
     {
-        $validated = $request;
+        $validated = $request->validated();
         $program = Program::findOrFail($validated['approve_program_id']);
 
         if ($validated['contributor_id'] == 'approve_all') {

@@ -149,7 +149,7 @@ function getContributorActionOption(contributor) {
 }
 
 async function updateLocations(data = {}) {
-    url = "{{ route('tenant:api.programs.locations.update', 'demo-host') }}";
+    url = "{{ route('tenant:api.programs.locations.update', tenant()->slug) }}";
     return asyncRequest(data, url);
 }
 

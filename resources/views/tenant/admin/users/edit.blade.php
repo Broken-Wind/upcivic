@@ -20,6 +20,11 @@
                     <input type="text" class="form-control" name="name" value="{{ old('name') ?: $user['name'] }}" id="name" placeholder="John Smith" required>
                 </div>
 
+                <div class="form-group">
+                    <label for="name">Phone</label>
+                    <input type="text" class="form-control" name="phone" value="{{ old('phone') ?: $user['phone'] }}" id="phone" required>
+                </div>
+
                 <button type="submit" id="submit" class="btn btn-primary">Update Profile</button>
 
             </form>

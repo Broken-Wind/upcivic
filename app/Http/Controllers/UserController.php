@@ -24,6 +24,7 @@ class UserController extends Controller
         $user->update([
 
             'name' => $validated['name'],
+            'phone' => $validated['phone'],
 
         ]);
 

@@ -10,12 +10,6 @@ use Illuminate\Support\Facades\Input;
 class UserInviteController extends Controller
 {
     //
-    public function create(Request $request)
-    {
-        $email = $request->input('email');
-        return view('tenant.admin.users.invites.create', compact('email'));
-    }
-
     public function store(StoreUserInvite $request)
     {
         $validated = $request->validated();

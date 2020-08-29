@@ -57,6 +57,15 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
+                                    @forelse(Auth::user()->tenants as $tenant)
+
+                                        <a class="dropdown-item" href="{{ route('tenant:admin.edit', ['tenant' => $tenant['slug']]) }}">
+                                            {{ $tenant['name'] }} Settings
+                                        </a>
+
+                                    @empty
+
+                                    @endforelse
 
                                     @if(tenant())
 
@@ -64,21 +73,8 @@
                                             My Profile
                                         </a>
 
-										<a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.invites.create') }}">
-											Invite Admins
-										</a>
-
                                     @endif
 
-                                    @forelse(Auth::user()->tenants as $tenant)
-
-                                        <a class="dropdown-item" href="{{ route('tenant:admin.edit', ['tenant' => $tenant['slug']]) }}">
-                                            {{ $tenant['name'] }}
-                                        </a>
-
-                                    @empty
-
-                                    @endforelse
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

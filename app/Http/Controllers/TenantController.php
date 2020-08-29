@@ -62,11 +62,11 @@ class TenantController extends Controller
         return redirect()->route('home');
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
         $tenant = tenant();
-
-        return view('tenant.admin.settings', compact('tenant'));
+        $email = $request->input('email');
+        return view('tenant.admin.settings', compact('tenant', 'email'));
     }
 
     public function update(UpdateTenant $request, Tenant $tenant)

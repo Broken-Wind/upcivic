@@ -99,7 +99,6 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/sites', 'SiteController@index')->name('sites.index');
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
-        Route::get('/users/invites/create', 'UserInviteController@create')->name('users.invites.create');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
     });
 });

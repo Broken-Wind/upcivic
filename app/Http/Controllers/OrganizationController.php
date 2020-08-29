@@ -17,6 +17,10 @@ class OrganizationController extends Controller
         return view('tenant.admin.organizations.index', compact('organizations'));
     }
 
+    /**
+     * Currently, the only way to access this method is via the program creation view.
+     * If we re-add the dedicated organization create view, we'll need to ensure that in all flows, this function redirects appropriately.
+     */
     public function store(StoreOrganization $request)
     {
         $validated = $request;

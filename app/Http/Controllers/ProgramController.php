@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contributor;
 use App\County;
 use App\Filters\ProgramFilters;
+use App\Http\Requests\ApproveProgram;
 use App\Http\Requests\RejectProgram;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
@@ -178,9 +179,9 @@ class ProgramController extends Controller
         return back()->withSuccess('Program rejected.');
     }
 
-    public function approve(Request $request)
+    public function approve(ApproveProgram $request)
     {
-        $validated = $request;
+        $validated = $request->validated();
         $program = Program::findOrFail($validated['approve_program_id']);
 
         if ($validated['contributor_id'] == 'approve_all') {
@@ -188,9 +189,9 @@ class ProgramController extends Controller
         } else {
             $contributors = $program->contributors->where('id', $validated['contributor_id']);
         }
-            foreach($contributors as $contributor) {
-                Auth::user()->approveProgramForContributor($program, $contributor);
-            }
+        foreach($contributors as $contributor) {
+            Auth::user()->approveProgramForContributor($program, $contributor);
+        }
 
 
         \Mail::send(new ProgramApproved($program, Auth::user()));

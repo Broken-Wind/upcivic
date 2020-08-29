@@ -49,9 +49,6 @@ class ResourceTimelineService
             $meetings = $program->meetings->map(function ($meeting) {
                 return [
                     'start_date' => $meeting->start_date,
-                    'end_date' => $meeting->end_date,
-                    'start_time' => $meeting->start_time,
-                    'end_time' => $meeting->end_time,
                     'site' => $meeting->site->name
                 ];
             });

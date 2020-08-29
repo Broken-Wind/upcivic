@@ -16,27 +16,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav"><li class="nav-item dropdown">
-
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
-
                         @if(tenant())
                             @if(tenant()->isSubscribed())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.index') }}">Schedule</a>
                                 </li>
                             @endif
-
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
                             </li>
-
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Programs</a>
                             </li>
-
                         @endif
 
                         <!-- Authentication Links -->
@@ -56,32 +51,22 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
                                     @forelse(Auth::user()->tenants as $tenant)
-
                                         <a class="dropdown-item" href="{{ route('tenant:admin.edit', ['tenant' => $tenant['slug']]) }}">
                                             {{ $tenant['name'] }} Settings
                                         </a>
-
                                     @empty
-
                                     @endforelse
-
                                     @if(tenant())
-
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>
-
                                     @endif
-
-
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>
-
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>

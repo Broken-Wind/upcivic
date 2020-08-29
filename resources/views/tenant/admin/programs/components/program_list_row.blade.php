@@ -21,7 +21,7 @@
             </a>
             @endif
         </div>
-        <!--
+        {{--
         <div class="col-md-2">
             @if(tenant()->isPublic())
                 @if($program->willPublish())
@@ -33,7 +33,7 @@
                 @endif
             @endif
         </div>
-        -->
+        --}}
     </div>
 
     <form action="{{ tenant()->route('tenant:admin.programs.enrollments.update', [$program])}}" method="POST">

@@ -7,11 +7,11 @@
 @section('content')
 <div class="container">
     <div class="card">
-        <div class="card-header">Add Site</div>
+        <div class="card-header">Add Proposal</div>
 
         <div class="card-body">
 
-            <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.sites.store') }}">
+            <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
 
                 @csrf
 

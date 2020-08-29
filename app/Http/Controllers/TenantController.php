@@ -15,7 +15,10 @@ class TenantController extends Controller
     //
     public function index()
     {
-        return redirect()->route('tenant:admin.programs.index', Auth::user()->tenants()->first()->slug);
+        if (tenant()->isSubscribed()) {
+            return redirect()->route('tenant:admin.resource_timeline.index', tenant()->slug);
+        }
+        return redirect()->route('tenant:admin.programs.index', tenant()->slug);
     }
 
     public function create()

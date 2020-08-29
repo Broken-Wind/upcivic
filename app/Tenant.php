@@ -10,6 +10,9 @@ class Tenant extends Model
     protected $fillable = [
         'slug',
     ];
+    protected $casts = [
+        'next_payment_due_at' => 'datetime'
+    ];
 
     public function users()
     {
@@ -51,6 +54,11 @@ class Tenant extends Model
     public function isPublic()
     {
         return true;
+    }
+
+    public function isSubscribed()
+    {
+        return !empty($this->next_payment_due_at);
     }
 
     public function organization()

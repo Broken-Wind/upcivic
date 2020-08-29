@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'resourceTimeline',
             duration: { weeks: 1 },
             buttonText: 'timeline',
-            slotDuration: { days: 0 },
+            slotDuration: { days: 1 },
             slotLabelInterval: { days: 1 },
             slotMinWidth: 100,
             slotLabelFormat: [

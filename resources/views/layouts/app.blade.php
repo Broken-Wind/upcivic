@@ -23,6 +23,11 @@
                     <ul class="navbar-nav ml-auto">
 
                         @if(tenant())
+                            @if(tenant()->isSubscribed())
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.index') }}">Schedule</a>
+                                </li>
+                            @endif
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>

@@ -31,6 +31,11 @@ class ProgramLocationsController extends Controller
 
             return json_encode($e);
         }
-        return json_encode(['title' => $program->timeline_title, 'site_id' => empty($siteId) ? null : $siteId, 'location_id' => empty($locationId) ? null : $locationId]);
+        return json_encode([
+            'title' => $program->timeline_title,
+            'site_id' => empty($siteId) ? null : $siteId,
+            'location_id' => empty($locationId) ? null : $locationId,
+            'site_name' => $program->site->name
+        ]);
     }
 }

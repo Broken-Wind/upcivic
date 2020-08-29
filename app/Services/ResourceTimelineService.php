@@ -27,16 +27,21 @@ class ResourceTimelineService
                 'site' => $site->name,
                 'title' => 'Location TBD',
             ]);
-        })->flatten(1)->prepend([
+        })->prepend([[
             'id' => 0,
             'site' => 'Site TBD',
             'title' => ' ',
-        ]);
+        ], [
+            'id' => '0_0',
+            'site' => 'Offsite',
+            'title' => ' ',
+        ]])->flatten(1);
     }
 
     public function getEvents()
     {
-        return Program::with(['meetings.site', 'contributors.organization'])->get()->sortBy('start_datetime')->map(function ($program) {
+        $siteIds = tenant()->organization->sites->pluck('id');
+        return Program::with(['meetings.site', 'contributors.organization'])->get()->sortBy('start_datetime')->map(function ($program) use ($siteIds) {
             $contributors = $program->contributors->map(function ($contributor) {
                 return [
                     'id' => $contributor->id,
@@ -54,12 +59,15 @@ class ResourceTimelineService
             });
             return [
                 'id' => $program->id,
-                'resourceId' => $program->location_id,
+                'resourceId' => !$siteIds->contains($program->site->id) && !empty($program->site->id) ? '0_0' : $program->location_id,
                 'title' => $program->timeline_title,
                 'description_of_meetings' => $program->description_of_meetings,
                 'program_times' => $program['start_time'] . '-' . $program['end_time'],
                 'start' => $program->start_datetime,
                 'end' => $program->end_datetime,
+                // We could get the site name from the event's resource instead of passing it through here,
+                // but then, for offsite programs, the details moda would display "Offsite" instead of the actual site name.
+                'site_name' => $program->site->name,
                 'ages_string' => $program->ages_string,
                 'contributors' => $contributors,
                 'meetings' => $meetings,

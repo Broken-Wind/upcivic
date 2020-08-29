@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        @include('shared.form_errors')
         <div class="card mb-4">
             <div class="card-header">Info</div>
             <div class="card-body">
@@ -11,8 +12,6 @@
                     @csrf
 
                     @method('PATCH')
-
-                    @include('shared.form_errors')
 
                     <div class="form-group">
 
@@ -80,8 +79,6 @@
                 <form method="POST" action="{{ tenant()->route('tenant:admin.users.invites.store') }}">
 
                     @csrf
-
-                    @include('shared.form_errors')
 
                     <div class="form-group">
                         <label for="email">User Email</label>

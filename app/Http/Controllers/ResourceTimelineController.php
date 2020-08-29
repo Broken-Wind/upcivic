@@ -22,6 +22,7 @@ class ResourceTimelineController extends Controller
 
     public function index()
     {
+        abort_if(!tenant()->isSubscribed(), 401);
         $resources = $this->resourcetimelineService->getResources();
         $events = $this->resourcetimelineService->getEvents();
 

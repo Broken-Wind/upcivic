@@ -16,7 +16,7 @@ class IndexController extends Controller
     public function index()
     {
         if (Auth::user() && Auth::user()->hasTenant()) {
-            return redirect()->route('tenant:admin.programs.index', \Auth::user()->tenants()->first()->slug);
+            return redirect()->route('home');
         }
 
         return view('welcome');

@@ -11,6 +11,6 @@ class PublicTenantController extends Controller
     //
     public function index()
     {
-        return redirect()->route('tenant:admin.resource_timeline.index', tenant()->slug);
+        return redirect()->route('tenant:admin.home', tenant()->slug);
     }
 }

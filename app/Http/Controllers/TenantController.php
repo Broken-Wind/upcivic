@@ -58,7 +58,7 @@ class TenantController extends Controller
         \Auth::user()->joinTenant($tenant);
 
         // Commented out because Calin was getting a routing error on his local env.
-        // We should investigate this further as this is pretty useful functionality.
+        // TODO: Investigate this further as this is pretty useful functionality.
         // Program::createExample($organization);
 
         return redirect()->route('home');

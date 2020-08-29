@@ -37,7 +37,7 @@ class TenantManager
         Program::addGlobalScope('TenantAccesibleProgram', function (Builder $builder) {
             return $builder->whereHas('contributors', function ($query) {
                 return $query->where('organization_id', tenant()->organization_id);
-            })->where('proposed_at', '!=', 'null')->orWhere('proposing_organization_id', tenant()->organization_id);
+            })->whereNotNull('proposed_at')->orWhere('proposing_organization_id', tenant()->organization_id);
         });
 
         Template::addGlobalScope(new TenantOwnedScope);

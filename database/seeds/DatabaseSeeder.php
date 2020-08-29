@@ -1,5 +1,6 @@
 <?php
 
+use App\County;
 use Illuminate\Database\Seeder;
 use App\Organization;
 use App\Site;
@@ -16,7 +17,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
+        County::insert([
+            ['name' => 'Marin County'],
+            ['name' => 'San Francisco County'],
+            ['name' => 'San Mateo County'],
+            ['name' => 'Sonoma County'],
+            ['name' => 'Santa Clara County'],
+            ['name' => 'Contra Costa County'],
+            ['name' => 'Alameda County'],
+            ['name' => 'Solano County'],
+            ['name' => 'Napa County']
+        ]);
         $this->call([
             DemoSeeder::class
         ]);

@@ -4,6 +4,8 @@ namespace App\Nova;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Place;
 use Laravel\Nova\Fields\Text;
@@ -32,6 +34,7 @@ class Site extends Resource
      */
     public static $search = [
         'id',
+        'name'
     ];
 
     /**
@@ -44,10 +47,12 @@ class Site extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name'),
-            Place::make('Address'),
-            Text::make('Phone'),
-            BelongsTo::make('County'),
+            Text::make('Name')->sortable(),
+            Place::make('Address')->sortable(),
+            Text::make('Phone')->sortable(),
+            BelongsTo::make('County')->sortable(),
+            HasMany::make('Locations'),
+            BelongsToMany::make('Organizations')
         ];
     }
 

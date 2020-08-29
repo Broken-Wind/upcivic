@@ -84,4 +84,9 @@ class Organization extends Model
     {
         return $this->hasMany(Program::class, 'proposing_organization_id');
     }
+
+    public function sites()
+    {
+        return $this->belongsToMany(Site::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrganization;
 use App\Http\Requests\UpdateOrganization;
 use App\Organization;
+use App\Person;
 use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
@@ -16,6 +17,10 @@ class OrganizationController extends Controller
         return view('tenant.admin.organizations.index', compact('organizations'));
     }
 
+    /**
+     * Currently, the only way to access this method is via the program creation view.
+     * If we re-add the dedicated organization create view, we'll need to ensure that in all flows, this function redirects appropriately.
+     */
     public function store(StoreOrganization $request)
     {
         $validated = $request;
@@ -26,7 +31,16 @@ class OrganizationController extends Controller
 
         ]);
 
-        return redirect()->route('tenant:admin.organizations.edit', [\Auth::user()->tenants()->first()->slug, $organization->id]);
+        if ($validated->administrator['email']){
+            $administrator = Person::create([
+                'first_name' => $validated->administrator['first_name'],
+                'last_name' => $validated->administrator['last_name'],
+                'email' => $validated->administrator['email'],
+            ]);
+            $organization->administrators()->save($administrator, ['title' => $validated->administrator['title']]);
+        }
+
+        return back();
     }
 
     public function edit(Organization $organization)

@@ -52,6 +52,10 @@ class User extends Resource
                 ->sortable()
                 ->rules('required', 'max:255'),
 
+            Text::make('Phone')
+                ->sortable()
+                ->rules('required', 'max:255'),
+
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')

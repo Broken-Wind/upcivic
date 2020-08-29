@@ -32,4 +32,9 @@ class Site extends Model
     {
         return $this->hasMany(Location::class);
     }
+
+    public function organizations()
+    {
+        return $this->belongsToMany(Organization::class);
+    }
 }

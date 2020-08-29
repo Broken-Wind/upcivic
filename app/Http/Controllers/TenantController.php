@@ -15,7 +15,10 @@ class TenantController extends Controller
     //
     public function index()
     {
-        return redirect()->route('tenant:admin.resource_timeline.index', Auth::user()->tenants()->first()->slug);
+        if (tenant()->isSubscribed()) {
+            return redirect()->route('tenant:admin.resource_timeline.index', tenant()->slug);
+        }
+        return redirect()->route('tenant:admin.programs.index', tenant()->slug);
     }
 
     public function create()
@@ -54,16 +57,18 @@ class TenantController extends Controller
 
         \Auth::user()->joinTenant($tenant);
 
-        Program::createExample($organization);
+        // Commented out because Calin was getting a routing error on his local env.
+        // TODO: Investigate this further as this is pretty useful functionality.
+        // Program::createExample($organization);
 
-        return redirect('/home');
+        return redirect()->route('home');
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
         $tenant = tenant();
-
-        return view('tenant.admin.settings', compact('tenant'));
+        $email = $request->input('email');
+        return view('tenant.admin.settings', compact('tenant', 'email'));
     }
 
     public function update(UpdateTenant $request, Tenant $tenant)

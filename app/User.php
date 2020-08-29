@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,7 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'phone', 'email', 'password',
     ];
 
     /**
@@ -96,4 +97,18 @@ class User extends Authenticatable implements MustVerifyEmail
             return $administrator->where('email', $this['email']);
         })->get();
     }
+
+    public function approveProgram(Program $program) {
+       $contributor = $program->contributors()->where('organization_id', tenant()->organization_id)->firstOrFail();
+       $this->approveProgramForContributor($program, $contributor);
+    }
+
+    public function approveProgramForContributor(Program $program, Contributor $contributor){
+
+        $contributor->approved_by_user_id = $this->id;
+        $contributor->approved_at = Carbon::now();
+
+        $contributor->save();
+    }
+
 }

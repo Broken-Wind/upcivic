@@ -4,15 +4,13 @@
 
         <div class="alert alert-danger">
 
-            <ul>
-
-                @foreach ($errors->all() as $error)
-
-                    <li>{{ $error }}</li>
-
-                @endforeach
-
-            </ul>
+            @foreach ($errors->all() as $error)
+                @if($loop->last)
+                    {{ $error }}
+                @else
+                    <p>{{ $error }}</p>
+                @endif
+            @endforeach
 
         </div>
 

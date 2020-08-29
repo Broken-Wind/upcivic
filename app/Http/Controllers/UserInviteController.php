@@ -5,15 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserInvite;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class UserInviteController extends Controller
 {
     //
-    public function create()
-    {
-        return view('tenant.admin.users.invites.create');
-    }
-
     public function store(StoreUserInvite $request)
     {
         $validated = $request->validated();

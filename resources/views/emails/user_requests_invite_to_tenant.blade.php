@@ -4,7 +4,7 @@
 If this person is not an administrator of {{ $tenant['name'] }}, you may ignore this message. Otherwise, please visit the link below to grant them access.
 
 
-@component('mail::button', ['url' => $tenant->route('tenant:admin.users.invites.create')])
+@component('mail::button', ['url' => $tenant->route('tenant:admin.edit', ['email' => $requestor['email']])])
 Grant {{ $requestor['name'] }} Access
 @endcomponent
 

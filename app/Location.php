@@ -17,4 +17,12 @@ class Location extends Model
     {
         return $this->belongsTo(Site::class);
     }
+
+    public function getEventTitleAttribute()
+    {
+        if (empty($this->capacity)) {
+            return $this->name;
+        }
+        return $this->name .' (max: ' . $this->capacity . ')';
+    }
 }

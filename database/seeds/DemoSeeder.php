@@ -26,13 +26,12 @@ class DemoSeeder extends Seeder
     public function run()
     {
         //
-        $this->seedDemoSites();
         $demoHostUser = User::create([
             'name' => 'Demo User',
             'email' => 'demo.host@upcivic.com',
             'password' => bcrypt('123demo'),
             'email_verified_at' => \Carbon\Carbon::now(),
-        ]);
+            ]);
         $demoHostOrg = Organization::create([
             'name' => 'Demo Host',
         ]);
@@ -41,6 +40,7 @@ class DemoSeeder extends Seeder
             'slug' => 'demo-host',
         ]);
         $demoHostUser->joinTenant($demoHostTenant);
+        $this->seedDemoSites($demoHostOrg);
 
         $demoProviderUser = User::create([
             'name' => 'Demo User',
@@ -84,9 +84,11 @@ class DemoSeeder extends Seeder
         }
     }
 
-    protected function seedDemoSites()
+    protected function seedDemoSites($demoHostOrg)
     {
-        factory(Site::class)->states('demoRecCenter')->create(['name' => 'Demo Recreation Center']);
-        factory(Site::class)->states('demoCommunityCenter')->create(['name' => 'Demo Community Center']);
+        $rec = factory(Site::class)->states('demoRecCenter')->create(['name' => 'Demo Recreation Center']);
+        $com = factory(Site::class)->states('demoCommunityCenter')->create(['name' => 'Demo Community Center']);
+        $demoHostOrg->sites()->attach($rec);
+        $demoHostOrg->sites()->attach($com);
     }
 }

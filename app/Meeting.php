@@ -28,7 +28,9 @@ class Meeting extends Model
 
     public function location()
     {
-        return $this->belongsTo(Location::class);
+        return $this->belongsTo(Location::class)->withDefault([
+            'name' => 'Location TBD',
+        ]);
     }
 
     public function site()
@@ -37,13 +39,6 @@ class Meeting extends Model
             'name' => 'Site TBD',
             'address' => 'TBD',
             'phone' => 'TBD',
-        ]);
-    }
-
-    public function getLocationAttribute()
-    {
-        return $this->location ?? new Location([
-            'name' => 'Location TBD',
         ]);
     }
 }

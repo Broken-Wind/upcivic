@@ -2,49 +2,45 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Programs</div>
+    <div class="card">
+        <div class="card-header">Programs</div>
 
-                <div class="card-body">
+        <div class="card-body">
 
-                    @include('shared.form_errors')
+            @include('shared.form_errors')
 
-                    @if($templates->count() > 0)
+            @if($templates->count() > 0)
 
-                    <p><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a></p>
+            <p><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a></p>
 
-                        <table class="table table-striped">
+                <table class="table table-striped">
 
-                            @foreach($templates as $template)
+                    @foreach($templates as $template)
 
-                                <tr>
+                        <tr>
 
-                                        <td>{{ $template->name }}</td>
+                                <td>{{ $template->name }}</td>
 
-                                        <td>{{ $template->internal_name != $template->name ? $template->internal_name : null }}</td>
+                                <td>{{ $template->internal_name != $template->name ? $template->internal_name : null }}</td>
 
-                                        <td class="text-right">
-                                            <a href="{{ tenant()->route('tenant:admin.templates.edit', ['template' => $template->id]) }}">
-                                                <i class="far fa-edit"></i>
-                                            </a>
-                                        </td>
+                                <td class="text-right">
+                                    <a href="{{ tenant()->route('tenant:admin.templates.edit', ['template' => $template->id]) }}">
+                                        <i class="far fa-edit"></i>
+                                    </a>
+                                </td>
 
-                                </tr>
+                        </tr>
 
-                            @endforeach
+                    @endforeach
 
-                        </table>
+                </table>
 
-                    @else
+            @else
 
-                        No programs yet. <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
+                No programs yet. <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
 
-                    @endif
+            @endif
 
-                </div>
-            </div>
         </div>
     </div>
 </div>

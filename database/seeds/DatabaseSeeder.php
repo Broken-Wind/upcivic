@@ -1,5 +1,6 @@
 <?php
 
+use App\County;
 use Illuminate\Database\Seeder;
 use App\Organization;
 use App\Site;
@@ -16,36 +17,38 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        County::insert([
+            ['name' => 'Marin County'],
+            ['name' => 'San Francisco County'],
+            ['name' => 'San Mateo County'],
+            ['name' => 'Sonoma County'],
+            ['name' => 'Santa Clara County'],
+            ['name' => 'Contra Costa County'],
+            ['name' => 'Alameda County'],
+            ['name' => 'Solano County'],
+            ['name' => 'Napa County']
+        ]);
+        $this->call([
+            DemoSeeder::class
+        ]);
         $user = User::create([
-
             'name' => 'Greg Intermaggio',
-
             'email' => 'greg@upcivic.com',
-
             'password' => bcrypt('change!m3'),
-
             'email_verified_at' => \Carbon\Carbon::now(),
-
         ]);
 
         $organization = Organization::create([
-
             'name' => 'Exampleville Parks & Recreation',
-
         ]);
 
         $tenant = Tenant::create([
-
             'organization_id' => $organization->id,
-
             'slug' => 'example',
-
         ]);
 
         $user->joinTenant($tenant);
-
         $template = new Template([
-
             'name' => 'Example Cooking Camp',
             'description' => 'This is an example program session. Scroll down to see the age range, collaborating organizations, and schedule. If you\'d like to propose a program to another organization, you\'ll need to add a template first. Click "Templates" above, and then create your first program template!',
             'public_notes' => 'The public notes field is a great place to put important information like special materials needed or prerequisites.',
@@ -60,21 +63,15 @@ class DatabaseSeeder extends Seeder
             'meeting_count' => 5,
             'min_enrollments' => 5,
             'max_enrollments' => 12,
-
         ]);
 
         $template->organization_id = $organization->id;
-
         $template->save();
 
         Site::create([
-
             'name' => 'Exampleville Community Center',
-
             'phone' => '555-555-5555',
-
             'address' => '123 Fake St. Exampleville, CA',
-
         ]);
     }
 }

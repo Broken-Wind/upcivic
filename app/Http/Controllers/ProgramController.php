@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Contributor;
+use App\County;
 use App\Filters\ProgramFilters;
+use App\Http\Requests\ApproveProgram;
+use App\Http\Requests\RejectProgram;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
+use App\Mail\ProgramRejected;
+use App\Mail\ProgramApproved;
 use App\Mail\ProposalSent;
 use App\Organization;
+use App\Person;
 use App\Program;
 use App\Site;
 use App\Template;
@@ -47,8 +54,9 @@ class ProgramController extends Controller
         $templates = Template::all()->sortBy('internal_name');
         $sites = Site::all()->sortBy('name');
         $organizations = Organization::emailable()->where('id', '!=', tenant()['organization_id'])->orderBy('name')->get();
+        $counties = County::orderBy('name')->get();
 
-        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations'));
+        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations', 'counties'));
     }
 
     /**
@@ -97,6 +105,9 @@ class ProgramController extends Controller
         ]);
 
         $program->proposed_at = Carbon::now();
+
+        Auth::user()->approveProgram($program);
+
         $program->save();
 
         // TODO: Set status to Sent and disable editing from the contributors. If status sent, block sending again
@@ -122,6 +133,13 @@ class ProgramController extends Controller
         return view('tenant.admin.programs.edit', compact('program', 'organizations', 'sites'));
     }
 
+    public function show(Program $program)
+    {
+        $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
+        $sites = Site::orderBy('name')->get();
+
+        return view('tenant.admin.programs.show', compact('program', 'organizations', 'sites'));
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -149,6 +167,36 @@ class ProgramController extends Controller
         ]);
 
         return back()->withSuccess('Program updated successfully.');
+    }
+
+    public function reject(RejectProgram $request)
+    {
+        $validated = $request->validated();
+        $program = Program::findOrFail($validated['reject_program_id']);
+        $reason = $validated['rejection_reason'];
+        \Mail::send(new ProgramRejected($program, $reason, Auth::user()));
+        $program->delete();
+        return back()->withSuccess('Program rejected.');
+    }
+
+    public function approve(ApproveProgram $request)
+    {
+        $validated = $request->validated();
+        $program = Program::findOrFail($validated['approve_program_id']);
+
+        if ($validated['contributor_id'] == 'approve_all') {
+            $contributors = $program->contributors;
+        } else {
+            $contributors = $program->contributors->where('id', $validated['contributor_id']);
+        }
+        foreach($contributors as $contributor) {
+            Auth::user()->approveProgramForContributor($program, $contributor);
+        }
+
+
+        \Mail::send(new ProgramApproved($program, Auth::user()));
+
+        return back();
     }
 
     /**

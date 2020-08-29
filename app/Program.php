@@ -16,6 +16,14 @@ class Program extends Model
     use HasDatetimeRange;
     use Filterable;
     //
+    public const EVENT_APPROVED_COLOR = '#007bff';
+    public const EVENT_UNAPPROVED_COLOR = '#ffc107';
+
+    protected const APPROVED_CLASS_STRING = "alert-warning";
+    protected const UNAPPROVED_CLASS_STRING = "alert-danger";
+
+    protected $dates = ['proposed_at'];
+
     protected $fillable = [
         'name',
         'internal_name',
@@ -77,9 +85,9 @@ class Program extends Model
         return $this->getContributorFromTenant()->isPublished();
     }
 
-    public function isAccepted()
+    public function isApprovedByAllContributors()
     {
-        return false;
+        return $this->contributors->where('approved_at', null)->count() == 0;
     }
 
     public function isProposalSent()
@@ -92,7 +100,7 @@ class Program extends Model
 
     public function canBePublished()
     {
-        if ($this->isProposalSent() && $this->isAccepted()) {
+        if ($this->isProposalSent() && $this->isApprovedByAllContributors()) {
             return true;
         }
         return false;
@@ -196,7 +204,7 @@ class Program extends Model
         if ($locationIds->isNotEmpty()) {
             return $locationIds->mode();
         }
-        $siteId = $this->site->id;
+        $siteId = $this->site->id ?? null;
         if (! empty($siteId)) {
             return '0_'.$siteId;
         }
@@ -320,6 +328,11 @@ class Program extends Model
         return $this->contributors->where('organization_id', tenant()['id'])->first()['internal_name'] ?? $this['name'];
     }
 
+    public function getTimelineTitleAttribute()
+    {
+        return $this->internal_name . ' (max: ' . $this->max_enrollments . ')';
+    }
+
     public function setInternalNameAttribute($internalName)
     {
         return $this->contributors->where('organization_id', tenant()['id'])->first()->update(['internal_name' => $internalName]);
@@ -348,5 +361,33 @@ class Program extends Model
     public function proposer()
     {
         return $this->belongsTo(Organization::class, 'proposing_organization_id');
+    }
+
+    public function isProposed()
+    {
+        return $this->proposed_at != null;
+    }
+
+    public function getEventColor(){
+        return $this->isApprovedByAllContributors() ? self::EVENT_APPROVED_COLOR : self::EVENT_UNAPPROVED_COLOR;
+    }
+
+    public function getAgesStringAttribute()
+    {
+        return ucfirst($this->ages_type) . ' ' . $this->min_age . '-' . $this->max_age;
+    }
+
+    public function isFullyApproved() {
+        return $this->contributors->where('approved_at', null)->count() == 0;
+    }
+
+    public function getStatusClassStringAttribute()
+    {
+        return $this->isFullyApproved() ? self::APPROVED_CLASS_STRING : self::UNAPPROVED_CLASS_STRING;
+    }
+
+    public function getStatusStringAttribute()
+    {
+        return $this->isFullyApproved() ? 'Fully Approved' : 'Pending Approval';
     }
 }

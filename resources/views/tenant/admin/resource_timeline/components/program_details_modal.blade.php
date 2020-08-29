@@ -14,7 +14,6 @@
                 <div id="program-times"></div>
                 <div id="ages-string"></div>
                 <div id="meetings-container"></div>
-                <div id="description"></div>
                 <div id="proposed-at"></div>
 
                 <table class="table table-sm mt-4">
@@ -30,18 +29,6 @@
                         </tr>
                     </thead>
                     <tbody id="program-contributors-rows">
-                        <tr>
-                            <th>Demo Host</th>
-                            <td>
-                                <div class="alert-danger font-weight-bold text-center">Pending Approval</div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Demo Activity Provider</th>
-                            <td>
-                                <div class="alert-warning font-weight-bold text-center" title="Marked approved on 8/28/20 by Greg Intermaggio">Marked Approved</div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
                 <form method="POST" action="{{ tenant()->route('tenant:admin.programs.approve') }}" id="approve-program-form" name="approve-program-form">

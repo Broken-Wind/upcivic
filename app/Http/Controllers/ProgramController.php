@@ -69,18 +69,10 @@ class ProgramController extends Controller
     {
         //
         $validated = $request->validated();
-        $programs = collect();
-        DB::transaction(function () use ($validated, &$programs) {
-            foreach ($validated['programs'] as $key => $program) {
-                $program['recipient_organization_id'] = $validated['recipient_organization_id'];
-                $program['site_id'] = $validated['site_id'];
-                $newProgram = Program::fromTemplate($program);
-                if (! empty($newProgram)) {
-                    $programs->push($newProgram);
-                }
-            }
+        $program = null;
+        DB::transaction(function () use ($validated, &$program) {
+                $program = Program::fromTemplate($validated);
         });
-        $program = $programs->first();
 
         return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program]);
     }

@@ -33,7 +33,6 @@
                                 <option disabled>No counties exist.</option>
                             @endforelse
                         </select>
-                        <!-- <input type="text" class="form-control" name="county_id" id="site-county" required placeholder=""> -->
                     </div>
                     <button type="submit" class="btn btn-primary mb-2">Add Site</button>
                 </form>

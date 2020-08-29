@@ -368,11 +368,6 @@ class Program extends Model
         return $this->proposed_at != null;
     }
 
-    public function needsManualApproval()
-    {
-        return $this->contributors->where('organization_id', '!=', tenant()->organization_id)->where('approved_at', null)->count() > 0;
-    }
-
     public function getEventColor(){
         return $this->isApprovedByAllContributors() ? self::EVENT_APPROVED_COLOR : self::EVENT_UNAPPROVED_COLOR;
     }

@@ -39,14 +39,14 @@
             </div>
         </div>
     @empty
-        <p>No programs yet.</p>
+        <p>No programs yet</p>
         <ul>
             <li><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add program</a></li>
             @if(tenant()->organization->templates->count() > 0)
                 <li><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Add proposal</a></li>
             @endif
+			<li>Ask your partners to propose programs to you via {{ config('app.name') }}</li>
         </ul>
-        <p>Ask your partners to propose programs to you via {{ config('app.name') }}!</p>
     @endforelse
 </div>
 @endsection

@@ -2,6 +2,7 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
+use App\County;
 use App\Location;
 use App\Site;
 use Faker\Generator as Faker;
@@ -10,9 +11,8 @@ $factory->define(Site::class, function (Faker $faker) {
     return [
         //
         'name' => $faker->company,
-
         'address' => $faker->address,
-
+        'county_id' => County::inRandomOrder()->first()->id ?? null
     ];
 });
 

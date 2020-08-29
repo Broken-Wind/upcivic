@@ -153,11 +153,6 @@ async function updateLocations(data = {}) {
     return asyncRequest(data, url);
 }
 
-async function approveProgram(data = {}) {
-    url = "";
-    return asyncRequest(data, url);
-}
-
 async function asyncRequest(data = {}, url) {
     const response = await fetch(url, {
         method: 'POST',

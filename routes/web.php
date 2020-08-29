@@ -45,7 +45,7 @@ Route::group([
 Route::group(['middleware' => 'verified'], function () {
     Route::group([
         'prefix' => '/{tenant}/api',
-        'middleware' => ['tenant'],
+        'middleware' => ['tenant', 'tenant.auth'],
         'as' => 'tenant:api.',
     ], function () {
         Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');

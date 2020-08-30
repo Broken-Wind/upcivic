@@ -14,7 +14,7 @@
                 @include('shared.form_errors')
                 <div class="form-group">
                     <label for="">Program</label>
-                    <select class="form-control" name="programs[0][template_id]" id="">
+                    <select class="form-control" name="template_id" id="">
                         @forelse($templates as $template)
                             <option value="{{ $template->id }}">{{ $template->internal_name }}{{ $template->internal_name != $template->name ? " - " . $template->name : null }}</option>
                         @empty
@@ -50,25 +50,25 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Start Date</label>
-                                <input type="date" class="form-control" name="programs[0][start_date]">
+                                <input type="date" class="form-control" name="start_date" required>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>End Date</label>
-                                <input type="date" class="form-control" name="programs[0][end_date]">
+                                <input type="date" class="form-control" name="end_date">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>Start Time</label>
-                                <input type="time" class="form-control" name="programs[0][start_time]">
+                                <input type="time" class="form-control" name="start_time" required>
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>End Time</label>
-                                <input type="time" class="form-control" name="programs[0][end_time]">
+                                <input type="time" class="form-control" name="end_time">
                             </div>
                         </div>
                     </div>

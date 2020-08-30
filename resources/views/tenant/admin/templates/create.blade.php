@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
     <div class="card">
         <div class="card-header">Add Program</div>
 
@@ -10,8 +11,6 @@
             <form method="POST" action="{{ tenant()->route('tenant:admin.templates.store') }}">
 
                 @csrf
-
-                @include('shared.form_errors')
 
                 <div class="form-group">
                     <label for="name">Name</label>

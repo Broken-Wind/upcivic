@@ -6,12 +6,12 @@
 
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
     <div class="card">
         <div class="card-header">Add Proposal</div>
         <div class="card-body">
             <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
                 @csrf
-                @include('shared.form_errors')
                 <div class="form-group">
                     <label for="">Program</label>
                     <select class="form-control" name="template_id" id="">

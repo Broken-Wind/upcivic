@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
+        @include('shared.form_errors')
         <!-- Proposal Info -->
         <div class="row">
             <div class="col-6">
@@ -102,7 +103,6 @@
                     @if($program->isProposalSent())
                         <fieldset disabled="disabled"/>
                     @endif
-                    @include('shared.form_errors')
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" name="name"

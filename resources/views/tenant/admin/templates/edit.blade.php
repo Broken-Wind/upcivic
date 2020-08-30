@@ -2,8 +2,9 @@
 
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
     <div class="card">
-        <div class="card-header">Update Program</div>
+        <div class="card-header">Program</div>
 
         <div class="card-body">
 
@@ -20,8 +21,6 @@
                 @method('put')
 
                 @csrf
-
-                @include('shared.form_errors')
 
                 <div class="form-group">
                     <label for="name">Name</label>
@@ -112,8 +111,8 @@
                 </div>
 
                 <div class="form-row">
-                    <button type="submit" id="submit" class="btn btn-primary mx-1">Update Program</button>
-                    <button type="submit" id="submit"  form="delete_template" class="btn btn-danger"  onClick="return confirm('Are you sure you want to this template? This cannot be undone.');">Delete Program</button>
+                    <button type="submit" id="submit" class="btn btn-primary mx-1">Update</button>
+                    <button type="submit" id="submit"  form="delete_template" class="btn btn-secondary"  onClick="return confirm('Are you sure you want to delete this program? This cannot be undone.');">Delete</button>
                 </div>
 
 

@@ -140,8 +140,10 @@ function getContributorFlag(contributor) {
 function populateContributorActionsForm(event) {
     if (event.extendedProps.is_fully_approved) {
         document.getElementById('approve-program-form').style.display = 'none';
+        document.getElementById('approve-program').style.display = 'none';
     } else {
         document.getElementById('approve-program-form').style.display = 'block';
+        document.getElementById('approve-program').style.display = 'block';
         let actionOptions = [];
         const defaultActionOptions = [
                                         `<option value="approve_all">Approve on behalf of all Contributors</option>`,

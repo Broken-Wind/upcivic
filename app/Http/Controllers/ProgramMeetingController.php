@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 class ProgramMeetingController extends Controller
 {
     //
+    /**
     public function store(StoreProgramMeeting $request, Program $program)
     {
         $validated = $request->validated();
@@ -26,6 +27,7 @@ class ProgramMeetingController extends Controller
 
         return back()->withSuccess('Meeting added successfully.');
     }
+    **/
 
     public function update(UpdateProgramMeetings $request, Program $program)
     {

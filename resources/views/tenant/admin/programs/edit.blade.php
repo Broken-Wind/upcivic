@@ -264,6 +264,8 @@
                         </button>
                     </div>
                 </form>
+
+                {{--
                 <hr/>
                 <form method="POST"
                       action="{{ tenant()->route('tenant:admin.programs.meetings.store', [$program]) }}">
@@ -299,6 +301,7 @@
                     </div>
                     <button type="submit" class="btn btn-secondary">Add</button>
                 </form>
+                --}}
             </div>
         </div>
 

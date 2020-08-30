@@ -71,13 +71,16 @@
                         @endif
                     </form>
                 @endif
+                <form method="POST" action="{{tenant()->route('tenant:admin.programs.destroy', [$program])}}" id="delete-program">
+                    @csrf
+                    @method('DELETE')
+                </form>
                 <form method="POST" action="{{ tenant()->route('tenant:admin.programs.send', [$program]) }}">
                     @if($program->isProposalSent())
                         <fieldset disabled="disabled"/>
                     @else
-                    <!--
-                        <a href="{{tenant()->route('tenant:admin.programs.index')}}" class="btn btn-light">Cancel</a>
-                        -->
+
+                        <button type="submit" form="delete-program" class="btn btn-secondary">Cancel</button>
                         <button type="submit" class="btn btn-primary">Send Proposal</button>
                     @endif
                     @csrf

@@ -40,7 +40,7 @@ class OrganizationController extends Controller
             $organization->administrators()->save($administrator, ['title' => $validated->administrator['title']]);
         }
 
-        return back();
+        return back()->withSuccess('Organization added successfully.');
     }
 
     public function edit(Organization $organization)
@@ -58,6 +58,6 @@ class OrganizationController extends Controller
 
         ]);
 
-        return back()->withSuccess('Organization updated!');
+        return back()->withSuccess('Organization updated.');
     }
 }

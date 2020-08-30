@@ -68,7 +68,7 @@ class TemplateController extends Controller
 
         $template->save();
 
-        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Template added successfully.');
+        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Program added successfully.');
     }
 
     /**
@@ -116,7 +116,7 @@ class TemplateController extends Controller
 
         ]);
 
-        return back()->withSuccess('Template updated successfully.');
+        return back()->withSuccess('Program updated successfully.');
     }
 
     public function destroy(Template $template)
@@ -125,6 +125,6 @@ class TemplateController extends Controller
 
         $template->delete();
 
-        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Template has been deleted.');
+        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Program has been deleted.');
     }
 }

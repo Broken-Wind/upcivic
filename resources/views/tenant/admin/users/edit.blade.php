@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
     <div class="card">
         <div class="card-header">Your Profile</div>
 
@@ -13,8 +14,6 @@
 
                 @csrf
 
-                @include('shared.form_errors')
-
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" name="name" value="{{ old('name') ?: $user['name'] }}" id="name" placeholder="John Smith" required>
@@ -25,7 +24,7 @@
                     <input type="text" class="form-control" name="phone" value="{{ old('phone') ?: $user['phone'] }}" id="phone" required>
                 </div>
 
-                <button type="submit" id="submit" class="btn btn-primary">Update Profile</button>
+                <button type="submit" id="submit" class="btn btn-primary">Update</button>
 
             </form>
         </div>

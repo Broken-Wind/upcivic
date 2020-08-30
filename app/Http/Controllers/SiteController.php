@@ -56,7 +56,7 @@ class SiteController extends Controller
         $site->save();
 
         // return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
-        return back();
+        return back()->withSuccess('Site added successfully.');
     }
 
     /**

@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
+
+    <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.templates.create') }}">Add Program</a>
+
     <div class="card">
         <div class="card-header">Programs</div>
 
         <div class="card-body">
 
-            @include('shared.form_errors')
-
             @if($templates->count() > 0)
-
-            <p><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a></p>
 
                 <table class="table table-striped">
 

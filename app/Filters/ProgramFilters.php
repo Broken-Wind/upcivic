@@ -31,6 +31,11 @@ class ProgramFilters extends QueryFilters
     public function site($term)
     {
         return $this->builder->whereHas('meetings', function ($query) use ($term) {
+            // I considered requiring & defaulting meeting->site_id to 0, which would negate the need for this conditional,
+            // But that would break the foreign key constraint. Better to leave it nullable and do this manually.
+            if ($term == 'tbd') {
+                return $query->whereNull('site_id');
+            }
             return $query->where('site_id', $term);
         });
     }

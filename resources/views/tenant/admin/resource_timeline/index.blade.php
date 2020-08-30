@@ -60,18 +60,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     },
     eventDrop: function(info) {
-        // if (!confirm("Are you sure about this change?")) {
-        //     info.revert();
-        // }
+        if (info.oldEvent.getResources()[0].id == '0_0') {
+            if (!confirm("You are changing the location of an off-site program. Are you sure?")) {
+                info.revert();
+            }
+        }
         var event = info.event;
         var resources = event.getResources();
         var resourceIds = resources.map(function(resource) { return resource.id });
+        if (resourceIds[0] == '0_0') {
+            alert('Please select a specific site for this program, or put it in "Site TBD"');
+            info.revert();
+            return;
+        }
         event.setProp('title', event.title + ' -saving');
         updateLocations({
             program_id: info.event.id,
             location_ids: resourceIds
         }).then(data => {
             event.setProp('title', data.title);
+            event.setExtendedProp('site_name', data.site_name);
         });
     },
     eventClick:  function(info) {
@@ -91,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#meetings-container').html('Meets: ' + meetings.join(', '));
         $('#proposed-at').html('Proposed At: ' + event.extendedProps.proposed_at);
         $('#ages-string').html(event.extendedProps.ages_string);
-        $('#site-location').html(event.getResources()[0].extendedProps.site + ' ' + event.getResources()[0].title);
+        $('#site-location').html(event.extendedProps.site_name);
 
         $('#program-details-modal').modal();
     },

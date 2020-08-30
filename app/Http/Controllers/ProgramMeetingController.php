@@ -44,11 +44,7 @@ class ProgramMeetingController extends Controller
             return back()->withSuccess('Meetings removed successfully.');
         }
 
-        if ($request['update_all']) {
-            $validated['meeting_ids'] = $program->meetings->pluck('id');
-        }
-        collect($validated['meeting_ids'])->each(function ($id) use ($validated, $program) {
-            $meeting = Meeting::find($id);
+        $program->meetings->each(function ($meeting) use ($validated, $program) {
             if (! empty($validated['start_time'])) {
                 $startDatetime = Carbon::parse($meeting['start_datetime'])->format('Y-m-d');
                 $startDatetime = Carbon::parse($startDatetime.' '.$validated['start_time'].' '.$validated['shift_meetings'].' days')->format('Y-m-d H:i:s');

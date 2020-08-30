@@ -256,11 +256,8 @@
                         @if($program->isProposalSent())
                             <fieldset disabled="disabled"/>
                         @endif
-                        <button type="submit" class="btn btn-secondary" name="update_all" value="update_all">
+                        <button type="submit" class="btn btn-secondary mr-1" name="update_all" value="update_all">
                             Update All
-                        </button>
-                        <button type="submit" class="btn btn-secondary mx-1" name="update_selected"
-                                value="update_selected">Update Selected
                         </button>
                         <button type="submit" class="btn btn-secondary" name="delete_meetings"
                                 value=="delete_meetings">Delete Selected

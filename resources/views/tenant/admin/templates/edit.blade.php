@@ -112,7 +112,7 @@
 
                 <div class="form-row">
                     <button type="submit" id="submit" class="btn btn-primary mx-1">Update</button>
-                    <button type="submit" id="submit"  form="delete_template" class="btn btn-secondary"  onClick="return confirm('Are you sure you want to this program? This cannot be undone.');">Delete</button>
+                    <button type="submit" id="submit"  form="delete_template" class="btn btn-secondary"  onClick="return confirm('Are you sure you want to delete this program? This cannot be undone.');">Delete</button>
                 </div>
 
 

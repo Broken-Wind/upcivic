@@ -177,7 +177,7 @@ class ProgramController extends Controller
         $program = Program::findOrFail($validated['approve_program_id']);
 
         if ($validated['contributor_id'] == 'approve_all') {
-            $contributors = $program->contributors;
+            $contributors = $program->contributors->whereNull('approved_at');
         } else {
             $contributors = $program->contributors->where('id', $validated['contributor_id']);
         }
@@ -185,8 +185,7 @@ class ProgramController extends Controller
             Auth::user()->approveProgramForContributor($program, $contributor);
         }
 
-
-        \Mail::send(new ProgramApproved($program, Auth::user()));
+        \Mail::send(new ProgramApproved($program, Auth::user(), $contributors));
 
         return back();
     }

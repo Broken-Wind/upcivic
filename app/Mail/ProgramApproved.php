@@ -14,17 +14,19 @@ class ProgramApproved extends Mailable
     use Queueable, SerializesModels;
     public $program;
     public $user;
+    public $organizationString;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Program $program, User $user)
+    public function __construct(Program $program, User $user, $contributors)
     {
         //
         $this->program = $program;
         $this->user = $user;
+        $this->organizationString = $this->getOrganizationString($contributors);
     }
 
     /**
@@ -47,5 +49,20 @@ class ProgramApproved extends Mailable
         }
 
         return $message;
+    }
+
+    protected function getOrganizationString($contributors){
+        if ($contributors->count() == 1){
+            return $contributors->first()->organization['name'];
+        }
+        $organizations = $contributors->map(function($contributor) {
+            return $contributor->organization['name'];
+        });
+
+        $result = '';
+        for ($i=0; $i<($organizations->count()-1); $i++) {
+            $result .= $organizations[$i] . ', ';
+        }
+        return $result .= 'and ' . $organizations->last();
     }
 }

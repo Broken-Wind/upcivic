@@ -79,7 +79,13 @@
         </nav>
 
         <main class="py-4">
-
+            @if(App::environment() != 'production')
+                <div class="alert alert-info text-center">
+                    <h3>
+                        Environment: {{ App::environment() }}
+                    </h3>
+                </div>
+            @endif
             @yield('content')
         </main>
     </div>

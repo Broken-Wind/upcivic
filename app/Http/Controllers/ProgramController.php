@@ -177,7 +177,7 @@ class ProgramController extends Controller
         $program = Program::findOrFail($validated['approve_program_id']);
 
         if ($validated['contributor_id'] == 'approve_all') {
-            $contributors = $program->contributors->whereNull('approvedAt');
+            $contributors = $program->contributors->whereNull('approved_at');
         } else {
             $contributors = $program->contributors->where('id', $validated['contributor_id']);
         }

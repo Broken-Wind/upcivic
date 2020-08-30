@@ -88,10 +88,12 @@
                 {{ $program['description_of_age_range'] }}
             </div>
             <div class="col-md-2 text-center">
-                @if($program['proposed_at'] == null)
-                    <div class="alert-info font-weight-bold">Not Sent</div>
-                @else
+                @if($program->isFullyApproved())
+                    <div class="alert-success font-weight-bold">Approved</div>
+                @elseif($program['proposed_at'] != null)
                     <div class="alert-warning font-weight-bold">Proposed</div>
+                @else
+                    <div class="alert-info font-weight-bold">Not Sent</div>
                 @endif
             </div>
             <div class="col-md-1 text-right">

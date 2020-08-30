@@ -80,7 +80,7 @@
                         <fieldset disabled="disabled"/>
                     @else
 
-                        <button type="submit" form="delete-program" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" form="delete-program" class="btn btn-secondary" onClick="return confirm('Are you sure you want to delete this proposal? This cannot be undone.')">Delete Proposal</button>
                         <button type="submit" class="btn btn-primary">Send Proposal</button>
                     @endif
                     @csrf

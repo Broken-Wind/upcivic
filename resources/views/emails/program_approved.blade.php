@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ $user['name'] }} approved your proposal.
+{{ $user['name'] }} approved your proposal on behalf of {{ $organizationString }}.
 
 @component('mail::panel')
 ## {{ $program['name'] . " at " . $program->site['name'] }}

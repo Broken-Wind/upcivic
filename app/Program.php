@@ -19,7 +19,7 @@ class Program extends Model
     public const EVENT_APPROVED_COLOR = '#007bff';
     public const EVENT_UNAPPROVED_COLOR = '#ffc107';
 
-    protected const APPROVED_CLASS_STRING = "alert-warning";
+    protected const APPROVED_CLASS_STRING = "alert-primary";
     protected const UNAPPROVED_CLASS_STRING = "alert-danger";
 
     protected $dates = ['proposed_at'];

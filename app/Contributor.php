@@ -16,7 +16,7 @@ class Contributor extends Model
         'published_at',
     ];
 
-    protected const APPROVED_CLASS_STRING = "alert-warning";
+    protected const APPROVED_CLASS_STRING = "alert-primary";
     protected const UNAPPROVED_CLASS_STRING = "alert-danger";
 
     public function getFormattedInvoiceAmountAttribute()

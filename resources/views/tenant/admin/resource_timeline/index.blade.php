@@ -114,10 +114,11 @@ document.addEventListener('DOMContentLoaded', function() {
 function populateOverallStatus(event) {
     document.getElementById('program-overall-status').innerHTML = `<div style="font-size:1.5rem" class="${event.extendedProps.status_class_string} font-weight-bold text-center">${event.extendedProps.status_string}</div>`
 }
+
 function populateContributorsTable(event) {
-    let contributorRows = [];
+    let contributorRows = '';
     event.extendedProps.contributors.forEach(contributor => {
-        contributorRows.push(getContributorRow(contributor));
+        contributorRows += getContributorRow(contributor);
     });
     document.getElementById('program-contributors-rows').innerHTML = contributorRows;
 }
@@ -140,7 +141,7 @@ function populateContributorActionsForm(event) {
         document.getElementById('approve-program-form').style.display = 'block';
         let actionOptions = [];
         const defaultActionOptions = [
-                                        `<option value="approve_all">Mark Approved by All Contributors</option>`,
+                                        `<option value="approve_all">Approve on behalf of all Contributors</option>`,
                                     ];
         event.extendedProps.contributors.forEach(contributor => {
             if (!contributor.approved_by) {
@@ -153,7 +154,7 @@ function populateContributorActionsForm(event) {
 }
 
 function getContributorActionOption(contributor) {
-    return `<option value="${contributor.id}">Mark Approved By ${contributor.name}</option>`;
+    return `<option value="${contributor.id}">Approve on behalf of ${contributor.name}</option>`;
 }
 
 async function updateLocations(data = {}) {

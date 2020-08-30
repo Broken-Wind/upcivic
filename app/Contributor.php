@@ -16,8 +16,7 @@ class Contributor extends Model
         'published_at',
     ];
 
-    protected const APPROVED_CLASS_STRING = "alert-primary";
-    protected const UNAPPROVED_CLASS_STRING = "alert-danger";
+    protected const STATUSES = Program::STATUSES;
 
     public function getFormattedInvoiceAmountAttribute()
     {
@@ -89,13 +88,52 @@ class Contributor extends Model
         ]);
     }
 
+    public function getStatus()
+    {
+        switch (true) {
+            case ($this->isPublished()):
+                return 'published';
+            case ($this->willPublish()):
+                return 'will_publish';
+            case ($this->isApproved()):
+                return 'approved';
+            case ($this->program->isProposed()):
+                return 'proposed';
+            default:
+                return 'unsent';
+        }
+    }
+
+    public function isApproved()
+    {
+        return $this->approved_by_user_id && $this->approved_at;
+    }
+
     public function getClassStringAttribute()
     {
-        return $this->approved_by_user_id ? self::APPROVED_CLASS_STRING : self::UNAPPROVED_CLASS_STRING;
+        return self::STATUSES[$this->getStatus()]['class_string'];
     }
 
     public function getStatusStringAttribute()
     {
-        return $this->approved_by_user_id ? 'Marked Approved by ' . $this->approver->name : 'Pending Approval';
+        $statusStrings = [
+            'unsent' => 'Not yet sent.',
+            'proposed' => 'Proposed by ' . $this->program->proposer->name,
+            'approved' => 'Approved by ' . $this->approver->name,
+            'will_publish' => !empty($this->published_at) ? 'Publishing on ' . $this->published_at->format('m/d/Y') : 'Status error.',
+            'published' => !empty($this->published_at) ? 'Published on ' . $this->published_at->format('m/d/Y') : 'Status error.',
+        ];
+        return $statusStrings[$this->getStatus()];
+    }
+    public function getStatusDescriptionAttribute()
+    {
+        $statusStrings = [
+            'unsent' => 'This proposal is not yet sent.',
+            'proposed' => 'Proposed by ' . $this->program->proposer->name,
+            'approved' => 'This program is fully approved.',
+            'will_publish' => !empty($this->published_at) ? 'You\'re publishing this on ' . $this->published_at->format('m/d/Y') : 'Status error.',
+            'published' => 'This program is now listed on your <a href="' . tenant()->route('tenant:admin.edit') . '#publishing">iFrame widget.</a>',
+        ];
+        return $statusStrings[$this->getStatus()];
     }
 }

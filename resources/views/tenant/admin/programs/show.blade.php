@@ -13,65 +13,7 @@
         </div>
 
         <!-- Alerts and main actions -->
-        <div class="row mb-4">
-            <div class="col-6">
-                @if($program->isApprovedByAllContributors() && $program->isPublished())
-                    <div class="alert alert-primary">
-                        Schedule details are published to your website
-                    </div>
-                @elseif($program->isApprovedByAllContributors())
-                    <div class="alert alert-success" role="alert">
-                        Proposal accepted
-                    </div>
-                @elseif($program->isProposalSent())
-                    <div class="alert alert-warning" role="alert">
-                        Proposal sent on {{$program['proposed_at']}}
-                    </div>
-                @endif
-                {{--
-                @if(!$program->willPublish())
-                    <div class="alert alert-info">
-                        This program is not scheduled to publish.
-                    </div>
-                @elseif($program->isPublished())
-                    <div class="alert alert-success">
-                        This program is published!
-                    </div>
-                @else
-                    <div class="alert alert-info">
-                        Publishing on {{ $program->getContributorFromTenant()['published_at']->format('F d, Y')}}
-                    </div>
-                @endif
-               --}}
-                @if($program->isProposalSent() && $program->isApprovedByAllContributors())
-                    <form method="POST" id="publish_program" action="{{ tenant()->route('tenant:admin.programs.published.update', [$program]) }}">
-                        @method('put')
-                        @csrf
-                        <!--
-                        <div class="form-group">
-                            <label for="published_at">Publish On:</label>
-                            <input type="date" class="form-control" name="published_at" id="published_at"
-                                value="{{ !empty($program->getContributorFromTenant()['published_at']) ? $program->getContributorFromTenant()['published_at']->format('Y-m-d') : '' }}"
-                                aria-describedby="published_at_help">
-                            <small id="published_at_help" class="form-text text-muted">The date this program should be published</small>
-                        </div>
-                        -->
-                        <!--
-                        <button type="submit" id="update_publish_date" name="update_publish_date" class="btn btn-secondary mx-1">Update </button>
-                        -->
-                        @if($program->isPublished())
-                            <button type="submit" id="unpublish_now" name="unpublish_now" value="1"
-                                    class="btn btn-secondary">Unpublish
-                            </button>
-                        @else
-                            <button type="submit" id="publish_now" name="publish_now" value="1"
-                                    class="btn btn-primary">Publish
-                            </button>
-                        @endif
-                    </form>
-                @endif
-            </div>
-        </div>
+        @include('tenant.admin.programs.components.status_actions')
 
         <!-- Program -->
         <div class="card mb-4">

@@ -20,7 +20,10 @@
 @section('content')
 @include('tenant.admin.resource_timeline.components.program_details_modal')
 @include('tenant.admin.resource_timeline.components.reject_program_modal')
-<div id='calendar'></div>
+<div class="container">
+    @include('shared.form_errors')
+    <div id='calendar'></div>
+</div>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.css" integrity="sha256-/rB/IDulpFpJSHjrUgRHzB99AnJh3RBNrUOpF+4QIKA=" crossorigin="anonymous">
 <script type="application/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.min.js" integrity="sha256-U+VlpMlWIzzE74RY4mZL4MixQg66XWfjEWW2VUxHgcE=" crossorigin="anonymous"></script>
 <script type="application/javascript">

@@ -93,7 +93,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/programs/{program}/send', 'ProgramController@send')->name('programs.send');
         Route::put('/programs/{program}/published', 'ProgramPublishedController@update')->name('programs.published.update');
         Route::put('/programs/{program}/contributors', 'ProgramContributorController@update')->name('programs.contributors.update');
-        Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');
+        // Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');
         Route::post('/programs/{program}/meetings/update', 'ProgramMeetingController@update')->name('programs.meetings.update');
         Route::delete('/programs/{program}/contributors/{contributor}', 'ProgramContributorController@destroy')->name('programs.contributors.destroy');
         Route::get('/sites', 'SiteController@index')->name('sites.index');

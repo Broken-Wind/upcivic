@@ -125,15 +125,4 @@ class Contributor extends Model
         ];
         return $statusStrings[$this->getStatus()];
     }
-    public function getStatusDescriptionAttribute()
-    {
-        $statusStrings = [
-            'unsent' => 'This proposal is not yet sent.',
-            'proposed' => 'Proposed by ' . $this->program->proposer->name,
-            'approved' => 'This program is fully approved.',
-            'will_publish' => !empty($this->published_at) ? 'You\'re publishing this on ' . $this->published_at->format('m/d/Y') : 'Status error.',
-            'published' => 'This program is now listed on your <a href="' . tenant()->route('tenant:admin.edit') . '#publishing">iFrame widget.</a>',
-        ];
-        return $statusStrings[$this->getStatus()];
-    }
 }

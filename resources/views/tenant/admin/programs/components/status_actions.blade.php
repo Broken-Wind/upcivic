@@ -1,7 +1,7 @@
 <div class="row mb-4">
     <div class="col-6">
         <div class="alert {{ $program->getContributorFromTenant()->class_string }}">
-            {!! $program->getContributorFromTenant()->status_description !!}
+            {!! $program->status_description !!}
         </div>
         @if($program->canBePublished())
             <form method="POST" id="publish_program" action="{{ tenant()->route('tenant:admin.programs.published.update', [$program]) }}">

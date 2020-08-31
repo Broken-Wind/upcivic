@@ -1,6 +1,6 @@
 <div class="row mb-4">
     <div class="col-6">
-        <div class="alert {{ $program->getContributorFromTenant()->class_string }}">
+        <div class="alert {{ $program->class_string }}">
             {!! $program->status_description !!}
         </div>
         @if($program->canBePublished())

@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
+    schedulerLicenseKey: '0970509849-fcs-1598830799',
     timeZone: 'UTC',
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources

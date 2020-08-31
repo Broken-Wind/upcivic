@@ -92,7 +92,7 @@
             </div>
         </div>
 
-        <div class="card mb-4">
+        <div class="card mb-4" id="publishing">
             <div class="card-header">Publishing</div>
             <div class="card-body">
                 Embed this code snippet to your website to inform your users in <b>real-time</b> about upcoming programs schedules.

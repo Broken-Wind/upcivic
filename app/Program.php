@@ -16,11 +16,33 @@ class Program extends Model
     use HasDatetimeRange;
     use Filterable;
     //
-    public const EVENT_APPROVED_COLOR = '#007bff';
-    public const EVENT_UNAPPROVED_COLOR = '#ffc107';
-
-    protected const APPROVED_CLASS_STRING = "alert-primary";
-    protected const UNAPPROVED_CLASS_STRING = "alert-danger";
+    public const STATUSES = [
+        'unsent' => [
+            'event_color' => '#292b2c',
+            'class_string' => 'alert-dark',
+            'status_string' => 'Unsent'
+        ],
+        'proposed' => [
+            'event_color' => '#5bc0de',
+            'class_string' => 'alert-info',
+            'status_string' => 'Proposed'
+        ],
+        'approved' => [
+            'event_color' => '#5cb85c',
+            'class_string' => 'alert-success',
+            'status_string' => 'Approved'
+        ],
+        'will_publish' => [
+            'event_color' => '#f0ad4e',
+            'class_string' => 'alert-warning',
+            'status_string' => 'Scheduled to publish'
+        ],
+        'published' => [
+            'event_color' => '#0275d8',
+            'class_string' => 'alert-primary',
+            'status_string' => 'Published'
+        ],
+    ];
 
     protected $dates = ['proposed_at'];
 
@@ -90,6 +112,18 @@ class Program extends Model
         return $this->contributors->where('approved_at', null)->count() == 0;
     }
 
+    public function isWillPublishByAllContributors()
+    {
+        return $this->contributors->where('published_at', null)->count() == 0;
+    }
+
+    public function isPublishedByAllContributors()
+    {
+        return $this->contributors->filter(function ($contributor) {
+            return !empty($contributor['published_at']) && $contributor['published_at'] <= Carbon::now();
+        })->count() == $this->contributors->count();
+    }
+
     public function isProposalSent()
     {
         if (!empty($this['proposed_at'])) {
@@ -109,6 +143,11 @@ class Program extends Model
     public function willPublish()
     {
         return $this->getContributorFromTenant()->willPublish();
+    }
+
+    public function getPublishedAtAttribute()
+    {
+        return $this->getContributorFromTenant()->published_at;
     }
 
     public static function createExample($organization)
@@ -368,8 +407,28 @@ class Program extends Model
         return $this->proposed_at != null;
     }
 
-    public function getEventColor(){
-        return $this->isApprovedByAllContributors() ? self::EVENT_APPROVED_COLOR : self::EVENT_UNAPPROVED_COLOR;
+    public function getStatus()
+    {
+        switch (true) {
+            // case ($this->isPublishedByAllContributors()):
+            //     return 'published';
+            // case ($this->isWillPublishByAllContributors()):
+            //     return 'will_publish';
+            case ($this->isApprovedByAllContributors()):
+                return 'approved';
+            case ($this->isProposed()):
+                return 'proposed';
+            default:
+                return 'unsent';
+        }
+    }
+
+    public function getEventColorAttribute(){
+        return self::STATUSES[$this->getStatus()]['event_color'];
+    }
+
+    public function getClassStringAttribute(){
+        return self::STATUSES[$this->getStatus()]['class_string'];
     }
 
     public function getAgesStringAttribute()
@@ -383,11 +442,11 @@ class Program extends Model
 
     public function getStatusClassStringAttribute()
     {
-        return $this->isFullyApproved() ? self::APPROVED_CLASS_STRING : self::UNAPPROVED_CLASS_STRING;
+        return self::STATUSES[$this->getStatus()]['class_string'];
     }
 
     public function getStatusStringAttribute()
     {
-        return $this->isFullyApproved() ? 'Fully Approved' : 'Pending Approval';
+        return self::STATUSES[$this->getStatus()]['status_string'];
     }
 }

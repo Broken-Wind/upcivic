@@ -15,6 +15,10 @@
   .fc-day-grid-event > .fc-content {
       white-space: normal;
   }
+
+  .fc .fc-toolbar-title {
+      font-size: 1.125rem !important;
+  }
 </style>
 @endsection
 @section('content')
@@ -36,7 +40,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: '0970509849-fcs-1598830799',
+    themeSystem: 'bootstrap',
     timeZone: 'UTC',
+    buttonText: {
+        today: 'Today'
+    },
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
     eventColor: "{{\App\Program::STATUSES['unsent']['event_color']}}",
@@ -103,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#meetings-container').html('Meets: ' + meetings.join(', '));
         $('#proposed-at').html('Proposed At: ' + event.extendedProps.proposed_at);
         $('#ages-string').html(event.extendedProps.ages_string);
-        $('#site-location').html(event.extendedProps.site_name);
+        $('#site-location').html('Site: ' + event.extendedProps.site_name);
 
         $('#program-details-modal').modal();
     },
@@ -116,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function populateOverallStatus(event) {
-    document.getElementById('program-overall-status').innerHTML = `<div style="font-size:1.5rem" class="${event.extendedProps.status_class_string} font-weight-bold text-center">${event.extendedProps.status_string}</div>`
+    document.getElementById('program-overall-status').innerHTML = `<div style="font-size:1.5rem" class="${event.extendedProps.status_class_string} font-weight-bold text-center mb-3">${event.extendedProps.status_string}</div>`
 }
 
 function populateContributorsTable(event) {

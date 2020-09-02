@@ -18,28 +18,28 @@ class Program extends Model
     //
     public const STATUSES = [
         'unsent' => [
-            'event_color' => '#292b2c',
-            'class_string' => 'alert-dark',
+            'event_color' => '#6c757d',
+            'class_string' => 'alert-secondary',
             'status_string' => 'Unsent'
         ],
         'proposed' => [
-            'event_color' => '#5bc0de',
-            'class_string' => 'alert-info',
+            'event_color' => '#3490dc',
+            'class_string' => 'alert-primary',
             'status_string' => 'Proposed'
         ],
         'approved' => [
-            'event_color' => '#5cb85c',
+            'event_color' => '#38c172',
             'class_string' => 'alert-success',
             'status_string' => 'Approved'
         ],
         'will_publish' => [
-            'event_color' => '#f0ad4e',
+            'event_color' => '#ffed4a',
             'class_string' => 'alert-warning',
             'status_string' => 'Scheduled to publish'
         ],
         'published' => [
-            'event_color' => '#0275d8',
-            'class_string' => 'alert-primary',
+            'event_color' => '#343a40',
+            'class_string' => 'alert-dark',
             'status_string' => 'Published'
         ],
     ];

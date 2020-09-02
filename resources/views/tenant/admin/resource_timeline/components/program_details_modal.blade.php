@@ -10,22 +10,18 @@
             <div class="modal-body" id="modal-body">
                 <input type="hidden" name="details_program_id" value="" />
                 <div id="description-of-meetings"></div>
-                <div id="site-location"></div>
                 <div id="program-times"></div>
+                <div id="site-location"></div>
                 <div id="ages-string"></div>
                 <div id="meetings-container"></div>
-                <div id="proposed-at"></div>
+                <div id="proposed-at" class="mt-3"></div>
 
-                <table class="table table-sm mt-4">
+                <hr/>
+                <table class="table">
                     <thead>
                         <tr>
-                            <th>
-                                <h3 style="font-size:1.5rem">Overall Status</h3>
-                            </th>
-                            <td>
-                                <div id="program-overall-status">
-                                </div>
-                            </td>
+                            <div id="program-overall-status">
+                            </div>
                         </tr>
                     </thead>
                     <tbody id="program-contributors-rows">

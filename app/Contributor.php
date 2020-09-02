@@ -117,7 +117,7 @@ class Contributor extends Model
     public function getStatusStringAttribute()
     {
         $statusStrings = [
-            'unsent' => 'Not yet sent.',
+            'unsent' => 'Not Sent',
             'proposed' => 'Proposed by ' . $this->program->proposer->name,
             'approved' => 'Approved by ' . $this->approver->name,
             'will_publish' => !empty($this->published_at) ? 'Publishing on ' . $this->published_at->format('m/d/Y') : 'Status error.',

@@ -8,7 +8,6 @@
   }
 
   #calendar {
-    max-width: 1100px;
     margin: 40px auto;
   }
 
@@ -16,8 +15,12 @@
       white-space: normal;
   }
 
-  .fc .fc-toolbar-title {
+  .fc-toolbar-title {
       font-size: 1.125rem !important;
+  }
+
+  a.fc-timeline-event.fc-h-event.fc-event.fc-event-draggable {
+      border-radius: 0.25rem;
   }
 </style>
 @endsection

@@ -25,7 +25,7 @@
 
                 <div class="form-row">
                     <div class="form-group col">
-                        <label for="organization_id">Recipient Organization</label>
+                        <label for="organization_id">Proposal Recipient</label>
                         <select class="form-control" name="recipient_organization_id" id="" required>
                                 <option value="">--------</option>
                             @foreach ($organizations as $organization)

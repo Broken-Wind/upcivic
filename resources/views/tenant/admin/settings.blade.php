@@ -106,7 +106,7 @@
                     5. Once you've confirmed the details of your proposed program, click 'Send Proposal'. Then we'll review it, and get back to you!
                 </div>
                 <hr />
-                <button type="button" class="btn btn-secondary" onClick="toClipboard()">Copy to Clipboard</button>
+                <button type="button" class="btn btn-secondary" onClick="toClipboard('proposal-instructions')">Copy to Clipboard</button>
             </div>
         </div>
 
@@ -115,11 +115,14 @@
             <div class="card-body">
                 Embed this code snippet to your website to inform your users in <b>real-time</b> about upcoming programs schedules.
                 <div class="bg-light my-2">
-                    <code>&lt;iframe src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"
-                        style="width: 100%; min-height: 600px; height: 100%"/&gt;</code>
+                    <code id="iframe-code">&lt;iframe src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"
+                        style="width: 100%; min-height: 600px; height: 100%"&gt;&lt;/iframe&gt;</code>
                 </div>
-                <small class="text-muted">WordPress and other content management systems may require additional setup.
-                    If need assistance, email support@upcivic.com</small>
+                <p>
+                    <small class="text-muted">WordPress and other content management systems may require additional setup.
+                        If need assistance, email support@upcivic.com</small>
+                </p>
+                <button type="button" class="btn btn-secondary" onClick="toClipboard('iframe-code')">Copy to Clipboard</button>
                 <hr/>
                 <p> Preview </p>
                 <iframe style="width: 100%; min-height: 600px; height: 100%"
@@ -129,13 +132,14 @@
     </div>
 
     <script type="application/javascript">
-        function toClipboard() {
+        function toClipboard(elementId) {
             var range = document.createRange();
-            range.selectNode(document.getElementById("proposal-instructions"));
+            range.selectNode(document.getElementById(elementId));
             window.getSelection().removeAllRanges(); // clear current selection
             window.getSelection().addRange(range); // to select text
             document.execCommand("copy");
             window.getSelection().removeAllRanges();// to deselect
+            alert('Copied to clipboard.')
         }
     </script>
 @endsection

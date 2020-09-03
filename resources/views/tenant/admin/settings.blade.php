@@ -92,6 +92,24 @@
             </div>
         </div>
 
+        <div class="card mb-4" id="requesting-proposals">
+            <div class="card-header">Requesting Proposals from Others</div>
+            <div class="card-body">
+                If you are using {{ config('app.name') }} to request proposals from your partners, you may copy the following instructions:
+                <hr />
+                <div id="proposal-instructions">
+                    <strong>How to send proposals to {{ tenant()->name }} using {{ config('app.name') }}:</strong><br />
+                    1. Sign up for your free account at {{ route('register') }}<br />
+                    2. Add your organization, or request to join your organization if it's already on {{ config('app.name') }}<br />
+                    3. Click 'Programs' then 'Add Program' to create a program template<br />
+                    4. Click 'Proposals' then 'Add Proposal' to create your proposal<br />
+                    5. Once you've confirmed the details of your proposed program, click 'Send Proposal'. Then we'll review it, and get back to you!
+                </div>
+                <hr />
+                <button type="button" class="btn btn-secondary" onClick="toClipboard()">Copy to Clipboard</button>
+            </div>
+        </div>
+
         <div class="card mb-4" id="publishing">
             <div class="card-header">Publishing</div>
             <div class="card-body">
@@ -109,4 +127,15 @@
             </div>
         </div>
     </div>
+
+    <script type="application/javascript">
+        function toClipboard() {
+            var range = document.createRange();
+            range.selectNode(document.getElementById("proposal-instructions"));
+            window.getSelection().removeAllRanges(); // clear current selection
+            window.getSelection().addRange(range); // to select text
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();// to deselect
+        }
+    </script>
 @endsection

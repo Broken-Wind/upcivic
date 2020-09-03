@@ -120,7 +120,7 @@
                 </div>
                 <p>
                     <small class="text-muted">WordPress and other content management systems may require additional setup.
-                        If need assistance, email support@upcivic.com</small>
+                        If you need assistance, email support@upcivic.com</small>
                 </p>
                 <button type="button" class="btn btn-secondary" onClick="toClipboard('iframe-code')">Copy to Clipboard</button>
                 <hr/>

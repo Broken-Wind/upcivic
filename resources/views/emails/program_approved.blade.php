@@ -9,9 +9,9 @@
 @endcomponent
 
 Please contact {{ $user['name'] }} by email at {{$user['email']}}
-    @if(!empty($user->phone))
-        or by phone at {{$user['phone']}}
-    @endif
+@if(!empty($user->phone))
+or by phone at {{$user['phone']}}
+@endif
 for more information.
 
 @endcomponent

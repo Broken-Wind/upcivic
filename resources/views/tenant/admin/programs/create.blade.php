@@ -25,14 +25,14 @@
 
                 <div class="form-row">
                     <div class="form-group col">
-                        <label for="organization_id">Host</label>
+                        <label for="organization_id">Recipient Organization</label>
                         <select class="form-control" name="recipient_organization_id" id="" required>
                                 <option value="">--------</option>
                             @foreach ($organizations as $organization)
                                 <option value="{{ $organization['id'] }}">{{ $organization['name'] }} ({{ $organization->emailableContacts()->pluck('name')->implode(', ') }})</option>
                             @endforeach
                         </select>
-                        <small id="add-organization" class="text-muted">Can't find the organization you'd like? <a href="" data-toggle="modal" data-target="#add-organization-modal">Add an organization</a></small>
+                        <small id="add-organization" class="text-muted">Select the organization you'd like to send this proposal to. Can't find the organization you'd like? <a href="" data-toggle="modal" data-target="#add-organization-modal">Add an organization</a></small>
                     </div>
                     <div class="form-group col">
                         <label for="site_id">Site</label>

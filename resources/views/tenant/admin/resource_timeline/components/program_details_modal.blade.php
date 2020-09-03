@@ -15,17 +15,10 @@
                 <div id="ages-string"></div>
                 <div id="meetings-container"></div>
                 <div id="proposed-at" class="mt-3"></div>
-
                 <hr/>
+                <div id="program-overall-status"> </div>
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <div id="program-overall-status">
-                            </div>
-                        </tr>
-                    </thead>
-                    <tbody id="program-contributors-rows">
-                    </tbody>
+                    <tbody id="program-contributors-rows"> </tbody>
                 </table>
                 <form method="POST" action="{{ tenant()->route('tenant:admin.programs.approve') }}" id="approve-program-form" name="approve-program-form">
                     @csrf

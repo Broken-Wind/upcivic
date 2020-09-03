@@ -123,7 +123,7 @@
                 <hr/>
                 <p> Preview </p>
                 <iframe style="width: 100%; min-height: 600px; height: 100%"
-                        src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"/>
+                        src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"></iframe>
             </div>
         </div>
     </div>

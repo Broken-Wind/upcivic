@@ -10,26 +10,15 @@
             <div class="modal-body" id="modal-body">
                 <input type="hidden" name="details_program_id" value="" />
                 <div id="description-of-meetings"></div>
-                <div id="site-location"></div>
                 <div id="program-times"></div>
+                <div id="site-location"></div>
                 <div id="ages-string"></div>
                 <div id="meetings-container"></div>
-                <div id="proposed-at"></div>
-
-                <table class="table table-sm mt-4">
-                    <thead>
-                        <tr>
-                            <th>
-                                <h3 style="font-size:1.5rem">Overall Status</h3>
-                            </th>
-                            <td>
-                                <div id="program-overall-status">
-                                </div>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody id="program-contributors-rows">
-                    </tbody>
+                <div id="proposed-at" class="mt-3"></div>
+                <hr/>
+                <div id="program-overall-status"> </div>
+                <table class="table">
+                    <tbody id="program-contributors-rows"> </tbody>
                 </table>
                 <form method="POST" action="{{ tenant()->route('tenant:admin.programs.approve') }}" id="approve-program-form" name="approve-program-form">
                     @csrf

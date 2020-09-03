@@ -42,7 +42,7 @@
                                 <option value="{{ $site['id'] }}">{{ $site['name'] }} - {{ $site['address'] }}</option>
                             @endforeach
                         </select>
-                        <small id="add-site" class="text-muted">Can't find the site you'd like? <a href="" data-toggle="modal" data-target="#add-site-modal">Add an site</a></small>
+                        <small id="add-site" class="text-muted">Can't find the site you'd like? <a href="" data-toggle="modal" data-target="#add-site-modal">Add a site</a></small>
                     </div>
                 </div>
                 <div class="form-group">

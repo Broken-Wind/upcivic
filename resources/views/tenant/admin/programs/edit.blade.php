@@ -109,7 +109,7 @@
                         <button type="submit" id="update_program" name="update_program"
                                 class="btn btn-secondary mx-1">Update
                         </button>
-                        <!-- <button type="submit" id="delete" form="delete_program" class="btn btn-danger" onClick="return confirm('Are you sure you want to this program? This cannot be undone.');">Delete Program</button> -->
+                        <!-- <button type="submit" id="delete" form="delete_program" class="btn btn-danger" onClick="return confirm('Are you sure you want to delete this program? This cannot be undone.');">Delete Program</button> -->
                     </div>
 
                 </form>

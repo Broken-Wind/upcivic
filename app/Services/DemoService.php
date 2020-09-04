@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Program;
 use App\Site;
+use App\Template;
 use App\Tenant;
 use Carbon\Carbon;
 
@@ -19,7 +20,7 @@ class DemoService
             return $query->where('organization_id', $demoProvider->organization_id)->orWhere('organization_id', $demoHost->organization_id);
         })->delete();
 
-        $templates = $demoProvider->organization->templates;
+        $templates = Template::withoutGlobalScopes()->where('organization_id', $demoProvider->organization_id)->get();
 
         for ($week = 0; $week < 10; $week++) {
             for ($program = 0; $program < 10; $program++) {

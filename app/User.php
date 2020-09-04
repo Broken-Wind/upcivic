@@ -114,7 +114,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isSuperAdmin()
     {
-            return App::environment() == 'local' || $this->email == 'greg@upvicic.com';
+            return App::environment() == 'local';
     }
 
 }

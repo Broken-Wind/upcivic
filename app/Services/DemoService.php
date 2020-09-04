@@ -33,6 +33,7 @@ class DemoService
                     'start_date' => $startDate,
                     'start_time' => '09:00',
                     'recipient_organization_id' => $demoHost->organization_id,
+                    'proposing_organization_id' => $demoProvider->organization_id,
                     'proposed_at' => Carbon::now(),
                     'site_id' => $demoSiteId,
                 ];
@@ -42,6 +43,7 @@ class DemoService
                         'start_date' => $startDate,
                         'start_time' => '13:00',
                         'recipient_organization_id' => $demoHost->organization_id,
+                        'proposing_organization_id' => $demoProvider->organization_id,
                         'proposed_at' => Carbon::now(),
                         'site_id' => $demoSiteId,
                     ];

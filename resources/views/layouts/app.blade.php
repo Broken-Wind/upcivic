@@ -25,7 +25,7 @@
                                 <li class="nav-item">
                                 <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary">REGENERATE DEMO DATA</button>
+                                    <button type="submit" class="btn btn-primary mr-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
                                 </form>
                                 </li>
                             @endif

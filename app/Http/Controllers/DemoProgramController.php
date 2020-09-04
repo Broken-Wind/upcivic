@@ -16,5 +16,6 @@ class DemoProgramController extends Controller
     public function store()
     {
         $this->demoService->regenerateDemoData();
+        return redirect()->route('tenant:admin.home', \Auth::user()->tenants()->first()->slug);
     }
 }

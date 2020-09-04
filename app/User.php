@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -109,6 +110,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $contributor->approved_at = Carbon::now();
 
         $contributor->save();
+    }
+
+    public function isSuperAdmin()
+    {
+            return App::environment() == 'local' || $this->email == 'greg@upvicic.com';
     }
 
 }

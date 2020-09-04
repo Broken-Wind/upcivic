@@ -33,8 +33,8 @@ class DemoService
                     'start_date' => $startDate,
                     'start_time' => '09:00',
                     'recipient_organization_id' => $demoHost->organization_id,
+                    'proposed_at' => Carbon::now(),
                     'site_id' => $demoSiteId,
-                    'location_id' => $demoLocationId,
                 ];
                 Program::fromTemplate($proposal, $template);
                 if ($template->meeting_minutes == 180) {
@@ -42,8 +42,8 @@ class DemoService
                         'start_date' => $startDate,
                         'start_time' => '13:00',
                         'recipient_organization_id' => $demoHost->organization_id,
+                        'proposed_at' => Carbon::now(),
                         'site_id' => $demoSiteId,
-                        'location_id' => $demoLocationId,
                     ];
                     Program::fromTemplate($pmProposal, $template);
                 }

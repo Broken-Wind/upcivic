@@ -92,21 +92,52 @@
             </div>
         </div>
 
+        <div class="card mb-4" id="requesting-proposals">
+            <div class="card-header">Requesting Proposals from Partners</div>
+            <div class="card-body">
+                To request proposals from your partners, send them the following instructions:
+                <hr />
+                <div id="proposal-instructions">
+                    <strong>How to send proposals to {{ tenant()->name }} using {{ config('app.name') }}:</strong><br />
+                    1. Sign up for your free account at {{ route('register') }}<br />
+                    2. Add a program to use for sending proposals<br />
+                    3. Once sent, {{ tenant()->name }} staff will review each program you propose, and get back to you!
+                </div>
+                <hr />
+                <button type="button" class="btn btn-secondary" onClick="toClipboard('proposal-instructions')">Copy to Clipboard</button>
+            </div>
+        </div>
+
         <div class="card mb-4" id="publishing">
             <div class="card-header">Publishing</div>
             <div class="card-body">
                 Embed this code snippet to your website to inform your users in <b>real-time</b> about upcoming programs schedules.
                 <div class="bg-light my-2">
-                    <code>&lt;iframe src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"
-                        style="width: 100%; min-height: 600px; height: 100%"/&gt;</code>
+                    <code id="iframe-code">&lt;iframe src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"
+                        style="width: 100%; min-height: 600px; height: 100%"&gt;&lt;/iframe&gt;</code>
                 </div>
-                <small class="text-muted">WordPress and other content management systems may require additional setup.
-                    If need assistance, email support@upcivic.com</small>
+                <p>
+                    <small class="text-muted">WordPress and other content management systems may require additional setup.
+                        If you need assistance, email support@upcivic.com</small>
+                </p>
+                <button type="button" class="btn btn-secondary" onClick="toClipboard('iframe-code')">Copy to Clipboard</button>
                 <hr/>
                 <p> Preview </p>
                 <iframe style="width: 100%; min-height: 600px; height: 100%"
-                        src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"/>
+                        src="{{ tenant()->route('tenant:iframe.index') }}" title="Scheduled programs"></iframe>
             </div>
         </div>
     </div>
+
+    <script type="application/javascript">
+        function toClipboard(elementId) {
+            var range = document.createRange();
+            range.selectNode(document.getElementById(elementId));
+            window.getSelection().removeAllRanges(); // clear current selection
+            window.getSelection().addRange(range); // to select text
+            document.execCommand("copy");
+            window.getSelection().removeAllRanges();// to deselect
+            alert('Copied to clipboard.')
+        }
+    </script>
 @endsection

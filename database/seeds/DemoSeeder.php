@@ -6,16 +6,17 @@ use App\Site;
 use App\Template;
 use App\Tenant;
 use App\User;
+use Carbon\Carbon;
 
 class DemoSeeder extends Seeder
 {
     protected const TEMPLATE_NAMES = [
-        'Cooking Camp (DEMO)',
-        'LEGO Camp (DEMO)',
-        'Soccer Camp (DEMO)',
-        'Spanish Camp (DEMO)',
-        'STEM Camp (DEMO)',
-        'Arts & Crafts Camp (DEMO)',
+        'Cooking Camp',
+        'LEGO Camp',
+        'Soccer Camp',
+        'Spanish Camp',
+        'STEM Camp',
+        'Arts & Crafts Camp',
     ];
 
     /**
@@ -38,6 +39,7 @@ class DemoSeeder extends Seeder
         $demoHostTenant = Tenant::create([
             'organization_id' => $demoHostOrg->id,
             'slug' => 'demo-host',
+            'next_payment_due_at' => Carbon::now()->add(1, 'year')
         ]);
         $demoHostUser->joinTenant($demoHostTenant);
         $this->seedDemoSites($demoHostOrg);

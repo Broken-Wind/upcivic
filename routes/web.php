@@ -58,8 +58,7 @@ Route::group(['middleware' => 'verified'], function () {
     ], function () {
         Route::get('/', 'TenantController@index')->name('index');
         Route::get('/home', 'TenantController@index')->name('home');
-        // NEED TO MAKE THIS A POST AND ADD AUTHORIZATION
-        // Route::get('/demo', 'DemoProgramController@store')->name('demo.store');
+        Route::post('/demo', 'DemoProgramController@store')->name('demo.store');
         Route::get('/resource_timeline', 'ResourceTimelineController@index')->name('resource_timeline.index');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');

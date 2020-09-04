@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Program;
 use App\Site;
+use App\Template;
 use App\Tenant;
 use Carbon\Carbon;
 
@@ -19,7 +20,7 @@ class DemoService
             return $query->where('organization_id', $demoProvider->organization_id)->orWhere('organization_id', $demoHost->organization_id);
         })->delete();
 
-        $templates = $demoProvider->organization->templates;
+        $templates = Template::withoutGlobalScopes()->where('organization_id', $demoProvider->organization_id)->get();
 
         for ($week = 0; $week < 10; $week++) {
             for ($program = 0; $program < 10; $program++) {
@@ -32,8 +33,9 @@ class DemoService
                     'start_date' => $startDate,
                     'start_time' => '09:00',
                     'recipient_organization_id' => $demoHost->organization_id,
+                    'proposing_organization_id' => $demoProvider->organization_id,
+                    'proposed_at' => Carbon::now(),
                     'site_id' => $demoSiteId,
-                    'location_id' => $demoLocationId,
                 ];
                 Program::fromTemplate($proposal, $template);
                 if ($template->meeting_minutes == 180) {
@@ -41,8 +43,9 @@ class DemoService
                         'start_date' => $startDate,
                         'start_time' => '13:00',
                         'recipient_organization_id' => $demoHost->organization_id,
+                        'proposing_organization_id' => $demoProvider->organization_id,
+                        'proposed_at' => Carbon::now(),
                         'site_id' => $demoSiteId,
-                        'location_id' => $demoLocationId,
                     ];
                     Program::fromTemplate($pmProposal, $template);
                 }

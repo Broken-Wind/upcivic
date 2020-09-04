@@ -60,7 +60,8 @@ class Program extends Model
         'min_enrollments',
         'enrollments',
         'max_enrollments',
-        'proposing_organization_id'
+        'proposing_organization_id',
+        'proposed_at',
     ];
 
     public function scopeExcludePast($query)
@@ -182,7 +183,7 @@ class Program extends Model
                     'min_enrollments' => $template['min_enrollments'],
                     'max_enrollments' => $template['max_enrollments'],
                     'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()->organization_id,
-
+                    'proposed_at' => $proposal['proposed_at'] ?? null,
                 ]);
                 $proposingContributor = new Contributor([
                     'internal_name' => $template['internal_name'],

@@ -21,6 +21,14 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
+                            @if(Auth::user()->isSuperAdmin())
+                                <li class="nav-item">
+                                <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-primary">REGENERATE DEMO DATA</button>
+                                </form>
+                                </li>
+                            @endif
                             @if(tenant()->isSubscribed())
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.index') }}">Schedule</a>

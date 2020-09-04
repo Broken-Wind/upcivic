@@ -118,7 +118,7 @@ class Contributor extends Model
     {
         $statusStrings = [
             'unsent' => 'Not Sent',
-            'proposed' => 'Proposed by ' . $this->program->proposer->name,
+            'proposed' => 'Pending Approval',
             'approved' => 'Approved by ' . $this->approver->name,
             'will_publish' => !empty($this->published_at) ? 'Publishing on ' . $this->published_at->format('m/d/Y') : 'Status error.',
             'published' => !empty($this->published_at) ? 'Published on ' . $this->published_at->format('m/d/Y') : 'Status error.',

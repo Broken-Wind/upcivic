@@ -25,7 +25,10 @@
 
                                 <td class="text-right">
                                     <a href="{{ tenant()->route('tenant:admin.templates.edit', ['template' => $template->id]) }}">
-                                        <i class="far fa-edit"></i>
+                                        <i class="far fa-edit mr-2"></i>
+                                    </a>
+                                    <a href="{{ tenant()->route('tenant:admin.programs.create', ['template_id' => $template->id]) }}">
+                                        <i class="fas fa-angle-double-right"></i>
                                     </a>
                                 </td>
 

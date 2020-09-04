@@ -7,10 +7,6 @@
     padding: 0;
   }
 
-  #calendar {
-    margin: 40px auto;
-  }
-
   .fc-day-grid-event > .fc-content {
       white-space: normal;
   }
@@ -21,7 +17,9 @@
 
   a.fc-timeline-event.fc-h-event.fc-event.fc-event-draggable {
       border-radius: 0.25rem;
+      margin: 1px;
   }
+
 </style>
 @endsection
 @section('content')

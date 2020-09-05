@@ -90,7 +90,7 @@
             @if(App::environment() != 'production')
                 <div class="alert alert-info text-center">
                     <h3>
-                        Environment: {{ App::environment() }}
+                        {{ ucfirst(App::environment()) }}
                     </h3>
                 </div>
             @endif

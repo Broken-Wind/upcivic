@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
             meetings.push(event.extendedProps.meetings[meeting].start_date);
         }
         $('#meetings-container').html('Meets: ' + meetings.join(', '));
-        $('#proposed-at').html('Proposed At: ' + event.extendedProps.proposed_at);
+        $('#proposed-at').html('Proposed on: ' + event.extendedProps.proposed_at);
         $('#ages-string').html(event.extendedProps.ages_string);
         $('#site-location').html('Site: ' + event.extendedProps.site_name);
 

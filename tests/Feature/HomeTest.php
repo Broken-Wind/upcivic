@@ -2,17 +2,16 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Upcivic\Administrator;
-use Upcivic\Organization;
-use Upcivic\Person;
-use Upcivic\User;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use App\Administrator;
+use App\Organization;
+use App\Person;
+use App\User;
 
 class HomeTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /** @test */
@@ -40,8 +39,6 @@ class HomeTest extends TestCase
 
         ]);
 
-
-
         $organization1->administrators()->save($person, ['title' => 'Waverunner']);
 
         $user = factory(User::class)->create([
@@ -50,9 +47,7 @@ class HomeTest extends TestCase
 
         ]);
 
-
-        $response = $this->actingAs($user)->get("/home");
-
+        $response = $this->actingAs($user)->get('/home');
 
         $response->assertSeeText('Find Your Organization:');
 
@@ -61,6 +56,5 @@ class HomeTest extends TestCase
         $response->assertSee('Notrex');
 
         $response->assertSee(route('organizations.users.store'));
-
     }
 }

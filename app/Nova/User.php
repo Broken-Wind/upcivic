@@ -1,14 +1,14 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Text;
 
 class User extends Resource
 {
@@ -17,7 +17,7 @@ class User extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\\User';
+    public static $model = \App\User::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -49,6 +49,10 @@ class User extends Resource
             Gravatar::make(),
 
             Text::make('Name')
+                ->sortable()
+                ->rules('required', 'max:255'),
+
+            Text::make('Phone')
                 ->sortable()
                 ->rules('required', 'max:255'),
 

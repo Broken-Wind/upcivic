@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Upcivic\Organization;
-use Upcivic\Tenant;
-use Upcivic\User;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use App\Organization;
+use App\Tenant;
+use App\User;
 
 class OrganizationTest extends TestCase
 {
@@ -16,24 +16,18 @@ class OrganizationTest extends TestCase
     /** @test */
     public function user_can_visit_organizations_index()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
-
-
         $response = $this->actingAs($user)->get("/{$tenant->slug}/admin/organizations");
 
-
         $response->assertStatus(200);
-
     }
 
     /** @test */
     public function user_can_see_claimed_organizations_in_organizations_index()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
@@ -52,23 +46,18 @@ class OrganizationTest extends TestCase
 
         $claimantOfTenantToSee->joinTenant($tenantToSee);
 
-
-
         $response = $this->actingAs($user)->get("/{$tenant->slug}/admin/organizations");
-
 
         $response->assertStatus(200);
 
         $response->assertSeeText('Visible');
 
         $response->assertDontSee($tenant->route('tenant:admin.organizations.edit', [$organizationToSee]));
-
     }
 
     /** @test */
     public function user_can_see_unclaimed_organizations_in_organizations_index()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
@@ -83,24 +72,18 @@ class OrganizationTest extends TestCase
 
         ]);
 
-
-
         $response = $this->actingAs($user)->get("/{$tenant->slug}/admin/organizations");
-
 
         $response->assertStatus(200);
 
         $response->assertSeeText('Visible');
 
         $response->assertSee($tenant->route('tenant:admin.organizations.edit', [$organizationToSee]));
-
     }
 
     /** @test */
     public function own_organization_exluded_from_organizations_index()
     {
-
-
         $organization = factory(Organization::class)->create(['name' => 'Is it visible?']);
 
         $tenant = factory(Tenant::class)->create([
@@ -113,45 +96,33 @@ class OrganizationTest extends TestCase
 
         $user->joinTenant($tenant);
 
-
-
         $response = $this->actingAs($user)->get("/{$tenant->slug}/admin/organizations");
-
 
         $response->assertStatus(200);
 
         $response->assertDontSee($tenant->route('tenant:admin.organizations.edit', [$organization]));
-
     }
 
     /** @test */
     public function guest_cannot_visit_organizations_index()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
-
-
         $response = $this->followingRedirects()->get("/{$tenant->slug}/admin/organizations");
-
 
         $response->assertStatus(200);
 
-        $this->assertEquals(url()->current(), config('app.url') . "/login");
-
+        $this->assertEquals(url()->current(), config('app.url').'/login');
     }
 
     /** @test */
     public function user_can_create_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
-
-
 
         $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/organizations", [
 
@@ -159,38 +130,30 @@ class OrganizationTest extends TestCase
 
         ]);
 
-
         $response->assertStatus(200);
 
         $this->assertNotNull(Organization::where('name', 'Bobby Dodgekins')->first());
-
     }
 
     /** @test */
     public function user_can_visit_edit_page_of_unclaimed_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
         $organization = factory(Organization::class)->create(['name' => 'Will it edit?']);
 
-
-
         $response = $this->actingAs($user)->followingRedirects()->get("/{$tenant->slug}/admin/organizations/{$organization->id}/edit");
-
 
         $response->assertStatus(200);
 
         $response->assertSeeText('Edit Will it edit?');
-
     }
 
     /** @test */
     public function user_cannot_visit_edit_page_of_claimed_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenantToEditFrom = $user->tenants()->first();
@@ -207,28 +170,21 @@ class OrganizationTest extends TestCase
 
         $claimantOfTenantToEdit->joinTenant($tenantToEdit);
 
-
-
         $response = $this->actingAs($user)->followingRedirects()->get("/{$tenantToEditFrom->slug}/admin/organizations/{$organizationToEdit->id}/edit");
-
 
         $response->assertStatus(401);
 
         $response->assertDontSeeText('Edit Will it edit?');
-
     }
 
     /** @test */
     public function user_can_update_unclaimed_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
         $organization = factory(Organization::class)->create(['name' => 'Will it update?']);
-
-
 
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/organizations/{$organization->id}", [
 
@@ -236,17 +192,14 @@ class OrganizationTest extends TestCase
 
         ]);
 
-
         $response->assertStatus(200);
 
         $this->assertEquals($organization->fresh()->name, 'Updated!');
-
     }
 
     /** @test */
     public function user_cannot_update_claimed_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenantToUpdateFrom = $user->tenants()->first();
@@ -263,30 +216,23 @@ class OrganizationTest extends TestCase
 
         $claimantOfTenantToUpdate->joinTenant($tenantToUpdate);
 
-
-
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenantToUpdateFrom->slug}/admin/organizations/{$organizationToUpdate->id}", [
 
             'name' => 'Updated!',
 
         ]);
 
-
         $response->assertStatus(401);
 
         $this->assertEquals($organizationToUpdate->fresh()->name, 'Will it update?');
-
     }
 
     /** @test */
     public function guest_cannot_create_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
-
-
 
         $response = $this->followingRedirects()->post("/{$tenant->slug}/admin/organizations", [
 
@@ -294,48 +240,37 @@ class OrganizationTest extends TestCase
 
         ]);
 
-
         $response->assertStatus(200);
 
-        $this->assertEquals(url()->current(), config('app.url') . "/login");
+        $this->assertEquals(url()->current(), config('app.url').'/login');
 
         $this->assertNull(Organization::where('name', 'Bobby Dodgekins')->first());
-
-
     }
 
     /** @test */
     public function guest_cannot_visit_edit_page_of_unclaimed_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
         $organization = factory(Organization::class)->create(['name' => 'Will it edit?']);
 
-
-
         $response = $this->followingRedirects()->get("/{$tenant->slug}/admin/organizations/{$organization->id}/edit");
-
 
         $response->assertStatus(200);
 
-        $this->assertEquals(url()->current(), config('app.url') . "/login");
-
+        $this->assertEquals(url()->current(), config('app.url').'/login');
     }
 
     /** @test */
     public function guest_cannot_update_unclaimed_organization()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
         $organization = factory(Organization::class)->create(['name' => 'Will it update?']);
-
-
 
         $response = $this->followingRedirects()->put("/{$tenant->slug}/admin/organizations/{$organization->id}", [
 
@@ -343,12 +278,10 @@ class OrganizationTest extends TestCase
 
         ]);
 
-
         $response->assertStatus(200);
 
-        $this->assertEquals(url()->current(), config('app.url') . "/login");
+        $this->assertEquals(url()->current(), config('app.url').'/login');
 
         $this->assertEquals($organization->fresh()->name, 'Will it update?');
-
     }
 }

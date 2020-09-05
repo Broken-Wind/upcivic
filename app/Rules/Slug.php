@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Rules;
+namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +36,7 @@ class Slug implements Rule
             $paths->push(explode('/', $value->uri())[0]);
         }
 
-        return !$paths->unique()->contains($slug);
+        return ! $paths->unique()->contains($slug);
     }
 
     /**

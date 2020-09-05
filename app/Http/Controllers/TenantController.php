@@ -1,35 +1,35 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTenant;
+use App\Http\Requests\UpdateTenant;
+use App\Organization;
+use App\Program;
+use App\Tenant;
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\StoreTenant;
-use Upcivic\Http\Requests\UpdateTenant;
-use Upcivic\Organization;
-use Upcivic\Program;
-use Upcivic\Tenant;
+use Illuminate\Support\Facades\Auth;
 
 class TenantController extends Controller
 {
     //
     public function index()
     {
-
-        return view('tenant.admin.home');
-
+        if (tenant()->isSubscribed()) {
+            return redirect()->route('tenant:admin.resource_timeline.index', tenant()->slug);
+        }
+        return redirect()->route('tenant:admin.programs.index', tenant()->slug);
     }
 
     public function create()
     {
-
         return view('tenants.create');
-
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Upcivic\Http\Requests\StoreTenant  $request
+     * @param  App\Http\Requests\StoreTenant  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreTenant $request)
@@ -55,25 +55,21 @@ class TenantController extends Controller
 
         $tenant->save();
 
-
-
         \Auth::user()->joinTenant($tenant);
 
-        Program::createExample($organization);
+        // Commented out because Calin was getting a routing error on his local env.
+        // TODO: Investigate this further as this is pretty useful functionality.
+        // Program::createExample($organization);
 
-        return redirect('/home');
-
+        return redirect()->route('home');
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-
         $tenant = tenant();
-
-        return view('tenant.admin.settings', compact('tenant'));
-
+        $email = $request->input('email');
+        return view('tenant.admin.settings', compact('tenant', 'email'));
     }
-
 
     public function update(UpdateTenant $request, Tenant $tenant)
     {
@@ -88,6 +84,5 @@ class TenantController extends Controller
         ]);
 
         return back()->withSuccess('Organization updated.');
-
     }
 }

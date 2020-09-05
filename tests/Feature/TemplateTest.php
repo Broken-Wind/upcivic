@@ -2,17 +2,16 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Upcivic\Organization;
-use Upcivic\Template;
-use Upcivic\User;
-use Upcivic\Tenant;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use App\Organization;
+use App\Template;
+use App\Tenant;
+use App\User;
 
 class TemplateTest extends TestCase
 {
-
     use RefreshDatabase;
 
     private $validRequest = [
@@ -38,7 +37,6 @@ class TemplateTest extends TestCase
     /** @test */
     public function can_view_templates_index()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
@@ -47,9 +45,7 @@ class TemplateTest extends TestCase
 
         $templates = factory(Template::class, 5)->create(['organization_id' => $tenant->organization->id]);
 
-
         $response = $this->actingAs($user)->get("/{$tenant->slug}/admin/templates");
-
 
         $response->assertStatus(200);
 
@@ -57,30 +53,23 @@ class TemplateTest extends TestCase
 
         $response->assertSeeText('Edit');
 
-
-        foreach($templates as $template) {
-
+        foreach ($templates as $template) {
             $response->assertSeeText($template['name']);
 
             $response->assertSeeText($template['internal_name']);
-
         }
-
     }
 
     /** @test */
     public function user_can_create_template()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
 
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
-
         $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/templates", $this->validRequest);
-
 
         $response->assertStatus(200);
 
@@ -103,15 +92,11 @@ class TemplateTest extends TestCase
         $this->assertEquals($template['meeting_count'], '3');
         $this->assertEquals($template['min_enrollments'], '6');
         $this->assertEquals($template['max_enrollments'], '10');
-
-
-
     }
 
     /** @test */
     public function user_can_edit_template()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
@@ -123,7 +108,6 @@ class TemplateTest extends TestCase
             'organization_id' => $tenant->organization_id,
 
         ]);
-
 
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/templates/{$template->id}", [
 
@@ -145,14 +129,11 @@ class TemplateTest extends TestCase
 
         ]);
 
-
         $response->assertStatus(200);
 
         $this->assertEquals(1, $tenant->organization->templates->count());
 
         $template->refresh();
-
-
 
         $this->assertEquals($template['name'], 'Dat Tempo');
         $this->assertEquals($template['internal_name'], 'Interno');
@@ -169,14 +150,11 @@ class TemplateTest extends TestCase
         $this->assertEquals($template['meeting_count'], '3');
         $this->assertEquals($template['min_enrollments'], '93');
         $this->assertEquals($template['max_enrollments'], '933');
-
-
     }
 
     /** @test */
     public function user_can_delete_template()
     {
-
         $user = factory(User::class)->states('hasTenant')->create();
 
         $tenant = $user->tenants()->first();
@@ -193,28 +171,20 @@ class TemplateTest extends TestCase
 
         $this->assertEquals(1, $tenant->organization->templatesWithoutScope->count());
 
-
-
         $response = $this->actingAs($user)->followingRedirects()->delete("/{$tenant->slug}/admin/templates/{$template->id}");
 
         $tenant->refresh();
-
-
 
         $response->assertStatus(200);
 
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
         $response->assertSeeText('Template has been deleted.');
-
-
     }
-
 
     /** @test */
     public function template_is_assigned_to_correct_organization_id()
     {
-
         factory(Organization::class)->create();
 
         $user = factory(User::class)->states('hasTenant')->create();
@@ -225,16 +195,10 @@ class TemplateTest extends TestCase
 
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
 
-
-
         $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/templates", $this->validRequest);
 
         $tenant->refresh();
 
-
-
         $this->assertEquals(1, $tenant->organization->templatesWithoutScope->count());
-
-
     }
 }

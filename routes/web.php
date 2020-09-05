@@ -9,11 +9,30 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', function () {
-    return view('welcome');
-})->name('root');
-Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function() {
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', 'IndexController@index')->name('root');
+Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () {
     Auth::routes(['verify' => true]);
+});
+
+Route::group(['middleware' => 'verified'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/organizations/{organization}/tenant', 'OrganizationTenantController@create')->name('organizations.tenant.create');
+    Route::post('/organizations/{organization}/tenant', 'OrganizationTenantController@store')->name('organizations.tenant.store');
+    Route::post('/organizations/users', 'OrganizationUserController@store')->name('organizations.users.store');
+    Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
+    Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
+});
+Route::group([
+    'prefix' => '/{tenant}',
+    'middleware' => ['tenant', 'tenant.auth'],
+    'as' => 'tenant:',
+], function () {
+    Route::get('/', 'PublicTenantController@index');
 });
 Route::group([
     'prefix' => '/{tenant}',
@@ -24,27 +43,36 @@ Route::group([
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
 });
 Route::group(['middleware' => 'verified'], function () {
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/organizations/{organization}/tenant', 'OrganizationTenantController@create')->name('organizations.tenant.create');
-    Route::post('/organizations/{organization}/tenant', 'OrganizationTenantController@store')->name('organizations.tenant.store');
-    Route::post('/organizations/users', 'OrganizationUserController@store')->name('organizations.users.store');
-    Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
-    Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
+    Route::group([
+        'prefix' => '/{tenant}/api',
+        'middleware' => ['tenant', 'tenant.auth'],
+        'as' => 'tenant:api.',
+    ], function () {
+        Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
+        Route::post('/programs/contributors', 'ProgramContributorController@index')->name('programs.contributors.index');
+    });
     Route::group([
         'prefix' => '/{tenant}/admin',
         'middleware' => ['tenant', 'tenant.auth'],
         'as' => 'tenant:admin.',
     ], function () {
+        Route::get('/', 'TenantController@index')->name('index');
         Route::get('/home', 'TenantController@index')->name('home');
+        Route::post('/demo', 'DemoProgramController@store')->name('demo.store');
+        Route::get('/resource_timeline', 'ResourceTimelineController@index')->name('resource_timeline.index');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');
-        Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
         Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');
-        Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
-        Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
-        Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
+        /**
+         * Disabling the ability to add organizations without users.
+         * This functionality will most likely return soon, but not for the MVP.
+         * Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
+         * Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
+         * Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
+         * Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
+         */
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');
         Route::post('/templates', 'TemplateController@store')->name('templates.store');
@@ -54,22 +82,22 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/programs', 'ProgramController@index')->name('programs.index');
         Route::get('/programs/create', 'ProgramController@create')->name('programs.create');
         Route::post('/programs', 'ProgramController@store')->name('programs.store');
+        Route::post('/programs/approve', 'ProgramController@approve')->name('programs.approve');
+        Route::post('/programs/reject', 'ProgramController@reject')->name('programs.reject');
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
+        Route::get('/programs/{program}', 'ProgramController@show')->name('programs.show');
         Route::put('/programs/{program}/enrollments', 'ProgramEnrollmentController@update')->name('programs.enrollments.update');
         Route::put('/programs/{program}', 'ProgramController@update')->name('programs.update');
         Route::delete('/programs/{program}', 'ProgramController@destroy')->name('programs.destroy');
+        Route::post('/programs/{program}/send', 'ProgramController@send')->name('programs.send');
         Route::put('/programs/{program}/published', 'ProgramPublishedController@update')->name('programs.published.update');
         Route::put('/programs/{program}/contributors', 'ProgramContributorController@update')->name('programs.contributors.update');
-        Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');
+        // Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');
         Route::post('/programs/{program}/meetings/update', 'ProgramMeetingController@update')->name('programs.meetings.update');
         Route::delete('/programs/{program}/contributors/{contributor}', 'ProgramContributorController@destroy')->name('programs.contributors.destroy');
         Route::get('/sites', 'SiteController@index')->name('sites.index');
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
-        Route::get('/users/invites/create', 'UserInviteController@create')->name('users.invites.create');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
-
-
-
     });
 });

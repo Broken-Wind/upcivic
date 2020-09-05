@@ -58,7 +58,7 @@
 
                             <option value="">All Sites</option>
 
-                            <option value="unset">Site TBD</option>
+                            <option value="tbd">Site TBD</option>
 
                             @foreach ( $sites as $site )
 

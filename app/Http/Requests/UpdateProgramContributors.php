@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Http\Requests;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -33,7 +33,6 @@ class UpdateProgramContributors extends FormRequest
             'newContributor.organization_id' => 'nullable|numeric',
             'newContributor.invoice_type' => 'nullable|string|max:255',
             'newContributor.invoice_amount' => 'nullable|numeric',
-
 
         ];
     }

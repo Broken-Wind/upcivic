@@ -1,11 +1,11 @@
 <?php
 
-namespace Upcivic\Http\Controllers;
+namespace App\Http\Controllers;
 
-use Upcivic\Template;
+use App\Http\Requests\StoreTemplate;
+use App\Http\Requests\UpdateTemplate;
+use App\Template;
 use Illuminate\Http\Request;
-use Upcivic\Http\Requests\StoreTemplate;
-use Upcivic\Http\Requests\UpdateTemplate;
 
 class TemplateController extends Controller
 {
@@ -20,7 +20,6 @@ class TemplateController extends Controller
         $templates = Template::all()->sortBy('internal_name');
 
         return view('tenant.admin.templates.index', compact('templates'));
-
     }
 
     /**
@@ -69,13 +68,13 @@ class TemplateController extends Controller
 
         $template->save();
 
-        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Template added successfully.');
+        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Program added successfully.');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Upcivic\Template  $template
+     * @param  \App\Template  $template
      * @return \Illuminate\Http\Response
      */
     public function edit(Template $template)
@@ -89,7 +88,7 @@ class TemplateController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Upcivic\Template  $template
+     * @param  \App\Template  $template
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateTemplate $request, Template $template)
@@ -117,7 +116,7 @@ class TemplateController extends Controller
 
         ]);
 
-        return back()->withSuccess('Template updated successfully.');
+        return back()->withSuccess('Program updated successfully.');
     }
 
     public function destroy(Template $template)
@@ -126,6 +125,6 @@ class TemplateController extends Controller
 
         $template->delete();
 
-        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Template has been deleted.');
+        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Program has been deleted.');
     }
 }

@@ -1,14 +1,15 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Tenant extends Resource
 {
@@ -17,7 +18,7 @@ class Tenant extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\Tenant';
+    public static $model = \App\Tenant::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -49,6 +50,7 @@ class Tenant extends Resource
     {
         return [
             ID::make()->sortable(),
+            Date::make('Next Payment Due At')->sortable(),
             BelongsTo::make('Organization'),
             BelongsToMany::make('Users'),
         ];

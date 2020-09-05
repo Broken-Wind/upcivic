@@ -2,7 +2,7 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use Upcivic\Location;
+use App\Location;
 use Faker\Generator as Faker;
 
 $factory->define(Location::class, function (Faker $faker) {

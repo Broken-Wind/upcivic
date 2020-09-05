@@ -4,6 +4,7 @@ namespace Laravel\Nova\Tests\Controller;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tests\Fixtures\ColumnFilter;
 use Laravel\Nova\Tests\Fixtures\Comment;
@@ -17,7 +18,7 @@ use Laravel\Nova\Tests\IntegrationTest;
 
 class ResourceIndexTest extends IntegrationTest
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -377,31 +378,141 @@ class ResourceIndexTest extends IntegrationTest
     {
         $post1 = factory(Post::class)->create();
 
-        factory(Comment::class)->create()->commentable(false)->associate($post1);
-        factory(Comment::class)->create()->commentable()->associate($post1);
-        factory(Comment::class)->create()->commentable()->associate($post1);
+        factory(Comment::class, 6)->create()->each(function ($comment) use ($post1) {
+            $comment->commentable()->associate($post1);
+        });
 
         DB::enableQueryLog();
-        $count = count(DB::getQueryLog());
+        DB::flushQueryLog();
 
+        // Eager-loading of the comment's author relation is not enabled.
         $response = $this->withExceptionHandling()
             ->getJson('/nova-api/comments');
 
         $response->assertStatus(200);
-        $this->assertEquals(count(DB::getQueryLog()) - $count, 1 + 3 /* comentable */ + 3 /* authors */);
 
-        $count = count(DB::getQueryLog());
+        $this->assertEquals(13, count(DB::getQueryLog()));
 
+        // Enable eager-loading of the comment's author relation.
+        DB::flushQueryLog();
         $_SERVER['nova.comments.useEager'] = true;
 
         $response = $this->withExceptionHandling()
             ->getJson('/nova-api/comments');
 
-        DB::disableQueryLog();
+        $response->assertStatus(200);
+
+        $this->assertEquals(3, count(DB::getQueryLog()));
 
         unset($_SERVER['nova.comments.useEager']);
 
-        $response->assertStatus(200);
-        $this->assertEquals(count(DB::getQueryLog()) - $count, 1 + 1 /* comentable */ + 1 /* authors */);
+        DB::disableQueryLog();
+    }
+
+    public function test_correctly_filters_index_pivot_fields()
+    {
+        $_SERVER['nova.roles.hidingAdminPivotField'] = true;
+
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+
+        $user->roles()->attach($role);
+
+        $queryString = http_build_query([
+            'viaResource' => 'users',
+            'viaResourceId' => $user->id,
+            'viaRelationship' => 'roles',
+            'relationshipType' => 'belongsToMany',
+        ]);
+
+        $response = $this->withoutExceptionHandling()
+            ->getJson('/nova-api/roles?'.$queryString)
+            ->assertOk();
+
+        tap(collect($response->original['resources'][0]['fields']), function ($fields) {
+            $this->assertCount(3, $fields);
+            $this->assertEmpty($fields->where('attribute', 'admin')->all());
+        });
+
+        unset($_SERVER['nova.roles.hidingAdminPivotField']);
+    }
+
+    public function test_correctly_filters_index_pivot_fields_of_reverse_relations()
+    {
+        $_SERVER['nova.roles.hidingAdminPivotField'] = true;
+
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+
+        $user->roles()->attach($role);
+
+        $queryString = http_build_query([
+            'viaResource' => 'roles',
+            'viaResourceId' => $role->id,
+            'viaRelationship' => 'users',
+            'relationshipType' => 'belongsToMany',
+        ]);
+
+        $response = $this->withoutExceptionHandling()
+            ->getJson('/nova-api/users?'.$queryString)
+            ->assertOk();
+
+        tap(collect($response->original['resources'][0]['fields']), function ($fields) {
+            $this->assertCount(7, $fields);
+            $this->assertEmpty($fields->where('attribute', 'admin')->all());
+        });
+
+        unset($_SERVER['nova.roles.hidingAdminPivotField']);
+    }
+
+    public function test_pivot_field_values_are_resolved_correctly()
+    {
+        $user = factory(User::class)->create();
+        $role = factory(Role::class)->create();
+
+        $user->roles()->attach($role, ['admin' => true]);
+
+        $this->assertEquals(1, $user->roles->first()->pivot->admin);
+
+        $queryString = http_build_query([
+            'viaResource' => 'users',
+            'viaResourceId' => $user->id,
+            'viaRelationship' => 'roles',
+            'relationshipType' => 'belongsToMany',
+        ]);
+
+        $response = $this->withoutExceptionHandling()
+            ->getJson('/nova-api/roles?'.$queryString)
+            ->assertOk();
+
+        tap(collect($response->original['resources'][0]['fields']), function ($fields) {
+            $this->assertEquals(1, $fields->where('attribute', 'admin')->first()->value);
+        });
+    }
+
+    public function test_resource_index_can_show_column_borders()
+    {
+        $_SERVER['nova.user.showColumnBorders'] = true;
+
+        $resource = collect(Nova::resourceInformation(NovaRequest::create('/')))
+            ->first(function ($resource) {
+                return $resource['uriKey'] == 'users';
+            });
+
+        $this->assertTrue($resource['showColumnBorders']);
+        unset($_SERVER['nova.users.showColumnBorders']);
+    }
+
+    public function test_resource_index_can_be_shown_in_tight_style()
+    {
+        $_SERVER['nova.user.tableStyle'] = 'tight';
+
+        $resource = collect(Nova::resourceInformation(NovaRequest::create('/')))
+            ->first(function ($resource) {
+                return $resource['uriKey'] == 'users';
+            });
+
+        $this->assertEquals('tight', $resource['tableStyle']);
+        unset($_SERVER['nova.users.tableStyle']);
     }
 }

@@ -1,16 +1,28 @@
 <?php
-namespace Upcivic\Http\Controllers;
-use Upcivic\Program;
-use Upcivic\Template;
-use Upcivic\Site;
-use Upcivic\Organization;
-use Upcivic\Http\Requests\StoreProgram;
-use Upcivic\Http\Requests\UpdateProgram;
+
+namespace App\Http\Controllers;
+
+use App\Contributor;
+use App\County;
+use App\Filters\ProgramFilters;
+use App\Http\Requests\ApproveProgram;
+use App\Http\Requests\RejectProgram;
+use App\Http\Requests\StoreProgram;
+use App\Http\Requests\UpdateProgram;
+use App\Mail\ProgramRejected;
+use App\Mail\ProgramApproved;
+use App\Mail\ProposalSent;
+use App\Organization;
+use App\Person;
+use App\Program;
+use App\Site;
+use App\Template;
+use Carbon\Carbon;
 use DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Mixpanel;
-use Upcivic\Filters\ProgramFilters;
-use Upcivic\Mail\ProposalSent;
+
 class ProgramController extends Controller
 {
     /**
@@ -27,8 +39,10 @@ class ProgramController extends Controller
         $organizations = Organization::orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
         $templateCount = Template::count();
+
         return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites'));
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -40,64 +54,96 @@ class ProgramController extends Controller
         $templates = Template::all()->sortBy('internal_name');
         $sites = Site::all()->sortBy('name');
         $organizations = Organization::emailable()->where('id', '!=', tenant()['organization_id'])->orderBy('name')->get();
-        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations'));
+        $counties = County::orderBy('name')->get();
+
+        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations', 'counties'));
     }
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Upcivic\Http\Requests\StoreProgram;  $request
+     * @param  App\Http\Requests\StoreProgram;  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreProgram $request)
     {
         //
         $validated = $request->validated();
-        $programs = collect();
-        DB::transaction(function () use ($validated, &$programs) {
-            foreach ($validated['programs'] as $key => $program) {
-                $program['recipient_organization_id'] = $validated['recipient_organization_id'];
-                $program['site_id'] = $validated['site_id'];
-                $newProgram = Program::fromTemplate($program);
-                if (!empty($newProgram)) {
-                    $programs->push($newProgram);
-                }
-            }
+        $program = null;
+        DB::transaction(function () use ($validated, &$program) {
+                $program = Program::fromTemplate($validated);
         });
-        $recipientOrganization = Organization::find($validated['recipient_organization_id']);
-        $sendingOrganization = tenant();
+
+        return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program]);
+    }
+
+    /**
+     * Send a Proposal and set Program status to Sent
+     *
+     * @param UpdateProgram $request
+     * @param Program $program
+     * @return \Illuminate\Http\Response
+     */
+    public function send(Request $request, Program $program) {
+        $sendingOrganization = tenant()->organization;
+        $recipientOrganizations = $program->contributors()->where('organization_id', '!=', $sendingOrganization->id)->get()->map(function ($contributor) {
+            return $contributor->organization;
+        });
         $proposal = collect([
             'sender' => Auth::user(),
             'sending_organization' => $sendingOrganization,
-            'recipient_organization' => $recipientOrganization,
-            'programs' => $programs,
-            'cc_emails' => $validated['cc_emails'],
+            'recipient_organizations' => $recipientOrganizations,
+            'programs' => [$program],
         ]);
+
+        $program->proposed_at = Carbon::now();
+
+        Auth::user()->approveProgram($program);
+
+        $program->save();
+
+        // TODO: Set status to Sent and disable editing from the contributors. If status sent, block sending again
+
         \Mail::send(new ProposalSent($proposal));
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program added successfully.');
+
+        return back()->withSuccess('Proposal sent successfully.');
     }
+
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Upcivic\Program  $program
+     * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function edit(Program $program)
     {
-        //
+        abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
+
         $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
+
         return view('tenant.admin.programs.edit', compact('program', 'organizations', 'sites'));
+    }
+
+    public function show(Program $program)
+    {
+        $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
+        $sites = Site::orderBy('name')->get();
+
+        return view('tenant.admin.programs.show', compact('program', 'organizations', 'sites'));
     }
     /**
      * Update the specified resource in storage.
      *
-     * @param  Upcivic\Http\Requests\UpdateProgram;  $request
-     * @param  \Upcivic\Program  $program
+     * @param  App\Http\Requests\UpdateProgram;  $request
+     * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateProgram $request, Program $program)
     {
         //
+        abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
+
         $validated = $request->validated();
         $program->update([
             'name' => $validated['name'],
@@ -111,18 +157,50 @@ class ProgramController extends Controller
             'min_enrollments' => $validated['min_enrollments'],
             'max_enrollments' => $validated['max_enrollments'],
         ]);
+
         return back()->withSuccess('Program updated successfully.');
     }
+
+    public function reject(RejectProgram $request)
+    {
+        $validated = $request->validated();
+        $program = Program::findOrFail($validated['reject_program_id']);
+        $reason = $validated['rejection_reason'];
+        \Mail::send(new ProgramRejected($program, $reason, Auth::user()));
+        $program->delete();
+        return back()->withSuccess('Program rejected.');
+    }
+
+    public function approve(ApproveProgram $request)
+    {
+        $validated = $request->validated();
+        $program = Program::findOrFail($validated['approve_program_id']);
+
+        if ($validated['contributor_id'] == 'approve_all') {
+            $contributors = $program->contributors->whereNull('approved_at');
+        } else {
+            $contributors = $program->contributors->where('id', $validated['contributor_id']);
+        }
+        foreach($contributors as $contributor) {
+            Auth::user()->approveProgramForContributor($program, $contributor);
+        }
+
+        \Mail::send(new ProgramApproved($program, Auth::user(), $contributors));
+
+        return back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Upcivic\Program  $program
+     * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
     public function destroy(Program $program)
     {
         //
         $program->delete();
+
         return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateTenantUserTable extends Migration
 {
@@ -19,14 +19,11 @@ class CreateTenantUserTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
-
             $table->foreign('tenant_id')->references('id')->on('tenants');
             $table->foreign('user_id')->references('id')->on('users');
         });
 
-
         $tenantUsers = DB::table('organization_user')->get()->map(function ($organizationUser) {
-
             return [
 
                 'tenant_id' => DB::table('tenants')->where('organization_id', $organizationUser->organization_id)->first()->id,
@@ -38,11 +35,9 @@ class CreateTenantUserTable extends Migration
                 'updated_at' => Carbon\Carbon::now(),
 
             ];
-
         })->toArray();
 
         DB::table('tenant_user')->insert($tenantUsers);
-
     }
 
     /**

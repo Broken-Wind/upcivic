@@ -1,3 +1,5 @@
+/.db
+/.vscode
 /node_modules
 /public/hot
 /public/storage
@@ -7,7 +9,10 @@
 .env.backup
 .phpunit.result.cache
 .todo
+.idea/
+*.swp
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+*.swp

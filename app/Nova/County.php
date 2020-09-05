@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Nova;
+namespace App\Nova;
 
-use Laravel\Nova\Fields\ID;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -15,7 +15,7 @@ class County extends Resource
      *
      * @var string
      */
-    public static $model = 'Upcivic\County';
+    public static $model = \App\County::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -30,7 +30,7 @@ class County extends Resource
      * @var array
      */
     public static $search = [
-        'id','name'
+        'id', 'name',
     ];
 
     /**

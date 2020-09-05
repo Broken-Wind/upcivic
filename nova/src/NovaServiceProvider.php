@@ -2,10 +2,11 @@
 
 namespace Laravel\Nova;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Nova\Actions\ActionResource;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Tools\Dashboard;
 use Laravel\Nova\Tools\ResourceManager;
@@ -27,9 +28,10 @@ class NovaServiceProvider extends ServiceProvider
         $this->registerResources();
         $this->registerTools();
         $this->registerCarbonMacros();
+        $this->registerCollectionMacros();
         $this->registerJsonVariables();
 
-        Nova::resources([ActionResource::class]);
+        Nova::resources([config('nova.actions.resource')]);
     }
 
     /**
@@ -116,7 +118,7 @@ class NovaServiceProvider extends ServiceProvider
         return [
             'namespace' => 'Laravel\Nova\Http\Controllers',
             'domain' => config('nova.domain', null),
-            'as' => 'nova.api.',
+            // 'as' => 'nova.api.',
             'prefix' => 'nova-api',
             'middleware' => 'nova',
         ];
@@ -142,8 +144,8 @@ class NovaServiceProvider extends ServiceProvider
      */
     protected function registerCarbonMacros()
     {
-        Carbon::macro('firstDayOfQuarter', new Macros\FirstDayOfQuarter);
-        Carbon::macro('firstDayOfPreviousQuarter', new Macros\FirstDayOfPreviousQuarter);
+        Carbon::mixin(new Macros\FirstDayOfQuarter);
+        Carbon::mixin(new Macros\FirstDayOfPreviousQuarter);
     }
 
     /**
@@ -167,6 +169,7 @@ class NovaServiceProvider extends ServiceProvider
                 'locale' => config('app.locale', 'en'),
                 'algoliaAppId' => config('services.algolia.appId'),
                 'algoliaApiKey' => config('services.algolia.apiKey'),
+                'version' => Nova::version(),
             ]);
         });
     }
@@ -193,11 +196,19 @@ class NovaServiceProvider extends ServiceProvider
             Console\PublishCommand::class,
             Console\ResourceCommand::class,
             Console\ResourceToolCommand::class,
+            Console\StubPublishCommand::class,
             Console\ThemeCommand::class,
             Console\ToolCommand::class,
             Console\TrendCommand::class,
             Console\UserCommand::class,
             Console\ValueCommand::class,
         ]);
+    }
+
+    protected function registerCollectionMacros()
+    {
+        Collection::macro('isAssoc', function () {
+            return Arr::isAssoc($this->toBase()->all());
+        });
     }
 }

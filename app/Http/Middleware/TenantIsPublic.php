@@ -1,6 +1,6 @@
 <?php
 
-namespace Upcivic\Http\Middleware;
+namespace App\Http\Middleware;
 
 use Closure;
 
@@ -15,10 +15,10 @@ class TenantIsPublic
      */
     public function handle($request, Closure $next)
     {
-
-        if (!tenant()->isPublic()) {
+        if (! tenant()->isPublic()) {
             abort(401, 'This action is unauthorized.');
         }
+
         return $next($request);
     }
 }

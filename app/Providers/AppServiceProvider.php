@@ -1,10 +1,10 @@
 <?php
 
-namespace Upcivic\Providers;
+namespace App\Providers;
 
+use App\Services\TenantManager;
+use App\Tenant;
 use Illuminate\Support\ServiceProvider;
-use Upcivic\Services\TenantManager;
-use Upcivic\Tenant;
 
 class AppServiceProvider extends ServiceProvider
 {

@@ -2,32 +2,31 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Upcivic\Person;
-use Upcivic\Tenant;
-use Upcivic\User;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
+use App\Person;
+use App\Tenant;
+use App\User;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function joining_tenant_lists_user_as_administrator()
     {
         $user = factory(User::class)->create([
 
-            'name' => 'Roberto Consiglio'
+            'name' => 'Roberto Consiglio',
 
         ]);
 
         $tenant = factory(Tenant::class)->create();
 
-
         $user->joinTenant($tenant);
 
         $tenant->refresh();
-
 
         $this->assertEquals($tenant->organization->administrators->first()['name'], $user['name']);
 
@@ -63,8 +62,6 @@ class UserTest extends TestCase
 
         $tenant->refresh();
 
-
         $this->assertEquals(1, $tenant->organization->administrators->count());
-
     }
 }

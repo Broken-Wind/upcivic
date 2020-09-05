@@ -1,11 +1,17 @@
 <?php
-namespace Upcivic;
+
+namespace App;
+
 use Illuminate\Database\Eloquent\Model;
+
 class Tenant extends Model
 {
     //
     protected $fillable = [
         'slug',
+    ];
+    protected $casts = [
+        'next_payment_due_at' => 'datetime'
     ];
 
     public function users()
@@ -26,6 +32,7 @@ class Tenant extends Model
         $this->organization->administrators->each(function ($administrator) use ($aggregatedAdministrators) {
             if ($aggregatedAdministrators->contains('email', $administrator['email'])) {
                 $aggregatedAdministrators->where('email', $administrator['email'])->first()['is_administrator'] = true;
+
                 return;
             }
             $aggregatedAdministrators->push(collect([
@@ -35,6 +42,7 @@ class Tenant extends Model
                 'is_administrator' => true,
             ]));
         });
+
         return $aggregatedAdministrators;
     }
 
@@ -45,7 +53,12 @@ class Tenant extends Model
 
     public function isPublic()
     {
-        return $this['id'] == 2 && $this['slug'] == 'techsplosion';
+        return true;
+    }
+
+    public function isSubscribed()
+    {
+        return !empty($this->next_payment_due_at);
     }
 
     public function organization()
@@ -53,7 +66,8 @@ class Tenant extends Model
         return $this->belongsTo(Organization::class);
     }
 
-    public function route($name, $parameters = [], $absolute = true) {
+    public function route($name, $parameters = [], $absolute = true)
+    {
         return app('url')->route($name, array_merge([$this->slug], $parameters), $absolute);
     }
 }

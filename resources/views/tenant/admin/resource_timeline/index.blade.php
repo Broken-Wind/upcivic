@@ -32,6 +32,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.css" integrity="sha256-/rB/IDulpFpJSHjrUgRHzB99AnJh3RBNrUOpF+4QIKA=" crossorigin="anonymous">
 <script type="application/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.min.js" integrity="sha256-U+VlpMlWIzzE74RY4mZL4MixQg66XWfjEWW2VUxHgcE=" crossorigin="anonymous"></script>
 <script type="application/javascript">
+var showProgramUrl = '{{ tenant()->route('tenant:admin.programs.show', ['program' => 1]) }}';
+showProgramUrl = showProgramUrl.substr(0, showProgramUrl.lastIndexOf('/')+1);
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('reject-program').addEventListener('click', function () {
         $('#reject-program-modal').modal();
@@ -100,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#reject-program-id').val(event.id);
         $('#approve-program-id').val(event.id);
         $('.program-title').html(event.id + ' ' + event.title);
+        $('.program-title').attr('href', showProgramUrl + event.id);
         $('#description-of-meetings').html(event.extendedProps.description_of_meetings);
         $('#program-times').html(event.extendedProps.program_times);
         populateOverallStatus(event);

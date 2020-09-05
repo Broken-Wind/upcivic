@@ -21,7 +21,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
-                            @if(Auth::user()->isSuperAdmin())
+                            @if(Auth::user()->canGenerateDemoData())
                                 <li class="nav-item">
                                 <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
                                     @csrf

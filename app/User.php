@@ -112,9 +112,9 @@ class User extends Authenticatable implements MustVerifyEmail
         $contributor->save();
     }
 
-    public function isSuperAdmin()
+    public function canGenerateDemoData()
     {
-            return App::environment() == 'local';
+        return App::environment() == 'local' || App::environment() == 'demo';
     }
 
 }

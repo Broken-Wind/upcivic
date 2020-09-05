@@ -75,7 +75,7 @@ class ResourceTimelineService
                 'max_enrollments' => $program->max_enrollments,
                 'backgroundColor' => $program->event_color,
                 'borderColor' => $program->event_color,
-                'proposed_at' => !empty($program->proposed_at) ? $program->proposed_at->format('m/d/Y g:ia') : 'N/A',
+                'proposed_at' => !empty($program->proposed_at) ? $program->proposed_at->format('n/j/Y') : 'N/A',
                 'status_string' => $program->status_string,
                 'status_class_string' => $program->status_class_string,
                 'is_fully_approved' => $program->isFullyApproved(),

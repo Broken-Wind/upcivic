@@ -28,7 +28,7 @@ class DemoSeeder extends Seeder
     {
         //
         $demoHostUser = User::create([
-            'name' => 'Demo User',
+            'name' => 'Demo Host User',
             'email' => 'demo.host@upcivic.com',
             'password' => bcrypt('123demo'),
             'email_verified_at' => \Carbon\Carbon::now(),
@@ -45,7 +45,7 @@ class DemoSeeder extends Seeder
         $this->seedDemoSites($demoHostOrg);
 
         $demoProviderUser = User::create([
-            'name' => 'Demo User',
+            'name' => 'Demo Provider User',
             'email' => 'demo.activity.provider@upcivic.com',
             'password' => bcrypt('123demo'),
             'email_verified_at' => \Carbon\Carbon::now(),

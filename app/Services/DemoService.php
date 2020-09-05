@@ -6,6 +6,7 @@ use App\Program;
 use App\Site;
 use App\Template;
 use App\Tenant;
+use App\User;
 use Carbon\Carbon;
 
 class DemoService
@@ -13,6 +14,7 @@ class DemoService
     public function regenerateDemoData()
     {
         $demoProvider = $this->getDemoProviderTenant();
+        $demoProviderUser = $this->getDemoProviderUser();
         $demoHost = $this->getDemoHostTenant();
         $demoSites = $this->getDemoSites();
 
@@ -22,7 +24,7 @@ class DemoService
 
         $templates = Template::withoutGlobalScopes()->where('organization_id', $demoProvider->organization_id)->get();
 
-        for ($week = 0; $week < 10; $week++) {
+        for ($week = 0; $week < 4; $week++) {
             for ($program = 0; $program < 10; $program++) {
                 $demoSite = rand(1, 10) > 3 ? $demoSites[$program % 2] : null;
                 $demoSiteId = $demoSite->id ?? null;
@@ -37,7 +39,9 @@ class DemoService
                     'proposed_at' => Carbon::now(),
                     'site_id' => $demoSiteId,
                 ];
-                Program::fromTemplate($proposal, $template);
+                $amProgram = Program::fromTemplate($proposal, $template);
+                $amContributor = $amProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
+                $demoProviderUser->approveProgramForContributor($amProgram, $amContributor);
                 if ($template->meeting_minutes == 180) {
                     $pmProposal = [
                         'start_date' => $startDate,
@@ -47,7 +51,9 @@ class DemoService
                         'proposed_at' => Carbon::now(),
                         'site_id' => $demoSiteId,
                     ];
-                    Program::fromTemplate($pmProposal, $template);
+                    $pmProgram = Program::fromTemplate($pmProposal, $template);
+                    $pmContributor = $pmProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
+                    $demoProviderUser->approveProgramForContributor($pmProgram, $pmContributor);
                 }
             }
         }
@@ -63,6 +69,11 @@ class DemoService
     protected function getDemoProviderTenant()
     {
         return Tenant::where('slug', 'demo-provider')->firstOrFail();
+    }
+
+    protected function getDemoProviderUser()
+    {
+        return User::where('email', 'demo.activity.provider@upcivic.com')->firstOrFail();
     }
 
     protected function getDemoHostTenant()

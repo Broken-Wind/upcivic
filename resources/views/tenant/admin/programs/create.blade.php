@@ -16,7 +16,9 @@
                     <label for="">Program</label>
                     <select class="form-control" name="template_id" id="">
                         @forelse($templates as $template)
-                            <option value="{{ $template->id }}">{{ $template->internal_name }}{{ $template->internal_name != $template->name ? " - " . $template->name : null }}</option>
+                            <option value="{{ $template->id }}" {{ request()->input('template_id') == $template->id ? 'selected' : '' }}>
+                                {{ $template->internal_name }}{{ $template->internal_name != $template->name ? " - " . $template->name : null }}
+                            </option>
                         @empty
                             <option disabled>No templates</option>
                         @endforelse

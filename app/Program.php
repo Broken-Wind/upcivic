@@ -200,7 +200,6 @@ class Program extends Model
                 if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
                     $contributor->save();
                 }
-
                 $startTime = $proposal['start_time'];
                 $endTime = $proposal['end_time'] ?? date('H:i:s', strtotime($proposal['start_time'].' +'.$template['meeting_minutes'].' minutes'));
                 $currentStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'].' '.$startTime));

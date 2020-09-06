@@ -166,7 +166,7 @@ class ProgramController extends Controller
         $validated = $request->validated();
         $program = Program::findOrFail($validated['reject_program_id']);
         $reason = $validated['rejection_reason'];
-        \Mail::send(new ProgramRejected($program, $reason, Auth::user()));
+        \Mail::send(new ProgramRejected($program, Auth::user(), $reason));
         $program->delete();
         return back()->withSuccess('Program rejected.');
     }

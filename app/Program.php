@@ -200,13 +200,12 @@ class Program extends Model
                 if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
                     $contributor->save();
                 }
-
                 $startTime = $proposal['start_time'];
                 $endTime = $proposal['end_time'] ?? date('H:i:s', strtotime($proposal['start_time'].' +'.$template['meeting_minutes'].' minutes'));
                 $currentStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'].' '.$startTime));
                 $currentEndDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'].' '.$endTime));
                 if (! empty($proposal['end_date'])) {
-                    $lastStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['end_date'].' '.$startTime));
+                    $lastStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['end_date'].' '.$endTime));
                 } else {
                     $lastStartDatetime = date('Y-m-d H:i:s', strtotime(\Carbon\Carbon::parse($proposal['start_date'])->addDays($template['meeting_count'] * $template['meeting_interval'])));
                 }

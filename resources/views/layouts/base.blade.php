@@ -22,18 +22,7 @@
     <script src="https://kit.fontawesome.com/2f34de0b7e.js" crossorigin="anonymous"></script>
 
 
-    <!-- Usersnap for gathering user feedback -->
-    <script>
-        window.onUsersnapCXLoad = function(api) {
-            api.init();
-        }
-        var script = document.createElement('script');
-        script.defer = 1;
-        script.src = 'https://widget.usersnap.com/global/load/1c8b695e-895b-434a-8192-e6fd381b0444?onload=onUsersnapCXLoad';
-        document.getElementsByTagName('head')[0].appendChild(script);
-    </script>
-
-    @yield('head.additional')
+    @yield('head.app')
 
 </head>
 <body>

@@ -90,17 +90,15 @@
                 <h4>
                     Your browser is incompatible with {{ config('app.name') }}.
                 </h4>
-                Please download <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>, or <a href="https://www.microsoft.com/en-us/edge">Edge</a> for the best experience.
+                Please download <a href="https://www.google.com/chrome/">Chrome</a>, <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>, or <a href="https://www.microsoft.com/en-us/edge">Edge</a> and <strong>update to the latest version</strong> for the best experience.
             </div>
             @yield('content')
         </main>
     </div>
     <script type="text/javascript">
         {{-- https://stackoverflow.com/a/53149880 --}}
-        {{-- TODO: Decide which browsers to support & update isSupported() appropriately --}}
         function get_browser() {
           var ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-          console.log(ua);
           if (/trident/i.test(M[1])) {
             tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
             return { name: 'IE', version: (tem[1] || '') };
@@ -125,14 +123,15 @@
         var isSupported = isSupported(browser);
 
         function isSupported(browser) {
-        //   var supported = false;
-        //   if (browser.name === "Chrome" && browser.version >= 48) {
-        //     supported = true;
-        //   } else if (browser.name === "Edge") {
-        //     supported = true;
-        //   }
-        //   return supported;
-        return true;
+          var supported = false;
+          if (browser.name === "Chrome" && browser.version >= 63) {
+            supported = true;
+          } else if (browser.name === "Firefox" && browser.version >= 57) {
+            supported = true;
+          } else if (browser.name === "Edge" && browser.version >= 18) {
+            supported = true;
+          }
+          return supported;
         }
 
         if (!isSupported) {

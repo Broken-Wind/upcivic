@@ -11,12 +11,14 @@ use Carbon\Carbon;
 class DemoSeeder extends Seeder
 {
     protected const TEMPLATE_NAMES = [
-        'Cooking Camp',
-        'LEGO Camp',
-        'Soccer Camp',
-        'Spanish Camp',
-        'STEM Camp',
-        'Arts & Crafts Camp',
+        'Jr. Master Chef',
+        'Culinary Passport',
+        'Jedi Master Engineering',
+        'STEM Engineering',
+        'Skyhawks Soccer',
+        'Jr. Trail Guide Adventures',
+        'Minecraft Challenge',
+        'Drawing & Cartooning',
     ];
 
     /**

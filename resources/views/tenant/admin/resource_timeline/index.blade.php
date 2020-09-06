@@ -112,10 +112,14 @@ document.addEventListener('DOMContentLoaded', function() {
         for (const meeting in event.extendedProps.meetings) {
             meetings.push(event.extendedProps.meetings[meeting].start_date);
         }
-        $('#meetings-container').html('Meets: ' + meetings.join(', '));
+        $('#description-of-meetings').prop('title', 'Meets: ' + meetings.join(', '));
         $('#proposed-at').html('Proposed on: ' + event.extendedProps.proposed_at);
         $('#ages-string').html(event.extendedProps.ages_string);
-        $('#site-location').html('Site: ' + event.extendedProps.site_name);
+        $('#enrollments').html('Min/Max: ' + event.extendedProps.min_enrollments + '/' + event.extendedProps.max_enrollments);
+        $('#site-name').html(event.extendedProps.site_name);
+        $('#site-name').prop('title', event.extendedProps.site_address);
+        var resources = event.getResources();
+        $('#location-name').html(resources[0].title);
 
         $('#program-details-modal').modal();
     },

@@ -60,7 +60,7 @@ class ResourceTimelineService
             return [
                 'id' => $program->id,
                 'resourceId' => !$siteIds->contains($program->site->id) && !empty($program->site->id) ? '0_0' : $program->location_id,
-                'title' => $program->timeline_title,
+                'title' => $program->name,
                 'description_of_meetings' => $program->description_of_meetings,
                 'program_times' => $program['start_time'] . '-' . $program['end_time'],
                 'start' => $program->start_datetime,
@@ -68,6 +68,7 @@ class ResourceTimelineService
                 // We could get the site name from the event's resource instead of passing it through here,
                 // but then, for offsite programs, the details moda would display "Offsite" instead of the actual site name.
                 'site_name' => $program->site->name,
+                'site_address' => $program->site->address,
                 'ages_string' => $program->ages_string,
                 'contributors' => $contributors,
                 'meetings' => $meetings,

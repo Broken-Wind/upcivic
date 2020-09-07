@@ -13,8 +13,9 @@
                 <input type="hidden" name="reject_program_id" id="reject-program-id" value="" />
                 <div class="modal-body" id="modal-body">
                     <div class="form-group">
-                    <label for="rejection-reason">Rejection Reason</label>
-                    <textarea class="form-control" name="rejection_reason" id="rejection-reason" rows="3"></textarea>
+                        <label for="rejection-reason">Rejection Reason</label>
+                        <textarea class="form-control" name="rejection_reason" id="rejection-reason" rows="3"></textarea>
+                        <small class="text-muted">Emailed to all program contributors.</small>
                     </div>
                 </div>
                 <div class="modal-footer">

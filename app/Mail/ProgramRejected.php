@@ -21,7 +21,7 @@ class ProgramRejected extends Mailable
      *
      * @return void
      */
-    public function __construct(Program $program, string $reason, User $user)
+    public function __construct(Program $program, User $user, $reason = '')
     {
         //
         $this->program = $program;

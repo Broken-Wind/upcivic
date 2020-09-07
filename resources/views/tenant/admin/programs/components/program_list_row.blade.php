@@ -13,7 +13,7 @@
         <div class="col-md-4">
             @if ($program->isProposed())
             <a href="{{ tenant()->route('tenant:admin.programs.show', ['program' => $program->id]) }}">
-                {{ $program['id'] }} - {{ $program['internal_name'] }}
+                #{{ $program['id'] }} - {{ $program['internal_name'] }}
             </a>
             @else
             <a href="{{ tenant()->route('tenant:admin.programs.edit', ['program' => $program->id]) }}">

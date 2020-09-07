@@ -1,5 +1,15 @@
 @extends('layouts.base')
-@section('head.additional')
+@section('head.app')
+    <!-- Usersnap for gathering user feedback -->
+    <script>
+        window.onUsersnapCXLoad = function(api) {
+            api.init();
+        }
+        var script = document.createElement('script');
+        script.defer = 1;
+        script.src = 'https://widget.usersnap.com/global/load/1c8b695e-895b-434a-8192-e6fd381b0444?onload=onUsersnapCXLoad';
+        document.getElementsByTagName('head')[0].appendChild(script);
+    </script>
     @yield('head.additional')
 @endsection
 @section('body')
@@ -14,9 +24,6 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav"><li class="nav-item dropdown">
-                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">

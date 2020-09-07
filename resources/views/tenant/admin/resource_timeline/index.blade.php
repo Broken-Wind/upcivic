@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const event = info.event;
         $('#reject-program-id').val(event.id);
         $('#approve-program-id').val(event.id);
-        $('.program-title').html(event.id + ' ' + event.title);
+        $('.program-title').html('#' + event.id + ' - ' + event.title);
         $('.program-title').attr('href', showProgramUrl + event.id);
         $('#description-of-meetings').html(event.extendedProps.description_of_meetings);
         $('#program-times').html(event.extendedProps.program_times);

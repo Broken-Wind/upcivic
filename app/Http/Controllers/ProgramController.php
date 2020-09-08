@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Mixpanel;
 
 class ProgramController extends Controller
@@ -74,7 +75,7 @@ class ProgramController extends Controller
                 $program = Program::fromTemplate($validated);
         });
 
-        return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program]);
+        return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program])->with('newly_created', true);
     }
 
     /**
@@ -115,14 +116,15 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function edit(Program $program)
+    public function edit(Program $program, $newlyCreated = false)
     {
         abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
 
         $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
+        $newlyCreated = Session::get('newly_created');
 
-        return view('tenant.admin.programs.edit', compact('program', 'organizations', 'sites'));
+        return view('tenant.admin.programs.edit', compact('program', 'organizations', 'sites', 'newlyCreated'));
     }
 
     public function show(Program $program)

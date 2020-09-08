@@ -10,7 +10,7 @@
         var updateLocationsUrl = "{{ route('tenant:api.programs.locations.update', tenant()->slug) }}";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.min.js" integrity="sha256-U+VlpMlWIzzE74RY4mZL4MixQg66XWfjEWW2VUxHgcE=" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/components/resource_timeline.js')}}"></script>
+    <script src="{{ asset('js/views/resource_timeline.js')}}"></script>
 @endpush
 @push('css')
     <style type="text/css">

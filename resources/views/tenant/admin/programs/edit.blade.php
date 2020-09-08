@@ -1,4 +1,17 @@
 @extends('layouts.app')
+@push('scripts')
+<script>
+    var newlyCreated = {{ $newlyCreated ? 'true' : 'false' }};
+    var program = {
+        'id': {{ $program->id }},
+        'name': '{{ $program->name }}',
+        'proposing_organization_id': {{ $program->proposing_organization_id }},
+        'recipient_organization_ids': {{ $program->recipientContributors()->pluck('organization_id')->toJson() }},
+        'created_at': '{{ $program->created_at }}'
+    };
+</script>
+<script src="{{ asset('js/views/edit_program.js') }}" defer></script>
+@endpush
 @section('content')
     <div class="container">
         @include('shared.form_errors')

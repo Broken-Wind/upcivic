@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @include('tenant.admin.organizations.components.add_organization_modal')
 @include('tenant.admin.sites.components.add_site_modal')
 

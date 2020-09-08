@@ -346,6 +346,11 @@ class Program extends Model
         return $this->contributors->where('organization_id', '!=', tenant()['organization_id']);
     }
 
+    public function recipientContributors()
+    {
+        return $this->contributors->where('organization_id', '!=', $this->proposing_organization_id);
+    }
+
     public function hasOtherContributors()
     {
         return $this->otherContributors()->count() > 0;

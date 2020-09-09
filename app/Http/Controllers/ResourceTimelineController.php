@@ -28,4 +28,14 @@ class ResourceTimelineController extends Controller
 
         return view('tenant.admin.resource_timeline.index', compact('resources', 'events'));
     }
+
+    public function meetings()
+    {
+        abort_if(!tenant()->isSubscribed(), 401);
+
+        $resources = $this->resourcetimelineService->getResources();
+        $meetingEvents = $this->resourcetimelineService->getMeetingsEvents();
+
+        return view('tenant.admin.resource_timeline.meetings', compact('resources', 'meetingEvents'));
+    }
 }

@@ -9,6 +9,7 @@
         var resources = {!! $resources !!};
         var initialDate = "{{ $initialDate->toDateString() }}";
         var updateLocationsUrl = "{{ route('tenant:api.programs.locations.update', tenant()->slug) }}";
+        var fetchMeetingsUrl = "{{ route('tenant:api.resource_timeline_meetings.page', tenant()->slug) }}";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.min.js" integrity="sha256-U+VlpMlWIzzE74RY4mZL4MixQg66XWfjEWW2VUxHgcE=" crossorigin="anonymous"></script>
     <script src="{{ asset('js/views/resource_timeline_meetings.js')}}"></script>
@@ -27,7 +28,7 @@
     .fc-toolbar-title {
         font-size: 1.125rem !important;
     }
-
+    
     a.fc-timeline-event.fc-h-event.fc-event.fc-event-draggable {
         border-radius: 0.25rem;
         margin: 1px;

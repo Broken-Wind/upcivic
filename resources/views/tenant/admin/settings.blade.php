@@ -22,6 +22,12 @@
 
                     </div>
 
+                    <div class="form-group">
+                      <label for="proposal_next_steps">Next Steps for Approved Proposals</label>
+                      <textarea class="form-control" name="proposal_next_steps" id="proposal_next_steps" rows="3">{{ $tenant['proposal_next_steps'] }}</textarea>
+                      <small class="text-muted">This will be included in an email to your partners any time you approve a program. You can leave this blank, or type something like "Don't forget to return your background check form!"</small>
+                    </div>
+
 
                     <div class="form-group mb-3">
 

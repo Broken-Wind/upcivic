@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Program;
+use App\Meeting;
 use App\Scopes\TenantOwnedScope;
 use App\Template;
 use App\Tenant;
@@ -41,6 +42,14 @@ class TenantManager
         });
 
         Template::addGlobalScope(new TenantOwnedScope);
+
+        Meeting::addGlobalScope('TenantAccesibleMeeting', function (Builder $builder) {
+            return $builder->whereHas('program', function($query) {
+                return $query->whereHas('contributors', function ($query) {
+                    return $query->where('organization_id', tenant()->organization_id);
+                })->whereNotNull('proposed_at')->orWhere('proposing_organization_id', tenant()->organization_id);
+            });
+        });
     }
 
     public function loadTenant($identifier): bool

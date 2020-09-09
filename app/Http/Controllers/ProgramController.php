@@ -187,7 +187,7 @@ class ProgramController extends Controller
             Auth::user()->approveProgramForContributor($program, $contributor);
         }
 
-        \Mail::send(new ProgramApproved($program, Auth::user(), $contributors));
+        \Mail::send(new ProgramApproved($program, Auth::user(), tenant()->organization, $contributors));
 
         return back();
     }

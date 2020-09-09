@@ -63,7 +63,7 @@ class ResourceTimelineService
             });
             return [
                 'id' => $program->id,
-                'resourceId' => !$siteIds->contains($program->site->id) && !empty($program->site->id) ? '0_0' : $program->location_id,
+                'resourceId' => !$siteIds->contains($program->site->id) && !empty($program->site->id) ? '0_0' : $program->resource_id,
                 'title' => $program->name,
                 'description_of_meetings' => $program->description_of_meetings,
                 'program_times' => $program['start_time'] . '-' . $program['end_time'],
@@ -112,7 +112,7 @@ class ResourceTimelineService
                     'id' => $meeting->id,
                     'start' => $meeting->start_datetime,
                     'end' => $meeting->start_datetime,
-                    'resourceId' => !$siteIds->contains($meeting->site_id) && !empty($meeting->site_id) ? '0_0' : $meeting->location_id ?? 0,
+                    'resourceId' => !$siteIds->contains($meeting->site_id) && !empty($meeting->site_id) ? '0_0' : $meeting->resource_id,
                     'title' => $program->name,
                     'groupId' => $meeting->program_id,
                     'backgroundColor' => $program->event_color,

@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.setProp('title', event.title + ' -saving');
         updateLocations({
             program_id: info.event.groupId,
-            location_ids: resourceIds
+            resource_ids: resourceIds
         }).then(data => {
             const program = programs.find(program => program.id == event.groupId);
             event.setProp('title', data.title);

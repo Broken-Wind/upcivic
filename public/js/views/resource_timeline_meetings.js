@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     var calendarEl = document.getElementById('calendar');
-    
+
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: '0970509849-fcs-1598830799',
     themeSystem: 'bootstrap',
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             program.site_name = data.site_name;
         });
     },
-     
+
     eventClick:  function(info) {
         const event = info.event;
         const program = programs.find(program => program.id == event.groupId);
@@ -99,18 +99,16 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
 
   $('.fc-next-button').click(function() {
-      console.log(calendar.view.currentStart.toLocaleString());
       fetchMeetings({
-          initial_date: calendar.view.currentStart.toLocaleString(),
-          end_date: calendar.view.currentEnd.toLocaleString()
+          initial_date: calendar.view.currentStart.toISOString(),
+          end_date: calendar.view.currentEnd.toISOString()
       }).then(data => {
-          console.log(data)
           programs = data.programs;
-          var eventSources = calendar.getEventSources(); 
+          var eventSources = calendar.getEventSources();
           var len = eventSources.length;
-          for (var i = 0; i < len; i++) { 
-              eventSources[i].remove(); 
-          } 
+          for (var i = 0; i < len; i++) {
+              eventSources[i].remove();
+          }
           calendar.addEventSource(data.meetings);
           calendar.render();
       });

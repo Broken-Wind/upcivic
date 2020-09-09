@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
         event.setProp('title', event.title + ' -saving');
         updateLocations({
             program_id: info.event.id,
-            location_ids: resourceIds
+            resource_ids: resourceIds
         }).then(data => {
             event.setProp('title', data.title);
             event.setExtendedProp('site_name', data.site_name);

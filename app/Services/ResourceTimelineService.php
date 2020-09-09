@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Program;
 use App\Meeting;
+use Carbon\Carbon;
 
 use function GuzzleHttp\Promise\all;
 
@@ -87,14 +88,16 @@ class ResourceTimelineService
         })->values()->toJson();
     }
 
-    public function getMeetingsEvents()
+    public function getMeetingsEvents(Carbon $initialDate, Carbon $endDate)
     {
         $siteIds = tenant()->organization->sites->pluck('id');
         $result = [
             'meetings' => collect(),
             'programs' => collect()
         ];
-        Program::with(['meetings.site', 'contributors.organization'])->get()->sortBy('start_datetime')->each(function ($program) use ($siteIds, $result) {
+        Program::with(['meetings.site', 'contributors.organization'])->get()->filter(function($program) use ($initialDate, $endDate) {
+            return $program->lastMeeting()->end_datetime >= $initialDate && $program->firstMeeting()->start_datetime <= $endDate;
+        })->sortBy('start_datetime')->each(function ($program) use ($siteIds, $result) {
             $contributors = $program->contributors->map(function ($contributor) {
                 return [
                     'id' => $contributor->id,

@@ -70,6 +70,11 @@ class Organization extends Model
         return $this->tenant->users;
     }
 
+    public function getProposalNextStepsAttribute()
+    {
+        return $this->tenant->proposal_next_steps;
+    }
+
     public function templates()
     {
         return $this->hasMany(Template::class);

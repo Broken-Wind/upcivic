@@ -39,6 +39,7 @@ class UpdateTenant extends FormRequest
             //
             'name' => 'required|max:255',
             'publish' => 'nullable|boolean',
+            'proposal_next_steps' => 'nullable|string',
         ];
     }
 }

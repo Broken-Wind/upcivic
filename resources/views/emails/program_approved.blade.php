@@ -8,6 +8,13 @@
 * {{ $program['description_of_age_range'] }}
 @endcomponent
 
+@if(!empty($approvingOrganization->proposal_next_steps))
+@component('mail::panel')
+## Next Steps
+{{ $approvingOrganization->proposal_next_steps }}
+@endcomponent
+@endif
+
 Please contact {{ $user['name'] }} by email at {{$user['email']}}
 @if(!empty($user->phone))
 or by phone at {{$user['phone']}}

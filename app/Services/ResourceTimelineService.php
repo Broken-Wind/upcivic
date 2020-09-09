@@ -3,6 +3,9 @@
 namespace App\Services;
 
 use App\Program;
+use App\Meeting;
+
+use function GuzzleHttp\Promise\all;
 
 class ResourceTimelineService
 {
@@ -82,5 +85,62 @@ class ResourceTimelineService
                 'is_fully_approved' => $program->isFullyApproved(),
             ];
         })->values()->toJson();
+    }
+
+    public function getMeetingsEvents()
+    {
+        $siteIds = tenant()->organization->sites->pluck('id');
+        $result = [
+            'meetings' => collect(),
+            'programs' => collect()
+        ];
+        Program::with(['meetings.site', 'contributors.organization'])->get()->sortBy('start_datetime')->each(function ($program) use ($siteIds, $result) {
+            $contributors = $program->contributors->map(function ($contributor) {
+                return [
+                    'id' => $contributor->id,
+                    'name' => $contributor->organization->name,
+                    'approved_by' => $contributor->approver->name,
+                    'class_string' => $contributor->class_string,
+                    'status_string' => $contributor->status_string
+                ];
+            });
+            $program->meetings->each(function ($meeting) use ($siteIds, $result, $program) {
+                $result['meetings']->push([
+                    'id' => $meeting->id,
+                    'start' => $meeting->start_datetime,
+                    'end' => $meeting->start_datetime,
+                    'resourceId' => !$siteIds->contains($meeting->site_id) && !empty($meeting->site_id) ? '0_0' : $meeting->location_id ?? 0,
+                    'title' => $program->name,
+                    'groupId' => $meeting->program_id,
+                    'backgroundColor' => $program->event_color,
+                    'borderColor' => $program->event_color,
+                ]);
+            });
+            $meetings = $program->meetings->map(function ($meeting) {
+                return [
+                    'start_date' => $meeting->start_date,
+                    'site' => $meeting->site->name
+                ];
+            });
+            $result['programs']->push([
+                'id' => $program->id,
+                'description_of_meetings' => $program->description_of_meetings,
+                'program_times' => $program['start_time'] . '-' . $program['end_time'],
+                'start' => $program->start_datetime,
+                'end' => $program->end_datetime,
+                'site_name' => $program->site->name,
+                'site_address' => $program->site->address,
+                'ages_string' => $program->ages_string,
+                'meetings' => $meetings,
+                'contributors' => $contributors,
+                'min_enrollments' => $program->min_enrollments,
+                'max_enrollments' => $program->max_enrollments,
+                'proposed_at' => !empty($program->proposed_at) ? $program->proposed_at->format('n/j/Y') : 'N/A',
+                'status_string' => $program->status_string,
+                'status_class_string' => $program->status_class_string,
+                'is_fully_approved' => $program->isFullyApproved(),
+            ]);
+        });
+        return $result;
     }
 }

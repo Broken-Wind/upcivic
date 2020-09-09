@@ -58,8 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
             program_id: info.event.groupId,
             location_ids: resourceIds
         }).then(data => {
+            const program = programs.find(program => program.id == event.groupId);
             event.setProp('title', data.title);
-            event.setExtendedProp('site_name', data.site_name);
+            program.site_name = data.site_name;
         });
     },
      

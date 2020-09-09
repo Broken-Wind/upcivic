@@ -9,6 +9,7 @@ class Tenant extends Model
     //
     protected $fillable = [
         'slug',
+        'proposal_next_steps'
     ];
     protected $casts = [
         'next_payment_due_at' => 'datetime'

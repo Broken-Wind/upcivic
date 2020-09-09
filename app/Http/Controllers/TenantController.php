@@ -74,13 +74,13 @@ class TenantController extends Controller
     public function update(UpdateTenant $request, Tenant $tenant)
     {
         //
-
         $validated = $request->validated();
 
         $tenant->organization->update([
-
             'name' => $validated['name'],
-
+        ]);
+        $tenant->update([
+            'proposal_next_steps' => $validated['proposal_next_steps']
         ]);
 
         return back()->withSuccess('Organization updated.');

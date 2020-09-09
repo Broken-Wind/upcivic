@@ -7,7 +7,7 @@
         var events = {!! $meetingEvents['meetings']->toJson() !!};
         var programs = {!! json_encode($meetingEvents['programs']) !!};
         var resources = {!! $resources !!};
-        var initialDate = "{{ \Carbon\Carbon::now()->toDateString() }}";
+        var initialDate = "{{ $initialDate->toDateString() }}";
         var updateLocationsUrl = "{{ route('tenant:api.programs.locations.update', tenant()->slug) }}";
     </script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.min.js" integrity="sha256-U+VlpMlWIzzE74RY4mZL4MixQg66XWfjEWW2VUxHgcE=" crossorigin="anonymous"></script>

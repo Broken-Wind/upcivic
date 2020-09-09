@@ -34,8 +34,11 @@ class ResourceTimelineController extends Controller
         abort_if(!tenant()->isSubscribed(), 401);
 
         $resources = $this->resourcetimelineService->getResources();
-        $meetingEvents = $this->resourcetimelineService->getMeetingsEvents();
+        $initialDate = Carbon::now()->startOfWeek(Carbon::SUNDAY);
+        $endDate = $initialDate->copy()->addDays(7);
 
-        return view('tenant.admin.resource_timeline.meetings', compact('resources', 'meetingEvents'));
+        $meetingEvents = $this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate);
+
+        return view('tenant.admin.resource_timeline.meetings', compact('resources', 'meetingEvents', 'initialDate'));
     }
 }

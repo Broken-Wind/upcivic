@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#reject-program-modal').modal();
     });
 
-  var calendarEl = document.getElementById('calendar');
-
+    var calendarEl = document.getElementById('calendar');
+    
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: '0970509849-fcs-1598830799',
     themeSystem: 'bootstrap',
@@ -97,6 +97,10 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   calendar.render();
+
+  $('.fc-next-button').click(function() {
+      console.log(calendar.view.currentStart);
+  });
 });
 
 function populateOverallStatus(program) {

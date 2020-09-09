@@ -47,8 +47,8 @@ class ResourceTimelineController extends Controller
         try {
             abort_if(!tenant()->isSubscribed(), 401);
 
-            $initialDate = Carbon::createFromFormat('m/d/Y h:i:s A', $request->initial_date);
-            $endDate = Carbon::parse($request->endDate);
+            $initialDate = Carbon::parse($request->initial_date);
+            $endDate = Carbon::parse($request->end_date);
 
             $meetingEvents = $this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate);
 

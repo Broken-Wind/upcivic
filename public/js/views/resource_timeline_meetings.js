@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   calendar.render();
 
-  $('.fc-next-button').click(function() {
+  $('.fc-next-button, .fc-prev-button, .fc-today-button').click(function() {
       fetchMeetings({
           initial_date: calendar.view.currentStart.toISOString(),
           end_date: calendar.view.currentEnd.toISOString()

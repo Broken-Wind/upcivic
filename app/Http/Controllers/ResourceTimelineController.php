@@ -6,6 +6,7 @@ use App\Program;
 use App\Services\DemoService;
 use App\Services\ResourceTimelineService;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 
 class ResourceTimelineController extends Controller
@@ -40,5 +41,21 @@ class ResourceTimelineController extends Controller
         $meetingEvents = $this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate);
 
         return view('tenant.admin.resource_timeline.meetings', compact('resources', 'meetingEvents', 'initialDate'));
+    }
+
+    public function page(Request $request) {
+        try {
+            abort_if(!tenant()->isSubscribed(), 401);
+
+            $initialDate = Carbon::createFromFormat('m/d/Y h:i:s A', $request->initial_date);
+            $endDate = Carbon::parse($request->endDate);
+
+            $meetingEvents = $this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate);
+
+        } catch (Exception $e) {
+
+            return json_encode($e);
+        }
+        return $meetingEvents;
     }
 }

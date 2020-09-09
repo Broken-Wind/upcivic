@@ -99,7 +99,21 @@ document.addEventListener('DOMContentLoaded', function() {
   calendar.render();
 
   $('.fc-next-button').click(function() {
-      console.log(calendar.view.currentStart);
+      console.log(calendar.view.currentStart.toLocaleString());
+      fetchMeetings({
+          initial_date: calendar.view.currentStart.toLocaleString(),
+          end_date: calendar.view.currentEnd.toLocaleString()
+      }).then(data => {
+          console.log(data)
+          programs = data.programs;
+          var eventSources = calendar.getEventSources(); 
+          var len = eventSources.length;
+          for (var i = 0; i < len; i++) { 
+              eventSources[i].remove(); 
+          } 
+          calendar.addEventSource(data.meetings);
+          calendar.render();
+      });
   });
 });
 
@@ -153,6 +167,11 @@ function getContributorActionOption(contributor) {
 
 async function updateLocations(data = {}) {
     url = updateLocationsUrl;
+    return asyncRequest(data, url);
+}
+
+async function fetchMeetings(data = {}) {
+    url = fetchMeetingsUrl;
     return asyncRequest(data, url);
 }
 

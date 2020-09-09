@@ -235,7 +235,7 @@ class Program extends Model
         return $program;
     }
 
-    public function getLocationIdAttribute()
+    public function getResourceIdAttribute()
     {
         $locationIds = $this->meetings->pluck('location_id')->filter(function ($locationId) {
             return ! empty($locationId);

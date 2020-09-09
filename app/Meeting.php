@@ -41,4 +41,16 @@ class Meeting extends Model
             'phone' => 'TBD',
         ]);
     }
+
+    public function getResourceIdAttribute()
+    {
+        if ($this->location_id) {
+            return $this->location_id;
+        }
+        if (! empty($this->site_id)) {
+            return '0_'.$this->site_id;
+        }
+
+        return '0';
+    }
 }

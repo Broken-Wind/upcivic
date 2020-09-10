@@ -16,7 +16,7 @@
                     Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
                 @endif
             </div>
-            <form id="generate_loa" name="generate_loa" action="{{ tenant()->route('tenant:admin.programs.loa') }}" method="POST">
+            <form id="generate_loa" name="generate_loa" target="_blank" action="{{ tenant()->route('tenant:admin.programs.loa') }}" method="POST">
                 @csrf
                 <button type="submit" class="btn btn-secondary">Generate LOAs</button>
             </form>

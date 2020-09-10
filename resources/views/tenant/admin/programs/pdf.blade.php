@@ -7,6 +7,16 @@
         .page-break {
             page-break-after: always;
         }
+        table {
+            width: 100%;
+        }
+        th {
+            text-align: left;
+            padding: 5px;
+        }
+        td {
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -56,17 +66,21 @@
     <table>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Location</th>
+            <th>Name & Location</th>
             <th>Date & Time</th>
             <th>Base Fee</th>
         </tr>
         @forelse($programs as $program)
         <tr>
             <td>{{ $program->id }}</td>
-            <td>{{ $program->name }}</td>
-            <td>{{ $program->site->name }} - {{ $program->location->name }}</td>
-            <td>{{ $program->description_of_meetings }}</td>
+            <td>
+                {{ $program->name }}<br />
+                {{ $program->site->name }} - {{ $program->location->name }}</td>
+            <td>
+                {{ $program['start_date'] . " - " . $program['end_date'] }}
+                <br />
+                {{ $program['start_time'] }}-{{ $program['end_time'] }}
+            </td>
             <td>${{ $program->formatted_base_fee }} {{ $program->shared_invoice_type }}</td>
         </tr>
         @empty

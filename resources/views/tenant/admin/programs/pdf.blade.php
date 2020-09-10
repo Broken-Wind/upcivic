@@ -31,20 +31,28 @@
     I understand and agree that I will (a) pay my assigned personnel’s wages and provide them with the benefits that I offer to my employees; (b) pay, withhold, and transmit payroll taxes; provide unemployment insurance and workers’ compensation benefits; and handle unemployment and workers’ compensation claims involving assigned personnel; and (c) comply with all applicable federal, state and local laws and regulations, including all applicable federal, state, and local laws and regulations prohibiting discrimination and harassment.
 </p>
 <table>
-    <tr>
-        <th>Organization:</th>
-        <th colspan="2">Representative:</th>
-    </tr>
     @forelse($programs->first()->contributors as $contributor)
     <tr>
-        <th style="text-align: left">{{ $contributor->organization->name }}</th>
-        <td>Name: ___________________</td>
-        <td>Signature: ___________________</td>
+        <th colspan="5" style="text-align: left; padding-top:20px;">{{ $contributor->organization->name }}</th>
+    </tr>
+    <tr>
+        <td>____________________________</td>
+        <td></td>
+        <td>____________________________</td>
+        <td></td>
+        <td>___________</td>
+    </tr>
+    <tr>
+        <td>Name</td>
+        <td></td>
+        <td>Signature</td>
+        <td></td>
+        <td>Date</td>
     </tr>
     @empty
     @endforelse
 </table>
-<h3>Programs</h3>
+<h3>Programs ({{ $programs->count() }} total)</h3>
     <table>
         <tr>
             <th>ID</th>

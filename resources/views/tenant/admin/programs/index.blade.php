@@ -18,7 +18,7 @@
             </div>
             <form id="generate_loa" name="generate_loa" action="{{ tenant()->route('tenant:admin.programs.loa') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn btn-secondary">Generate LOA</button>
+                <button type="submit" class="btn btn-secondary">Generate LOAs</button>
             </form>
             <div class="col text-right">
                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#filterModal" form="filters">

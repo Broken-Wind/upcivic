@@ -7,6 +7,7 @@ use App\County;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\ApproveProgram;
 use App\Http\Requests\RejectProgram;
+use App\Http\Requests\StoreLoa;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
@@ -45,9 +46,15 @@ class ProgramController extends Controller
         return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites'));
     }
 
-    public function pdf(Program $program) {
+    public function generateLoa(StoreLoa $request) {
+        $validated = $request->validated();
+        $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $validated['program_ids'])->get();
+        $contributorGroups = $programs->groupBy(function ($program, $key) {
+            return $program->contributors->pluck('organization_id')->sort()->implode(',');
+        });
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML('<h1>Test</h1>');
+        $test = view('tenant.admin.programs.pdf', compact('contributorGroups'));
+        $pdf->loadHTML($test->render());
         return $pdf->stream();
     }
 

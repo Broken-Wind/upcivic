@@ -99,9 +99,7 @@
                         <i class="far fa-trash-alt"></i>
                     </button>
                 @endif
-                <!-- Bulk action checkbox:
-                    <input form="bulk_action" type="checkbox" name="program_session_ids[]" value="{{ $program['id'] }}">
-                -->
+                <input form="generate_loa" type="checkbox" name="program_ids[]" value="{{ $program['id'] }}">
             </div>
         </div>
     </form>

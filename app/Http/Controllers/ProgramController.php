@@ -20,6 +20,7 @@ use App\Template;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Mixpanel;
@@ -42,6 +43,12 @@ class ProgramController extends Controller
         $templateCount = Template::count();
 
         return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites'));
+    }
+
+    public function pdf(Program $program) {
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML('<h1>Test</h1>');
+        return $pdf->stream();
     }
 
     /**

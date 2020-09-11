@@ -16,7 +16,8 @@
     <script defer>
         document.addEventListener('DOMContentLoaded', function() {
             mixpanel.register({
-                'Active Organization ID': {{ tenant()->organization_id ?? 'null' }}
+                'Active Organization ID': {{ tenant()->organization_id ?? 'null' }},
+                'Plan Type': '{{ tenant()->plan_type ?? "null" }}'
             });
         });
     </script>

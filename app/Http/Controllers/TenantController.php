@@ -16,7 +16,7 @@ class TenantController extends Controller
     public function index()
     {
         if (tenant()->isSubscribed()) {
-            return redirect()->route('tenant:admin.resource_timeline.index', tenant()->slug);
+            return redirect()->route('tenant:admin.resource_timeline.meetings', tenant()->slug);
         }
         return redirect()->route('tenant:admin.programs.index', tenant()->slug);
     }
@@ -74,13 +74,13 @@ class TenantController extends Controller
     public function update(UpdateTenant $request, Tenant $tenant)
     {
         //
-
         $validated = $request->validated();
 
         $tenant->organization->update([
-
             'name' => $validated['name'],
-
+        ]);
+        $tenant->update([
+            'proposal_next_steps' => $validated['proposal_next_steps']
         ]);
 
         return back()->withSuccess('Organization updated.');

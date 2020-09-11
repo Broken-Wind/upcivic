@@ -1,5 +1,5 @@
 @extends('layouts.base')
-@section('head.app')
+@push('head')
     <!-- Usersnap for gathering user feedback -->
     <script>
         window.onUsersnapCXLoad = function(api) {
@@ -10,8 +10,7 @@
         script.src = 'https://widget.usersnap.com/global/load/1c8b695e-895b-434a-8192-e6fd381b0444?onload=onUsersnapCXLoad';
         document.getElementsByTagName('head')[0].appendChild(script);
     </script>
-    @yield('head.additional')
-@endsection
+@endpush
 @section('body')
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">

@@ -1,6 +1,5 @@
 @extends('layouts.app')
-@section('head.additional')
-
+@section('title', 'Add Proposal')
 @include('tenant.admin.organizations.components.add_organization_modal')
 @include('tenant.admin.sites.components.add_site_modal')
 

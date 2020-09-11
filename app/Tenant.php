@@ -9,6 +9,7 @@ class Tenant extends Model
     //
     protected $fillable = [
         'slug',
+        'proposal_next_steps'
     ];
     protected $casts = [
         'next_payment_due_at' => 'datetime'
@@ -59,6 +60,11 @@ class Tenant extends Model
     public function isSubscribed()
     {
         return !empty($this->next_payment_due_at);
+    }
+
+    public function getPlanTypeAttribute()
+    {
+        return $this->isSubscribed() ? 'basic_host_v1' : 'free_v1';
     }
 
     public function organization()

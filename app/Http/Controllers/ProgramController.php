@@ -187,7 +187,9 @@ class ProgramController extends Controller
             Auth::user()->approveProgramForContributor($program, $contributor);
         }
 
-        \Mail::send(new ProgramApproved($program, Auth::user(), tenant()->organization, $contributors));
+        $approve_next_steps = $validated['approve_next_steps'];
+
+        \Mail::send(new ProgramApproved($program, Auth::user(), tenant()->organization, $contributors, $approve_next_steps));
 
         return back();
     }

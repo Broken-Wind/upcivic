@@ -56,12 +56,13 @@
                     <div class="form-group">
                       <select class="form-control form-control-sm" name="contributor_id" id="program-contributor-actions"></select>
                     </div>
+                    <textarea rows="3" class="form-control" name="approve_next_steps" id="approve-next-steps">{{ tenant()->proposal_next_steps }}</textarea>
                 </form>
             </div>
 
             <div class="modal-footer" style="">
                 <button type="button" class="btn btn-danger" id="reject-program" data-dismiss="modal">Reject</button>
-                <button type="submit" class="btn btn-primary" id="approve-program" form="approve-program-form">Update</button>
+                <button type="submit" class="btn btn-primary" id="approve-program" form="approve-program-form">Approve</button>
             </div>
         </div>
     </div>

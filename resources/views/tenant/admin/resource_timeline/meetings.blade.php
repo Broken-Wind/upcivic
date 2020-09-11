@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Schedule')
 @push('scripts')
     <script>
         var showProgramUrl = "{{ tenant()->route('tenant:admin.programs.show', ['program' => 1]) }}";

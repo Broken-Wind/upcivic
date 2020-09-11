@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', $tenant->name . ' Settings')
 @section('content')
     <div class="container">
         @include('shared.form_errors')

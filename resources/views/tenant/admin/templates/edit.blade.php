@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', '#' . $template->id . ' - ' . $template->name . ' Program')
 @section('content')
 <div class="container">
     @include('shared.form_errors')

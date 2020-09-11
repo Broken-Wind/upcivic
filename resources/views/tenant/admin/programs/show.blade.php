@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', '#' . $program->id . ' - ' . $program->name . ' Proposal')
 @section('content')
     <div class="container">
         <!-- Proposal Info -->

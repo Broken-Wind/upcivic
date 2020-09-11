@@ -62,6 +62,11 @@ class Tenant extends Model
         return !empty($this->next_payment_due_at);
     }
 
+    public function getPlanTypeAttribute()
+    {
+        return $this->isSubscribed() ? 'basic_host_v1' : 'free_v1';
+    }
+
     public function organization()
     {
         return $this->belongsTo(Organization::class);

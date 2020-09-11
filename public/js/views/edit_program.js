@@ -1,5 +1,8 @@
 $(document).ready(function () {
-    if (null != newlyCreated) {
+    if (typeof newlyCreated !== 'undefined' && null != newlyCreated) {
         mxProgramCreated(program);
     }
+    $('#send-program-button').click(function () {
+        mxProgramSent(program);
+    });
 });

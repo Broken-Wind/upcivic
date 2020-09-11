@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    if (newlyCreated) {
+    if (null != newlyCreated) {
         mxProgramCreated(program);
     }
 });

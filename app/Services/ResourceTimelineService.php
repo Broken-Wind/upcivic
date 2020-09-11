@@ -101,6 +101,7 @@ class ResourceTimelineService
             $contributors = $program->contributors->map(function ($contributor) {
                 return [
                     'id' => $contributor->id,
+                    'organization_id' => $contributor->organization_id,
                     'name' => $contributor->organization->name,
                     'approved_by' => $contributor->approver->name,
                     'class_string' => $contributor->class_string,
@@ -142,6 +143,17 @@ class ResourceTimelineService
                 'status_string' => $program->status_string,
                 'status_class_string' => $program->status_class_string,
                 'is_fully_approved' => $program->isFullyApproved(),
+                'name' => $program->name,
+                'proposing_organization_id' => $program->proposing_organization_id,
+                'recipient_organization_ids' => $program->recipientContributors()->pluck('organization_id')->toJson(),
+                'site_ids' => $program->meetings->pluck('site_id')->whereNotNull()->unique()->toJson(),
+                'location_ids' => $program->meetings->pluck('location_id')->whereNotNull()->unique()->toJson(),
+                'start_date' => $program->start_date,
+                'end_date' => $program->end_date,
+                'start_time' => $program->start_time,
+                'end_time' => $program->end_time,
+                'meeting_start_dates' => $program->meetings->pluck('start_datetime')->toJson(),
+                'meeting_count' => $program->meetings->count(),
             ]);
         });
         return $result;

@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5><a href="" class="program-title" id="details-modal-title"></a></h5>
+            <h5><a href="" target="_blank" class="program-title" id="details-modal-title"></a></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

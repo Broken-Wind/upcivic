@@ -98,6 +98,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
   calendar.render();
 
+  $('#approve-program').click(function () {
+        let program = programs.find(program => program.id == $('#approve-program-id').val());
+        const contributorId = $('#program-contributor-actions').val();
+        let contributorIds;
+        if (isNaN(contributorId)) {
+            contributorIds = JSON.parse(program.recipient_organization_ids);
+            contributorIds.push(program.proposing_organization_id)
+        } else {
+            contributorIds = [program.contributors.find(contributor => contributor.id == contributorId).organization_id];
+        }
+        program.approved_on_behalf_of_organization_ids = contributorIds;
+        mxProgramApproved(program);
+  });
+
   $('.fc-next-button, .fc-prev-button, .fc-today-button').click(function() {
       fetchMeetings({
           initial_date: calendar.view.currentStart.toISOString(),
@@ -147,7 +161,7 @@ function populateContributorActionsForm(program) {
         document.getElementById('approve-program').style.display = 'block';
         let actionOptions = [];
         const defaultActionOptions = [
-                                        `<option value="approve_all">Approve on behalf of all Contributors</option>`,
+                                        `<option class="approval-option" value="approve_all">Approve on behalf of all Contributors</option>`,
                                     ];
         program.contributors.forEach(contributor => {
             if (!contributor.approved_by) {
@@ -160,7 +174,7 @@ function populateContributorActionsForm(program) {
 }
 
 function getContributorActionOption(contributor) {
-    return `<option value="${contributor.id}">Approve on behalf of ${contributor.name}</option>`;
+    return `<option class="approval-option" value="${contributor.id}">Approve on behalf of ${contributor.name}</option>`;
 }
 
 async function updateLocations(data = {}) {

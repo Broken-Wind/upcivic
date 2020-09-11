@@ -112,6 +112,13 @@ document.addEventListener('DOMContentLoaded', function() {
         mxProgramApproved(program);
   });
 
+  $('#submit-reject-program').click(function () {
+        let program = programs.find(program => program.id == $('#reject-program-id').val());
+        program.rejection_reason = $('#rejection-reason').val();
+        console.log(program.rejection_reason);
+        mxProgramRejected(program);
+  });
+
   $('.fc-next-button, .fc-prev-button, .fc-today-button').click(function() {
       fetchMeetings({
           initial_date: calendar.view.currentStart.toISOString(),

@@ -43,7 +43,7 @@ class DemoService
                 $amProgram = Program::fromTemplate($proposal, $template);
                 $amContributor = $amProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
                 $demoProviderUser->approveProgramForContributor($amProgram, $amContributor);
-                if (rand(0, 10) < 9) {
+                if (rand(0, 10) < 5) {
                     $amHostContributor = $amProgram->contributors()->where('organization_id', $demoHost->organization_id)->firstOrFail();
                     $demoHostUser->approveProgramForContributor($amProgram, $amHostContributor);
                 }

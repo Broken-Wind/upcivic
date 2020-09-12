@@ -55,8 +55,9 @@
                     <input type="hidden" name="approve_program_id" id="approve-program-id" value="" />
                     <div class="form-group">
                       <select class="form-control form-control-sm" name="contributor_id" id="program-contributor-actions"></select>
+                      <small data-toggle="collapse" data-target="#approve-next-steps" class="text-primary pl-2" style="cursor:pointer"> Modify next steps email content </small>
                     </div>
-                    <textarea rows="3" class="form-control" name="approve_next_steps" id="approve-next-steps">{{ tenant()->proposal_next_steps }}</textarea>
+                    <textarea rows="2" class="form-control collapse" name="approve_next_steps" id="approve-next-steps">{{ tenant()->proposal_next_steps }}</textarea>
                 </form>
             </div>
 

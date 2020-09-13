@@ -37,7 +37,7 @@
                             @endif
                             @if(tenant()->isSubscribed())
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.index') }}">Schedule</a>
+                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Schedule</a>
                                 </li>
                             @endif
                             <li class="nav-item">

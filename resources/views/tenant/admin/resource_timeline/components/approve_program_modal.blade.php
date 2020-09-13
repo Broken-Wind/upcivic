@@ -13,9 +13,9 @@
                 <input type="hidden" name="approve_program_id" id="approve-program-id" value="" />
                 <div class="modal-body" id="modal-body">
                     <div class="form-group">
-                        <label for="approval-next-steps">Next steps content</label>
+                        <label for="approval-next-steps">Next Steps</label>
                         <textarea rows="3" class="form-control" name="proposal_next_steps" id="proposal-next-steps" form="approve-program-form">{{ tenant()->proposal_next_steps }}</textarea>
-                        <small class="text-muted">Emailed to all program contributors.</small>
+                        <small class="text-muted">Emailed to all program contributors. You can leave this blank, or type something like "Don't forget to return your background check form!" You can set a default next steps message in organization settings.</small>
                     </div>
                 </div>
                 <div class="modal-footer">

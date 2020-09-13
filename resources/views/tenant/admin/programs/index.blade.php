@@ -8,6 +8,11 @@
     </form>
 
     @if($programsExist)
+        @if(tenant()->isSubscribed())
+            <form id="generate_loa" name="generate_loa" target="_blank" action="{{ tenant()->route('tenant:admin.programs.loa') }}" method="POST">
+                @csrf
+            </form>
+        @endif
         <div class="form-row mb-4">
             <div class="col">
                 @if($templateCount > 0)
@@ -16,11 +21,10 @@
                     Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
                 @endif
             </div>
-            <form id="generate_loa" name="generate_loa" target="_blank" action="{{ tenant()->route('tenant:admin.programs.loa') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-secondary">Generate LOAs</button>
-            </form>
             <div class="col text-right">
+                @if(tenant()->isSubscribed())
+                    <button type="submit" class="btn btn-outline-secondary" form="generate_loa">Generate LOAs</button>
+                @endif
                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#filterModal" form="filters">
                     Set Filters
                 </button>

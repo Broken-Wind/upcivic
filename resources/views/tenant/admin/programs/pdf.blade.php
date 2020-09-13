@@ -18,6 +18,7 @@
             padding: 5px;
         }
     </style>
+    <title>Letter of Agreement</title>
 </head>
 <body>
 

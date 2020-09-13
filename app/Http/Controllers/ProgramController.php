@@ -52,10 +52,10 @@ class ProgramController extends Controller
         $contributorGroups = $programs->groupBy(function ($program, $key) {
             return $program->contributors->pluck('organization_id')->sort()->implode(',');
         });
-        $pdf = App::make('dompdf.wrapper');
-        $test = view('tenant.admin.programs.pdf', compact('contributorGroups'));
-        $pdf->loadHTML($test->render());
-        return $pdf->stream();
+        $loa = App::make('dompdf.wrapper');
+        $content = view('tenant.admin.programs.pdf', compact('contributorGroups'));
+        $loa->loadHTML($content->render());
+        return $loa->stream();
     }
 
     /**

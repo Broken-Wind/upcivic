@@ -61,7 +61,7 @@
 
             <div class="modal-footer" style="">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" id="reject-program">Reject</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="approve-program" form="approve-program-form">Approve</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="approve-program">Approve</button>
             </div>
         </div>
     </div>

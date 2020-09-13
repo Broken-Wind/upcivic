@@ -27,7 +27,7 @@ class ApproveProgram extends FormRequest
             //
             'approve_program_id' => 'required|numeric',
             'contributor_id' => 'required|alpha_dash', //may contain the string 'approve_all'
-            'approve_next_steps' => 'nullable',
+            'proposal_next_steps' => 'nullable',
         ];
     }
     /**

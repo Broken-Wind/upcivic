@@ -1,5 +1,9 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('approve-program').addEventListener('click', function () {
+      $('#approve-program-modal').modal();
+  });
+
   document.getElementById('reject-program').addEventListener('click', function () {
       $('#reject-program-modal').modal();
   });

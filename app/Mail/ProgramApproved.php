@@ -17,21 +17,21 @@ class ProgramApproved extends Mailable
     public $user;
     public $approvingOrganization;
     public $organizationString;
-    public $approve_next_steps;
+    public $proposalNextSteps;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Program $program, User $user, Organization $approvingOrganization, $contributors, $approve_next_steps)
+    public function __construct(Program $program, User $user, Organization $approvingOrganization, $contributors, $proposalNextSteps)
     {
         //
         $this->program = $program;
         $this->user = $user;
         $this->approvingOrganization = $approvingOrganization;
         $this->organizationString = $this->getOrganizationString($contributors);
-        $this->approve_next_steps = $approve_next_steps;
+        $this->proposalNextSteps = $proposalNextSteps;
     }
 
     /**

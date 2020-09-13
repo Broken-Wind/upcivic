@@ -8,10 +8,10 @@
 * {{ $program['description_of_age_range'] }}
 @endcomponent
 
-@if(!empty($approvingOrganization->proposal_next_steps))
+@if(!empty($proposalNextSteps))
 @component('mail::panel')
 ## Next Steps
-{{ $approvingOrganization->proposal_next_steps }}
+{{ $proposalNextSteps }}
 @endcomponent
 @endif
 

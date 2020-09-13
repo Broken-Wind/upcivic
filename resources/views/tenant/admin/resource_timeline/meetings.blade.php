@@ -41,6 +41,7 @@
 @section('content')
 @include('tenant.admin.resource_timeline.components.program_details_modal')
 @include('tenant.admin.resource_timeline.components.reject_program_modal')
+@include('tenant.admin.resource_timeline.components.approve_program_modal')
 <div class="container">
     @include('shared.form_errors')
     <div id='calendar'></div>

@@ -1,10 +1,14 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('reject-program').addEventListener('click', function () {
-        $('#reject-program-modal').modal();
-    });
+  document.getElementById('approve-program').addEventListener('click', function () {
+      $('#approve-program-modal').modal();
+  });
 
-    var calendarEl = document.getElementById('calendar');
+  document.getElementById('reject-program').addEventListener('click', function () {
+      $('#reject-program-modal').modal();
+  });
+
+  var calendarEl = document.getElementById('calendar');
 
   var calendar = new FullCalendar.Calendar(calendarEl, {
     schedulerLicenseKey: '0970509849-fcs-1598830799',
@@ -115,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
   $('#submit-reject-program').click(function () {
         let program = programs.find(program => program.id == $('#reject-program-id').val());
         program.rejection_reason = $('#rejection-reason').val();
-        console.log(program.rejection_reason);
         mxProgramRejected(program);
   });
 

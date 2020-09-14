@@ -178,7 +178,9 @@ function populateContributorActionsForm(program) {
                 actionOptions.push(getContributorActionOption(contributor));
             }
         });
-        actionOptions = actionOptions.concat(defaultActionOptions);
+        if (program.contributors.length > 2) {
+            actionOptions = actionOptions.concat(defaultActionOptions);
+        }
         document.getElementById('program-contributor-actions').innerHTML = actionOptions;
     }
 }

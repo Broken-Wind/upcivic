@@ -1,8 +1,10 @@
 <div class="container-fluid mb-2 pb-0 alert bg-white">
     <div class="row">
-        <div class="col-md-1 align-self-center text-center">
-            <input form="generate_loa" type="checkbox" name="program_ids[]" value="{{ $program['id'] }}">
-        </div>
+        @if(tenant()->isSubscribed())
+            <div class="col-md-1 align-self-center text-center">
+                <input form="generate_loa" type="checkbox" name="program_ids[]" value="{{ $program['id'] }}">
+            </div>
+        @endif
         <div class="col-md-3">
             <div class="row">
                 <div class="col-12">

@@ -20,11 +20,11 @@
                 @else
                     Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
                 @endif
+                @if(tenant()->isSubscribed())
+                    <button type="submit" class="btn btn-secondary" form="generate_loa">Generate LOAs</button>
+                @endif
             </div>
             <div class="col text-right">
-                @if(tenant()->isSubscribed())
-                    <button type="submit" class="btn btn-outline-secondary" form="generate_loa">Generate LOAs</button>
-                @endif
                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#filterModal" form="filters">
                     Set Filters
                 </button>

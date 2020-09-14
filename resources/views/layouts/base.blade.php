@@ -11,7 +11,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/mixpanel/init.js') }}" defer></script>
+    @if(App::environment() == 'production')
+        <script src="{{ asset('js/mixpanel/init-prod.js') }}" defer></script>
+    @else
+        <script src="{{ asset('js/mixpanel/init-dev.js') }}" defer></script>
+    @endif
     <script src="{{ asset('js/mixpanel/events.js') }}" defer></script>
     <script defer>
         document.addEventListener('DOMContentLoaded', function() {

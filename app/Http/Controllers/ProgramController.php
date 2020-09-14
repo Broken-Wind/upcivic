@@ -7,6 +7,7 @@ use App\County;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\ApproveProgram;
 use App\Http\Requests\RejectProgram;
+use App\Http\Requests\StoreLoa;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
@@ -20,6 +21,7 @@ use App\Template;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Mixpanel;
@@ -42,6 +44,18 @@ class ProgramController extends Controller
         $templateCount = Template::count();
 
         return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites'));
+    }
+
+    public function generateLoa(StoreLoa $request) {
+        $validated = $request->validated();
+        $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $validated['program_ids'])->get();
+        $contributorGroups = $programs->groupBy(function ($program, $key) {
+            return $program->contributors->pluck('organization_id')->sort()->implode(',');
+        });
+        $loa = App::make('dompdf.wrapper');
+        $content = view('tenant.admin.programs.pdf', compact('contributorGroups'));
+        $loa->loadHTML($content->render());
+        return $loa->stream();
     }
 
     /**

@@ -12,7 +12,7 @@
 @if(empty($reason))
 ## No reason specified.
 @else
-## Rejection Reason:
+## Rejection Reason
 {{ $reason }}
 @endif
 @endcomponent

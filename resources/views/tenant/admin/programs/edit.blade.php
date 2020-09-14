@@ -1,17 +1,33 @@
 @extends('layouts.app')
+@section('title', '#' . $program->id . ' - ' . $program->name . ' Proposal')
+@push('scripts')
+<script>
+    @if($newlyCreated)
+        var newlyCreated = true;
+    @endif
+    var program = {
+        'id': {{ $program->id }},
+        'name': '{{ $program->name }}',
+        'proposing_organization_id': {{ $program->proposing_organization_id }},
+        'recipient_organization_ids': {{ $program->recipientContributors()->pluck('organization_id')->toJson() }},
+        'site_ids': {{ $program->meetings->pluck('site_id')->whereNotNull()->unique()->toJson() }},
+        'location_ids': {{ $program->meetings->pluck('location_id')->whereNotNull()->unique()->toJson() }},
+        'start_date': '{{ $program->start_date }}',
+        'end_date': '{{ $program->end_date }}',
+        'start_time': '{{ $program->start_time }}',
+        'end_time': '{{ $program->end_time }}',
+        'meeting_start_dates': {!! $program->meetings->pluck('start_datetime')->toJson() !!},
+        'meeting_count': {{ $program->meetings->count() }},
+        'created_at': '{{ $program->created_at }}'
+    };
+</script>
+<script src="{{ asset('js/views/edit_program.js') }}" defer></script>
+@endpush
 @section('content')
     <div class="container">
         @include('shared.form_errors')
         <!-- Proposal Info -->
-        <div class="row">
-            <div class="col-6">
-                <p class="lead">
-                    {{ $program['name'] }} at {{ $program['site']['name'] }}<br/>
-                    {{ $program['description_of_meetings'] }}<br/>
-                    {{ $program['start_time'] }}-{{ $program['end_time'] }}
-                </p>
-            </div>
-        </div>
+        @include('tenant.admin.programs.components.summary')
 
         <!-- Alerts and main actions -->
         @include('tenant.admin.programs.components.status_actions')

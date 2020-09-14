@@ -200,7 +200,6 @@ class Program extends Model
                 if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
                     $contributor->save();
                 }
-
                 $startTime = $proposal['start_time'];
                 $endTime = $proposal['end_time'] ?? date('H:i:s', strtotime($proposal['start_time'].' +'.$template['meeting_minutes'].' minutes'));
                 $currentStartDatetime = date('Y-m-d H:i:s', strtotime($proposal['start_date'].' '.$startTime));
@@ -225,18 +224,13 @@ class Program extends Model
                 $organizations = $program->contributors->map(function ($contributor) {
                     return $contributor->organization;
                 });
-                if (! $organizations->pluck('slug')->contains('example')) {
-                    mixpanel()->track('Proposal created', [
-                        'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()['id'],
-                    ]);
-                }
             }
         });
 
         return $program;
     }
 
-    public function getLocationIdAttribute()
+    public function getResourceIdAttribute()
     {
         $locationIds = $this->meetings->pluck('location_id')->filter(function ($locationId) {
             return ! empty($locationId);
@@ -347,6 +341,11 @@ class Program extends Model
         return $this->contributors->where('organization_id', '!=', tenant()['organization_id']);
     }
 
+    public function recipientContributors()
+    {
+        return $this->contributors->where('organization_id', '!=', $this->proposing_organization_id);
+    }
+
     public function hasOtherContributors()
     {
         return $this->otherContributors()->count() > 0;
@@ -366,11 +365,6 @@ class Program extends Model
     public function getInternalNameAttribute()
     {
         return $this->contributors->where('organization_id', tenant()['id'])->first()['internal_name'] ?? $this['name'];
-    }
-
-    public function getTimelineTitleAttribute()
-    {
-        return $this->internal_name . ' (max: ' . $this->max_enrollments . ')';
     }
 
     public function setInternalNameAttribute($internalName)

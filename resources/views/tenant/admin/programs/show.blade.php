@@ -1,16 +1,9 @@
 @extends('layouts.app')
+@section('title', '#' . $program->id . ' - ' . $program->name . ' Proposal')
 @section('content')
     <div class="container">
         <!-- Proposal Info -->
-        <div class="row">
-            <div class="col-6">
-                <p class="lead">
-                    {{ $program['name'] }} at {{ $program['site']['name'] }}<br/>
-                    {{ $program['description_of_meetings'] }}<br/>
-                    {{ $program['start_time'] }}-{{ $program['end_time'] }}
-                </p>
-            </div>
-        </div>
+        @include('tenant.admin.programs.components.summary')
 
         <!-- Alerts and main actions -->
         @include('tenant.admin.programs.components.status_actions')

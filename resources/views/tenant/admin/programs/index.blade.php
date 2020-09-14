@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Proposals')
 @section('content')
 <div class="container">
     @include('shared.form_errors')
@@ -7,12 +8,20 @@
     </form>
 
     @if($programsExist)
+        @if(tenant()->isSubscribed())
+            <form id="generate_loa" name="generate_loa" target="_blank" action="{{ tenant()->route('tenant:admin.programs.loa') }}" method="POST">
+                @csrf
+            </form>
+        @endif
         <div class="form-row mb-4">
             <div class="col">
                 @if($templateCount > 0)
                     <a class="btn btn-primary" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
                 @else
                     Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
+                @endif
+                @if(tenant()->isSubscribed())
+                    <button type="submit" class="btn btn-secondary" form="generate_loa">Generate LOAs</button>
                 @endif
             </div>
             <div class="col text-right">

@@ -14,7 +14,7 @@ class ProgramLocationsController extends Controller
     public function update(Request $request) {
         try {
             $program = Program::findOrFail($request['program_id']);
-            $siteLocation = explode('_', $request['location_ids'][0]);
+            $siteLocation = explode('_', $request['resource_ids'][0]);
             if (count($siteLocation) > 1) {
                 $locationId = (int)$siteLocation[0];
                 $siteId = (int)$siteLocation[1];
@@ -32,9 +32,9 @@ class ProgramLocationsController extends Controller
             return json_encode($e);
         }
         return json_encode([
-            'title' => $program->timeline_title,
+            'title' => $program->name,
             'site_id' => empty($siteId) ? null : $siteId,
-            'location_id' => empty($locationId) ? null : $locationId,
+            'resource_id' => empty($locationId) ? null : $locationId,
             'site_name' => $program->site->name
         ]);
     }

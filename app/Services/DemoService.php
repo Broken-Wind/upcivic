@@ -16,6 +16,7 @@ class DemoService
         $demoProvider = $this->getDemoProviderTenant();
         $demoProviderUser = $this->getDemoProviderUser();
         $demoHost = $this->getDemoHostTenant();
+        $demoHostUser = $this->getDemoHostUser();
         $demoSites = $this->getDemoSites();
 
         Program::whereHas('contributors', function ($query) use ($demoProvider, $demoHost) {
@@ -42,6 +43,10 @@ class DemoService
                 $amProgram = Program::fromTemplate($proposal, $template);
                 $amContributor = $amProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
                 $demoProviderUser->approveProgramForContributor($amProgram, $amContributor);
+                if (rand(0, 10) < 5) {
+                    $amHostContributor = $amProgram->contributors()->where('organization_id', $demoHost->organization_id)->firstOrFail();
+                    $demoHostUser->approveProgramForContributor($amProgram, $amHostContributor);
+                }
                 if ($template->meeting_minutes == 180) {
                     $pmProposal = [
                         'start_date' => $startDate,
@@ -54,6 +59,10 @@ class DemoService
                     $pmProgram = Program::fromTemplate($pmProposal, $template);
                     $pmContributor = $pmProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
                     $demoProviderUser->approveProgramForContributor($pmProgram, $pmContributor);
+                    if (rand(0, 10) < 9) {
+                        $pmHostContributor = $pmProgram->contributors()->where('organization_id', $demoHost->organization_id)->firstOrFail();
+                        $demoHostUser->approveProgramForContributor($pmProgram, $pmHostContributor);
+                    }
                 }
             }
         }
@@ -74,6 +83,11 @@ class DemoService
     protected function getDemoProviderUser()
     {
         return User::where('email', 'demo.activity.provider@upcivic.com')->firstOrFail();
+    }
+
+    protected function getDemoHostUser()
+    {
+        return User::where('email', 'demo.host@upcivic.com')->firstOrFail();
     }
 
     protected function getDemoHostTenant()

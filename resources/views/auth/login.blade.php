@@ -1,5 +1,8 @@
 @extends('layouts.app')
-
+@section('title', 'Log in')
+@push('scripts')
+<script src={{ asset('js/views/login.js') }} defer></script>
+@endpush
 @section('content')
 <div class="container">
     <div class="row justify-content-center">

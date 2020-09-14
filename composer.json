@@ -9,18 +9,18 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5",
+        "barryvdh/laravel-dompdf": "^0.8.7",
         "doctrine/dbal": "^2.9",
         "fideloper/proxy": "^4.2",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.25",
         "laravel/nova": "^3.0",
         "laravel/tinker": "^2.0",
-        "league/flysystem-aws-s3-v3": "~1.0",
-        "mixpanel/mixpanel-php": "^2.7",
-        "spatie/laravel-backup": "^6.8",
-        "spatie/laravel-honeypot": "^2.2",
         "laravel/ui": "^2.0",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^6.3"
+        "league/flysystem-aws-s3-v3": "~1.0",
+        "spatie/laravel-backup": "^6.8",
+        "spatie/laravel-honeypot": "^2.2"
     },
     "require-dev": {
         "andrey-helldar/laravel-app": "^1.0",

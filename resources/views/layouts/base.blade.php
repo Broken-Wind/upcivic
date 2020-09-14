@@ -7,10 +7,26 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name') }}</title>
+    <title>@yield('title') - {{ config('app.name') }} </title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @if(App::environment() == 'production')
+        <script src="{{ asset('js/mixpanel/init-prod.js') }}" defer></script>
+    @else
+        <script src="{{ asset('js/mixpanel/init-dev.js') }}" defer></script>
+    @endif
+    <script src="{{ asset('js/mixpanel/events.js') }}" defer></script>
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function() {
+            mixpanel.register({
+                'Active Organization ID': {{ tenant()->organization_id ?? 'null' }},
+                'Plan Type': '{{ tenant()->plan_type ?? "null" }}'
+            });
+        });
+    </script>
+    <script src="https://kit.fontawesome.com/2f34de0b7e.js" crossorigin="anonymous"></script>
+    @stack('scripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,22 +34,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('css')
 
-    <script src="https://kit.fontawesome.com/2f34de0b7e.js" crossorigin="anonymous"></script>
-
-
-    <!-- Usersnap for gathering user feedback -->
-    <script>
-        window.onUsersnapCXLoad = function(api) {
-            api.init();
-        }
-        var script = document.createElement('script');
-        script.defer = 1;
-        script.src = 'https://widget.usersnap.com/global/load/1c8b695e-895b-434a-8192-e6fd381b0444?onload=onUsersnapCXLoad';
-        document.getElementsByTagName('head')[0].appendChild(script);
-    </script>
-
-    @yield('head.additional')
 
 </head>
 <body>

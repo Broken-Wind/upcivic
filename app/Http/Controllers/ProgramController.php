@@ -7,6 +7,7 @@ use App\County;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\ApproveProgram;
 use App\Http\Requests\RejectProgram;
+use App\Http\Requests\StoreLoa;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
@@ -20,7 +21,9 @@ use App\Template;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Mixpanel;
 
 class ProgramController extends Controller
@@ -41,6 +44,18 @@ class ProgramController extends Controller
         $templateCount = Template::count();
 
         return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites'));
+    }
+
+    public function generateLoa(StoreLoa $request) {
+        $validated = $request->validated();
+        $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $validated['program_ids'])->get();
+        $contributorGroups = $programs->groupBy(function ($program, $key) {
+            return $program->contributors->pluck('organization_id')->sort()->implode(',');
+        });
+        $loa = App::make('dompdf.wrapper');
+        $content = view('tenant.admin.programs.pdf', compact('contributorGroups'));
+        $loa->loadHTML($content->render());
+        return $loa->stream();
     }
 
     /**
@@ -74,7 +89,7 @@ class ProgramController extends Controller
                 $program = Program::fromTemplate($validated);
         });
 
-        return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program]);
+        return redirect()->route('tenant:admin.programs.edit', [tenant()['slug'], $program])->with('newly_created', true);
     }
 
     /**
@@ -115,14 +130,15 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function edit(Program $program)
+    public function edit(Program $program, $newlyCreated = false)
     {
         abort_if(tenant()->organization_id != $program->proposing_organization_id, 401);
 
         $organizations = Organization::whereNotIn('id', $program->contributors->pluck('organization_id'))->orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
+        $newlyCreated = Session::get('newly_created');
 
-        return view('tenant.admin.programs.edit', compact('program', 'organizations', 'sites'));
+        return view('tenant.admin.programs.edit', compact('program', 'organizations', 'sites', 'newlyCreated'));
     }
 
     public function show(Program $program)
@@ -166,7 +182,7 @@ class ProgramController extends Controller
         $validated = $request->validated();
         $program = Program::findOrFail($validated['reject_program_id']);
         $reason = $validated['rejection_reason'];
-        \Mail::send(new ProgramRejected($program, $reason, Auth::user()));
+        \Mail::send(new ProgramRejected($program, Auth::user(), $reason));
         $program->delete();
         return back()->withSuccess('Program rejected.');
     }
@@ -185,7 +201,9 @@ class ProgramController extends Controller
             Auth::user()->approveProgramForContributor($program, $contributor);
         }
 
-        \Mail::send(new ProgramApproved($program, Auth::user(), $contributors));
+        $proposalNextSteps = $validated['proposal_next_steps'];
+
+        \Mail::send(new ProgramApproved($program, Auth::user(), tenant()->organization, $contributors, $proposalNextSteps));
 
         return back();
     }

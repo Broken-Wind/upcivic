@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Sign up')
+@section('title', 'Sign Up')
 @push('scripts')
 <script src={{ asset('js/views/register.js') }} defer></script>
 @endpush

@@ -43,9 +43,6 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Programs</a>
-                            </li>
                         @endif
 
                         <!-- Authentication Links -->
@@ -71,6 +68,9 @@
                                         </a>
                                     @empty
                                     @endforelse
+                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
+                                        {{ $tenant['name'] }} Programs
+                                    </a>
                                     @if(tenant())
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile

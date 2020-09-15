@@ -102,8 +102,6 @@
                     <table class="table table-striped">
                         @forelse($program->meetings->sortBy('start_datetime') as $meeting)
                             <tr>
-                                <td><input type="checkbox" name="meeting_ids[]" value="{{ $meeting['id'] }}">
-                                </td>
                                 <td>{{ $meeting['start_date'] }}{{ $meeting['start_date'] != $meeting['end_date'] ? '-' . $meeting['end_date'] : '' }}</td>
                                 <td>{{ $meeting['start_time'] . "-" . $meeting['end_time'] }}</td>
                                 <td>{{ $meeting->site['name'] }}</td>

@@ -35,7 +35,17 @@
         margin: 1px;
     }
 
+<<<<<<< HEAD
     .fc-datagrid-expander.fc-datagrid-expander-placeholder { display: none; }
+=======
+    .fc-datagrid-cell-main {
+        max-width: 220px;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+>>>>>>> Trim and maximize use of space for long location tiles.
 
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.css" integrity="sha256-/rB/IDulpFpJSHjrUgRHzB99AnJh3RBNrUOpF+4QIKA=" crossorigin="anonymous">

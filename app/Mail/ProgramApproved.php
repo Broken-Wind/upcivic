@@ -65,7 +65,7 @@ class ProgramApproved extends Mailable
         });
 
         $result = '';
-        for ($i=0; $i<($organizations->count()-1); $i++) {
+        for ($i=1; $i<($organizations->count()); $i++) {
             $result .= $organizations[$i] . ', ';
         }
         return $result .= 'and ' . $organizations->last();

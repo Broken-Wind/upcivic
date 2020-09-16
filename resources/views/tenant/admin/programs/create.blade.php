@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Add Proposal')
+@include('tenant.admin.templates.components.add_template_modal')
 @include('tenant.admin.organizations.components.add_organization_modal')
 @include('tenant.admin.sites.components.add_site_modal')
 
@@ -19,9 +20,10 @@
                                 {{ $template->internal_name }}{{ $template->internal_name != $template->name ? " - " . $template->name : null }}
                             </option>
                         @empty
-                            <option disabled>No templates</option>
+                            <option disabled>No programs</option>
                         @endforelse
                     </select>
+                    <small id="add-template" class="text-muted">Can't find the program you'd like? <a href="" data-toggle="modal" data-target="#add-template-modal">Add a program </a></small>
                 </div>
 
                 <div class="form-row">

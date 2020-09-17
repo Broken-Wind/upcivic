@@ -26,11 +26,12 @@ class DemoService
         $templates = Template::withoutGlobalScopes()->where('organization_id', $demoProvider->organization_id)->get();
 
         for ($week = 0; $week < 4; $week++) {
-            for ($program = 0; $program < 10; $program++) {
-                $demoSite = rand(1, 10) > 3 ? $demoSites[$program % 2] : null;
+            for ($program = 0; $program < 40; $program++) {
+                $demoSite = rand(1, 10) > 3 ? $demoSites->random() : null;
                 $demoSiteId = $demoSite->id ?? null;
+                $demoLocationId = is_object($demoSite) ? $demoSite->locations->pluck('id')->random() : null;
                 $demoLocationId = (rand(1, 10) > 5 && ! empty($demoSiteId)) ? $demoSite->locations->random()->id : null;
-                $startDate = Carbon::now()->next('Monday')->addWeeks($week)->toDateString();
+                $startDate = Carbon::now()->startOfWeek()->addWeeks($week)->toDateString();
                 $template = $templates->random();
                 $proposal = [
                     'start_date' => $startDate,
@@ -39,6 +40,7 @@ class DemoService
                     'proposing_organization_id' => $demoProvider->organization_id,
                     'proposed_at' => Carbon::now(),
                     'site_id' => $demoSiteId,
+                    'location_id' => $demoLocationId,
                 ];
                 $amProgram = Program::fromTemplate($proposal, $template);
                 $amContributor = $amProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
@@ -55,6 +57,7 @@ class DemoService
                         'proposing_organization_id' => $demoProvider->organization_id,
                         'proposed_at' => Carbon::now(),
                         'site_id' => $demoSiteId,
+                        'location_id' => $demoLocationId,
                     ];
                     $pmProgram = Program::fromTemplate($pmProposal, $template);
                     $pmContributor = $pmProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
@@ -97,6 +100,6 @@ class DemoService
 
     public function getDemoSites()
     {
-        return Site::where('name', 'Demo Recreation Center')->orWhere('name', 'Demo Community Center')->get();
+        return $this->getDemoHostTenant()->organization->sites;
     }
 }

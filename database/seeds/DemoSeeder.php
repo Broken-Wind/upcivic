@@ -92,7 +92,11 @@ class DemoSeeder extends Seeder
     {
         $rec = factory(Site::class)->states('demoRecCenter')->create(['name' => 'Demo Recreation Center']);
         $com = factory(Site::class)->states('demoCommunityCenter')->create(['name' => 'Demo Community Center']);
+        $school1 = factory(Site::class)->states('demoSchool')->create(['name' => 'Demo School 1']);
+        $school2 = factory(Site::class)->states('demoSchool')->create(['name' => 'Demo School 2']);
         $demoHostOrg->sites()->attach($rec);
         $demoHostOrg->sites()->attach($com);
+        $demoHostOrg->sites()->attach($school1);
+        $demoHostOrg->sites()->attach($school2);
     }
 }

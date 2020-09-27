@@ -49,7 +49,7 @@
 
                             <td class="">
                                 <span class="instructor-bubble alert-danger" title="Calin Furau">CF</span>
-                                <span class="instructor-bubble alert-primary" title="Greg Intermaggio">GI</span>
+                                <span class="instructor-bubble alert-warning" title="Greg Intermaggio">GI</span>
                                 <span class="instructor-bubble alert-success" title="Netta Ravid">NR</span>
                             </td>
 

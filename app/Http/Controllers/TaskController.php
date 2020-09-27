@@ -14,10 +14,10 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = [
-            'Assigned staff must provide negative TB test result', 
-            'Sign a contract', 
-            'Provide a local business license', 
-            'Provide liability insurance policy', 
+            'Assigned staff must provide negative TB test result',
+            'Sign a contract',
+            'Provide a local business license',
+            'Provide liability insurance policy',
             'Provide an affidavit'
         ];
         return view('tenant.admin.tasks.index', compact('tasks'));
@@ -25,7 +25,13 @@ class TaskController extends Controller
 
     public function create()
     {
-        // return view('tenant.admin.tasks.create');
+        return view('tenant.admin.tasks.create');
+    }
+
+    public function store()
+    {
+        dd('heyo');
+        return;
     }
 
     public function edit(Task $task)

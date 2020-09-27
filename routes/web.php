@@ -103,6 +103,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
+        Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/tasks/create', 'TaskController@create')->name('tasks.create');
         Route::get('/tasks/{task}/edit', 'TaskController@edit')->name('tasks.edit');
         Route::delete('/tasks/{task}', 'TaskController@destroy')->name('tasks.destroy');

@@ -38,7 +38,7 @@ class TaskController extends Controller
     {
         //
 
-        return view('tenant.admin.tasks.edit', compact('template'));
+        return view('tenant.admin.tasks.edit', compact('task'));
     }
 
     public function destroy(Task $task)

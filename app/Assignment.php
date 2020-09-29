@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Assignment extends Model
 {
     //
+    protected $fillable = [
+        'name',
+        'description'
+    ];
     public function scopeOutgoing($query)
     {
         return $query->where('assigned_by_organization_id', tenant()->organization_id);

@@ -6,13 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     $('.edit-task-assignments').on('click',  function() {
         let taskId = $(this).attr('data-task-id');
+        $('#updateAssignments').prop('action', taskAssignmentBaseUrl + '/' + taskId + '/assignments');
         const task = tasks.find(task => task.id == taskId);
         $('.assignment-checkbox').each(function (i, box) {
-            console.log('-------------------------');
-            console.log(task.assigned_to_organizations);
-            console.log($(box).val());
-            console.log(task.assigned_to_organizations.includes($(box).val()));
-            if (task.assigned_to_organizations.includes($(box).val())) {
+            const boxVal = parseInt($(box).val());
+            if (task.assigned_to_organizations.includes(boxVal)) {
                 $(box).prop('checked', true);
             } else {
                 $(box).prop('checked', false);

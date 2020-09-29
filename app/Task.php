@@ -15,6 +15,6 @@ class Task extends Model
 
     public function assignments()
     {
-        return $this->hasMany(Assignment::class, 'assigned_to_organization_id');
+        return $this->hasMany(Assignment::class);
     }
 }

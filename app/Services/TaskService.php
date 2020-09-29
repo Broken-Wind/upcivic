@@ -11,7 +11,7 @@ class TaskService
         return Task::all()->map(function ($task) {
             return [
                 'id' => $task->id,
-                'assigned_to_organizations' => [15, 16, 17]
+                'assigned_to_organizations' => $task->assignments->pluck('assigned_to_organization_id')
             ];
         })->toJson();
     }

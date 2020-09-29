@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAssignment;
 use App\Organization;
-use App\Task;
 
 class AssignmentController extends Controller
 {
@@ -23,13 +21,6 @@ class AssignmentController extends Controller
     // {
     //     return view('tenant.admin.tasks.create');
     // }
-
-    public function store(StoreAssignment $request)
-    {
-        $validated = $request->validated();
-        dd($validated);
-        return;
-    }
 
     // public function edit(Task $task)
     // {

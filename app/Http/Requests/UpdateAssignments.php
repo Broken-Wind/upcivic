@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Task;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAssignment extends FormRequest
+class UpdateAssignments extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +26,6 @@ class StoreAssignment extends FormRequest
     {
         return [
             //
-            'assignTaskId' => 'required|numeric',
             'assignToOrganizationIds' => 'required|array',
             'assignToOrganizationIds.*' => 'required|numeric',
         ];

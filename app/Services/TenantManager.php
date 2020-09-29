@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Assignment;
 use App\Program;
 use App\Meeting;
 use App\Scopes\TenantOwnedScope;
@@ -56,6 +57,9 @@ class TenantManager
         });
         Task::addGlobalScope('ActiveTask', function (Builder $builder) {
             return $builder->whereNull('archived_at');
+        });
+        Assignment::addGlobalScope('TenantAccessibleAssignment', function (Builder $builder) {
+            return $builder->where('assigned_by_organization_id', tenant()->organization_id)->orWhere('assigned_to_organization_id', tenant()->organization_id);
         });
     }
 

@@ -106,6 +106,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
         Route::get('/assignments', 'AssignmentController@index')->name('assignments.index');
+        Route::post('/assignments', 'AssignmentController@store')->name('assignments.store');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/tasks/create', 'TaskController@create')->name('tasks.create');

@@ -42,10 +42,12 @@
                         <select class="form-control" name="site_id" id="">
                             <option value="">Unknown - To be determined</option>
                             @foreach ($sites as $site)
-                                <option value="{{ $site['id'] }}">{{ $site['name'] }} - {{ $site['address'] }}</option>
+                                @if ($site['name'] != '[VIRTUAL]')
+                                    <option value="{{ $site['id'] }}">{{ $site['name'] }} - {{ $site['address'] }}</option>
+                                @endif
                             @endforeach
                         </select>
-                        <small id="add-site" class="text-muted">For virtual programs, select [VIRTUAL]. Can't find the site you'd like? <a href="" data-toggle="modal" data-target="#add-site-modal">Add a site</a></small>
+                        <small id="add-site" class="text-muted">Offsite and Virtual sites are added automatically. Can't find the site you'd like? <a href="" data-toggle="modal" data-target="#add-site-modal">Add a site</a></small>
                     </div>
                 </div>
                 <div class="form-group">

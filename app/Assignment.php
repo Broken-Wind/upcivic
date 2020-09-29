@@ -19,4 +19,12 @@ class Assignment extends Model
     {
         return $query->where('assigned_to_organization_id', tenant()->organization_id);
     }
+    public function scopeForInstructors($query)
+    {
+        return $query->withoutGlobalScope('OrganizationAssignment')->where('assign_to_entity', Instructor::class);
+    }
+    public function status()
+    {
+        return $this->hasOne(AssignmentStatus::class);
+    }
 }

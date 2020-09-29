@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTask;
 use App\Http\Requests\UpdateTask;
+use App\Instructor;
 use App\Organization;
 use App\Task;
 use App\Services\TaskService;
@@ -45,7 +46,14 @@ class TaskController extends Controller
             'description' => $validated['description'],
             ]);
         $task->organization_id = tenant()->organization->id;
-        $task->assign_to_entity = $validated['assignToEntity'];
+        switch ($validated['assignToEntity']) {
+            case 'Instructor':
+                $task->assign_to_entity = Instructor::class;
+                break;
+            default:
+                $task->assign_to_entity = Organization::class;
+                break;
+        }
         $task->save();
         return redirect()->route('tenant:admin.tasks.index', [tenant()->slug])->withSuccess('Task created successfully.');
     }

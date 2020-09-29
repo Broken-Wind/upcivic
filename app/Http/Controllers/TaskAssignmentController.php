@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateAssignments;
+use App\Instructor;
 use App\Task;
 use Illuminate\Http\Request;
 
@@ -31,6 +32,13 @@ class TaskAssignmentController extends Controller
                 $assignment->assigned_to_organization_id = $organizationId;
                 $assignment->task_id = $task->id;
                 $assignment->save();
+                switch ($assignment->assign_to_entity) {
+                    case Instructor::class:
+                        break;
+                    default:
+                        $assignment->status()->create([]);
+                        break;
+                }
             });
         }
         return back()->withSuccess('Assignments updated!');

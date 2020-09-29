@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Organization;
 use App\Task;
 
 class TaskController extends Controller
@@ -20,7 +21,8 @@ class TaskController extends Controller
             'Provide liability insurance policy',
             'Provide an affidavit'
         ];
-        return view('tenant.admin.tasks.index', compact('tasks'));
+        $organizations = Organization::all();
+        return view('tenant.admin.tasks.index', compact('tasks', 'organizations'));
     }
 
     public function create()

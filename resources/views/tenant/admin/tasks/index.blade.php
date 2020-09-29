@@ -1,6 +1,10 @@
 @extends('layouts.app')
 @section('title', 'Tasks')
+@push('scripts')
+<script src="{{ asset('js/views/tasks/index.js') }}"></script>
+@endpush
 @section('content')
+@include('tenant.admin.tasks.components.task_assignments_modal')
 <div class="container">
     @include('shared.form_errors')
 
@@ -23,7 +27,10 @@
 
                             <td class="text-right">
                                 <a href="{{ tenant()->route('tenant:admin.tasks.edit', ['task' => 1]) }}">
-                                    <i class="far fa-edit mr-2"></i>
+                                    <i class="fas fa-edit mr-2"></i>
+                                </a>
+                                <a href="#" class="edit-task-assignments" data-task-id="1">
+                                    <i class="fas fa-user-plus mr-2"></i>
                                 </a>
                             </td>
 

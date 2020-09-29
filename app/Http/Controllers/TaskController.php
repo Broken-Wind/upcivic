@@ -6,11 +6,19 @@ use App\Http\Requests\StoreTask;
 use App\Http\Requests\UpdateTask;
 use App\Organization;
 use App\Task;
+use App\Services\TaskService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+    protected $taskService;
+
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,8 +27,9 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        $organizations = Organization::all();
-        return view('tenant.admin.tasks.index', compact('tasks', 'organizations'));
+        $organizations = Organization::all();//orderBy('name')->get();
+        $taskJson = $this->taskService->getIndexJson();
+        return view('tenant.admin.tasks.index', compact('tasks', 'organizations', 'taskJson'));
     }
 
     public function create()

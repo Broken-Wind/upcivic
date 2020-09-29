@@ -8,19 +8,22 @@
             </button>
             </div>
             <div class="modal-body" id="modal-body">
-                <input type="hidden" name="taskAssignmentsId" value="" />
-                @forelse($organizations as $organization)
-                    <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" name="assignedOrganizations[]" value="1" checked>
-                        {{ $organization->name }}
-                    </label>
-                    </div>
-                @empty
-                @endforelse
+                <form id="storeAssignments" method="POST" action="{{ tenant()->route('tenant:admin.assignments.store') }}">
+                    @csrf
+                    <input type="hidden" name="assignTaskId" id="assignTaskId" value="" />
+                    @forelse($organizations as $organization)
+                        <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input assignment-checkbox" name="assignToOrganizationIds[]" value="{{ $organization->id }}">
+                            {{ $organization->name }}
+                        </label>
+                        </div>
+                    @empty
+                    @endforelse
+                </form>
             </div>
             <div class="modal-footer" style="">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="approve-program">Update Assignments</button>
+                <button type="submit" class="btn btn-primary" form="storeAssignments" id="approve-program">Update Assignments</button>
             </div>
         </div>
     </div>

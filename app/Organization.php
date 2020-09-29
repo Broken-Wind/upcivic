@@ -12,11 +12,33 @@ class Organization extends Model
         'name',
     ];
 
+    public function scopePartneredWith($query, $organizationId)
+    {
+        return $query->whereHas('programs', function ($query) use ($organizationId) {
+            return $query->whereHas('contributors', function ($query) use ($organizationId) {
+                return $query->where('organization_id', $organizationId);
+            })->whereNotNull('proposed_at')->orWhere('proposing_organization_id', $organizationId);
+        })->where('id', '!=', $organizationId);
+    }
+
     public function scopeEmailable($query)
     {
         return $query->whereHas('administrators', function ($query) {
             return $query->whereNotNull('email');
         });
+    }
+    public function outgoingAssignments()
+    {
+        return $this->hasMany(Assignment::class, 'assigned_by_organization_id');
+    }
+    public function incomingAssignments()
+    {
+        return $this->hasMany(Assignment::class, 'assigned_to_organization_id');
+    }
+
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class, 'contributors');
     }
 
     public function administrators()

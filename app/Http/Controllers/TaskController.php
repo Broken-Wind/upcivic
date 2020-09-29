@@ -27,7 +27,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        $organizations = Organization::all();//orderBy('name')->get();
+        $organizations = Organization::partneredWith(tenant()->organization_id)->orderBy('name')->get();
         $taskJson = $this->taskService->getIndexJson();
         return view('tenant.admin.tasks.index', compact('tasks', 'organizations', 'taskJson'));
     }

@@ -13,7 +13,7 @@ class AssignmentController extends Controller
      */
     public function index()
     {
-        $organizations = Organization::all();
+        $organizations = Organization::partneredWith(tenant()->organization_id)->orderBy('name')->with(['incomingAssignments', 'outgoingAssignments'])->get();
         return view('tenant.admin.assignments.index', compact('organizations'));
     }
 

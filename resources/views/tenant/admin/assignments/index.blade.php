@@ -42,9 +42,15 @@
                             <td>{{ $organization->name }}</td>
 
                             <td>
-                                <div class="alert-danger text-center organization-status" data-organization-id="1">
-                                    1 of 3
-                                </div>
+                                @if($organization->incomingAssignments->count() == 0)
+                                    <div class="alert-warning text-center organization-status" data-organization-id="{{ $organization->id }}">
+                                        No tasks assigned.
+                                    </div>
+                                @else
+                                    <div class="alert-danger text-center organization-status" data-organization-id="{{ $organization->id }}">
+                                        {{ $organization->incomingAssignments->whereNotNull('approved_at')->count() }} of {{ $organization->incomingAssignments->count() }}
+                                    </div>
+                                @endif
                             </td>
 
                             <td class="">

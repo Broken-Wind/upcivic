@@ -1,19 +1,20 @@
 @extends('layouts.app')
-@section('title', 'Add Task')
+@section('title', 'Edit Task')
 @section('content')
 <div class="container">
     <div class="card mb-4">
-        <div class="card-header">Add Assignable Task</div>
+        <div class="card-header">Edit Assignable Task</div>
 
         <div class="card-body">
-            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}">
+            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.update', [$task]) }}">
                 @csrf
+                @method('PUT')
                 @include('shared.form_errors')
 
                 <div class="form-group">
                     <label for="taskName">Task Name</label>
                     <input type="text"
-                    class="form-control" name="name" id="taskName" placeholder="Submit Background Check Authorization" required>
+                    class="form-control" name="name" id="taskName" value="{{ $task->name }}" placeholder="Submit Background Check Authorization" required>
                 </div>
 
                 <div class="form-group mt-3">
@@ -24,25 +25,29 @@
 
                 <div class="form-group">
                     <label for="taskDescription">Task Description</label>
-                    <textarea class="form-control" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription"></textarea>
+                    <textarea class="form-control" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription">{{ $task->description }}</textarea>
                     <small id="helpTaskDescription" class="form-text text-muted">Provide details including how to use any attached documents.</small>
                 </div>
 
                 <div class="form-check">
                     <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToOrganization" value="Organization" required>
+                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToOrganization" value="Organization" disabled  {{ $task->assign_to_entity == 'Organization' ? 'checked' : '' }}>
                     This task should be assigned to organizations as a whole. (Liability insurance, tax docs)
                 </label>
                 </div>
 
                 <div class="form-check mb-4">
                     <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToInstructor" value="Instructor">
+                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToInstructor" value="Instructor" disabled {{ $task->assign_to_entity == 'Instructor' ? 'checked' : '' }}>
                     This task should be assigned to each instructor. (Fingerprinting, TB tests)
                 </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Task</button>
+                <button type="submit" class="btn btn-primary">Update Task</button>
+                <button type="submit" form="archiveTask" class="btn btn-secondary">Archive Task</button>
+            </form>
+            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.archive', ['task' => $task]) }}" id="archiveTask">
+                @csrf
             </form>
         </div>
     </div>

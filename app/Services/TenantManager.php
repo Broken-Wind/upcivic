@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Program;
 use App\Meeting;
 use App\Scopes\TenantOwnedScope;
+use App\Task;
 use App\Template;
 use App\Tenant;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,6 +50,12 @@ class TenantManager
                     return $query->where('organization_id', tenant()->organization_id);
                 })->whereNotNull('proposed_at')->orWhere('proposing_organization_id', tenant()->organization_id);
             });
+        });
+        Task::addGlobalScope('TenantAccesibleTask', function (Builder $builder) {
+            return $builder->where('organization_id', tenant()->organization_id);
+        });
+        Task::addGlobalScope('ActiveTask', function (Builder $builder) {
+            return $builder->whereNull('archived_at');
         });
     }
 

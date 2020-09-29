@@ -110,6 +110,8 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/tasks/create', 'TaskController@create')->name('tasks.create');
         Route::get('/tasks/{task}/edit', 'TaskController@edit')->name('tasks.edit');
+        Route::post('/tasks/{task}/archive', 'TaskController@archive')->name('tasks.archive');
         Route::delete('/tasks/{task}', 'TaskController@destroy')->name('tasks.destroy');
+        Route::put('/tasks/{task}', 'TaskController@update')->name('tasks.update');
     });
 });

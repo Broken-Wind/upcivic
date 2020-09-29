@@ -15,7 +15,7 @@
 
         <div class="card-body">
 
-            @if($tasks > 0)
+            @if($tasks->count() > 0)
 
                 <table class="table table-striped">
 
@@ -23,13 +23,13 @@
 
                         <tr>
 
-                            <td>{{ $task }}</td>
+                            <td>{{ $task->name }}</td>
 
                             <td class="text-right">
-                                <a href="{{ tenant()->route('tenant:admin.tasks.edit', ['task' => 1]) }}">
+                                <a href="{{ tenant()->route('tenant:admin.tasks.edit', ['task' => $task]) }}">
                                     <i class="fas fa-edit mr-2"></i>
                                 </a>
-                                <a href="#" class="edit-task-assignments" data-task-id="1">
+                                <a href="#" class="edit-task-assignments" data-task-id="{{ $task->id }}">
                                     <i class="fas fa-user-plus mr-2"></i>
                                 </a>
                             </td>

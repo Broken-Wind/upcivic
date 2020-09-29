@@ -60,9 +60,15 @@
                             </td>
 
                             <td class="text-right">
-                                <a href="{{ tenant()->route('tenant:admin.organizations.incoming_assignments.index', [$organization->id]) }}">
-                                    <i class="far fa-edit mr-2"></i>
-                                </a>
+                                @if (tenant()->isSubscribed())
+                                    <a href="{{ tenant()->route('tenant:admin.organizations.assigned_to.index', [$organization->id]) }}">
+                                        <i class="far fa-edit mr-2"></i>
+                                    </a>
+                                @else
+                                    <a href="{{ tenant()->route('tenant:admin.organizations.assigned_by.index', [$organization->id]) }}">
+                                        <i class="far fa-edit mr-2"></i>
+                                    </a>
+                                @endif
                             </td>
 
                         </tr>

@@ -7,9 +7,9 @@ use App\Organization;
 
 class OrganizationOutgoingAssignmentController extends Controller
 {
-    public function index(Organization $org, Task $task)
+    public function index(Organization $organization)
     {
-        return view('tenant.admin.organizations.outgoing_assignments.index', compact('org', 'task'));
+        return view('tenant.admin.organizations.assigned_by.index', compact('organization'));
     }
 
 }

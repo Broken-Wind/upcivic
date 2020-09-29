@@ -60,7 +60,7 @@
                             </td>
 
                             <td class="text-right">
-                                <a href="">
+                                <a href="{{ tenant()->route('tenant:admin.organizations.incoming_assignments.index', [$organization->id]) }}">
                                     <i class="far fa-edit mr-2"></i>
                                 </a>
                             </td>

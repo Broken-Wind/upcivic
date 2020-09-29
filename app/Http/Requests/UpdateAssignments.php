@@ -26,7 +26,7 @@ class UpdateAssignments extends FormRequest
     {
         return [
             //
-            'assignToOrganizationIds' => 'required|array',
+            'assignToOrganizationIds' => 'nullable|array',
             'assignToOrganizationIds.*' => 'required|numeric',
         ];
     }

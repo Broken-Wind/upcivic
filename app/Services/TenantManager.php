@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Assignment;
 use App\AssignmentStatus;
+use App\Instructor;
 use App\InstructorAssignment;
 use App\Program;
 use App\Meeting;
@@ -74,8 +75,11 @@ class TenantManager
         });
         InstructorAssignment::addGlobalScope('TenantAccessibleInstructorAssignment', function (Builder $builder) {
             return $builder->whereHas('parentAssignment', function($query) {
-                return $query->where('assigned_by_organization_id', tenant()->organization_id)->orWhere('assigned_to_organization_id', tenant()->organization_id);
+                return $query->withoutGlobalScope('OrganizationAssignment')->where('assigned_by_organization_id', tenant()->organization_id)->orWhere('assigned_to_organization_id', tenant()->organization_id);
             });
+        });
+        Instructor::addGlobalScope('TenantAccessibleInstructor', function (Builder $builder) {
+            return $builder->where('organization_id', tenant()->organization_id);
         });
     }
 

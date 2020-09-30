@@ -115,5 +115,6 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/tasks/{task}/archive', 'TaskController@archive')->name('tasks.archive');
         Route::delete('/tasks/{task}', 'TaskController@destroy')->name('tasks.destroy');
         Route::put('/tasks/{task}', 'TaskController@update')->name('tasks.update');
+        Route::post('/instructors', 'InstructorController@store')->name('instructors.store');
     });
 });

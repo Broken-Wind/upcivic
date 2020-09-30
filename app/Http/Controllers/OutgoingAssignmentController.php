@@ -14,11 +14,10 @@ class OutgoingAssignmentController extends Controller
      */
     public function index()
     {
-        $organizations = Assignment::with('assignedToOrganization')->where('assigned_to_organization_id', '!=', tenant()->organization_id)->get()->groupBy(function ($assignment, $key) {
-            return $assignment->assignedToOrganization->name;
-        });
-        $isOutgoingAssignments = true;
-        return view('tenant.admin.assignments.index', compact('organizations', 'isOutgoingAssignments'));
+        // Tenant outgoing assignments are incoming assignments to the other organization
+        $organizations = Organization::partneredWith(tenant()->organization_id)->whereHas('incomingAssignments')->with('incomingAssignments')->get();
+        $isOutgoingFromTenant = true;
+        return view('tenant.admin.assignments.index', compact('organizations', 'isOutgoingFromTenant'));
     }
 
     // public function create()

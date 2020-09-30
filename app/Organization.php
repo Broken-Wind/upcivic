@@ -17,7 +17,7 @@ class Organization extends Model
         return $query->whereHas('programs', function ($query) use ($organizationId) {
             return $query->whereHas('contributors', function ($query) use ($organizationId) {
                 return $query->where('organization_id', $organizationId);
-            })->whereNotNull('proposed_at')->orWhere('proposing_organization_id', $organizationId);
+            })->whereNotNull('proposed_at');
         })->where('id', '!=', $organizationId);
     }
 

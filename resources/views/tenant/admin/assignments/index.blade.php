@@ -20,8 +20,17 @@
 @include('tenant.admin.assignments.components.assignment_details_modal')
 <div class="container">
     @include('shared.form_errors')
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link {{ !$isOutgoingAssignments ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Tasks Assigned to {{ tenant()->name }} </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ $isOutgoingAssignments ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks Assigned to Other Organizations</a>
+        </li>
+    </ul>
+
     <div class="card">
-        <div class="card-header">Task Assignments</div>
+        <div class="card-header">Overview</div>
         <div class="card-body">
 
             @if($organizations->count() > 0)
@@ -35,44 +44,8 @@
                         <th>&nbsp;</th>
                     </thead>
 
-                    @foreach($organizations as $organization)
-
-                        <tr>
-
-                            <td>{{ $organization->name }}</td>
-
-                            <td>
-                                @if($organization->incomingAssignments->count() == 0)
-                                    <div class="alert-warning text-center organization-status" data-organization-id="{{ $organization->id }}">
-                                        No tasks assigned.
-                                    </div>
-                                @else
-                                    <div class="alert-danger text-center organization-status" data-organization-id="{{ $organization->id }}">
-                                        {{ $organization->incomingAssignments->whereNotNull('approved_at')->count() }} of {{ $organization->incomingAssignments->count() }}
-                                    </div>
-                                @endif
-                            </td>
-
-                            <td class="">
-                                <span class="instructor-bubble alert-danger" title="Calin Furau">CF</span>
-                                <span class="instructor-bubble alert-warning" title="Greg Intermaggio">GI</span>
-                                <span class="instructor-bubble alert-success" title="Netta Ravid">NR</span>
-                            </td>
-
-                            <td class="text-right">
-                                @if (tenant()->isSubscribed())
-                                    <a href="{{ tenant()->route('tenant:admin.organizations.assigned_to.index', [$organization->id]) }}">
-                                        <i class="far fa-edit mr-2"></i>
-                                    </a>
-                                @else
-                                    <a href="{{ tenant()->route('tenant:admin.organizations.assigned_by.index', [$organization->id]) }}">
-                                        <i class="far fa-edit mr-2"></i>
-                                    </a>
-                                @endif
-                            </td>
-
-                        </tr>
-
+                    @foreach($organizations as $organization => $assignments)
+                        @include('tenant.admin.assignments.components.organization_row')
                     @endforeach
 
                 </table>

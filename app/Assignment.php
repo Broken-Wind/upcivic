@@ -27,4 +27,12 @@ class Assignment extends Model
     {
         return $this->hasOne(AssignmentStatus::class);
     }
+    public function assignedByOrganization()
+    {
+        return $this->belongsTo(Organization::class, 'assigned_by_organization_id');
+    }
+    public function assignedToOrganization()
+    {
+        return $this->belongsTo(Organization::class, 'assigned_to_organization_id');
+    }
 }

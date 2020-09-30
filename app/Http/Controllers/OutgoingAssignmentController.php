@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
 use App\Organization;
 
-class AssignmentController extends Controller
+class OutgoingAssignmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +14,11 @@ class AssignmentController extends Controller
      */
     public function index()
     {
-        $organizations = Organization::partneredWith(tenant()->organization_id)->orderBy('name')->with(['incomingAssignments', 'outgoingAssignments'])->get();
-        return view('tenant.admin.assignments.index', compact('organizations'));
+        $organizations = Assignment::with('assignedToOrganization')->where('assigned_to_organization_id', '!=', tenant()->organization_id)->get()->groupBy(function ($assignment, $key) {
+            return $assignment->assignedToOrganization->name;
+        });
+        $isOutgoingAssignments = true;
+        return view('tenant.admin.assignments.index', compact('organizations', 'isOutgoingAssignments'));
     }
 
     // public function create()

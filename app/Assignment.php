@@ -35,4 +35,11 @@ class Assignment extends Model
     {
         return $this->belongsTo(Organization::class, 'assigned_to_organization_id');
     }
+    public function assignToInstructor($instructorId)
+    {
+        $instructorAssignment = InstructorAssignment::make();
+        $instructorAssignment->parent_assignment_id = $this->id;
+        $instructorAssignment->instructor_id = $instructorId;
+        $instructorAssignment->save();
+    }
 }

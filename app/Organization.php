@@ -43,10 +43,25 @@ class Organization extends Model
     {
         return $this->hasMany(Assignment::class, 'assigned_to_organization_id')->forInstructors();
     }
+    public function assignedInstructors()
+    {
+        return $this->belongsToMany(Instructor::class, 'assigned_instructors');
+    }
+
+    public function assignInstructorTasksTo($instructorId)
+    {
+        $this->outgoingAssignmentsForInstructors->each(function ($assignment) use ($instructorId) {
+            $assignment->assignToInstructor($instructorId);
+        });
+    }
 
     public function programs()
     {
         return $this->belongsToMany(Program::class, 'contributors');
+    }
+    public function instructors()
+    {
+        return $this->hasMany(Instructor::class);
     }
 
     public function administrators()

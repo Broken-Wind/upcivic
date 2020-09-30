@@ -22,10 +22,10 @@
     @include('shared.form_errors')
     <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
-            <a class="nav-link {{ !$isOutgoingAssignments ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Tasks Assigned to {{ tenant()->name }} </a>
+            <a class="nav-link {{ !$isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Tasks Assigned to {{ tenant()->name }} </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $isOutgoingAssignments ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks Assigned to Other Organizations</a>
+            <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks Assigned to Other Organizations</a>
         </li>
     </ul>
 
@@ -44,8 +44,8 @@
                         <th>&nbsp;</th>
                     </thead>
 
-                    @foreach($organizations as $organization => $assignments)
-                        @include('tenant.admin.assignments.components.organization_row')
+                    @foreach($organizations as $organization)
+                        @include('tenant.admin.assignments.components.organization_row', ['assignments' => $isOutgoingFromTenant ? $organization->incomingAssignments : $organization->outgoingAssignments])
                     @endforeach
 
                 </table>

@@ -48,12 +48,12 @@
                         @if($isOutgoingFromTenant)
                             @include('tenant.admin.assignments.components.organization_row', [
                                 'assignments' => $organization->incomingAssignments,
-                                'instructors' => $organization->instructorsAssignedToOrganization(tenant()->organization_id)
+                                'instructors' => $organization->outgoingInstructorsAssignedToOrganization(tenant()->organization_id)
                             ])
                         @else
                             @include('tenant.admin.assignments.components.organization_row', [
                                 'assignments' => $organization->outgoingAssignments,
-                                'instructors' => tenant()->organization->instructorsAssignedToOrganization($organization->id)
+                                'instructors' => tenant()->organization->outgoingInstructorsAssignedToOrganization($organization->id)
                             ])
                         @endif
                     @endforeach

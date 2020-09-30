@@ -47,11 +47,16 @@ class Organization extends Model
     {
         return $this->belongsToMany(Instructor::class, 'assigned_instructors')->withoutGlobalScope('TenantAccessibleInstructor');
     }
-    public function instructorsAssignedToOrganization($organizationId)
+    public function outgoingInstructorsAssignedToOrganization($organizationId)
     {
         return $this->instructors()->whereHas('assignedOrganizations', function ($assignment) use ($organizationId) {
             return $assignment->where('assigned_instructors.organization_id', $organizationId);
         })->withoutGlobalScope('TenantAccessibleInstructor')->get();
+    }
+    public function incomingInstructorsAssignedByOrganization($organizationId)
+    {
+        $organization = Organization::find($organizationId);
+        return $organization->outgoingInstructorsAssignedToOrganization($this->id);
     }
 
     public function assignInstructorTasksTo($instructorId)

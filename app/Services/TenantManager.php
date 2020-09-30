@@ -79,7 +79,7 @@ class TenantManager
             });
         });
         Instructor::addGlobalScope('TenantAccessibleInstructor', function (Builder $builder) {
-            return $builder->where('organization_id', tenant()->organization_id);
+            return $builder->where('instructors.organization_id', tenant()->organization_id);
         });
     }
 

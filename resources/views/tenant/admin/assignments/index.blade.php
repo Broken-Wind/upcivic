@@ -45,7 +45,17 @@
                     </thead>
 
                     @foreach($organizations as $organization)
-                        @include('tenant.admin.assignments.components.organization_row', ['assignments' => $isOutgoingFromTenant ? $organization->incomingAssignments : $organization->outgoingAssignments])
+                        @if($isOutgoingFromTenant)
+                            @include('tenant.admin.assignments.components.organization_row', [
+                                'assignments' => $organization->incomingAssignments,
+                                'instructors' => $organization->outgoingAssignedInstructorsFor(tenant()->organization_id)
+                            ])
+                        @else
+                            @include('tenant.admin.assignments.components.organization_row', [
+                                'assignments' => $organization->outgoingAssignments,
+                                'instructors' => $organization->incomingAssignedInstructorsBy(tenant()->organization_id)
+                            ])
+                        @endif
                     @endforeach
 
                 </table>

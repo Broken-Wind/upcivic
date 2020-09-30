@@ -15,7 +15,7 @@
     </td>
 
     <td class="">
-        @forelse($organization->assignedInstructors as $instructor)
+        @forelse($instructors as $instructor)
             <span class="instructor-bubble alert-danger" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
         @empty
             <div class="alert-warning text-center organization-status">

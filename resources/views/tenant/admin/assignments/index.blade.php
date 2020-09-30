@@ -53,7 +53,7 @@
                         @else
                             @include('tenant.admin.assignments.components.organization_row', [
                                 'assignments' => $organization->outgoingAssignments,
-                                'instructors' => tenant()->organization->outgoingInstructorsAssignedToOrganization($organization->id)
+                                'instructors' => $organization->incomingInstructorsAssignedByOrganization(tenant()->organization_id)
                             ])
                         @endif
                     @endforeach

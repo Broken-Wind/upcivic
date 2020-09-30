@@ -68,10 +68,10 @@
                                         </a>
                                     @empty
                                     @endforelse
-                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
-                                        {{ $tenant['name'] }} Programs
-                                    </a>
                                     @if(tenant())
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
+                                            {{ $tenant['name'] }} Programs
+                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>

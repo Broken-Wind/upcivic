@@ -34,7 +34,7 @@ class TaskAssignmentController extends Controller
                 $assignment->save();
                 switch ($assignment->assign_to_entity) {
                     case Instructor::class:
-                        tenant()->organization->incomingInstructorsAssignedByOrganization($organizationId)->each(function ($instructor) use ($assignment) {
+                        tenant()->organization->instructorsAssignedBy($organizationId)->each(function ($instructor) use ($assignment) {
                             $assignment->assignToInstructor($instructor->id);
                         });
                         break;

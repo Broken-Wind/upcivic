@@ -46,7 +46,7 @@
             @endif
             @forelse($instructors as $instructor)
                 <h5 class="card-title text-muted mt-3">{{ $instructor->name }}</h5>
-                @include('tenant.admin.assignments.organizations.components.assignment_list', ['assignments' => $instructor->assignments])
+                @include('tenant.admin.assignments.organizations.components.assignment_list', ['assignments' => $instructor->incomingAssignments])
             @empty
                 No instructors assigned yet.
             @endforelse

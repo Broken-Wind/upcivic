@@ -5,7 +5,7 @@ namespace App;
 use App\Concerns\IsPerson;
 use Illuminate\Database\Eloquent\Model;
 
-class Instructor extends Model
+class Instructor extends GenericAssignableEntity
 {
     use IsPerson;
     //
@@ -15,7 +15,7 @@ class Instructor extends Model
             return $query->where('organization_id', $organizationId);
         });
     }
-    public function assignments()
+    public function incomingAssignments()
     {
         return $this->hasMany(InstructorAssignment::class);
     }

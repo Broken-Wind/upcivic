@@ -5,12 +5,28 @@ namespace App;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Organization extends Model
+class Organization extends GenericAssignableEntity
 {
     //
     protected $fillable = [
         'name',
     ];
+    // public const ASSIGNMENT_STATUSES = [
+    //     'incomplete' => [
+    //         'class_string' => 'alert-danger'
+    //     ],
+    //     'pending_review' => [
+    //         'class_string' => 'alert-warning'
+    //     ],
+    //     'approved' => [
+    //         'class_string' => 'alert-success'
+    //     ],
+    // ];
+
+    // public function getAssignmentStatus()
+    // {
+    //     return
+    // }
 
     public function scopePartneredWith($query, $organizationId)
     {
@@ -35,6 +51,10 @@ class Organization extends Model
     {
         return $this->hasMany(Assignment::class, 'assigned_to_organization_id');
     }
+    public function assignmentsTo(Organization $organization)
+    {
+        return $this->outgoingAssignments->where('assigned_to_organization_id', $organization->id);
+    }
     public function outgoingAssignmentsForInstructors()
     {
         return $this->hasMany(Assignment::class, 'assigned_by_organization_id')->forInstructors();
@@ -47,16 +67,15 @@ class Organization extends Model
     {
         return $this->belongsToMany(Instructor::class, 'assigned_instructors')->withoutGlobalScope('TenantAccessibleInstructor');
     }
-    public function outgoingInstructorsAssignedToOrganization($organizationId)
+    public function instructorsAssignedTo(Organization $organization)
     {
-        return $this->instructors()->whereHas('assignedOrganizations', function ($assignment) use ($organizationId) {
-            return $assignment->where('assigned_instructors.organization_id', $organizationId);
+        return $this->instructors()->whereHas('assignedOrganizations', function ($assignment) use ($organization) {
+            return $assignment->where('assigned_instructors.organization_id', $organization->id);
         })->withoutGlobalScope('TenantAccessibleInstructor')->get();
     }
-    public function incomingInstructorsAssignedByOrganization($organizationId)
+    public function instructorsAssignedBy(Organization $organization)
     {
-        $organization = Organization::find($organizationId);
-        return $organization->outgoingInstructorsAssignedToOrganization($this->id);
+        return $organization->instructorsAssignedTo($this);
     }
 
     public function assignInstructorTasksTo($instructorId)

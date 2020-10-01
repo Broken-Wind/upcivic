@@ -1,6 +1,8 @@
 <?php
 
 namespace App;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class GenericAssignment extends Model
@@ -10,7 +12,7 @@ class GenericAssignment extends Model
             'class_string' => 'alert-danger',
             'status_string' => 'Incomplete'
         ],
-        'pending_review' => [
+        'pending' => [
             'class_string' => 'alert-warning',
             'status_string' => 'Pending Review'
         ],
@@ -37,12 +39,32 @@ class GenericAssignment extends Model
     }
     public function isPending()
     {
-        return $this->completed_at;
+        return $this->completed_at && !$this->approved_at;
     }
     public function getClassStringAttribute(){
         return self::STATUSES[$this->getStatus()]['class_string'];
     }
     public function getStatusStringAttribute(){
         return self::STATUSES[$this->getStatus()]['status_string'];
+    }
+    public function canComplete(Organization $organization)
+    {
+        return $this->assigned_to_organization_id == $organization->id;
+    }
+    public function canApprove(Organization $organization)
+    {
+        return $this->assigned_by_organization_id == $organization->id;
+    }
+    public function complete(User $user) {
+        $this->completed_at = Carbon::now();
+        $this->completed_by_user_id = $user->id;
+        $this->save();
+        return $this;
+    }
+    public function approve(User $user) {
+        $this->approved_at = Carbon::now();
+        $this->approved_by_user_id = $user->id;
+        $this->save();
+        return $this;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App;
 
-class Assignment extends GenericAssignment
+class Assignment extends GenericAssignment implements AssignmentInterface
 {
     //
     protected $fillable = [
@@ -32,6 +32,35 @@ class Assignment extends GenericAssignment
     public function getApprovedAtAttribute()
     {
         return $this->statusModel->approved_at;
+    }
+    public function getCompletedByUserIdAttribute()
+    {
+        return $this->statusModel->completed_by_user_id;
+    }
+    public function getApprovedByUserIdAttribute()
+    {
+        return $this->statusModel->approved_by_user_id;
+    }
+    public function setCompletedAtAttribute($value)
+    {
+        $this->statusModel->completed_at = $value;
+    }
+    public function setApprovedAtAttribute($value)
+    {
+        $this->statusModel->approved_at = $value;
+    }
+    public function setCompletedByUserIdAttribute($value)
+    {
+        $this->statusModel->completed_by_user_id = $value;
+    }
+    public function setApprovedByUserIdAttribute($value)
+    {
+        $this->statusModel->approved_by_user_id = $value;
+    }
+    public function save(array $options = [])
+    {
+        $this->statusModel->save();
+        parent::save();
     }
     public function assignedByOrganization()
     {

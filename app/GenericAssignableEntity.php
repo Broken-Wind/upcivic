@@ -10,7 +10,7 @@ class GenericAssignableEntity extends Model
             'class_string' => 'alert-danger',
             'status_string' => 'Incomplete'
         ],
-        'pending_review' => [
+        'pending' => [
             'class_string' => 'alert-warning',
             'status_string' => 'Pending Review'
         ],

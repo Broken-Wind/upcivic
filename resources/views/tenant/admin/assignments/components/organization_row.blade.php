@@ -3,8 +3,12 @@
     <td>{{ $organization->name }}</td>
 
     <td>
-        <div class="{{ $organization->getSelfStatusFor(tenant()->organization) }} text-center organization-status">
-            {{ $assignments->whereNotNull('approved_at')->count() }} of {{ $assignments->count() }}
+        <div class="{{ $organization->getSelfClassStringFor(tenant()->organization) }} text-center organization-status">
+            @if($assignments->count())
+                {{ $assignments->whereNotNull('approved_at')->count() }} of {{ $assignments->count() }}
+            @else
+                No tasks assigned.
+            @endif
         </div>
     </td>
 

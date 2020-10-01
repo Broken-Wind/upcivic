@@ -15,7 +15,11 @@
     <div class="card my-3">
         <div class="card-header">{{ $organization->name }} Tasks</div>
         <div class="card-body">
-            @include('tenant.admin.assignments.organizations.components.assignment_list', ['assignments' => $isOutgoingFromTenant ? $organization->incomingAssignments : $organization->outgoingAssignments])
+            @include('tenant.admin.assignments.organizations.components.assignment_list', [
+                'assignments' => $isOutgoingFromTenant ? $organization->incomingAssignments : $organization->outgoingAssignments,
+                'completeRouteString' => 'tenant:admin.assignments.complete',
+                'approveRouteString' => 'tenant:admin.assignments.approve'
+            ])
         </div>
     </div>
     <div class="card mb-3">
@@ -45,8 +49,12 @@
                 </form>
             @endif
             @forelse($instructors as $instructor)
-                <h5 class="card-title text-muted mt-3">{{ $instructor->name }}</h5>
-                @include('tenant.admin.assignments.organizations.components.assignment_list', ['assignments' => $instructor->incomingAssignments])
+                <h5 class="card-title text-muted mt-4">{{ $instructor->name }}'s Assignments</h5>
+                @include('tenant.admin.assignments.organizations.components.assignment_list', [
+                    'assignments' => $instructor->incomingAssignments,
+                    'completeRouteString' => 'tenant:admin.instructor_assignments.complete',
+                    'approveRouteString' => 'tenant:admin.instructor_assignments.approve'
+                ])
             @empty
                 No instructors assigned yet.
             @endforelse

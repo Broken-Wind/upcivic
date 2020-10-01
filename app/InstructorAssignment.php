@@ -3,9 +3,8 @@
 namespace App;
 
 use App\Concerns\HasParentAssignment;
-use Illuminate\Database\Eloquent\Model;
 
-class InstructorAssignment extends Model
+class InstructorAssignment extends GenericAssignment
 {
     //
     use HasParentAssignment;

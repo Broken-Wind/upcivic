@@ -2,9 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Assignment extends Model
+class Assignment extends GenericAssignment
 {
     //
     protected $fillable = [
@@ -23,9 +21,17 @@ class Assignment extends Model
     {
         return $query->withoutGlobalScope('OrganizationAssignment')->where('assign_to_entity', Instructor::class);
     }
-    public function status()
+    public function statusModel()
     {
         return $this->hasOne(AssignmentStatus::class);
+    }
+    public function getCompletedAtAttribute()
+    {
+        return $this->statusModel->completed_at;
+    }
+    public function getApprovedAtAttribute()
+    {
+        return $this->statusModel->approved_at;
     }
     public function assignedByOrganization()
     {

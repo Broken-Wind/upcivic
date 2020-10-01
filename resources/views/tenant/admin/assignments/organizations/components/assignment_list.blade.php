@@ -7,7 +7,7 @@
             </div>
             <div class="col-6">{{ $assignment->description }}</div>
             <div class="col-2 text-center">
-                <div class="alert-success font-weight-bold">Done</div>
+                <div class="{{ $assignment->class_string }} font-weight-bold">{{ $assignment->status_string }}</div>
             </div>
             <div class="col-2 text-right">
                 <input class="mr-2" type="checkbox" name="markAsDone" onClick="return confirm('Mark as Done?')"/>

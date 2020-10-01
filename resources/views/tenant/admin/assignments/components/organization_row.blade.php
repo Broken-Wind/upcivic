@@ -3,20 +3,14 @@
     <td>{{ $organization->name }}</td>
 
     <td>
-        @if($assignments->count() == 0)
-            <div class="alert-warning text-center organization-status">
-                No tasks assigned.
-            </div>
-        @else
-            <div class="alert-danger text-center organization-status">
-                {{ $assignments->whereNotNull('approved_at')->count() }} of {{ $assignments->count() }}
-            </div>
-        @endif
+        <div class="{{ $organization->getSelfStatusFor(tenant()->organization) }} text-center organization-status">
+            {{ $assignments->whereNotNull('approved_at')->count() }} of {{ $assignments->count() }}
+        </div>
     </td>
 
     <td class="">
         @forelse($instructors as $instructor)
-            <span class="instructor-bubble alert-danger" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+            <span class="instructor-bubble {{ $instructor->getSelfClassStringFor(tenant()->organization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
         @empty
             <div class="alert-warning text-center organization-status">
                 No instructors assigned.

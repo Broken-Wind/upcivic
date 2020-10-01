@@ -13,7 +13,7 @@ class IncomingAssignmentOrganizationController extends Controller
     public function index(Organization $organization)
     {
         $isOutgoingFromTenant = false;
-        $instructors = Instructor::assignedToOrganization($organization->id)->with('assignments.parentAssignment')->get();
+        $instructors = tenant()->organization->instructors()->assignedToOrganization($organization->id)->with('assignments.parentAssignment')->get();
         return view('tenant.admin.assignments.organizations.index', compact('organization', 'isOutgoingFromTenant', 'instructors'));
     }
 

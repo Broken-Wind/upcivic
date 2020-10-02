@@ -114,6 +114,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
+        Route::get('/files/{file}/download', 'FileController@download')->name('files.download');
         Route::get('/tasks/create', 'TaskController@create')->name('tasks.create');
         Route::get('/tasks/{task}/edit', 'TaskController@edit')->name('tasks.edit');
         Route::post('/tasks/{task}/archive', 'TaskController@archive')->name('tasks.archive');

@@ -23,6 +23,11 @@
                 <small id="helpUploadDocuments" class="form-text text-muted">Upload any documents which will be needed to complete this task, such as a blank background check authorization form or an example of a valid liability insurance policy.</small>
                 </div>
 
+                @forelse($task->files as $file)
+                    <a href="{{ tenant()->route('tenant:admin.files.download', [$file->id]) }}">{{ $file->filename }}</a>
+                @empty
+                None
+                @endforelse
                 <div class="form-group">
                     <label for="taskDescription">Task Description</label>
                     <textarea class="form-control" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription">{{ $task->description }}</textarea>

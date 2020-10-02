@@ -6,7 +6,7 @@
         <div class="card-header">Add Assignable Task</div>
 
         <div class="card-body">
-            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}">
+            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data">
                 @csrf
                 @include('shared.form_errors')
 

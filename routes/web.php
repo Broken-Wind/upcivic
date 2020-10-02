@@ -117,6 +117,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/files/{file}/download', 'FileController@download')->name('files.download');
+        Route::delete('/files/{file}', 'FileController@destroy')->name('files.destroy');
         Route::get('/tasks/create', 'TaskController@create')->name('tasks.create');
         Route::get('/tasks/{task}/edit', 'TaskController@edit')->name('tasks.edit');
         Route::post('/tasks/{task}/archive', 'TaskController@archive')->name('tasks.archive');

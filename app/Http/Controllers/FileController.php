@@ -19,4 +19,12 @@ class FileController extends Controller
         }
         abort(401);
     }
+    public function destroy(File $file)
+    {
+        if ($file->canDelete(Auth::user())) {
+            $file->delete();
+            return back()->withSuccess('File deleted.');
+        }
+        abort(401);
+    }
 }

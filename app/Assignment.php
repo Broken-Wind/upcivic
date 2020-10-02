@@ -59,7 +59,9 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     }
     public function save(array $options = [])
     {
-        $this->statusModel->save();
+        if ($this->statusModel) {
+            $this->statusModel->save();
+        }
         parent::save();
     }
     public function assignedByOrganization()

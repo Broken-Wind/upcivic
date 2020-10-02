@@ -39,7 +39,7 @@ class TaskAssignmentController extends Controller
                         });
                         break;
                     default:
-                        $assignment->status()->create([]);
+                        $assignment->statusModel()->create([]);
                         break;
                 }
             });

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Assignment;
 use App\AssignmentStatus;
+use App\File;
 use App\Instructor;
 use App\InstructorAssignment;
 use App\Program;
@@ -80,6 +81,9 @@ class TenantManager
         });
         Instructor::addGlobalScope('TenantAccessibleInstructor', function (Builder $builder) {
             return $builder->where('instructors.organization_id', tenant()->organization_id);
+        });
+        File::addGlobalScope('TenantOwnedFile', function (Builder $builder) {
+            return $builder->where('uploaded_by_organization_id', tenant()->organization_id);
         });
     }
 

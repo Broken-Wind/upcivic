@@ -17,4 +17,9 @@ class Task extends Model
     {
         return $this->hasMany(Assignment::class);
     }
+
+    public function files()
+    {
+        return $this->hasMany(File::class, 'uploaded_to_entity_id')->entity(self::class);
+    }
 }

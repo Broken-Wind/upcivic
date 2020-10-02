@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\File;
 use App\Http\Requests\StoreTask;
 use App\Http\Requests\UpdateTask;
 use App\Instructor;
@@ -10,6 +11,8 @@ use App\Task;
 use App\Services\TaskService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -55,6 +58,20 @@ class TaskController extends Controller
                 break;
         }
         $task->save();
+        if ($request->hasFile('uploadDocuments')) {
+            foreach($validated['uploadDocuments'] as $document) {
+                $path = Storage::putFile('avatars', $document);
+                $file = File::make([
+                    'path' => $path,
+                    'filename' => $document->getClientOriginalName()
+                ]);
+                $file->uploaded_by_user_id = Auth::user()->id;
+                $file->uploaded_by_organization_id = tenant()->organization_id;
+                $file->uploaded_to_entity_type = Task::class;
+                $file->uploaded_to_entity_id = $task->id;
+                $file->save();
+            }
+        }
         return redirect()->route('tenant:admin.tasks.index', [tenant()->slug])->withSuccess('Task created successfully.');
     }
 

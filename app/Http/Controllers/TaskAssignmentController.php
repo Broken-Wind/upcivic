@@ -6,6 +6,7 @@ use App\Assignment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateAssignments;
 use App\Instructor;
+use App\Organization;
 use App\Task;
 use Illuminate\Http\Request;
 
@@ -34,7 +35,8 @@ class TaskAssignmentController extends Controller
                 $assignment->save();
                 switch ($assignment->assign_to_entity) {
                     case Instructor::class:
-                        tenant()->organization->instructorsAssignedBy($organizationId)->each(function ($instructor) use ($assignment) {
+                        $organization = Organization::find($organizationId);
+                        tenant()->organization->instructorsAssignedBy($organization)->each(function ($instructor) use ($assignment) {
                             $assignment->assignToInstructor($instructor->id);
                         });
                         break;

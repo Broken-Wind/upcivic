@@ -29,15 +29,33 @@
                                     @if(!$loop->last), @endif
                                 @empty
                                 @endforelse
-                                <br />
+                                @if($assignment->isAssignedByOrganization(tenant()->organization))
+                                    <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                                        @csrf
+                                        <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
+                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple>
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </form>
+                                @endif
+                                <br /><br /><br />
                                 From {{ $assignment->assignedToOrganization->name }}:
                                 @forelse($assignment->assignee_files as $file)
-                                    <i class="far fa-trash-alt fa-xs text-danger"></i>
-                                    <a href="/images/myw3schoolsimage.jpg" download="originalContract">
-                                        uploadedFile1.pdf
+                                    <a href="{{ $file->download_link }}">
+                                        {{ $file->filename }}
+                                        @if($file->canDelete(\Auth::user())) <i class="far fa-trash-alt"></i>
+                                        @endif
                                     </a>
+                                @if(!$loop->last), @endif
                                 @empty
                                 @endforelse
+                                @if($assignment->isAssignedToOrganization(tenant()->organization))
+                                    <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                                        @csrf
+                                        <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
+                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple>
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </form>
+                                @endif
                                 <i class="fas fa-plus-circle fa-sm" data-toggle="tooltip" title="Upload required document"></i>
                             </small>
                         </div>

@@ -15,11 +15,11 @@
     <div class="card my-3">
         <div class="card-header">{{ $organization->name }} Tasks</div>
         <div class="card-body">
-            @include('tenant.admin.assignments.organizations.components.assignment_list', [
+            {{-- @include('tenant.admin.assignments.organizations.components.assignment_list', [
                 'assignments' => $isOutgoingFromTenant ? $organization->incomingAssignments : $organization->outgoingAssignments,
                 'completeRouteString' => 'tenant:admin.assignments.complete',
                 'approveRouteString' => 'tenant:admin.assignments.approve'
-            ])
+            ]) --}}
         </div>
     </div>
     <div class="card mb-3">

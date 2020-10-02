@@ -73,6 +73,10 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     {
         $this->statusModel->approved_by_user_id = $value;
     }
+    public function getUploadUrlAttribute()
+    {
+        return tenant()->route('tenant:admin.assignments.files.store', [$this->id]);
+    }
     public function save(array $options = [])
     {
         if ($this->statusModel) {

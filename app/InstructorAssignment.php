@@ -36,4 +36,8 @@ class InstructorAssignment extends GenericAssignment implements AssignmentInterf
     {
         return $this->parentAssignment->assigned_to_organization_id;
     }
+    public function getUploadUrlAttribute()
+    {
+        return tenant()->route('tenant:admin.instructor_assignments.files.store', [$this->id]);
+    }
 }

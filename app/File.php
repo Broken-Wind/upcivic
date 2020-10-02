@@ -23,7 +23,7 @@ class File extends Model
     {
         return $user->organizations->find($this->organization_id);
     }
-    private function getEntityAttribute()
+    protected function getEntityAttribute()
     {
         return $this->entity_type::withoutGlobalScopes()->find($this->entity_id);
     }
@@ -32,7 +32,10 @@ class File extends Model
         return $user->organizations->whereIn('id', $this->accessible_organizations->pluck('id'));
     }
     public function getAccessibleOrganizationsAttribute(){
-        return $this->entity->accessible_organizations->push($this->organization)->unique();
+        if ($this->entity->accessible_organizations) {
+            return $this->entity->accessible_organizations->push($this->organization)->unique();
+        }
+        return collect($this->organization);
     }
     public function organization()
     {

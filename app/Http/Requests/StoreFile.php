@@ -25,8 +25,8 @@ class StoreFile extends FormRequest
     {
         return [
             //
-            'files' => 'nullable|array',
-            'files.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048'
+            'files' => 'required|array',
+            'files.*' => 'required|mimes:pdf,docx,jpeg,jpg,png|max:2048'
         ];
     }
 }

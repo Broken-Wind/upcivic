@@ -17,9 +17,9 @@
                 </div>
 
                 <div class="form-group mt-3">
-                <label for="uploadDocuments">Upload Documents <span class="text-muted">(optional)</span></label>
-                <input type="file" class="form-control-file" name="uploadDocuments[]" id="uploadDocuments" placeholder="Background Check Authorization.pdf" aria-describedby="helpUploadDocuments" multiple>
-                <small id="helpUploadDocuments" class="form-text text-muted">Upload any documents which will be needed to complete this task, such as a blank background check authorization form or an example of a valid liability insurance policy.</small>
+                    <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
+                    <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
+                    <small id="helpFiles" class="form-text text-muted">Upload any documents which will be needed to complete this task, such as a blank background check authorization form or an example of a valid liability insurance policy.</small>
                 </div>
 
                 <div class="form-group">

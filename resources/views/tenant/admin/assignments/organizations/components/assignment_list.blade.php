@@ -39,8 +39,7 @@
                                 @if($assignment->isAssignedByOrganization(tenant()->organization))
                                     <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
                                         @csrf
-                                        <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
-                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple>
+                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
                                         <button type="submit" class="btn btn-primary">Upload</button>
                                     </form>
                                 @endif
@@ -65,8 +64,7 @@
                                 @if($assignment->isAssignedToOrganization(tenant()->organization))
                                     <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
                                         @csrf
-                                        <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
-                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple>
+                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
                                         <button type="submit" class="btn btn-primary">Upload</button>
                                     </form>
                                 @endif

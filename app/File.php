@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class File extends Model
 {
@@ -40,5 +41,10 @@ class File extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+    public function delete()
+    {
+        Storage::delete($this->path);
+        parent::delete();
     }
 }

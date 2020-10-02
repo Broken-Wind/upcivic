@@ -23,9 +23,16 @@
                                 @forelse($assignment->assigner_files as $file)
                                     <a href="{{ $file->download_link }}">
                                         {{ $file->filename }}
-                                        @if($file->canDelete(\Auth::user())) <i class="far fa-trash-alt"></i>
-                                        @endif
                                     </a>
+                                    @if($file->canDelete(\Auth::user()))
+                                        <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                     @if(!$loop->last), @endif
                                 @empty
                                 @endforelse
@@ -42,9 +49,16 @@
                                 @forelse($assignment->assignee_files as $file)
                                     <a href="{{ $file->download_link }}">
                                         {{ $file->filename }}
-                                        @if($file->canDelete(\Auth::user())) <i class="far fa-trash-alt"></i>
-                                        @endif
                                     </a>
+                                    @if($file->canDelete(\Auth::user()))
+                                        <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    @endif
                                 @if(!$loop->last), @endif
                                 @empty
                                 @endforelse

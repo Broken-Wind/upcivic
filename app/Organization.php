@@ -11,22 +11,6 @@ class Organization extends GenericAssignableEntity
     protected $fillable = [
         'name',
     ];
-    // public const ASSIGNMENT_STATUSES = [
-    //     'incomplete' => [
-    //         'class_string' => 'alert-danger'
-    //     ],
-    //     'pending_review' => [
-    //         'class_string' => 'alert-warning'
-    //     ],
-    //     'approved' => [
-    //         'class_string' => 'alert-success'
-    //     ],
-    // ];
-
-    // public function getAssignmentStatus()
-    // {
-    //     return
-    // }
 
     public function scopePartneredWith($query, $organizationId)
     {

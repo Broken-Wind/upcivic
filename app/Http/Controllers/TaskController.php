@@ -58,8 +58,8 @@ class TaskController extends Controller
                 break;
         }
         $task->save();
-        if ($request->hasFile('uploadDocuments')) {
-            foreach($validated['uploadDocuments'] as $document) {
+        if ($request->hasFile('files')) {
+            foreach($validated['files'] as $document) {
                 $path = Storage::putFile('tasks', $document);
                 $file = File::make([
                     'path' => $path,
@@ -83,16 +83,30 @@ class TaskController extends Controller
     }
 
 
-    public function update(Task $task, UpdateTask $request)
+    public function update(UpdateTask $request, Task $task)
     {
         //
         $validated = $request->validated();
         $task->update([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            ]);
+        ]);
+        if ($request->hasFile('files')) {
+            foreach($validated['files'] as $document) {
+                $path = Storage::putFile('tasks', $document);
+                $file = File::make([
+                    'path' => $path,
+                    'filename' => $document->getClientOriginalName()
+                ]);
+                $file->user_id = Auth::user()->id;
+                $file->organization_id = tenant()->organization_id;
+                $file->entity_type = Task::class;
+                $file->entity_id = $task->id;
+                $file->save();
+            }
+        }
 
-        return redirect()->route('tenant:admin.tasks.index', tenant()['slug'])->withSuccess('Task has been updated.');
+        return back()->withSuccess('Task has been updated.');
     }
 
     public function archive(Task $task)

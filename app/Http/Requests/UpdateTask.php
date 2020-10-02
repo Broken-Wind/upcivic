@@ -27,6 +27,8 @@ class UpdateTask extends FormRequest
             //
             'name' => 'required|string',
             'description' => 'required|string',
+            'files' => 'nullable|array',
+            'files.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048'
         ];
     }
 }

@@ -50,7 +50,7 @@ class TaskController extends Controller
             ]);
         $task->organization_id = tenant()->organization->id;
         switch ($validated['assignToEntity']) {
-            case 'Instructor':
+            case Instructor::class:
                 $task->assign_to_entity = Instructor::class;
                 break;
             default:
@@ -60,15 +60,15 @@ class TaskController extends Controller
         $task->save();
         if ($request->hasFile('uploadDocuments')) {
             foreach($validated['uploadDocuments'] as $document) {
-                $path = Storage::putFile('avatars', $document);
+                $path = Storage::putFile('tasks', $document);
                 $file = File::make([
                     'path' => $path,
                     'filename' => $document->getClientOriginalName()
                 ]);
-                $file->uploaded_by_user_id = Auth::user()->id;
-                $file->uploaded_by_organization_id = tenant()->organization_id;
-                $file->uploaded_to_entity_type = Task::class;
-                $file->uploaded_to_entity_id = $task->id;
+                $file->user_id = Auth::user()->id;
+                $file->organization_id = tenant()->organization_id;
+                $file->entity_type = Task::class;
+                $file->entity_id = $task->id;
                 $file->save();
             }
         }

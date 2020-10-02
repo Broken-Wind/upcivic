@@ -49,6 +49,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Tenant::class);
     }
+    public function getOrganizationsAttribute()
+    {
+        return $this->tenants->map(function ($tenant) {
+            return $tenant->organization;
+        });
+    }
 
     public function joinTenant(Tenant $tenant)
     {

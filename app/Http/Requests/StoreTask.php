@@ -27,7 +27,7 @@ class StoreTask extends FormRequest
             //
             'name' => 'required|string',
             'description' => 'required|string',
-            'assignToEntity' => 'required|string|in:Organization,Instructor',
+            'assignToEntity' => 'required|string|in:App\Organization,App\Instructor',
             'uploadDocuments' => 'nullable|array',
             'uploadDocuments.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048'
         ];

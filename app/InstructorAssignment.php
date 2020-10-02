@@ -12,6 +12,18 @@ class InstructorAssignment extends GenericAssignment implements AssignmentInterf
         'name',
         'description'
     ];
+    public function files(Organization $organization = null)
+    {
+        $files = $this->ownFiles->merge($this->parentAssignment->files($organization));
+        if (!$organization) {
+            return $files;
+        }
+        return $files->where('organization_id', $organization->id);
+    }
+    public function ownFiles()
+    {
+        return $this->hasMany(File::class, 'entity_id')->entity($this);
+    }
     public function parentAssignment()
     {
         return $this->belongsTo(Assignment::class)->withoutGlobalScope('OrganizationAssignment');

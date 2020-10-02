@@ -75,8 +75,6 @@ Route::group(['middleware' => 'verified'], function () {
          * Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
          * Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
          */
-        Route::get('/organizations/{organization}/outgoing_assignments', 'OrganizationOutgoingAssignmentController@index')->name('outgoing_assignments.index');
-        Route::get('/organizations/{organization}/incoming_assignments', 'OrganizationIncomingAssignmentController@index')->name('incoming_assignments.index');
 
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');
@@ -105,11 +103,22 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
-        Route::get('/assignments', 'AssignmentController@index')->name('assignments.index');
+        Route::post('/assignments/{assignment}/complete', 'AssignmentController@complete')->name('assignments.complete');
+        Route::post('/assignments/{assignment}/approve', 'AssignmentController@approve')->name('assignments.approve');
+        Route::post('/instructor_assignments/{assignment}/complete', 'InstructorAssignmentController@complete')->name('instructor_assignments.complete');
+        Route::post('/instructor_assignments/{assignment}/approve', 'InstructorAssignmentController@approve')->name('instructor_assignments.approve');
+        Route::get('/assignments/outgoing', 'OutgoingAssignmentController@index')->name('assignments.outgoing.index');
+        Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');
+        Route::get('/assignments/outgoing/organizations/{organization}', 'OutgoingAssignmentOrganizationController@index')->name('assignments.outgoing.organizations.index');
+        Route::get('/assignments/incoming/organizations/{organization}', 'IncomingAssignmentOrganizationController@index')->name('assignments.incoming.organizations.index');
+        Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/tasks/create', 'TaskController@create')->name('tasks.create');
         Route::get('/tasks/{task}/edit', 'TaskController@edit')->name('tasks.edit');
+        Route::post('/tasks/{task}/archive', 'TaskController@archive')->name('tasks.archive');
         Route::delete('/tasks/{task}', 'TaskController@destroy')->name('tasks.destroy');
+        Route::put('/tasks/{task}', 'TaskController@update')->name('tasks.update');
+        Route::post('/instructors', 'InstructorController@store')->name('instructors.store');
     });
 });

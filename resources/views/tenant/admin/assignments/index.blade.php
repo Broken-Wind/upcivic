@@ -20,8 +20,17 @@
 @include('tenant.admin.assignments.components.assignment_details_modal')
 <div class="container">
     @include('shared.form_errors')
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link {{ !$isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Tasks Assigned to {{ tenant()->name }} </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks Assigned to Other Organizations</a>
+        </li>
+    </ul>
+
     <div class="card">
-        <div class="card-header">Task Assignments</div>
+        <div class="card-header">Overview</div>
         <div class="card-body">
 
             @if($organizations->count() > 0)
@@ -36,31 +45,17 @@
                     </thead>
 
                     @foreach($organizations as $organization)
-
-                        <tr>
-
-                            <td>{{ $organization->name }}</td>
-
-                            <td>
-                                <div class="alert-danger text-center organization-status" data-organization-id="1">
-                                    1 of 3
-                                </div>
-                            </td>
-
-                            <td class="">
-                                <span class="instructor-bubble alert-danger" title="Calin Furau">CF</span>
-                                <span class="instructor-bubble alert-warning" title="Greg Intermaggio">GI</span>
-                                <span class="instructor-bubble alert-success" title="Netta Ravid">NR</span>
-                            </td>
-
-                            <td class="text-right">
-                                <a href="">
-                                    <i class="far fa-edit mr-2"></i>
-                                </a>
-                            </td>
-
-                        </tr>
-
+                        @if($isOutgoingFromTenant)
+                            @include('tenant.admin.assignments.components.organization_row', [
+                                'assignments' => tenant()->organization->assignmentsTo($organization),
+                                'instructors' => $organization->instructorsAssignedTo(tenant()->organization)
+                            ])
+                        @else
+                            @include('tenant.admin.assignments.components.organization_row', [
+                                'assignments' => tenant()->organization->assignmentsBy($organization),
+                                'instructors' => $organization->instructorsAssignedBy(tenant()->organization)
+                            ])
+                        @endif
                     @endforeach
 
                 </table>

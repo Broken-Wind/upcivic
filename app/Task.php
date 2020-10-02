@@ -12,4 +12,9 @@ class Task extends Model
         'name',
         'description',
     ];
+
+    public function assignments()
+    {
+        return $this->hasMany(Assignment::class);
+    }
 }

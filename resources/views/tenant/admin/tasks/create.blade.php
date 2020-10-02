@@ -30,14 +30,14 @@
 
                 <div class="form-check">
                     <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToOrganization" value="Organization" required>
+                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToOrganization" value="{{ \App\Organization::class }}" required>
                     This task should be assigned to organizations as a whole. (Liability insurance, tax docs)
                 </label>
                 </div>
 
                 <div class="form-check mb-4">
                     <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToInstructor" value="Instructor">
+                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToInstructor" value="{{ \App\Instructor::class }}">
                     This task should be assigned to each instructor. (Fingerprinting, TB tests)
                 </label>
                 </div>

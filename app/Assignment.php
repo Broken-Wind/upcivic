@@ -21,6 +21,22 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     {
         return $query->withoutGlobalScope('OrganizationAssignment')->where('assign_to_entity', Instructor::class);
     }
+    public function files(Organization $organization = null)
+    {
+        if ($this->task) {
+            $files = $this->ownFiles->merge($this->task->files);
+        } else {
+            $files = collect();
+        }
+        if (!$organization) {
+            return $files;
+        }
+        return $files->where('organization_id', $organization->id);
+    }
+    public function task()
+    {
+        return $this->belongsTo(Task::class)->withoutGlobalScope('TenantAccesibleTask');
+    }
     public function statusModel()
     {
         return $this->hasOne(AssignmentStatus::class);
@@ -63,14 +79,6 @@ class Assignment extends GenericAssignment implements AssignmentInterface
             $this->statusModel->save();
         }
         parent::save();
-    }
-    public function assignedByOrganization()
-    {
-        return $this->belongsTo(Organization::class, 'assigned_by_organization_id');
-    }
-    public function assignedToOrganization()
-    {
-        return $this->belongsTo(Organization::class, 'assigned_to_organization_id');
     }
     public function assignToInstructor($instructorId)
     {

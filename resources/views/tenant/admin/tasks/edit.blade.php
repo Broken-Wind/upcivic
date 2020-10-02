@@ -24,7 +24,7 @@
                 </div>
 
                 @forelse($task->files as $file)
-                    <a href="{{ tenant()->route('tenant:admin.files.download', [$file->id]) }}">{{ $file->filename }}</a>
+                    <a href="{{ $file->download_link }}">{{ $file->filename }}</a>
                 @empty
                 None
                 @endforelse
@@ -36,14 +36,14 @@
 
                 <div class="form-check">
                     <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToOrganization" value="Organization" disabled  {{ $task->assign_to_entity == 'Organization' ? 'checked' : '' }}>
+                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToOrganization" value="{{ \App\Organization::class }}" disabled  {{ $task->assign_to_entity == \App\Organization::class ? 'checked' : '' }}>
                     This task should be assigned to organizations as a whole. (Liability insurance, tax docs)
                 </label>
                 </div>
 
                 <div class="form-check mb-4">
                     <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToInstructor" value="Instructor" disabled {{ $task->assign_to_entity == 'Instructor' ? 'checked' : '' }}>
+                    <input type="radio" class="form-check-input" name="assignToEntity" id="assignToInstructor" value="{{ \App\Intructor::class }}" disabled {{ $task->assign_to_entity == \App\Instructor::class ? 'checked' : '' }}>
                     This task should be assigned to each instructor. (Fingerprinting, TB tests)
                 </label>
                 </div>

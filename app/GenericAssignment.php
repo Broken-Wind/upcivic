@@ -67,4 +67,24 @@ class GenericAssignment extends Model
         $this->save();
         return $this;
     }
+    public function assignedByOrganization()
+    {
+        return $this->belongsTo(Organization::class, 'assigned_by_organization_id');
+    }
+    public function assignedToOrganization()
+    {
+        return $this->belongsTo(Organization::class, 'assigned_to_organization_id');
+    }
+    public function ownFiles()
+    {
+        return $this->hasMany(File::class, 'entity_id')->entity($this);
+    }
+    public function getAssignerFilesAttribute()
+    {
+        return $this->files($this->assignedByOrganization);
+    }
+    public function getAssigneeFilesAttribute()
+    {
+        return $this->files($this->assignedToOrganization);
+    }
 }

@@ -19,21 +19,25 @@
                     <div class="row">
                         <div class="col-12">
                             <small>
-                                Attachments:
-                                <a href="/images/myw3schoolsimage.jpg" download="originalContract">
-                                    <i class="fas fa-download fa-xs"></i> originalContractFile.pdf
-                                </a>
-                                <strong>|</strong>
-                                <i class="far fa-trash-alt fa-xs text-danger"></i>
-                                <a href="/images/myw3schoolsimage.jpg" download="originalContract">
-                                    uploadedFile1.pdf
-                                </a>
-                                ,
-                                <i class="far fa-trash-alt fa-xs text-danger"></i>
-                                <a href="/images/myw3schoolsimage.jpg" download="originalContract">
-                                    uploadedFile2.pdf
-                                </a>
-                                ,
+                                From {{ $assignment->assignedByOrganization->name }}:
+                                @forelse($assignment->assigner_files as $file)
+                                    <a href="{{ $file->download_link }}">
+                                        {{ $file->filename }}
+                                        @if($file->canDelete(\Auth::user())) <i class="far fa-trash-alt"></i>
+                                        @endif
+                                    </a>
+                                    @if(!$loop->last), @endif
+                                @empty
+                                @endforelse
+                                <br />
+                                From {{ $assignment->assignedToOrganization->name }}:
+                                @forelse($assignment->assignee_files as $file)
+                                    <i class="far fa-trash-alt fa-xs text-danger"></i>
+                                    <a href="/images/myw3schoolsimage.jpg" download="originalContract">
+                                        uploadedFile1.pdf
+                                    </a>
+                                @empty
+                                @endforelse
                                 <i class="fas fa-plus-circle fa-sm" data-toggle="tooltip" title="Upload required document"></i>
                             </small>
                         </div>
@@ -58,7 +62,6 @@
                         </form>
                     @endif
                     <i class="far fa-bell mr-2"></i>
-                    <i class="far fa-trash-alt"></i>
                 </td>
             </tr>
         @empty

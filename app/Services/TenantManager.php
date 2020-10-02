@@ -83,7 +83,7 @@ class TenantManager
             return $builder->where('instructors.organization_id', tenant()->organization_id);
         });
         File::addGlobalScope('TenantOwnedFile', function (Builder $builder) {
-            return $builder->where('uploaded_by_organization_id', tenant()->organization_id);
+            return $builder->where('organization_id', tenant()->organization_id);
         });
     }
 

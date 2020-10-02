@@ -13,6 +13,14 @@ class File extends Model
     ];
     public function scopeEntity($query, $entity)
     {
-        return $query->where('uploaded_to_entity_type', $entity);
+        return $query->withoutGlobalScope('TenantOwnedFile')->where('entity_type', get_class($entity))->where('entity_id', $entity->id);
+    }
+    public function getDownloadLinkAttribute()
+    {
+        return tenant()->route('tenant:admin.files.download', [$this->id]);
+    }
+    public function canDelete(User $user)
+    {
+        return $user->organizations->find($this->organization_id);
     }
 }

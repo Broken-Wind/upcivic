@@ -17,13 +17,13 @@ class CreateFilesTable extends Migration
             $table->id();
             $table->string('path');
             $table->string('filename');
-            $table->string('uploaded_to_entity_type');
-            $table->unsignedBigInteger('uploaded_to_entity_id');
-            $table->unsignedBigInteger('uploaded_by_user_id')->nullable();
-            $table->unsignedBigInteger('uploaded_by_organization_id')->nullable();
+            $table->string('entity_type');
+            $table->unsignedBigInteger('entity_id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('organization_id')->nullable();
 
-            $table->foreign('uploaded_by_user_id')->references('id')->on('users')->onDelete('SET NULL');
-            $table->foreign('uploaded_by_organization_id')->references('id')->on('organizations')->onDelete('SET NULL');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('SET NULL');
+            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('SET NULL');
             $table->timestamps();
         });
     }

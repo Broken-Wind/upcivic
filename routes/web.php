@@ -123,6 +123,11 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/tasks/{task}/archive', 'TaskController@archive')->name('tasks.archive');
         Route::delete('/tasks/{task}', 'TaskController@destroy')->name('tasks.destroy');
         Route::put('/tasks/{task}', 'TaskController@update')->name('tasks.update');
+        Route::get('/instructors', 'InstructorController@index')->name('instructors.index');
+        Route::get('/instructors/create', 'InstructorController@create')->name('instructors.create');
         Route::post('/instructors', 'InstructorController@store')->name('instructors.store');
+        Route::get('/instructors/{instructor}/edit', 'InstructorController@edit')->name('instructors.edit');
+        Route::delete('/instructors/{instructor}', 'InstructorController@destroy')->name('instructors.destroy');
+        Route::put('/instructors/{instructor}', 'InstructorController@update')->name('instructors.update');
     });
 });

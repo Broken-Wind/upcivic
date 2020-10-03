@@ -15,7 +15,7 @@ class IncomingAssignmentController extends Controller
     public function index()
     {
         // Tenant incoming assignments are outgoing assignments to the other organization
-        $organizations = Organization::partneredWith(tenant()->organization_id)->with(['outgoingAssignments', 'incomingAssignedInstructors'])->get();
+        $organizations = Organization::hasAssignmentsTo(tenant()->organization_id)->with(['outgoingAssignments', 'incomingAssignedInstructors'])->get();
         $isOutgoingFromTenant = false;
         return view('tenant.admin.assignments.index', compact('organizations', 'isOutgoingFromTenant'));
     }

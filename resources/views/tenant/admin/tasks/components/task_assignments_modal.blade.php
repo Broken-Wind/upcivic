@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5><a href="" target="_blank" class="task-title" id="task-assignments-modal-title"></a></h5>
+            <h5><a href="" target="_blank" class="task-title" id="task-assignments-modal-title"></a>Assign To</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>

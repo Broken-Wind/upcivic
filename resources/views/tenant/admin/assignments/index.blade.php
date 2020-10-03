@@ -6,13 +6,13 @@
         /* content:attr(data-letters); */
         display:inline-block;
         font-size:1em;
-        width:2.5em;
-        height:2.5em;
-        line-height:2.5em;
+        width:1.6em;
+        height:1.6em;
+        line-height:1.6em;
         text-align:center;
         border-radius:50%;
         vertical-align:middle;
-        margin-right:.5em;
+        margin-right:.1em;
     }
 </style>
 @endpush
@@ -38,9 +38,13 @@
                 <table class="table table-striped">
 
                     <thead>
-                        <th>Organization</th>
-                        <th>Tasks Complete</th>
-                        <th>Instructor Status</th>
+                    @if($isOutgoingFromTenant)
+                        <th>To</th>
+                    @else
+                        <th>From</th>
+                    @endif
+                        <th>Organization Tasks</th>
+                        <th>Instructors Tasks</th>
                         <th>&nbsp;</th>
                     </thead>
 

@@ -34,7 +34,7 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
                                     <i class="fas fa-edit mr-2"></i>
                                 </a>
                                 <a href="#" class="edit-task-assignments" data-task-id="{{ $task->id }}">
-                                    <i class="fas fa-user-plus mr-2"></i>
+                                    <i class="fas fa-clinic-medical mr-2"></i>
                                 </a>
                             </td>
 

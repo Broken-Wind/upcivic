@@ -35,7 +35,7 @@ class GenericAssignment extends Model
     }
     public function isApproved()
     {
-        return $this->approved_at && $this->completed_at;
+        return $this->approved_at;
     }
     public function isPending()
     {

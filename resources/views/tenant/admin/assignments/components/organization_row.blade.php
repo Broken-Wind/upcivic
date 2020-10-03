@@ -16,9 +16,6 @@
         @forelse($instructors as $instructor)
             <span class="instructor-bubble {{ $instructor->getSelfClassStringFor(tenant()->organization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
         @empty
-            <div class="alert-warning text-center organization-status">
-                No instructors assigned.
-            </div>
         @endforelse
     </td>
 

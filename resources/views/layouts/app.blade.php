@@ -46,6 +46,9 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->isSubscribed() ? tenant()->route('tenant:admin.assignments.outgoing.index') : tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Staff</a>
+                            </li>
                         @endif
 
                         <!-- Authentication Links -->

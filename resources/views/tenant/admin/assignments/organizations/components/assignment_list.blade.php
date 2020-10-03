@@ -19,21 +19,55 @@
                     <div class="row">
                         <div class="col-12">
                             <small>
-                                Attachments:
-                                <a href="/images/myw3schoolsimage.jpg" download="originalContract">
-                                    <i class="fas fa-download fa-xs"></i> originalContractFile.pdf
-                                </a>
-                                <strong>|</strong>
-                                <i class="far fa-trash-alt fa-xs text-danger"></i>
-                                <a href="/images/myw3schoolsimage.jpg" download="originalContract">
-                                    uploadedFile1.pdf
-                                </a>
-                                ,
-                                <i class="far fa-trash-alt fa-xs text-danger"></i>
-                                <a href="/images/myw3schoolsimage.jpg" download="originalContract">
-                                    uploadedFile2.pdf
-                                </a>
-                                ,
+                                From {{ $assignment->assignedByOrganization->name }}:
+                                @forelse($assignment->assigner_files as $file)
+                                    <a href="{{ $file->download_link }}">
+                                        {{ $file->filename }}
+                                    </a>
+                                    @if($file->canDelete(\Auth::user()))
+                                        <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                    @if(!$loop->last), @endif
+                                @empty
+                                @endforelse
+                                @if($assignment->isAssignedByOrganization(tenant()->organization))
+                                    <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </form>
+                                @endif
+                                <br /><br /><br />
+                                From {{ $assignment->assignedToOrganization->name }}:
+                                @forelse($assignment->assignee_files as $file)
+                                    <a href="{{ $file->download_link }}">
+                                        {{ $file->filename }}
+                                    </a>
+                                    @if($file->canDelete(\Auth::user()))
+                                        <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                @if(!$loop->last), @endif
+                                @empty
+                                @endforelse
+                                @if($assignment->isAssignedToOrganization(tenant()->organization))
+                                    <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
+                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                    </form>
+                                @endif
                                 <i class="fas fa-plus-circle fa-sm" data-toggle="tooltip" title="Upload required document"></i>
                             </small>
                         </div>
@@ -58,7 +92,6 @@
                         </form>
                     @endif
                     <i class="far fa-bell mr-2"></i>
-                    <i class="far fa-trash-alt"></i>
                 </td>
             </tr>
         @empty

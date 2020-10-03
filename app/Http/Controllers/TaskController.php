@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\File;
 use App\Http\Requests\StoreTask;
 use App\Http\Requests\UpdateTask;
 use App\Instructor;
@@ -10,6 +11,8 @@ use App\Task;
 use App\Services\TaskService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class TaskController extends Controller
 {
@@ -47,7 +50,7 @@ class TaskController extends Controller
             ]);
         $task->organization_id = tenant()->organization->id;
         switch ($validated['assignToEntity']) {
-            case 'Instructor':
+            case Instructor::class:
                 $task->assign_to_entity = Instructor::class;
                 break;
             default:
@@ -55,6 +58,20 @@ class TaskController extends Controller
                 break;
         }
         $task->save();
+        if ($request->hasFile('files')) {
+            foreach($validated['files'] as $document) {
+                $path = Storage::putFile('tasks', $document);
+                $file = File::make([
+                    'path' => $path,
+                    'filename' => $document->getClientOriginalName()
+                ]);
+                $file->user_id = Auth::user()->id;
+                $file->organization_id = tenant()->organization_id;
+                $file->entity_type = Task::class;
+                $file->entity_id = $task->id;
+                $file->save();
+            }
+        }
         return redirect()->route('tenant:admin.tasks.index', [tenant()->slug])->withSuccess('Task created successfully.');
     }
 
@@ -66,16 +83,30 @@ class TaskController extends Controller
     }
 
 
-    public function update(Task $task, UpdateTask $request)
+    public function update(UpdateTask $request, Task $task)
     {
         //
         $validated = $request->validated();
         $task->update([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            ]);
+        ]);
+        if ($request->hasFile('files')) {
+            foreach($validated['files'] as $document) {
+                $path = Storage::putFile('tasks', $document);
+                $file = File::make([
+                    'path' => $path,
+                    'filename' => $document->getClientOriginalName()
+                ]);
+                $file->user_id = Auth::user()->id;
+                $file->organization_id = tenant()->organization_id;
+                $file->entity_type = Task::class;
+                $file->entity_id = $task->id;
+                $file->save();
+            }
+        }
 
-        return redirect()->route('tenant:admin.tasks.index', tenant()['slug'])->withSuccess('Task has been updated.');
+        return back()->withSuccess('Task has been updated.');
     }
 
     public function archive(Task $task)

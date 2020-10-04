@@ -6,13 +6,23 @@
         /* content:attr(data-letters); */
         display:inline-block;
         font-size:1em;
-        width:1.6em;
-        height:1.6em;
-        line-height:1.6em;
+        width:1.8em;
+        height:1.8em;
+        line-height:1.8em;
         text-align:center;
         border-radius:50%;
         vertical-align:middle;
         margin-right:.1em;
+    }
+    .organization-rectangle {
+        /* content:attr(data-letters); */
+        display:inline-block;
+        line-height:1.6em;
+        text-align:center;
+        vertical-align:middle;
+        margin-right:.1em;
+        padding-left:.2em;
+        padding-right:.2em;
     }
 </style>
 @endpush

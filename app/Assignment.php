@@ -91,4 +91,12 @@ class Assignment extends GenericAssignment implements AssignmentInterface
         $instructorAssignment->instructor_id = $instructorId;
         $instructorAssignment->save();
     }
+
+    public function getAcronymsAttribute()
+    {
+        if(preg_match_all('/\b(\w)/',strtoupper($this->name),$m)) {
+            $acronym = implode('',$m[1]);
+        }
+        return !empty($acronym) ? $acronym : '??';
+    }
 }

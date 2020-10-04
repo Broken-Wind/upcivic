@@ -11,67 +11,79 @@
         @forelse($assignments as $assignment)
             <tr>
                 <td>
-                    <div class="row">
-                        <div class="col-12">
-                            {{ $assignment->name }} <i class="fas fa-info-circle" title="{{ $assignment->description }}"></i>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <small>
-                                From {{ $assignment->assignedByOrganization->name }}:
-                                @forelse($assignment->assigner_files as $file)
-                                    <a href="{{ $file->download_link }}">
-                                        {{ $file->filename }}
-                                    </a>
-                                    @if($file->canDelete(\Auth::user()))
-                                        <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="far fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    @endif
-                                    @if(!$loop->last), @endif
-                                @empty
-                                @endforelse
-                                @if($assignment->isAssignedByOrganization(tenant()->organization))
-                                    <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                    {{ $assignment->name }} <i class="fas fa-info-circle" title="{{ $assignment->description }}"></i>
+                    <small>
+                        <div class="row">
+                            <div class="ml-3 my-auto">From {{ $assignment->assignedByOrganization->name }}: </div>
+                            @forelse($assignment->assigner_files as $file)
+                                <a href="{{ $file->download_link }}" class="my-auto ml-1">
+                                    {{ $file->filename }} <i class="fas fa-download"></i>
+                                </a>
+                                @if($file->canDelete(\Auth::user()))
+                                    <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data" class="my-auto">
                                         @csrf
-                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
-                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-link text-danger">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
                                     </form>
                                 @endif
-                                <br /><br /><br />
-                                From {{ $assignment->assignedToOrganization->name }}:
-                                @forelse($assignment->assignee_files as $file)
-                                    <a href="{{ $file->download_link }}">
-                                        {{ $file->filename }}
-                                    </a>
-                                    @if($file->canDelete(\Auth::user()))
-                                        <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">
-                                                <i class="far fa-trash-alt"></i>
-                                            </button>
-                                        </form>
-                                    @endif
                                 @if(!$loop->last), @endif
-                                @empty
-                                @endforelse
-                                @if($assignment->isAssignedToOrganization(tenant()->organization))
-                                    <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                            @empty
+                            @endforelse
+                        </div>
+                    </small>
+                    @if($assignment->isAssignedByOrganization(tenant()->organization))
+                        <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="files[]" id="files" multiple required>
+                                    <label class="custom-file-label" for="files" aria-describedby="helpfiles">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text" id="helpfiles">Upload</button>
+                                </div>
+                            </div>
+                        </form>
+                    @endif
+                    <hr>
+                    <small>
+                        <div class="row">
+                            <div class="ml-3 my-auto"> From {{ $assignment->assignedToOrganization->name }}: </div>
+                            @forelse($assignment->assignee_files as $file)
+                                <a href="{{ $file->download_link }}" class="ml-1 my-auto">
+                                    {{ $file->filename }} <i class="fas fa-download"></i>
+                                </a>
+                                @if($file->canDelete(\Auth::user()))
+                                    <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
-                                        <button type="submit" class="btn btn-primary">Upload</button>
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-link text-danger">
+                                            <i class="far fa-trash-alt"></i> 
+                                        </button>
                                     </form>
                                 @endif
-                                <i class="fas fa-plus-circle fa-sm" data-toggle="tooltip" title="Upload required document"></i>
-                            </small>
-                        </div>
-                    </div>
+                            @if(!$loop->last), @endif
+                            @empty
+                            @endforelse
+                        </div> 
+                    </small>
+                    @if($assignment->isAssignedToOrganization(tenant()->organization))
+                        <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                            @csrf
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" name="files[]" id="files" multiple required>
+                                    <label class="custom-file-label" for="files" aria-describedby="helpfiles">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button type="submit" class="input-group-text" id="helpfiles">Upload</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    @endif
                 </td>
                 <td>
                     <div class="{{ $assignment->class_string }} p-1 font-weight-bold text-center">
@@ -91,7 +103,6 @@
                             <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Approve</button>
                         </form>
                     @endif
-                    <i class="far fa-bell mr-2"></i>
                 </td>
             </tr>
         @empty

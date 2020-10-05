@@ -105,9 +105,11 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
         Route::post('/assignments/{assignment}/complete', 'AssignmentController@complete')->name('assignments.complete');
         Route::post('/assignments/{assignment}/approve', 'AssignmentController@approve')->name('assignments.approve');
+        Route::get('/assignments/{assignment}/edit', 'AssignmentController@edit')->name('assignments.edit');
         Route::post('/assignments/{assignment}/files', 'AssignmentFilesController@store')->name('assignments.files.store');
         Route::post('/instructor_assignments/{assignment}/complete', 'InstructorAssignmentController@complete')->name('instructor_assignments.complete');
         Route::post('/instructor_assignments/{assignment}/approve', 'InstructorAssignmentController@approve')->name('instructor_assignments.approve');
+        Route::get('/instructor_assignments/{assignment}/edit', 'InstructorAssignmentController@edit')->name('instructor_assignments.edit');
         Route::post('/instructor_assignments/{assignment}/files', 'InstructorAssignmentFilesController@store')->name('instructor_assignments.files.store');
         Route::get('/assignments/outgoing', 'OutgoingAssignmentController@index')->name('assignments.outgoing.index');
         Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');

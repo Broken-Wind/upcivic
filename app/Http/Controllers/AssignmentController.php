@@ -20,4 +20,9 @@ class AssignmentController extends Controller
         return back()->withSuccess('Marked complete!');
     }
 
+    public function edit(Assignment $assignment)
+    {
+        return view('tenant.admin.assignments.edit', compact('assignment'));
+    }
+
 }

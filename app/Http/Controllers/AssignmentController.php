@@ -22,7 +22,9 @@ class AssignmentController extends Controller
 
     public function edit(Assignment $assignment)
     {
-        return view('tenant.admin.assignments.edit', compact('assignment'));
+        $isOutgoingFromTenant = $assignment->assigned_by_organization_id == tenant()->organization_id;
+        $routeActionString = 'tenant:admin.assignments.';
+        return view('tenant.admin.assignments.edit', compact('assignment',  'isOutgoingFromTenant', 'routeActionString'));
     }
 
 }

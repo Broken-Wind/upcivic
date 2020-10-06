@@ -17,8 +17,7 @@
         <div class="card-body">
             @include('tenant.admin.assignments.organizations.components.assignment_list', [
                 'assignments' => $isOutgoingFromTenant ? $organization->incomingAssignments : $organization->outgoingAssignments,
-                'completeRouteString' => 'tenant:admin.assignments.complete',
-                'approveRouteString' => 'tenant:admin.assignments.approve'
+                'editRouteString' => 'tenant:admin.assignments.edit',
             ])
         </div>
     </div>
@@ -29,8 +28,7 @@
                 <h5 class="card-title text-muted mt-4">{{ $instructor->name }}'s Assignments</h5>
                 @include('tenant.admin.assignments.organizations.components.assignment_list', [
                     'assignments' => $instructor->incomingAssignments,
-                    'completeRouteString' => 'tenant:admin.instructor_assignments.complete',
-                    'approveRouteString' => 'tenant:admin.instructor_assignments.approve'
+                    'editRouteString' => 'tenant:admin.instructor_assignments.edit',
                 ])
             @empty
                 No instructors assigned yet.

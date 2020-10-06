@@ -4,14 +4,14 @@
 
     <td>
         @forelse($assignments as $assignment)
-            <span class="organization-rectangle {{ $organization->getSelfClassStringFor(tenant()->organization) }} organization-status">{{ $assignment->acronyms }}</span>
+            <span class="organization-rectangle {{ $assignment->class_string }} organization-status">{{ $assignment->acronyms }}</span>
         @empty
         @endforelse
     </td>
 
     <td class="">
         @forelse($instructors as $instructor)
-            <span class="instructor-bubble {{ $instructor->getSelfClassStringFor(tenant()->organization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+            <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
         @empty
         @endforelse
     </td>

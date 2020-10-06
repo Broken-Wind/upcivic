@@ -20,9 +20,11 @@ class InstructorAssignmentController extends Controller
         return back()->withSuccess('Marked complete!');
     }
 
-    public function edit(Assignment $assignment)
+    public function edit(InstructorAssignment $assignment)
     {
-        return view('tenant.admin.instructor_assignments.edit', compact('assignment'));
+        $isOutgoingFromTenant = $assignment->assigned_by_organization_id == tenant()->organization_id;
+        $routeActionString = 'tenant:admin.instructor_assignments.';
+        return view('tenant.admin.assignments.edit', compact('assignment', 'isOutgoingFromTenant', 'routeActionString'));
     }
 
 }

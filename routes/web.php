@@ -131,5 +131,6 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/instructors/{instructor}/edit', 'InstructorController@edit')->name('instructors.edit');
         Route::delete('/instructors/{instructor}', 'InstructorController@destroy')->name('instructors.destroy');
         Route::put('/instructors/{instructor}', 'InstructorController@update')->name('instructors.update');
+        Route::post('/organizations/{organization}/assigned_instructors', 'OrganizationAssignedInstructorsController@massUpdate')->name('organizations.assigned_instructors.mass_update');
     });
 });

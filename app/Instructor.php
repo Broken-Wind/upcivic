@@ -37,4 +37,9 @@ class Instructor extends GenericAssignableEntity
         $organization = Organization::find($organizationId);
         $organization->assignInstructorTasksTo($this->id);
     }
+
+    public function isAssignedTo(Organization $organization)
+    {
+        return $this->assignedOrganizations()->find($organization->id);
+    }
 }

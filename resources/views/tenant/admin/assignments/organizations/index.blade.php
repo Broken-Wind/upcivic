@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', ' Assignments')
 @section('content')
+@include('tenant.admin.assignments.organizations.components.instructors_assignment_modal')
 <div class="container">
     @if($isOutgoingFromTenant)
         <a href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">
@@ -31,8 +32,12 @@
                     'editRouteString' => 'tenant:admin.instructor_assignments.edit',
                 ])
             @empty
-                No instructors assigned yet.
+                <span class="text-muted pr-2"> Assign the <strong>instructors</strong> required to complete compliance tasks for {{$organization->name}}</span>
             @endforelse
+            <hr>
+            <a href="#" data-toggle="modal" data-target="#instructors-assignment-modal">
+                <i class="fas fa-user-plus"></i>
+            </a>
         </div>
     </div>
 </div>

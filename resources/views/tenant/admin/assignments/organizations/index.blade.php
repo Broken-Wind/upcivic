@@ -2,6 +2,7 @@
 @section('title', ' Assignments')
 @section('content')
 @include('tenant.admin.assignments.organizations.components.instructors_assignment_modal')
+@include('tenant.admin.instructors.components.add_instructor_modal')
 <div class="container">
     @if($isOutgoingFromTenant)
         <a href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">
@@ -35,9 +36,13 @@
                 <span class="text-muted pr-2"> Assign the <strong>instructors</strong> required to complete compliance tasks for {{$organization->name}}</span>
             @endforelse
             <hr>
-            <a href="#" data-toggle="modal" data-target="#instructors-assignment-modal">
-                <i class="fas fa-user-plus"></i>
-            </a>
+            
+            @if(!$isOutgoingFromTenant)
+                <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#instructors-assignment-modal">
+                    Assign Instructors
+                </a>
+                <p><small id="add-instructor" class="text-muted">Select the instructor you'd like to assign this assignment to. Can't find the instructor you'd like? <a href="" data-toggle="modal" data-target="#add-instructor-modal">Add an instructor</a></small></p>
+            @endif
         </div>
     </div>
 </div>

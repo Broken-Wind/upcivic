@@ -16,15 +16,10 @@ class OrganizationAssignedInstructorsController extends Controller
     {
         $validated = $request->validated();
         if (empty($validated['assignInstructorIds'])) {
-            $organization->instructorsAssignedBy(tenant()->organization)->detach();
-            /**
-            tenant()->organization->instructorsAssignedTo($organization)->each(function ($instructor) {
-                $instructor->delete();
-            });
-            */
+            $organization->incomingAssignedInstructors()->detach();
         } else {
             $organization->incomingAssignedInstructors()->attach($validated['assignInstructorIds']);
         }
-        return back()->withSuccess('Assignments updated!');
+        return back()->withSuccess('Instructors updated!');
     }
 }

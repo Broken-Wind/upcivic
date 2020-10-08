@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
     @if($isOutgoingFromTenant)
-        <a href="{{ tenant()->route('tenant:admin.assignments.outgoing.organizations.index', [$assignment->assigned_to_organization_id]) }}">
+        <a href="{{ tenant()->route('tenant:admin.assignments.to.organizations.index', [$assignment->assigned_to_organization_id]) }}">
             <i class="fas fa-angle-left"></i> Back to assignments for {{ $assignment->assignedToOrganization->name }}
         </a>
     @else
-        <a href="{{ tenant()->route('tenant:admin.assignments.incoming.organizations.index', [$assignment->assigned_by_organization_id]) }}">
+        <a href="{{ tenant()->route('tenant:admin.assignments.from.organizations.index', [$assignment->assigned_by_organization_id]) }}">
             <i class="fas fa-angle-left"></i> Back to assignments from {{ $assignment->assignedByOrganization->name }} 
         </a>
     @endif

@@ -18,11 +18,11 @@
 
     <td class="text-right">
         @if ($isOutgoingFromTenant)
-            <a href="{{ tenant()->route('tenant:admin.assignments.outgoing.organizations.index', [$organization->id]) }}">
+            <a href="{{ tenant()->route('tenant:admin.assignments.to.organizations.index', [$organization->id]) }}">
                 <i class="far fa-edit mr-2"></i>
             </a>
         @else
-            <a href="{{ tenant()->route('tenant:admin.assignments.incoming.organizations.index', [$organization->id]) }}">
+            <a href="{{ tenant()->route('tenant:admin.assignments.from.organizations.index', [$organization->id]) }}">
                 <i class="far fa-edit mr-2"></i>
             </a>
         @endif

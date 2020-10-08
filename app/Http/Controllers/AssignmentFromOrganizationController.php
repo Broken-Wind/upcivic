@@ -8,7 +8,7 @@ use App\InstructorAssignment;
 use App\Task;
 use App\Organization;
 
-class IncomingAssignmentOrganizationController extends Controller
+class AssignmentFromOrganizationController extends Controller
 {
     public function index(Organization $organization)
     {

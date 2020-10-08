@@ -24,7 +24,7 @@ class AssignmentController extends Controller
     {
         $isOutgoingFromTenant = $assignment->assigned_by_organization_id == tenant()->organization_id;
         $routeActionString = 'tenant:admin.assignments.';
-        return view('tenant.admin.assignments.edit', compact('assignment',  'isOutgoingFromTenant', 'routeActionString'));
+        return view('tenant.admin.assignments.edit', compact('assignment', 'isOutgoingFromTenant', 'routeActionString'));
     }
 
 }

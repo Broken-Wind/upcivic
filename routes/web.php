@@ -113,8 +113,8 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/instructor_assignments/{assignment}/files', 'InstructorAssignmentFilesController@store')->name('instructor_assignments.files.store');
         Route::get('/assignments/outgoing', 'OutgoingAssignmentController@index')->name('assignments.outgoing.index');
         Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');
-        Route::get('/assignments/outgoing/organizations/{organization}', 'OutgoingAssignmentOrganizationController@index')->name('assignments.outgoing.organizations.index');
-        Route::get('/assignments/incoming/organizations/{organization}', 'IncomingAssignmentOrganizationController@index')->name('assignments.incoming.organizations.index');
+        Route::get('/assignments/to/organizations/{organization}', 'AssignmentToOrganizationController@index')->name('assignments.to.organizations.index');
+        Route::get('/assignments/from/organizations/{organization}', 'AssignmentFromOrganizationController@index')->name('assignments.from.organizations.index');
         Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');

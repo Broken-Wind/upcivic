@@ -37,6 +37,10 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     {
         return $this->belongsTo(Task::class)->withoutGlobalScope('TenantAccesibleTask');
     }
+    public function getAssigneeAttribute()
+    {
+        return $this->assignedToOrganization;
+    }
     public function statusModel()
     {
         return $this->hasOne(AssignmentStatus::class);

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Instructor extends GenericAssignableEntity
 {
     use IsPerson;
+    protected $with = ['person'];
     //
     public function scopeAssignedToOrganization($query, $organizationId)
     {

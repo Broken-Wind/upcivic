@@ -19,9 +19,9 @@
 
                         <tr>
 
-                                <td>{{ $instructor->person->first_name }} {{ $instructor->person->last_name }}</td>
-                                <td>{{ $instructor->person->email }}</td>
-                                <td>{{ $instructor->person->phone }}</td>
+                                <td>{{ $instructor->first_name }} {{ $instructor->last_name }}</td>
+                                <td>{{ $instructor->email }}</td>
+                                <td>{{ $instructor->phone }}</td>
 
                                 <td class="text-right">
                                     <a href="{{ tenant()->route('tenant:admin.instructors.edit', ['instructor' => $instructor->id]) }}">
@@ -37,7 +37,7 @@
 
             @else
 
-                No instructors yet. 
+                No instructors yet.
 
             @endif
 

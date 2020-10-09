@@ -14,8 +14,8 @@
                         <div class="form-check">
                         <label class="form-check-label">
                             <input type="checkbox" class="form-check-input assignment-checkbox" name="assignInstructorIds[]" value="{{ $instructor->id }}" {{ $instructor->isAssignedTo($organization) ? "checked" : "" }}>
-                            {{ $instructor->person->first_name }}
-                            {{ $instructor->person->last_name }}
+                            {{ $instructor->first_name }}
+                            {{ $instructor->last_name }}
                         </label>
                         </div>
                     @empty

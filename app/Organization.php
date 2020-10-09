@@ -14,7 +14,7 @@ class Organization extends GenericAssignableEntity
 
     public function scopeHasAssignmentsTo($query, $organizationId) {
         return $query->partneredWith($organizationId)->whereHas('outgoingAssignments', function ($query) use ($organizationId) {
-            return $query->where('assigned_to_organization_id', $organizationId);
+            return $query->withoutGlobalScope('OrganizationAssignment')->where('assigned_to_organization_id', $organizationId);
         });
     }
 

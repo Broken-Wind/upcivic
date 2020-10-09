@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Assignments')
+@section('title', ($isOutgoingFromTenant ? 'Outgoing' : 'Incoming') . ' Assignments')
 @push('css')
 <style>
     .instructor-bubble {

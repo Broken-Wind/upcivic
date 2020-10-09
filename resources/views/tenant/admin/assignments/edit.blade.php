@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', ' Assignments')
+@section('title', $assignment->name . ' - Assigned to ' . $assignment->assignee->name)
 @section('content')
 <div class="container">
     @if($isOutgoingFromTenant)
@@ -13,13 +13,12 @@
     @endif
     <div class="card my-3">
         <div class="card-header">
-            {{ $assignment->name }} -
-            Assigned To
-            @if($assignment->assign_to_entity == 'App\Instructor')
-                {{ $assignment->instructor->name}}
-            @else
-                {{ $assignment->assignedToOrganization->name }}
-            @endif
+            <strong>
+                {{ $assignment->name }}
+            </strong>
+            <span class="text-muted">
+                - Assigned to {{ $assignment->assignee->name }}
+            </span>
             <span class="{{ $assignment->class_string }} p-1 font-weight-bold text-center px-3 ml-3">
                 {{ $assignment->status_string }}
             </span>

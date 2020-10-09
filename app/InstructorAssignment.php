@@ -28,6 +28,10 @@ class InstructorAssignment extends GenericAssignment implements AssignmentInterf
     {
         return $this->belongsTo(Assignment::class)->withoutGlobalScope('OrganizationAssignment');
     }
+    public function getAssigneeAttribute()
+    {
+        return $this->instructor;
+    }
     public function instructor()
     {
         return $this->belongsTo(Instructor::class)->withoutGlobalScope('TenantAccessibleInstructor');

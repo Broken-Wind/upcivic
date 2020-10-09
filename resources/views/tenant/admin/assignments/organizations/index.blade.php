@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', ' Assignments')
+@section('title', 'Assignments ' . ($isOutgoingFromTenant ? 'to ' : 'from ') . $organization->name)
 @section('content')
 @include('tenant.admin.assignments.organizations.components.instructors_assignment_modal')
 @include('tenant.admin.instructors.components.add_instructor_modal')

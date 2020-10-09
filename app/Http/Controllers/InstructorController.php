@@ -61,7 +61,7 @@ class InstructorController extends Controller
         //
         $validated = $request->validated();
 
-        $instructor->person->update([
+        $instructor->update([
 
             'first_name' => $validated['first_name'],
             'last_name' => $validated['last_name'],

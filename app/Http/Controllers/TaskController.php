@@ -60,7 +60,7 @@ class TaskController extends Controller
         $task->save();
         if ($request->hasFile('files')) {
             foreach($validated['files'] as $document) {
-                $path = Storage::putFile('tasks', $document);
+                $path = Storage::putFile(File::getAdminStoragePath(), $document);
                 $file = File::make([
                     'path' => $path,
                     'filename' => $document->getClientOriginalName()
@@ -93,7 +93,7 @@ class TaskController extends Controller
         ]);
         if ($request->hasFile('files')) {
             foreach($validated['files'] as $document) {
-                $path = Storage::putFile('tasks', $document);
+                $path = Storage::putFile(File::getAdminStoragePath(), $document);
                 $file = File::make([
                     'path' => $path,
                     'filename' => $document->getClientOriginalName()

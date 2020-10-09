@@ -18,7 +18,7 @@ class AssignmentFilesController extends Controller
 
         if ($request->hasFile('files')) {
             foreach($validated['files'] as $document) {
-                $path = Storage::putFile('tasks', $document);
+                $path = Storage::putFile(File::getAdminStoragePath(), $document);
                 $file = File::make([
                     'path' => $path,
                     'filename' => $document->getClientOriginalName()

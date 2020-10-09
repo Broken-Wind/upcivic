@@ -6,11 +6,11 @@
 <div class="container">
     @if($isOutgoingFromTenant)
         <a href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">
-            <i class="fas fa-angle-left"></i> Back to all Outgoing Assignments
+            <i class="fas fa-angle-left"></i> Back to all <strong>outgoing</strong> assignments
         </a>
     @else
         <a href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">
-            <i class="fas fa-angle-left"></i> Back to all Incoming Assignments
+            <i class="fas fa-angle-left"></i> Back to all <strong>incoming</strong> assignments
         </a>
     @endif
     @include('shared.form_errors')

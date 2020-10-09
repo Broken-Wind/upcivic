@@ -1,5 +1,5 @@
 @forelse($assignments as $assignment)
-    <div class="row">
+    <div class="row mb-2">
         <div class="col-md-9">
             <strong>
                 {{ $assignment->name }}

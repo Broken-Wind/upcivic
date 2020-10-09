@@ -32,15 +32,14 @@
     @include('shared.form_errors')
     <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
-            <a class="nav-link {{ !$isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Tasks Assigned to {{ tenant()->name }} </a>
+            <a class="nav-link {{ !$isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Incoming Assignments</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks Assigned to Other Organizations</a>
+            <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Outgoing Assignments</a>
         </li>
     </ul>
 
     <div class="card">
-        <div class="card-header">Overview</div>
         <div class="card-body">
 
             @if($organizations->count() > 0)
@@ -49,12 +48,12 @@
 
                     <thead>
                     @if($isOutgoingFromTenant)
-                        <th>To</th>
+                        <th>Assigned To</th>
                     @else
-                        <th>From</th>
+                        <th>Assigned By</th>
                     @endif
-                        <th>Organization Tasks</th>
-                        <th>Instructors Tasks</th>
+                        <th>Organization Status</th>
+                        <th>Instructor Statuses</th>
                         <th>&nbsp;</th>
                     </thead>
 

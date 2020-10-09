@@ -50,7 +50,7 @@
             <hr>
 
             @if(!$isOutgoingFromTenant)
-                <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#instructors-assignment-modal">
+                <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#instructor-assignment-modal">
                     Assign Instructors
                 </a>
                 <p><small id="add-instructor" class="text-muted">Select the instructor you'd like to assign this assignment to. Can't find the instructor you'd like? <a href="" data-toggle="modal" data-target="#add-instructor-modal">Add an instructor</a></small></p>

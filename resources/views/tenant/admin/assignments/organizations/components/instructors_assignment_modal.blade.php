@@ -23,7 +23,7 @@
                 </form>
             </div>
             <div class="modal-footer" style="">
-                <button type="submit" class="btn btn-primary" form="updateInstructorsAssignment" id="update-instructors">Assign Instructors</button>
+                <button type="submit" class="btn btn-primary" form="updateInstructorsAssignment" id="update-instructors">Update Assignments</button>
             </div>
         </div>
     </div>

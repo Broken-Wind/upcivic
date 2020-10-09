@@ -41,6 +41,9 @@ class GenericAssignableEntity extends Model
     }
     public function isApprovedBy(Organization $organization)
     {
+        if (!$this->hasAssignmentsBy($organization)) {
+            return true;
+        }
         return  $this->hasAssignmentsBy($organization) &&
                 $this->assignmentsBy($organization)->filter(function ($assignment) {
             return !$assignment->isApproved();

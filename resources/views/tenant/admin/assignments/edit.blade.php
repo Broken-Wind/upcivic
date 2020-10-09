@@ -48,20 +48,18 @@
                     </div>
                 </form>
 
-                @if($assignment->canComplete(tenant()->organization))
+                @if($assignment->canComplete(tenant()->organization) && !$assignment->isPending())
                     <form method="POST" action="{{ tenant()->route($routeActionString . 'complete', [$assignment]) }}" class="my-auto pt-3">
                         @csrf
                         <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Complete</button>
                     </form>
                 @endif
 
-                @if($assignment->canApprove(tenant()->organization))
-                    @if(!$assignment->isApproved())
-                        <form method="POST" action="{{ tenant()->route($routeActionString . 'approve', [$assignment]) }}" class="my-auto pt-3">
-                            @csrf
-                            <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Approve</button>
-                        </form>
-                    @endif
+                @if($assignment->canApprove(tenant()->organization) && !$assignment->isApproved())
+                    <form method="POST" action="{{ tenant()->route($routeActionString . 'approve', [$assignment]) }}" class="my-auto pt-3">
+                        @csrf
+                        <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Approve</button>
+                    </form>
                 @endif
             </div>
         </div>

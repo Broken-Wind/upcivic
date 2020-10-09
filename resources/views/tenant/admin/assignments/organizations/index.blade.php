@@ -33,10 +33,22 @@
                     'editRouteString' => 'tenant:admin.instructor_assignments.edit',
                 ])
             @empty
-                <span class="text-muted pr-2"> Assign the <strong>instructors</strong> required to complete compliance tasks for {{$organization->name}}</span>
+                @if($isOutgoingFromTenant)
+                    @if($organization->hasIncomingAssignmentsForInstructors())
+                        <div class="alert alert-danger">{{ $organization->name }} has not assigned any instructors yet.</div>
+                    @else
+                        <div class="alert alert-warning">No instructor tasks have been assigned to {{ $organization->name }}, and they have not assigned any instructors yet.</div>
+                    @endif
+                @else
+                    @if($organization->hasOutgoingAssignmentsForInstructors())
+                        <div class="alert alert-danger">{{ $organization->name }} has assigned one or more tasks for your instructors to complete. Please assign any instructors that will teach for {{ $organization->name }}.</div>
+                    @else
+                        <div class="alert alert-info">No instructor tasks have been assigned by {{ $organization->name }}.</div>
+                    @endif
+                @endif
             @endforelse
             <hr>
-            
+
             @if(!$isOutgoingFromTenant)
                 <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#instructors-assignment-modal">
                     Assign Instructors

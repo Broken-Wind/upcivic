@@ -49,9 +49,17 @@ class Organization extends GenericAssignableEntity
     {
         return $this->hasMany(Assignment::class, 'assigned_by_organization_id')->forInstructors();
     }
+    public function hasOutgoingAssignmentsForInstructors()
+    {
+        return $this->outgoingAssignmentsForInstructors->isNotEmpty();
+    }
     public function incomingAssignmentsForInstructors()
     {
         return $this->hasMany(Assignment::class, 'assigned_to_organization_id')->forInstructors();
+    }
+    public function hasIncomingAssignmentsForInstructors()
+    {
+        return $this->incomingAssignmentsForInstructors->isNotEmpty();
     }
     public function incomingAssignedInstructors()
     {

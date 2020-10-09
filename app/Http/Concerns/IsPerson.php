@@ -57,4 +57,9 @@ trait IsPerson
         });
         parent::update($filtered->toArray(), $options);
     }
+    public function delete()
+    {
+        $this->person->delete();
+        parent::delete();
+    }
 }

@@ -78,7 +78,6 @@ class InstructorController extends Controller
         //
 
         $instructor->delete();
-        $instructor->person->delete();
 
         return redirect()->route('tenant:admin.instructors.index', tenant()['slug'])->withSuccess('Instructor has been deleted.');
     }

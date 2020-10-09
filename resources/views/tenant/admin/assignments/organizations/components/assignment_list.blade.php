@@ -22,5 +22,8 @@
     </div>
     @empty
         No tasks assigned yet.
+        @if($isOutgoingFromTenant)
+            Manage your task assignments <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
+        @endif
     @endforelse
 </container>

@@ -16,9 +16,20 @@ class OrganizationAssignedInstructorsController extends Controller
     {
         $validated = $request->validated();
         if (empty($validated['assignInstructorIds'])) {
+            $organization->incomingAssignedInstructors()->each(function ($instructor) use ($organization) {
+                $instructor->incomingAssignmentsFrom($organization)->delete();
+            });
             $organization->incomingAssignedInstructors()->detach();
         } else {
-            $organization->incomingAssignedInstructors()->attach($validated['assignInstructorIds']);
+            $organization->incomingAssignedInstructors()->whereNotIn('instructors.id', $validated['assignInstructorIds'])->get()->each(function ($instructor) use ($organization) {
+                $instructor->incomingAssignmentsFrom($organization)->delete();
+            });
+            $alreadyAssignedInstructorIds = $organization->incomingAssignedInstructors->pluck('id');
+            $instructorIdsToAssign = collect($validated['assignInstructorIds'])->diff($alreadyAssignedInstructorIds);
+            $organization->incomingAssignedInstructors()->attach($instructorIdsToAssign);
+            $organization->outgoingAssignmentsForInstructors->each(function ($assignment) use ($instructorIdsToAssign) {
+                $assignment->assignToInstructors($instructorIdsToAssign);
+            });
         }
         return back()->withSuccess('Instructors updated!');
     }

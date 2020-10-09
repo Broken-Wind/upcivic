@@ -1,10 +1,9 @@
-<container>
-    @forelse($assignments as $assignment)
+@forelse($assignments as $assignment)
     <div class="row">
         <div class="col-md-9">
-            <a href="{{ tenant()->route($editRouteString, ['assignment' => $assignment->id]) }}">
+            <strong>
                 {{ $assignment->name }}
-            </a>
+            </strong>
             <span class="text-muted"> - {{ $assignment->description }}<span>
         </div>
         <div class="col-md-2">
@@ -20,10 +19,9 @@
 
         <hr/>
     </div>
-    @empty
-        No tasks assigned yet.
-        @if($isOutgoingFromTenant)
-            Manage your task assignments <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
-        @endif
-    @endforelse
-</container>
+@empty
+    No tasks assigned yet.
+    @if($isOutgoingFromTenant)
+        Manage your task assignments <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
+    @endif
+@endforelse

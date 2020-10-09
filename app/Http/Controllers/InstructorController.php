@@ -44,10 +44,8 @@ class InstructorController extends Controller
         $instructor->person_id = $person->id;
         $instructor->organization_id = tenant()->organization_id;
         $instructor = tenant()->organization->instructors()->save($instructor);
-        if ($validated['assign_to_organization_ids']) {
-            foreach($validated['assign_to_organization_ids'] as $organizationId) {
-                $instructor->assignToOrganization($organizationId);
-            }
+        if ($validated['assign_to_organization_id']) {
+            $instructor->assignToOrganization($validated['assign_to_organization_id']);
         }
         return back()->withSuccess('Instructor added.');
     }

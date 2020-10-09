@@ -8,7 +8,6 @@
         <div class="card-body">
             <form method="POST" action="{{ tenant()->route('tenant:admin.instructors.store') }}">
                 @csrf
-                <input type="hidden" name="assign_to_organization_ids[]" value="{{ tenant()->organization->id }}">
                 <div class="form-group">
                     <label for="first-name">First Name</label>
                     <input type="text" class="form-control" name="first_name" required placeholder="Paul">

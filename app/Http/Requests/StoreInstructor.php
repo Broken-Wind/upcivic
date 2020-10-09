@@ -29,8 +29,7 @@ class StoreInstructor extends FormRequest
             'last_name' => 'required|string|max:255',
             'email' => 'required|email',
             'phone' => 'nullable|string|max:255|min:5',
-            'assign_to_organization_ids' => 'nullable|array',
-            'assign_to_organization_ids.*' => 'nullable|numeric',
+            'assign_to_organization_id' => 'nullable|numeric',
         ];
     }
 }

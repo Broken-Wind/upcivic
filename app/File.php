@@ -12,6 +12,10 @@ class File extends Model
         'path',
         'filename'
     ];
+    public static function getAdminStoragePath()
+    {
+        return 'tenants/' . tenant()->slug . '/admin/files';
+    }
     public function scopeEntity($query, $entity)
     {
         return $query->withoutGlobalScope('TenantOwnedFile')->where('entity_type', get_class($entity))->where('entity_id', $entity->id);

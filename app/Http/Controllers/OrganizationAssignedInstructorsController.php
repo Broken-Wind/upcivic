@@ -22,8 +22,12 @@ class OrganizationAssignedInstructorsController extends Controller
             $organization->incomingAssignedInstructors()->detach();
         } else {
             $organization->incomingAssignedInstructors()->whereNotIn('instructors.id', $validated['assignInstructorIds'])->get()->each(function ($instructor) use ($organization) {
-                $instructor->incomingAssignmentsFrom($organization)->delete();
+                $instructor->incomingAssignmentsFrom($organization)->each(function ($assignment) {
+                    $assignment->delete();
+                });
             });
+            $instructorIdsToDetach = $organization->incomingAssignedInstructors()->whereNotIn('instructors.id', $validated['assignInstructorIds'])->pluck('instructors.id');
+            $organization->incomingAssignedInstructors()->detach($instructorIdsToDetach);
             $alreadyAssignedInstructorIds = $organization->incomingAssignedInstructors->pluck('id');
             $instructorIdsToAssign = collect($validated['assignInstructorIds'])->diff($alreadyAssignedInstructorIds);
             $organization->incomingAssignedInstructors()->attach($instructorIdsToAssign);

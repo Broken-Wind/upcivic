@@ -49,8 +49,8 @@ class GenericAssignment extends Model
     }
     public function canComplete(Organization $organization)
     {
-        return $this->assigned_to_organization_id == $organization->id 
-            && !$this->completed_at 
+        return $this->assigned_to_organization_id == $organization->id
+            && !$this->completed_at
             && !$this->approved_at;
     }
     public function canApprove(Organization $organization)
@@ -96,5 +96,13 @@ class GenericAssignment extends Model
     public function getAssigneeFilesAttribute()
     {
         return $this->files($this->assignedToOrganization);
+    }
+
+    public function delete()
+    {
+        $this->ownFiles->each(function ($file) {
+            $file->delete();
+        });
+        parent::delete();
     }
 }

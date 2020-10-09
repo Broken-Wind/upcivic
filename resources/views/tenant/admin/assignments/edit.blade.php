@@ -8,11 +8,18 @@
         </a>
     @else
         <a href="{{ tenant()->route('tenant:admin.assignments.from.organizations.index', [$assignment->assigned_by_organization_id]) }}">
-            <i class="fas fa-angle-left"></i> Back to assignments from {{ $assignment->assignedByOrganization->name }} 
+            <i class="fas fa-angle-left"></i> Back to assignments from {{ $assignment->assignedByOrganization->name }}
         </a>
     @endif
     <div class="card my-3">
-        <div class="card-header">{{ $assignment->name }} Tasks 
+        <div class="card-header">
+            {{ $assignment->name }} -
+            Assigned To
+            @if($assignment->assign_to_entity == 'App\Instructor')
+                {{ $assignment->instructor->name}}
+            @else
+                {{ $assignment->assignedToOrganization->name }}
+            @endif
             <span class="{{ $assignment->class_string }} p-1 font-weight-bold text-center px-3 ml-3">
                 {{ $assignment->status_string }}
             </span>
@@ -21,7 +28,7 @@
             <div class="card-body">
             <p>{{ $assignment->description }}</p>
                 <div class="col">
-                    @include('tenant.admin.assignments.components.file_list', [     
+                    @include('tenant.admin.assignments.components.file_list', [
                         'files' => $assignment->assignee_files, 'organizationName' => $assignment->assignedToOrganization->name
                     ])
 

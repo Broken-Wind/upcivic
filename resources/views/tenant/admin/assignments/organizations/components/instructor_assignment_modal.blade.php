@@ -8,7 +8,7 @@
             </button>
             </div>
             <div class="modal-body" id="modal-body">
-                <form id="updateInstructorsAssignment" method="POST" action="{{tenant()->route('tenant:admin.organizations.assigned_instructors.mass_update', [$organization->id])}}">
+                <form id="updateInstructorAssignments" method="POST" action="{{tenant()->route('tenant:admin.organizations.assigned_instructors.mass_update', [$organization->id])}}">
                     @csrf
                     @forelse(tenant()->organization->instructors as $instructor)
                         <div class="form-check">
@@ -23,7 +23,7 @@
                 </form>
             </div>
             <div class="modal-footer" style="">
-                <button type="submit" class="btn btn-primary" form="updateInstructorsAssignment" id="update-instructors">Update Assignments</button>
+                <button type="submit" class="btn btn-primary" form="updateInstructorAssignments" id="update-instructors">Update Assignments</button>
             </div>
         </div>
     </div>

@@ -15,6 +15,12 @@ class Instructor extends GenericAssignableEntity
             return $query->where('organization_id', $organizationId);
         });
     }
+    public function incomingAssignmentsFrom($organization)
+    {
+        return $this->incomingAssignments()->whereHas('parentAssignment', function ($query) use ($organization) {
+            return $query->where('assigned_by_organization_id', $organization->id);
+        });
+    }
     public function incomingAssignments()
     {
         return $this->hasMany(InstructorAssignment::class);

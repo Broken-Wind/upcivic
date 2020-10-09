@@ -86,10 +86,17 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     }
     public function assignToInstructor($instructorId)
     {
+        abort_if($this->assign_to_entity != Instructor::class, 401);
         $instructorAssignment = InstructorAssignment::make();
         $instructorAssignment->parent_assignment_id = $this->id;
         $instructorAssignment->instructor_id = $instructorId;
         $instructorAssignment->save();
+    }
+    public function assignToInstructors($instructorIds)
+    {
+        foreach($instructorIds as $instructorId) {
+            $this->assignToInstructor($instructorId);
+        }
     }
 
     public function getAcronymsAttribute()

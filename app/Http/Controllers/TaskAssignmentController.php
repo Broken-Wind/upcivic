@@ -18,9 +18,9 @@ class TaskAssignmentController extends Controller
     {
         $validated = $request->validated();
         if (empty($validated['assignToOrganizationIds'])) {
-            Assignment::outgoing()->delete();
+            Assignment::withoutGlobalScope('OrganizationAssignment')->outgoing()->delete();
         } else {
-            Assignment::outgoing()->where('task_id', $task->id)->whereNotIn('assigned_to_organization_id', $validated['assignToOrganizationIds'])->delete();
+            Assignment::withoutGlobalScope('OrganizationAssignment')->outgoing()->where('task_id', $task->id)->whereNotIn('assigned_to_organization_id', $validated['assignToOrganizationIds'])->delete();
             $alreadyAssignedOrganizations = Assignment::outgoing()->where('task_id', $task->id)->whereIn('assigned_to_organization_id', $validated['assignToOrganizationIds'])->get()->pluck('assigned_to_organization_id');
             $organizationsToAssign = collect($validated['assignToOrganizationIds'])->diff($alreadyAssignedOrganizations);
             $organizationsToAssign->each(function ($organizationId) use ($task) {

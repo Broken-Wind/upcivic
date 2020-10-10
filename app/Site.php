@@ -37,4 +37,9 @@ class Site extends Model
     {
         return $this->belongsToMany(Organization::class);
     }
+
+    public function isVirtual()
+    {
+        return $this->name == '[VIRTUAL]';
+    }
 }

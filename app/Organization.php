@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Organization extends GenericAssignableEntity
 {
     //
+    protected $dispatchesEvents = [
+        'created' => \App\Events\OrganizationCreated::class,
+    ];
+
     protected $fillable = [
         'name',
     ];

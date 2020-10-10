@@ -74,15 +74,6 @@
                                         </a>
                                     @empty
                                     @endforelse
-<<<<<<< HEAD
-=======
-                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
-                                        {{ $tenant['name'] }} Programs
-                                    </a>
-                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">
-                                        {{ $tenant['name'] }} Tasks
-                                    </a>
->>>>>>> Add tasks list overview, routes and controller functions.
                                     @if(tenant())
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
                                             {{ $tenant['name'] }} Programs

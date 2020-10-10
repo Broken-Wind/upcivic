@@ -43,6 +43,12 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->isSubscribed() ? tenant()->route('tenant:admin.assignments.outgoing.index') : tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Staff</a>
+                            </li>
                         @endif
 
                         <!-- Authentication Links -->
@@ -68,6 +74,15 @@
                                         </a>
                                     @empty
                                     @endforelse
+<<<<<<< HEAD
+=======
+                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
+                                        {{ $tenant['name'] }} Programs
+                                    </a>
+                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">
+                                        {{ $tenant['name'] }} Tasks
+                                    </a>
+>>>>>>> Add tasks list overview, routes and controller functions.
                                     @if(tenant())
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
                                             {{ $tenant['name'] }} Programs

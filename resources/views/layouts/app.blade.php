@@ -78,6 +78,9 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
                                             {{ $tenant['name'] }} Programs
                                         </a>
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">
+                                            {{ $tenant['name'] }} Tasks
+                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>

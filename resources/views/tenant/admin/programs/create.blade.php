@@ -40,7 +40,7 @@
                     <div class="form-group col">
                         <label for="site_id">Site</label>
                         <select class="form-control" name="site_id" id="">
-                            <option value="">Unknown - To be determined</option>
+                            <option value="">Site TBD</option>
                             @foreach ($sites as $site)
                                 <option value="{{ $site['id'] }}">{{ $site['name'] }} - {{ $site['address'] }}</option>
                             @endforeach

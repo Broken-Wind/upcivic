@@ -30,7 +30,7 @@ class ResourceTimelineService
             })->prepend([
                 'id' => '0_'.$site->id,
                 'site' => $site->name,
-                'title' => 'Location TBD',
+                'title' => $site->isVirtual() ? 'Virtual Program' : 'Location TBD',
             ]);
         })->prepend([[
             'id' => 0,

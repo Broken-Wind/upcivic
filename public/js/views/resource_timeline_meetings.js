@@ -41,6 +41,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 { month: 'numeric', day: 'numeric' } // lower level of text
             ],
             resourceAreaWidth: '20%',
+            resourceLabelDidMount: function(info) {
+                var infoElement = document.createElement('i');
+                infoElement.setAttribute("id", "location-info");
+                infoElement.setAttribute("class", "fas fa-info-circle pl-1 text-secondary");
+                infoElement.setAttribute("data-toggle", "tooltip");
+                infoElement.setAttribute("title", info.resource.extendedProps.notes);
+        
+                var datagridCell = info.el.querySelector('.fc-datagrid-cell-main')
+                console.log(datagridCell);
+                if ((datagridCell.innerText != "Location TBD") && (datagridCell.innerText != "")){
+                    datagridCell.appendChild(infoElement);
+                }
+              }
         }
     },
     eventDrop: function(info) {

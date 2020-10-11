@@ -19,9 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
     },
     customButtons: {
         startDateCalendar: {
-          text: 'Jump to Date',
+          text: 'Go to Date',
           click: function() {
-            alert('Jump to Date');
+            $(this).datepicker({
+                autoclose: true
+            });
+            $(this).datepicker().on('changeDate', function (e) {
+                $('#fullcalendar').fullCalendar('gotoDate', e.date);
+            });
+            $(this).datepicker('show');
           }
         }
       },

@@ -17,6 +17,19 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonText: {
         today: 'Today'
     },
+    customButtons: {
+        startDateCalendar: {
+          text: 'Jump to Date',
+          click: function() {
+            alert('Jump to Date');
+          }
+        }
+      },
+    headerToolbar: {
+        left: 'prev,next today startDateCalendar',
+        center: 'title',
+        right: 'resourceTimelineWeek resourceTimelineDay resourceTimelineMonth'
+    },
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
     eventColor: eventColor,
@@ -32,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resourceTimelineDay: {
             type: 'resourceTimeline',
             duration: { weeks: 1 },
-            buttonText: 'timeline',
+            buttonText: 'week',
             slotDuration: { days: 1 },
             slotLabelInterval: { days: 1 },
             slotMinWidth: 100,
@@ -56,7 +69,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     datagridCell.appendChild(infoElement);
                 }
               }
-        }
+        },
+        resourceTimelineWeek: {
+            buttonText: 'day',
+            resourceAreaWidth: '20%',
+            duration: { days: 1 },
+        },
+        resourceTimelineMonth: {
+            resourceAreaWidth: '20%',
+        },
     },
     eventDrop: function(info) {
         if (info.oldEvent.getResources()[0].id == '0_0') {

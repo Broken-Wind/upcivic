@@ -76,9 +76,10 @@
                 </table>
 
             @else
-
-                No assignments yet.
-
+                No tasks assigned yet.
+                @if($isOutgoingFromTenant)
+                    Asign tasks to a partner <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
+                @endif
             @endif
 
         </div>

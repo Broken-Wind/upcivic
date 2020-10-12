@@ -19,6 +19,7 @@
                         </label>
                         </div>
                     @empty
+                        No partners yet. You can only assign tasks to organizations that submited at least one proposal. Ask your partners to propose programs to you via {{ config('app.name') }} using this link <a href="{{URL::to('/')}}">{{URL::to('/')}}</a> 
                     @endforelse
                 </form>
             </div>

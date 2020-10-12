@@ -17,24 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonText: {
         today: 'Today'
     },
-    customButtons: {
-        startDateCalendar: {
-          text: 'Go to Date',
-          click: function() {
-            $(this).datepicker({
-                autoclose: true
-            });
-            $(this).datepicker().on('changeDate', function (e) {
-                $('#fullcalendar').fullCalendar('gotoDate', e.date);
-            });
-            $(this).datepicker('show');
-          }
-        }
-      },
     headerToolbar: {
-        left: 'prev,next today startDateCalendar',
-        center: 'title',
-        right: 'resourceTimelineWeek resourceTimelineDay resourceTimelineMonth'
+        right: 'prev,next today',
     },
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
@@ -75,15 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     datagridCell.appendChild(infoElement);
                 }
               }
-        },
-        resourceTimelineWeek: {
-            buttonText: 'day',
-            resourceAreaWidth: '20%',
-            duration: { days: 1 },
-        },
-        resourceTimelineMonth: {
-            resourceAreaWidth: '20%',
-        },
+        }
     },
     eventDrop: function(info) {
         if (info.oldEvent.getResources()[0].id == '0_0') {

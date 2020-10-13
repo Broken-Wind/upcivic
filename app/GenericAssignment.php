@@ -10,15 +10,18 @@ class GenericAssignment extends Model
     public const STATUSES = [
         'incomplete' => [
             'class_string' => 'alert-danger',
-            'status_string' => 'Incomplete'
+            'status_string' => 'Incomplete',
+            'status_icon_string' => 'fa-times'
         ],
         'pending' => [
             'class_string' => 'alert-warning',
-            'status_string' => 'Pending Review'
+            'status_string' => 'Pending Review',
+            'status_icon_string' => 'fa-clock'
         ],
         'approved' => [
             'class_string' => 'alert-success',
-            'status_string' => 'Approved'
+            'status_string' => 'Approved',
+            'status_icon_string' => 'fa-check'
         ],
     ];
 
@@ -46,6 +49,9 @@ class GenericAssignment extends Model
     }
     public function getStatusStringAttribute(){
         return self::STATUSES[$this->getStatus()]['status_string'];
+    }
+    public function getStatusIconStringAttribute(){
+        return self::STATUSES[$this->getStatus()]['status_icon_string'];
     }
     public function canComplete(Organization $organization)
     {

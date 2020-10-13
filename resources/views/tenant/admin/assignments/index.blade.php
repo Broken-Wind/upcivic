@@ -6,9 +6,9 @@
         /* content:attr(data-letters); */
         display:inline-block;
         font-size:1em;
-        width:1.8em;
-        height:1.8em;
-        line-height:1.8em;
+        width:2.2em;
+        height:2.2em;
+        line-height:2.2em;
         text-align:center;
         border-radius:50%;
         vertical-align:middle;

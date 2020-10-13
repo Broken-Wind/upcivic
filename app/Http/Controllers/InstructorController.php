@@ -43,8 +43,8 @@ class InstructorController extends Controller
         $instructor = Instructor::make();
         $instructor->person_id = $person->id;
         $instructor->organization_id = tenant()->organization_id;
-        $instructor = tenant()->organization->instructors()->save($instructor);
-        if ($validated['assign_to_organization_id']) {
+        $instructor->save();
+        if (!empty($validated['assign_to_organization_id'])) {
             $instructor->assignToOrganization($validated['assign_to_organization_id']);
         }
         return back()->withSuccess('Instructor added.');

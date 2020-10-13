@@ -15,7 +15,7 @@
     @endif
     @include('shared.form_errors')
     <div class="card my-3">
-        <div class="card-header">Tasks Assigned {{ $isOutgoingFromTenant ? 'to' : 'by' }} {{ $organization->name }}</div>
+        <div class="card-header">Tasks assigned {{ $isOutgoingFromTenant ? 'to' : 'by' }} {{ $organization->name }}</div>
         <div class="card-body">
             @include('tenant.admin.assignments.organizations.components.assignment_list', [
                 'assignments' => $isOutgoingFromTenant ? $organization->incomingAssignments : $organization->outgoingAssignments,
@@ -24,7 +24,7 @@
         </div>
     </div>
     <div class="card mb-3">
-        <div class="card-header">Instructors Assigned {{ $isOutgoingFromTenant ? 'by' : 'to' }} {{ $organization->name }}</div>
+        <div class="card-header">Instructors assigned {{ $isOutgoingFromTenant ? 'by' : 'to' }} {{ $organization->name }}</div>
         <div class="card-body">
             @forelse($instructors as $instructor)
                 <h5 class="card-title text-muted mt-4">{{ $instructor->name }}'s Assignments</h5>
@@ -35,15 +35,15 @@
             @empty
                 @if($isOutgoingFromTenant)
                     @if($organization->hasIncomingAssignmentsForInstructors())
-                        <div class="alert alert-danger">{{ $organization->name }} has not assigned any instructors yet.</div>
+                        <div>{{ $organization->name }} has not assigned any instructors yet.</div>
                     @else
-                        <div class="alert alert-warning">You have not assigned any instructor tasks to {{ $organization->name }}, and they have not assigned any instructors yet.</div>
+                        <div>You have not assigned any instructor tasks to {{ $organization->name }}, and they have not assigned any instructors yet.</div>
                     @endif
                 @else
                     @if($organization->hasOutgoingAssignmentsForInstructors())
-                        <div class="alert alert-danger">{{ $organization->name }} has assigned one or more tasks for your instructors to complete. Please assign any instructors that will teach for {{ $organization->name }}.</div>
+                        <div>{{ $organization->name }} has assigned one or more tasks for your instructors to complete. Please assign any instructors that will teach for {{ $organization->name }}.</div>
                     @else
-                        <div class="alert alert-warning">No instructor tasks have been assigned by {{ $organization->name }} yet.</div>
+                        <div>No instructor tasks have been assigned by {{ $organization->name }} yet.</div>
                     @endif
                 @endif
             @endforelse

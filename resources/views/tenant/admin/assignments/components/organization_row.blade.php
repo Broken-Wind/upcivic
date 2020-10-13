@@ -6,7 +6,7 @@
         @forelse($assignments as $assignment)
             <span class="organization-rectangle alert py-1 my-1 {{ $assignment->class_string }} organization-status" title="{{ $assignment->name }}">{{ $assignment->acronyms }}</span>
         @empty
-            <div class="alert alert-warning py-1 my-1">No assignments yet.</div>
+            <div class="py-1 my-1">No assignments yet.</div>
         @endforelse
     </td>
 
@@ -16,15 +16,15 @@
         @empty
             @if($isOutgoingFromTenant)
                 @if($organization->hasIncomingAssignmentsForInstructors())
-                    <div class="alert py-1 my-1 alert-danger">{{ $organization->name }} has not assigned any instructors yet.</div>
+                    <div class="py-1 my-1">{{ $organization->name }} has not assigned any instructors yet.</div>
                 @else
-                    <div class="alert py-1 my-1 alert-warning">You have not assigned any instructor tasks.</div>
+                    <div class="py-1 my-1">You have not assigned any instructor tasks.</div>
                 @endif
             @else
                 @if($organization->hasOutgoingAssignmentsForInstructors())
-                    <div class="alert py-1 my-1 alert-danger">Please assign one or more instructors.</div>
+                    <div class="py-1 my-1">Please assign one or more instructors.</div>
                 @else
-                    <div class="alert py-1 my-1 alert-warning">No instructor tasks have been assigned by {{ $organization->name }} yet.</div>
+                    <div class="py-1 my-1">No instructor tasks have been assigned by {{ $organization->name }} yet.</div>
                 @endif
             @endif
         @endforelse

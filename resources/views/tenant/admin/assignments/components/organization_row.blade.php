@@ -4,13 +4,13 @@
 
     <td class="my-1 py-1">
         @forelse($assignments as $assignment)
-            <span class="organization-rectangle alert py-1 my-1 {{ $assignment->class_string }} organization-status" title="{{ $assignment->name }}">{{ $assignment->acronyms }}</span>
+            <span class="organization-rectangle alert py-1 my-1 {{ $assignment->class_string }} organization-status" title="{{ $assignment->name }}">{{ $assignment->acronyms }} <i class="fas fa-fw {{ $assignment->status_icon_string }}"></i></span>
         @empty
             <div class="alert alert-warning py-1 my-1">No assignments yet.</div>
         @endforelse
     </td>
 
-    <td class="{{ $instructors->isEmpty() ? 'my-1 py-1' : '' }}">
+    <td class="{{ $instructors->isEmpty() ? 'my-1 py-1' : 'my-2 py-2' }}">
         @forelse($instructors as $instructor)
             <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
         @empty

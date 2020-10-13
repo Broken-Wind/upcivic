@@ -51,7 +51,7 @@ trait IsPerson
     public function update(array $attributes = [], array $options = [])
     {
         $this->person->update($attributes, $options);
-        $personAttributes = collect($this->person->attributes);
+        $personAttributes = collect($this->person->personAttributes);
         $filtered = collect($attributes)->reject(function ($value, $attribute) use ($personAttributes) {
             return $personAttributes->has($attribute);
         });

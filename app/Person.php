@@ -13,11 +13,12 @@ class Person extends Model
         'email',
         'phone'
     ];
-    public $attributes;
-    public function __construct()
-    {
-        $this->attributes = $this->fillable;
-    }
+    public $personAttributes = [
+        'first_name',
+        'last_name',
+        'email',
+        'phone'
+    ];
 
     public function getNameAttribute()
     {

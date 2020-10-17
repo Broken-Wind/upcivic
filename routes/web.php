@@ -89,7 +89,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/programs/reject', 'ProgramController@reject')->name('programs.reject');
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
         Route::get('/programs/{program}', 'ProgramController@show')->name('programs.show');
-        Route::post('/programs/loa', 'ProgramController@generateLoa')->name('programs.loa');
+        Route::post('/programs/bulk_action', 'ProgramController@bulkAction')->name('programs.bulkAction');
         Route::put('/programs/{program}/enrollments', 'ProgramEnrollmentController@update')->name('programs.enrollments.update');
         Route::put('/programs/{program}', 'ProgramController@update')->name('programs.update');
         Route::delete('/programs/{program}', 'ProgramController@destroy')->name('programs.destroy');

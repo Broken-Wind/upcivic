@@ -2,7 +2,7 @@
     <div class="row">
         @if(tenant()->isSubscribed())
             <div class="col-md-1 align-self-center text-center">
-                <input form="generate_loa" type="checkbox" name="program_ids[]" value="{{ $program['id'] }}">
+                <input form="bulk_action" type="checkbox" name="program_ids[]" value="{{ $program['id'] }}">
             </div>
         @endif
         <div class="col-md-3">

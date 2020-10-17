@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonText: {
         today: 'Today'
     },
+    headerToolbar: {
+        right: 'prev,next today',
+    },
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
     eventColor: eventColor,
@@ -32,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resourceTimelineDay: {
             type: 'resourceTimeline',
             duration: { weeks: 1 },
-            buttonText: 'timeline',
+            buttonText: 'week',
             slotDuration: { days: 1 },
             slotLabelInterval: { days: 1 },
             slotMinWidth: 100,

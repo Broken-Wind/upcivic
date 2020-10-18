@@ -19,12 +19,14 @@ use App\Program;
 use App\Site;
 use App\Template;
 use Carbon\Carbon;
+use App\Exports\ProgramsExport;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Mixpanel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramController extends Controller
 {
@@ -54,12 +56,17 @@ class ProgramController extends Controller
             $contributorGroups = $programs->groupBy(function ($program, $key) {
                 return $program->contributors->pluck('organization_id')->sort()->implode(',');
             });
+
             $loa = App::make('dompdf.wrapper');
             $content = view('tenant.admin.programs.pdf', compact('contributorGroups'));
             $loa->loadHTML($content->render());
+
             return $loa->stream();
         } elseif ($request->input('action') == 'export') {
-            return 'export';
+            $validated = $request->validated();
+            $today = Carbon::now()->toDateString();
+
+            return Excel::download(new ProgramsExport($validated['program_ids']), 'Programs-' . $today . '.xlsx');
         }
     }
 

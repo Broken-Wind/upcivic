@@ -16,7 +16,7 @@
         <div class="form-row mb-4">
             <div class="col">
                 @if($templateCount > 0)
-                    <a class="btn btn-primary mr-5" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
+                    <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
                 @else
                     Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
                 @endif

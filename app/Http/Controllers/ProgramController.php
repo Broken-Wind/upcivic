@@ -7,7 +7,7 @@ use App\County;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\ApproveProgram;
 use App\Http\Requests\RejectProgram;
-use App\Http\Requests\StoreLoa;
+use App\Http\Requests\BulkActionPrograms;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
@@ -19,12 +19,14 @@ use App\Program;
 use App\Site;
 use App\Template;
 use Carbon\Carbon;
+use App\Exports\ProgramsExport;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Mixpanel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProgramController extends Controller
 {
@@ -46,16 +48,26 @@ class ProgramController extends Controller
         return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites'));
     }
 
-    public function generateLoa(StoreLoa $request) {
-        $validated = $request->validated();
-        $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $validated['program_ids'])->get();
-        $contributorGroups = $programs->groupBy(function ($program, $key) {
-            return $program->contributors->pluck('organization_id')->sort()->implode(',');
-        });
-        $loa = App::make('dompdf.wrapper');
-        $content = view('tenant.admin.programs.pdf', compact('contributorGroups'));
-        $loa->loadHTML($content->render());
-        return $loa->stream();
+    public function bulkAction(BulkActionPrograms $request) 
+    {
+        if ($request->input('action') == 'generate_loa') {
+            $validated = $request->validated();
+            $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $validated['program_ids'])->get();
+            $contributorGroups = $programs->groupBy(function ($program, $key) {
+                return $program->contributors->pluck('organization_id')->sort()->implode(',');
+            });
+
+            $loa = App::make('dompdf.wrapper');
+            $content = view('tenant.admin.programs.pdf', compact('contributorGroups'));
+            $loa->loadHTML($content->render());
+
+            return $loa->stream();
+        } elseif ($request->input('action') == 'export') {
+            $validated = $request->validated();
+            $today = Carbon::now()->toDateString();
+
+            return Excel::download(new ProgramsExport($validated['program_ids']), 'Programs-' . $today . '.xlsx');
+        }
     }
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreLoa extends FormRequest
+class BulkActionPrograms extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,4 +29,13 @@ class StoreLoa extends FormRequest
             'program_ids.*' => 'required|numeric',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'program_ids.required' => 'Select at least one program.',
+            'program_ids.*.required' => 'Select at least one program.',
+        ];
+    }
+
 }

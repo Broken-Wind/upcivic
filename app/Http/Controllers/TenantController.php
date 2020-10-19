@@ -36,6 +36,7 @@ class TenantController extends Controller
     {
         //
         $validated = $request->validated();
+        dd($validated);
 
         $organization = Organization::create([
 

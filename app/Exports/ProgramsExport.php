@@ -13,9 +13,9 @@ class ProgramsExport implements FromQuery, WithHeadings, WithMapping
 {
     use Exportable;
 
-    public function __construct($program_ids)
+    public function __construct($programIds)
     {
-        $this->program_ids = $program_ids;
+        $this->program_ids = $programIds;
     }
 
     public function headings(): array

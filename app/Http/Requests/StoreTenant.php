@@ -38,7 +38,7 @@ class StoreTenant extends FormRequest
         return [
             //
             'name' => 'required|unique:organizations|max:255',
-            'slug' => ['required', 'unique:tenants', 'max:255'.'alpha_dash', new Slug],
+            'slug' => ['required', 'unique:tenants', 'max:255', 'alpha_dash', new Slug],
         ];
     }
 }

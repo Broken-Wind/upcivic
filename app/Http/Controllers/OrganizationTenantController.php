@@ -31,7 +31,7 @@ class OrganizationTenantController extends Controller
 
         Auth::user()->joinTenant($organization->tenant);
 
-        Program::createExample($organization);
+        // Program::createExample($organization);
 
         return redirect()->route('home');
     }

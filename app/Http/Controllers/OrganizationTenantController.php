@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreTenant;
+use App\Http\Requests\StoreOrganizationTenant;
 use App\Organization;
 use App\Program;
 use App\Tenant;
@@ -19,7 +19,7 @@ class OrganizationTenantController extends Controller
         return view('organizations.tenant.create', compact('organization'));
     }
 
-    public function store(StoreTenant $request, Organization $organization)
+    public function store(StoreOrganizationTenant $request, Organization $organization)
     {
         $validated = $request->validated();
 

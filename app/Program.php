@@ -364,12 +364,12 @@ class Program extends Model
 
     public function getInternalNameAttribute()
     {
-        return $this->contributors->where('organization_id', tenant()['id'])->first()['internal_name'] ?? $this['name'];
+        return $this->contributors->where('organization_id', tenant()->organization_id)->first()['internal_name'] ?? $this['name'];
     }
 
     public function setInternalNameAttribute($internalName)
     {
-        return $this->contributors->where('organization_id', tenant()['id'])->first()->update(['internal_name' => $internalName]);
+        return $this->contributors->where('organization_id', tenant()->organization_id)->first()->update(['internal_name' => $internalName]);
     }
 
     public function getStartDatetimeAttribute()

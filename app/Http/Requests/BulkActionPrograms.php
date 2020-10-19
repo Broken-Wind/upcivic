@@ -29,4 +29,13 @@ class BulkActionPrograms extends FormRequest
             'program_ids.*' => 'required|numeric',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'program_ids.required' => 'Select at least one program.',
+            'program_ids.*.required' => 'Select at least one program.',
+        ];
+    }
+
 }

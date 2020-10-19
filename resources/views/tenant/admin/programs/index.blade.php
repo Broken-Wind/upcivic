@@ -1,6 +1,18 @@
 @extends('layouts.app')
 @section('title', 'Proposals')
 @section('content')
+
+@push('scripts')
+<script type="application/javascript">
+    function toggle(source) {
+        checkboxes = document.querySelectorAll('.bulk-action-checkbox');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            checkboxes[i].checked = source.checked;
+        }
+    }
+</script>
+
+@endpush
 <div class="container">
     @include('shared.form_errors')
     <form id="filters" action="{{ URL::current() }}" method="GET">
@@ -20,6 +32,12 @@
                     @if(tenant()->isSubscribed())
                         <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button>
                         <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="export">Export</button>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" onClick="toggle(this)" />
+                                Select All
+                            </label>
+                        </div>
                     @endif
                 @else
                     Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>

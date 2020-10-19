@@ -55,13 +55,13 @@ class ProgramsExport implements FromQuery, WithHeadings, WithMapping
             $program->max_age,
             $program->min_enrollments,
             $program->max_enrollments,
-            Carbon::parse($program->meetings->first()->start_datetime)->toDateString(),
-            Carbon::parse($program->meetings->last()->end_datetime)->toDateString(),
+            $program->meetings->first()->start_date,
+            $program->meetings->last()->end_date,
             $program->meetings->sortBy('start_datetime')->map(function ($meeting) {
                 return $meeting->start_date . " " . $meeting->start_time . "-" . $meeting->end_time;
             })->implode(', '),
-            Carbon::parse($program->meetings->first()->start_datetime)->toTimeString(), 
-            Carbon::parse($program->meetings->last()->end_datetime)->toTimeString(),
+            $program->meetings->first()->start_time,
+            $program->meetings->last()->end_time,
             $program->site->name,
             $program->location->name,
             $program->formatted_base_fee,

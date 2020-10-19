@@ -21,27 +21,30 @@
 
     @if($programsExist)
         @if(tenant()->isSubscribed())
-            <form id="bulk_action" name="bulk_action" target="_blank" action="{{ tenant()->route('tenant:admin.programs.bulkAction') }}" method="POST">
+            <form id="bulk_action" name="bulk_action" action="{{ tenant()->route('tenant:admin.programs.bulkAction') }}" method="POST">
                 @csrf
             </form>
         @endif
         <div class="form-row mb-4">
             <div class="col">
-                @if($templateCount > 0)
-                    <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
-                    @if(tenant()->isSubscribed())
-                        <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button>
-                        <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="export">Export</button>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" onClick="toggle(this)" />
-                                Select All
-                            </label>
-                        </div>
-                    @endif
-                @else
-                    Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
-                @endif
+
+            @if($templateCount > 0)
+                <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
+            @endif
+            @if(tenant()->isSubscribed())
+                <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button>
+                <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="export">Export</button>
+                <div class="form-check form-check-inline mb-3 ml-3">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" onClick="toggle(this)" />
+                        Select All Programs
+                    </label>
+                </div>
+                <br>
+            @endif
+            @if($templateCount == 0)
+                Want to propose your own program? <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
+            @endif
             </div>
             <div class="col text-right">
                 <button type="button" class="btn btn-light" data-toggle="modal" data-target="#filterModal" form="filters">

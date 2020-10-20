@@ -5,18 +5,95 @@ namespace App;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-class Organization extends Model
+class Organization extends GenericAssignableEntity
 {
     //
+    protected $dispatchesEvents = [
+        'created' => \App\Events\OrganizationCreated::class,
+    ];
+
     protected $fillable = [
         'name',
     ];
+
+    public function scopeHasAssignmentsTo($query, $organizationId) {
+        return $query->partneredWith($organizationId)->whereHas('outgoingAssignments', function ($query) use ($organizationId) {
+            return $query->withoutGlobalScope('OrganizationAssignment')->where('assigned_to_organization_id', $organizationId);
+        });
+    }
+
+    public function scopePartneredWith($query, $organizationId)
+    {
+        return $query->whereHas('programs', function ($query) use ($organizationId) {
+            return $query->whereHas('contributors', function ($query) use ($organizationId) {
+                return $query->where('organization_id', $organizationId);
+            })->whereNotNull('proposed_at');
+        })->where('id', '!=', $organizationId);
+    }
 
     public function scopeEmailable($query)
     {
         return $query->whereHas('administrators', function ($query) {
             return $query->whereNotNull('email');
         });
+    }
+    public function outgoingAssignments()
+    {
+        return $this->hasMany(Assignment::class, 'assigned_by_organization_id');
+    }
+    public function incomingAssignments()
+    {
+        return $this->hasMany(Assignment::class, 'assigned_to_organization_id');
+    }
+    public function assignmentsTo(Organization $organization)
+    {
+        return $this->outgoingAssignments->where('assigned_to_organization_id', $organization->id);
+    }
+    public function outgoingAssignmentsForInstructors()
+    {
+        return $this->hasMany(Assignment::class, 'assigned_by_organization_id')->forInstructors();
+    }
+    public function hasOutgoingAssignmentsForInstructors()
+    {
+        return $this->outgoingAssignmentsForInstructors->isNotEmpty();
+    }
+    public function incomingAssignmentsForInstructors()
+    {
+        return $this->hasMany(Assignment::class, 'assigned_to_organization_id')->forInstructors();
+    }
+    public function hasIncomingAssignmentsForInstructors()
+    {
+        return $this->incomingAssignmentsForInstructors->isNotEmpty();
+    }
+    public function incomingAssignedInstructors()
+    {
+        return $this->belongsToMany(Instructor::class, 'assigned_instructors')->withoutGlobalScope('TenantAccessibleInstructor');
+    }
+    public function instructorsAssignedTo(Organization $organization)
+    {
+        return $this->instructors()->whereHas('assignedOrganizations', function ($assignment) use ($organization) {
+            return $assignment->where('assigned_instructors.organization_id', $organization->id);
+        })->withoutGlobalScope('TenantAccessibleInstructor')->get();
+    }
+    public function instructorsAssignedBy(Organization $organization)
+    {
+        return $organization->instructorsAssignedTo($this);
+    }
+
+    public function assignInstructorTasksTo($instructorId)
+    {
+        $this->outgoingAssignmentsForInstructors->each(function ($assignment) use ($instructorId) {
+            $assignment->assignToInstructor($instructorId);
+        });
+    }
+
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class, 'contributors');
+    }
+    public function instructors()
+    {
+        return $this->hasMany(Instructor::class);
     }
 
     public function administrators()

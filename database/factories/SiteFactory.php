@@ -106,3 +106,101 @@ $factory->afterCreatingState(Site::class, 'demoCommunityCenter', function (Site 
         ]);
     }
 });
+
+$factory->afterCreatingState(Site::class, 'demoSchool', function (Site $site, Faker $faker) {
+    $locationTemplates = [
+        [
+            'name' => 'Room 1',
+            'capacity' => 30,
+            'notes' => 'Kindergarten',
+        ],
+        [
+            'name' => 'Room 2',
+            'capacity' => 30,
+            'notes' => 'Kindergarten',
+        ],
+        [
+            'name' => 'Room 3',
+            'capacity' => 30,
+            'notes' => 'First Grade',
+        ],
+        [
+            'name' => 'Room 4',
+            'capacity' => 30,
+            'notes' => 'Second Grade',
+        ],
+        [
+            'name' => 'Room 5',
+            'capacity' => 20,
+            'notes' => 'Third Grade',
+        ],
+        [
+            'name' => 'Room 6a',
+            'capacity' => 25,
+            'notes' => 'Fourth Grade',
+        ],
+        [
+            'name' => 'Room 6b',
+            'capacity' => 25,
+            'notes' => 'Fourth Grade',
+        ],
+        [
+            'name' => 'Library',
+            'capacity' => 100,
+            'notes' => '',
+        ],
+        [
+            'name' => 'Multi-Purpose Room',
+            'capacity' => 150,
+            'notes' => '',
+        ],
+        [
+            'name' => 'Portable A',
+            'capacity' => 25,
+            'notes' => 'Fifth Grade',
+        ],
+        [
+            'name' => 'Portable B',
+            'capacity' => 25,
+            'notes' => 'Fifth Grade',
+        ],
+        [
+            'name' => 'Compuer Lab',
+            'capacity' => 35,
+            'notes' => '',
+        ],
+        [
+            'name' => 'Soccer Field 1',
+            'capacity' => 200,
+            'notes' => '',
+        ],
+        [
+            'name' => 'Soccer Field 2',
+            'capacity' => 200,
+            'notes' => '',
+        ],
+        [
+            'name' => 'Baseball Diamond',
+            'capacity' => 100,
+            'notes' => '',
+        ],
+        [
+            'name' => 'Playground',
+            'capacity' => 50,
+            'notes' => '',
+        ],
+        [
+            'name' => 'Blacktop',
+            'capacity' => 25,
+            'notes' => 'Fourth Grade',
+        ],
+    ];
+    foreach ($locationTemplates as $template) {
+        $locations[] = factory(Location::class)->create([
+            'name' => $template['name'],
+            'site_id' => $site['id'],
+            'capacity' => $template['capacity'],
+            'notes' => $template['notes'],
+        ]);
+    }
+});

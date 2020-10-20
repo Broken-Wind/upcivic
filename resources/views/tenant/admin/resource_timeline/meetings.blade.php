@@ -29,11 +29,13 @@
     .fc-toolbar-title {
         font-size: 1.125rem !important;
     }
-    
+
     a.fc-timeline-event.fc-h-event.fc-event.fc-event-draggable {
         border-radius: 0.25rem;
         margin: 1px;
     }
+
+    .fc-datagrid-expander.fc-datagrid-expander-placeholder { display: none; }
 
     </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@5.2.0/main.css" integrity="sha256-/rB/IDulpFpJSHjrUgRHzB99AnJh3RBNrUOpF+4QIKA=" crossorigin="anonymous">

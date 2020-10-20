@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreLoa extends FormRequest
+class StoreTask extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,11 @@ class StoreLoa extends FormRequest
     {
         return [
             //
-            'program_ids' => 'required|array',
-            'program_ids.*' => 'required|numeric',
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'assignToEntity' => 'required|string|in:App\Organization,App\Instructor',
+            'files' => 'nullable|array',
+            'files.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048'
         ];
     }
 }

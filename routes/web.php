@@ -75,6 +75,7 @@ Route::group(['middleware' => 'verified'], function () {
          * Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
          * Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
          */
+
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');
         Route::post('/templates', 'TemplateController@store')->name('templates.store');
@@ -88,7 +89,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/programs/reject', 'ProgramController@reject')->name('programs.reject');
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
         Route::get('/programs/{program}', 'ProgramController@show')->name('programs.show');
-        Route::post('/programs/loa', 'ProgramController@generateLoa')->name('programs.loa');
+        Route::post('/programs/bulk_action', 'ProgramController@bulkAction')->name('programs.bulkAction');
         Route::put('/programs/{program}/enrollments', 'ProgramEnrollmentController@update')->name('programs.enrollments.update');
         Route::put('/programs/{program}', 'ProgramController@update')->name('programs.update');
         Route::delete('/programs/{program}', 'ProgramController@destroy')->name('programs.destroy');
@@ -102,5 +103,34 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
+        Route::post('/assignments/{assignment}/complete', 'AssignmentController@complete')->name('assignments.complete');
+        Route::post('/assignments/{assignment}/approve', 'AssignmentController@approve')->name('assignments.approve');
+        Route::get('/assignments/{assignment}/edit', 'AssignmentController@edit')->name('assignments.edit');
+        Route::post('/assignments/{assignment}/files', 'AssignmentFilesController@store')->name('assignments.files.store');
+        Route::post('/instructor_assignments/{assignment}/complete', 'InstructorAssignmentController@complete')->name('instructor_assignments.complete');
+        Route::post('/instructor_assignments/{assignment}/approve', 'InstructorAssignmentController@approve')->name('instructor_assignments.approve');
+        Route::get('/instructor_assignments/{assignment}/edit', 'InstructorAssignmentController@edit')->name('instructor_assignments.edit');
+        Route::post('/instructor_assignments/{assignment}/files', 'InstructorAssignmentFilesController@store')->name('instructor_assignments.files.store');
+        Route::get('/assignments/outgoing', 'OutgoingAssignmentController@index')->name('assignments.outgoing.index');
+        Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');
+        Route::get('/assignments/to/organizations/{organization}', 'AssignmentToOrganizationController@index')->name('assignments.to.organizations.index');
+        Route::get('/assignments/from/organizations/{organization}', 'AssignmentFromOrganizationController@index')->name('assignments.from.organizations.index');
+        Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
+        Route::get('/tasks', 'TaskController@index')->name('tasks.index');
+        Route::post('/tasks', 'TaskController@store')->name('tasks.store');
+        Route::get('/files/{file}/download', 'FileController@download')->name('files.download');
+        Route::delete('/files/{file}', 'FileController@destroy')->name('files.destroy');
+        Route::get('/tasks/create', 'TaskController@create')->name('tasks.create');
+        Route::get('/tasks/{task}/edit', 'TaskController@edit')->name('tasks.edit');
+        Route::post('/tasks/{task}/archive', 'TaskController@archive')->name('tasks.archive');
+        Route::delete('/tasks/{task}', 'TaskController@destroy')->name('tasks.destroy');
+        Route::put('/tasks/{task}', 'TaskController@update')->name('tasks.update');
+        Route::get('/instructors', 'InstructorController@index')->name('instructors.index');
+        Route::get('/instructors/create', 'InstructorController@create')->name('instructors.create');
+        Route::post('/instructors', 'InstructorController@store')->name('instructors.store');
+        Route::get('/instructors/{instructor}/edit', 'InstructorController@edit')->name('instructors.edit');
+        Route::delete('/instructors/{instructor}', 'InstructorController@destroy')->name('instructors.destroy');
+        Route::put('/instructors/{instructor}', 'InstructorController@update')->name('instructors.update');
+        Route::post('/organizations/{organization}/assigned_instructors', 'OrganizationAssignedInstructorsController@massUpdate')->name('organizations.assigned_instructors.mass_update');
     });
 });

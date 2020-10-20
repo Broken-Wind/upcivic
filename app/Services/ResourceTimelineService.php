@@ -25,11 +25,12 @@ class ResourceTimelineService
                     'id' => $location->id,
                     'site' => $location->site->name,
                     'title' => $location->event_title,
+                    'notes' => $location->notes,
                 ];
             })->prepend([
                 'id' => '0_'.$site->id,
                 'site' => $site->name,
-                'title' => 'Location TBD',
+                'title' => $site->isVirtual() ? 'Virtual Program' : 'Location TBD',
             ]);
         })->prepend([[
             'id' => 0,

@@ -44,7 +44,10 @@
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Programs</a>
+                                <a class="nav-link" href="{{ tenant()->isSubscribed() ? tenant()->route('tenant:admin.assignments.outgoing.index') : tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Staff</a>
                             </li>
                         @endif
 
@@ -72,6 +75,12 @@
                                     @empty
                                     @endforelse
                                     @if(tenant())
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
+                                            {{ $tenant['name'] }} Programs
+                                        </a>
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">
+                                            {{ $tenant['name'] }} Tasks
+                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>

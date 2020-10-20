@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
     buttonText: {
         today: 'Today'
     },
+    headerToolbar: {
+        right: 'prev,next today',
+    },
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
     eventColor: eventColor,
@@ -32,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resourceTimelineDay: {
             type: 'resourceTimeline',
             duration: { weeks: 1 },
-            buttonText: 'timeline',
+            buttonText: 'week',
             slotDuration: { days: 1 },
             slotLabelInterval: { days: 1 },
             slotMinWidth: 100,
@@ -41,6 +44,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 { month: 'numeric', day: 'numeric' } // lower level of text
             ],
             resourceAreaWidth: '20%',
+            resourceLabelDidMount: function(info) {
+                var infoElement = document.createElement('i');
+                infoElement.setAttribute("id", "location-info");
+                infoElement.setAttribute("class", "fas fa-info-circle pl-1 text-secondary");
+                infoElement.setAttribute("data-toggle", "tooltip");
+                infoElement.setAttribute("title", info.resource.extendedProps.notes);
+
+                var datagridCell = info.el.querySelector('.fc-datagrid-cell-main')
+                console.log(datagridCell);
+                if ((datagridCell.innerText != "Location TBD")
+                && (datagridCell.innerText != "Virtual Program")
+                && (datagridCell.innerText != "")){
+                    datagridCell.appendChild(infoElement);
+                }
+              }
         }
     },
     eventDrop: function(info) {
@@ -178,7 +196,9 @@ function populateContributorActionsForm(program) {
                 actionOptions.push(getContributorActionOption(contributor));
             }
         });
-        actionOptions = actionOptions.concat(defaultActionOptions);
+        if (actionOptions.length > 1) {
+            actionOptions = actionOptions.concat(defaultActionOptions);
+        }
         document.getElementById('program-contributor-actions').innerHTML = actionOptions;
     }
 }

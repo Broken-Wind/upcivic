@@ -30,6 +30,8 @@ class TaskController extends Controller
      */
     public function index()
     {
+        abort_if(!tenant()->isSubscribed(), 401);
+
         $tasks = Task::all();
         $organizations = Organization::partneredWith(tenant()->organization_id)->orderBy('name')->get();
         $taskJson = $this->taskService->getIndexJson();
@@ -38,11 +40,15 @@ class TaskController extends Controller
 
     public function create()
     {
+        abort_if(!tenant()->isSubscribed(), 401);
+
         return view('tenant.admin.tasks.create');
     }
 
     public function store(StoreTask $request)
     {
+        abort_if(!tenant()->isSubscribed(), 401);
+
         $validated = $request->validated();
         $task = Task::make([
             'name' => $validated['name'],
@@ -78,6 +84,7 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         //
+        abort_if(!tenant()->isSubscribed(), 401);
 
         return view('tenant.admin.tasks.edit', compact('task'));
     }
@@ -86,6 +93,8 @@ class TaskController extends Controller
     public function update(UpdateTask $request, Task $task)
     {
         //
+        abort_if(!tenant()->isSubscribed(), 401);
+
         $validated = $request->validated();
         $task->update([
             'name' => $validated['name'],
@@ -112,6 +121,7 @@ class TaskController extends Controller
     public function archive(Task $task)
     {
         //
+        abort_if(!tenant()->isSubscribed(), 401);
 
         $task->archived_at = Carbon::now();
         $task->save();
@@ -122,6 +132,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         //
+        abort_if(!tenant()->isSubscribed(), 401);
 
         $task->delete();
 

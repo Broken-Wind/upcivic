@@ -17,7 +17,9 @@ class OrganizationAssignedInstructorsController extends Controller
         $validated = $request->validated();
         if (empty($validated['assignInstructorIds'])) {
             $organization->incomingAssignedInstructors()->each(function ($instructor) use ($organization) {
-                $instructor->incomingAssignmentsFrom($organization)->delete();
+                $instructor->incomingAssignmentsFrom($organization)->each(function ($assignment) {
+                    $assignment->delete();
+                });
             });
             $organization->incomingAssignedInstructors()->detach();
         } else {

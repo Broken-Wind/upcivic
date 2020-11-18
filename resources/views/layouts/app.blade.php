@@ -61,7 +61,7 @@
                                 </li>
                             @else
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ tenant()->isSubscribed() ? tenant()->route('tenant:admin.assignments.outgoing.index') : tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
+                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
                                 </li>
                             @endif
 

@@ -29,7 +29,7 @@
             @forelse($instructors as $instructor)
                 <h5 class="card-title text-muted mt-4">{{ $instructor->name }}'s Assignments</h5>
                 @include('tenant.admin.assignments.organizations.components.assignment_list', [
-                    'assignments' => $instructor->incomingAssignments,
+                    'assignments' => $instructor->incomingAssignmentsFrom($organization),
                     'editRouteString' => 'tenant:admin.instructor_assignments.edit',
                 ])
             @empty
@@ -51,7 +51,7 @@
 
             @if(!$isOutgoingFromTenant)
                 <a href="#" class="btn btn-secondary" data-toggle="modal" data-target="#instructor-assignment-modal">
-                    Assign Instructors
+                    Assign/Unassign Instructors
                 </a>
                 <p><small id="add-instructor" class="text-muted">Select the instructor you'd like to assign this assignment to. Can't find the instructor you'd like? <a href="" data-toggle="modal" data-target="#add-instructor-modal">Add an instructor</a></small></p>
             @endif

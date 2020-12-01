@@ -83,14 +83,13 @@
                     {{ config('app.name') }}
                 </div>
 
-                <h4 class="mb-5">Manage all your enrichment proposals in one place.</h4>
+                <h4 class="mb-5">Manage all your recreation partnerships in one place.</h4>
 
                 @guest
 
                     <a class="btn btn-outline-secondary btn-lg mt-3" href="/register">Get started</a>
 
                 @endguest
-
                 @auth
 
                     <a class="btn btn-primary btn-lg mt-3" href="/home">Visit Dashboard</a><br />

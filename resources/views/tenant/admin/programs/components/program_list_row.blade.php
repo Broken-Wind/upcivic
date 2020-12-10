@@ -92,7 +92,9 @@
         <div class="col-md-2 text-center">
             <div class="row">
                 <div class="col-12">
-                    <div class="{{ $program->class_string }} font-weight-bold">{{ $program->status_string }}</div>
+                    @if(!$program->isApprovedByAllContributors())
+                        <div class="{{ $program->class_string }} font-weight-bold">{{ $program->status_string }}</div>
+                    @endif
                 </div>
                 <div class="col-12 text-left">
                     @if($program['proposed_at'] == null)

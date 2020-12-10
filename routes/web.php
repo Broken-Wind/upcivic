@@ -67,15 +67,10 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');
         Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');
-        /**
-         * Disabling the ability to add organizations without users.
-         * This functionality will most likely return soon, but not for the MVP.
-         * Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
-         * Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
-         * Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
-         * Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
-         */
-
+        Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
+        Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
+        Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
+        Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');
         Route::post('/templates', 'TemplateController@store')->name('templates.store');

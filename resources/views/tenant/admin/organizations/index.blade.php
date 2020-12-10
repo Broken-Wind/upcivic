@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title', 'Clients')
+
+@include('tenant.admin.organizations.components.add_organization_modal')
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -9,21 +13,9 @@
 
                 <div class="card-body">
 
-                    @include('shared.form_errors')
-
-                    <form class="form-inline" method="POST" action="{{ tenant()->route('tenant:admin.organizations.store') }}">
-
-                        @csrf
-                        <label class="sr-only" for="inlineFormInputName">Organization Name</label>
-                        <input type="text" name ="name" class="form-control mb-2 mr-sm-2" id="inlineFormInputName" placeholder="Exampleville Parks & Recreation">
-
-                        <button type="submit" class="btn btn-primary mb-2">Add New Organization</button>
-                        </form>
-
                     @if($organizations->count() > 0)
 
-
-                        <p>The following is a list of all organizations listed in {{ config('app.name') }}.</p>
+                        <p>The following is a list of all organizations listed in {{ config('app.name') }}. If you'd like to offer programs at an organization that isn't listed below, please <a href="" data-toggle="modal" data-target="#add-organization-modal">add a new organization here.</a></p>
                         <table class="table table-striped">
 
                             @foreach($organizations as $organization)

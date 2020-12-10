@@ -63,7 +63,7 @@
     @empty
     @endforelse
 </table>
-<h3>Programs ({{ $programs->count() }} total)</h3>
+<h3>Program Templates ({{ $programs->count() }} total)</h3>
     <table>
         <tr>
             <th>ID</th>

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Programs')
+@section('title', 'Program Templates')
 @section('content')
 <div class="container">
     @include('shared.form_errors')
@@ -7,7 +7,7 @@
     <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.templates.create') }}">Add Program</a>
 
     <div class="card">
-        <div class="card-header">Programs</div>
+        <div class="card-header">Program Templates</div>
 
         <div class="card-body">
 

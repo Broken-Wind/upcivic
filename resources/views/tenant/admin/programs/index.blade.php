@@ -29,7 +29,7 @@
             <div class="col">
 
             @if($templateCount > 0)
-                <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
+                <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Program</a>
             @endif
             @if(tenant()->isSubscribed())
                 {{-- <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button> --}}
@@ -37,7 +37,7 @@
                 <div class="form-check form-check-inline mb-3 ml-3">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" onClick="toggle(this)" />
-                        Select All Programs
+                        Select All Program Templates
                     </label>
                 </div>
                 <br>

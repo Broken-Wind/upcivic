@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Add Proposal')
+@section('title', 'Add Program')
 @include('tenant.admin.templates.components.add_template_modal')
 @include('tenant.admin.organizations.components.add_organization_modal')
 @include('tenant.admin.sites.components.add_site_modal')
@@ -8,7 +8,7 @@
 <div class="container">
     @include('shared.form_errors')
     <div class="card">
-        <div class="card-header">Add Proposal</div>
+        <div class="card-header">Add Program</div>
         <div class="card-body">
             <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
                 @csrf
@@ -28,14 +28,14 @@
 
                 <div class="form-row">
                     <div class="form-group col">
-                        <label for="organization_id">Proposal Recipient</label>
+                        <label for="organization_id">Propose this program to another organization?</label>
                         <select class="form-control" name="recipient_organization_id" id="" required>
                                 <option value="">--------</option>
                             @foreach ($organizations as $organization)
                                 <option value="{{ $organization['id'] }}">{{ $organization['name'] }} ({{ $organization->emailableContacts()->pluck('name')->implode(', ') }})</option>
                             @endforeach
                         </select>
-                        <small id="add-organization" class="text-muted">Select the organization you'd like to send this proposal to. Can't find the organization you'd like? <a href="" data-toggle="modal" data-target="#add-organization-modal">Add an organization</a></small>
+                        <small id="add-organization" class="text-muted">Select the organization you'd like to propose this program to. Can't find the organization you'd like? <a href="" data-toggle="modal" data-target="#add-organization-modal">Add an organization</a></small>
                     </div>
                     <div class="form-group col">
                         <label for="site_id">Site</label>

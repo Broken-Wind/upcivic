@@ -90,7 +90,7 @@
                                     @endforelse
                                     @if(tenant())
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
-                                            {{ $tenant['name'] }} Programs
+                                            {{ $tenant['name'] }} Program Templates
                                         </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile

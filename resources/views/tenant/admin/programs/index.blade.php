@@ -32,7 +32,7 @@
                 <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
             @endif
             @if(tenant()->isSubscribed())
-                <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button>
+                {{-- <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button> --}}
                 <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="export">Export</button>
                 <div class="form-check form-check-inline mb-3 ml-3">
                     <label class="form-check-label">

@@ -35,19 +35,14 @@
                                 </form>
                                 </li>
                             @endif
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Activities</a>
+                            </li> 
                             @if(tenant()->isSubscribed())
-                                <li class="nav-link dropdown">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Schedule
-                                    <span class="caret"></span></div>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a></li>
-                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a></li>
-                                    </ul>
-                                </li>
-                            @else
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
+                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Facility Calendar</a>
                                 </li> 
+                            @else
                             @endif
 
                             @if(tenant()->isSubscribed())

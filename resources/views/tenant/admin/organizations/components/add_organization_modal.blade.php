@@ -31,6 +31,10 @@
                         <label for="administrator-title">Title</label>
                         <input type="text" class="form-control" name="administrator[title]" id="administrator-title"  placeholder="Recreation Supervisor">
                     </div>
+                    <div class="form-group">
+                        <label for="enrollment-url">Registration Website Link</label>
+                        <input type="text" class="form-control" name="enrollment_url" id="enrorllment-url"  placeholder="https://rec.center.com/fakeville/activities">
+                    </div>
                     <button type="submit" class="btn btn-primary mb-2">Add Organization</button>
                 </form>
             </div>

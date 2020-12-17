@@ -31,6 +31,7 @@ class StoreOrganization extends FormRequest
             'administrator.last_name' => 'required|string',
             'administrator.email' => 'required|email',
             'administrator.title' => 'nullable|string',
+            'enrollment_url' => 'nullable|string',
         ];
     }
 }

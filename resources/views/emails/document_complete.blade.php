@@ -1,8 +1,8 @@
 @component('mail::message')
-All parties have now completed the action listed below via {{ config('app.name') }}.
+All parties have now signed the document listed below via {{ config('app.name') }}.
 
 @component('mail::panel')
-## COMPLETED - {{ $assignment['name'] }}
+## FULLY SIGNED - {{ $assignment['name'] }}
 {{ $assignment['description'] }}
 @endcomponent
 

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\URL;
+
 class Assignment extends GenericAssignment implements AssignmentInterface
 {
     //
@@ -39,7 +41,7 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     }
     public function getPdfUrlAttribute()
     {
-        return tenant()->route('tenant:assignments.pdf', [$this]);
+        return URL::signedRoute('tenant:assignments.pdf', [tenant()->slug, $this]);
     }
     public function getAssigneeAttribute()
     {

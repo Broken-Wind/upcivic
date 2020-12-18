@@ -68,5 +68,7 @@
             'organization' => $assignment->assignedByOrganization,
             'signature' => $assignment->getSignatureFrom($assignment->assignedByOrganization)
         ])
+
+        <a class="btn btn-primary" href="{{ $assignment->pdf_url }}">Download as PDF</a>
     </div>
 </div>

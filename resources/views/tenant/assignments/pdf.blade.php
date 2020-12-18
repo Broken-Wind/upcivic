@@ -62,20 +62,28 @@
     <h4>
         {{ $assignment->assignedToOrganization->name }} Representative
     </h4>
-    <span class="signature">
-        {{ $assignment->metadata['assigned_to_organization_signature']['signature'] ?? '' }}
-    </span>
+    @if(!empty($assignment->metadata['assigned_to_organization_signature']['signature']))
+        <span class="signature">
+            {{ $assignment->metadata['assigned_to_organization_signature']['signature'] }}
+        </span>
+    @else
+        {{ $assignment->assignedToOrganization->name }} hasn't signed this document yet.
+    @endif
     <br>
     <small class="text-muted">
         {{ $assignment->metadata['assigned_to_organization_signature']['timestamp'] ?? '' }}
         {{ $assignment->metadata['assigned_to_organization_signature']['ip'] ?? '' }}
     </small>
     <h4>
-        {{ $assignment->assignedToOrganization->name }} Representative
+        {{ $assignment->assignedByOrganization->name }} Representative
     </h4>
-    <span class="signature">
-        {{ $assignment->metadata['assigned_by_organization_signature']['signature'] ?? '' }}
-    </span>
+    @if(!empty($assignment->metadata['assigned_by_organization_signature']['signature']))
+        <span class="signature">
+            {{ $assignment->metadata['assigned_by_organization_signature']['signature'] }}
+        </span>
+    @else
+        {{ $assignment->assignedByOrganization->name }} hasn't signed this document yet.
+    @endif
     <br>
     <small class="text-muted">
         {{ $assignment->metadata['assigned_by_organization_signature']['timestamp'] ?? '' }}

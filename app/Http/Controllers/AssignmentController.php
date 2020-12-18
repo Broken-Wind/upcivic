@@ -8,12 +8,15 @@ use App\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class AssignmentController extends Controller
 {
     //
-    public function pdf(Assignment $assignment)
+    public function pdf(Request $request, Assignment $assignment)
     {
+        abort_if(!$request->hasValidSignature(), 401);
+
         $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $assignment->metadata['program_ids'])->get();
 
         $pdf = App::make('dompdf.wrapper');
@@ -48,7 +51,8 @@ class AssignmentController extends Controller
         if (isset($assignment->metadata['program_ids'])) {
             $programs = Program::whereIn('id', $assignment->metadata['program_ids'])->get();
         }
-        return view('tenant.admin.assignments.edit', compact('assignment', 'isOutgoingFromTenant', 'routeActionString', 'programs'));
+        $pdfUrl = URL::signedRoute('tenant:assignments.pdf', [tenant()->slug, $assignment]);
+        return view('tenant.admin.assignments.edit', compact('assignment', 'isOutgoingFromTenant', 'routeActionString', 'programs', 'pdfUrl'));
     }
 
 }

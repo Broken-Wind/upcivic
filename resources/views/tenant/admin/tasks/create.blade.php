@@ -42,6 +42,21 @@
                 </label>
                 </div>
 
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="isDocument" id="isDocument" value="1" onClick="$('.documentContainer').toggle()">
+                    Create a custom signable document for this task
+                  </label>
+                </div>
+                <div class="form-group documentContainer" style="display:none;">
+                  <label for="documentTitle">Document Title</label>
+                  <input type="text"
+                    class="form-control" name="documentTitle" id="documentTitle" aria-describedby="helpId" placeholder="Letter of Agreement">
+                </div>
+                <div class="form-group documentContainer" style="display:none;">
+                  <label for="documentText">Document Text</label>
+                  <textarea class="form-control" name="documentText" id="documentText" rows="10"></textarea>
+                </div>
                 <button type="submit" class="btn btn-primary">Add Task</button>
             </form>
         </div>

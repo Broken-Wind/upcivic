@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\Http\Controllers\Controller;
+use App\Program;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AssignmentController extends Controller
 {
     //
+    public function sign(Request $request, Assignment $assignment)
+    {
+        abort_if(!$request->hasValidSignature(), 401);
+        $programs = Program::whereIn('id', $assignment->metadata['program_ids'])->get();
+        return view('tenant.assignments.sign', compact('assignment', 'programs'));
+    }
     public function complete(Assignment $assignment)
     {
         $assignment->complete(Auth::user());

@@ -41,6 +41,8 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
+    Route::get('/assignments/{assignment}', 'AssignmentController@sign')->name('assignments.sign');
+    Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
 });
 Route::group(['middleware' => 'verified'], function () {
     Route::group([

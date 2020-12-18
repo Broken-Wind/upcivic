@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class GenericAssignment extends Model
 {
+    protected $casts = [
+        'metadata' => 'array'
+    ];
     public const STATUSES = [
         'incomplete' => [
             'class_string' => 'alert-danger',
@@ -63,9 +66,11 @@ class GenericAssignment extends Model
     {
         return $this->assigned_by_organization_id == $organization->id;
     }
-    public function complete(User $user) {
+    public function complete(User $user = null) {
         $this->completed_at = Carbon::now();
-        $this->completed_by_user_id = $user->id;
+        if (!empty($user)) {
+            $this->completed_by_user_id = $user->id;
+        }
         $this->save();
         return $this;
     }
@@ -74,6 +79,23 @@ class GenericAssignment extends Model
         $this->approved_by_user_id = $user->id;
         $this->save();
         return $this;
+    }
+    public function sign($signature)
+    {
+        $metadata = $this->metadata;
+        $metadata = array_merge($metadata, $signature);
+        $this->metadata = $metadata;
+        $this->save();
+    }
+    public function isSignedByOrganization(Organization $organization)
+    {
+        if (isset($this->metadata['assigned_by_organization_signature']['organization_id']) && $this->metadata['assigned_by_organization_signature']['organization_id'] == $organization->id) {
+            return true;
+        }
+        if (isset($this->metadata['assigned_to_organization_signature']['organization_id']) && $this->metadata['assigned_to_organization_signature']['organization_id'] == $organization->id) {
+            return true;
+        }
+        return false;
     }
     public function assignedByOrganization()
     {

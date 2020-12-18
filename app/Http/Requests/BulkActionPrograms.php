@@ -25,6 +25,9 @@ class BulkActionPrograms extends FormRequest
     {
         return [
             //
+            'action' => 'required|string',
+            'task_ids' => 'nullable|array',
+            'task_ids.*' => 'nullable|numeric',
             'program_ids' => 'required|array',
             'program_ids.*' => 'required|numeric',
         ];

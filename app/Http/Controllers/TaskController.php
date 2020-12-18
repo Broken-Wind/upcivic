@@ -63,6 +63,18 @@ class TaskController extends Controller
                 $task->assign_to_entity = Organization::class;
                 break;
         }
+        switch ($validated['isDocument']) {
+            case true:
+                $task->type = 'generated_document';
+                $task->metadata = [
+                    'document_title' => $validated['documentTitle'],
+                    'document_text' => $validated['documentText']
+                ];
+                break;
+            default:
+                $task->type = 'generic_assignment';
+                break;
+        }
         $task->save();
         if ($request->hasFile('files')) {
             foreach($validated['files'] as $document) {

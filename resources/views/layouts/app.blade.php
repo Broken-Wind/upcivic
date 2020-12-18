@@ -27,6 +27,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
+<<<<<<< HEAD
                             @if(Auth::user()->canGenerateDemoData())
                                 <li class="nav-item">
                                 <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
@@ -46,26 +47,60 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Schedule</a>
                             </li> 
+=======
+                            @auth
+                                @if(Auth::user()->canGenerateDemoData())
+                                    <li class="nav-item">
+                                    <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary mr-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
+                                    </form>
+                                    </li>
+                                @endif
+                                @if(tenant()->isSubscribed())
+                                    <li class="nav-link dropdown">
+                                        <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Schedule
+                                        <span class="caret"></span></div>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a></li>
+                                            <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a></li>
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
+                                    </li>
+                                @endif
 
-                            @if(tenant()->isSubscribed())
-                                <li class="nav-link dropdown">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Compliance
-                                    <span class="caret"></span></div>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a class="dropdown-item" href="{{ tenant()->isSubscribed() ? tenant()->route('tenant:admin.assignments.outgoing.index') : tenant()->route('tenant:admin.assignments.incoming.index') }}">Assignments</a></li>
-                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Tasks</a></li>
-                                    </ul>
-                                </li>
-                            @else
+                                @if(tenant()->isSubscribed())
+                                    <li class="nav-link dropdown">
+                                        <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Compliance
+                                        <span class="caret"></span></div>
+                                        <ul class="dropdown-menu dropdown-menu-right">
+                                            <li><a class="dropdown-item" href="{{ tenant()->isSubscribed() ? tenant()->route('tenant:admin.assignments.outgoing.index') : tenant()->route('tenant:admin.assignments.incoming.index') }}">Assignments</a></li>
+                                            <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Tasks</a></li>
+                                        </ul>
+                                    </li>
+                                @else
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
+                                    </li>
+                                @endif
+>>>>>>> WIP sign LOAs digitally
+
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
+                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Staff</a>
                                 </li>
+<<<<<<< HEAD
                             @endif
 
                             <li class="nav-item">
                                  <a class="nav-link" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a>
                             </li>
 
+=======
+                            @endauth
+>>>>>>> WIP sign LOAs digitally
                         @endif
 
                         <!-- Authentication Links -->

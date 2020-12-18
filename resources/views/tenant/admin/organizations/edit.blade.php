@@ -19,9 +19,11 @@
 
                         <div class="form-group">
 
-                            <label for="createOrganization">Name</label>
+                            <label for="name">Name</label>
+                            <input id="name" type="text" class="form-control" name="name" value="{{ $organization['name'] }}" placeholder="Fakeville Rec" />
 
-                            <input type="text" class="form-control" name="name" value="{{ $organization['name'] }}" placeholder="Acme Rec">
+                            <label for="enrollment-url">Registration Website Link</label>
+                            <input id="enrollment-url" type="text" class="form-control" name="enrollment_url" value="{{ $organization['enrollment_url'] }}" placeholder="https://rec.center.com/fakeville/activities" />
 
                         </div>
 

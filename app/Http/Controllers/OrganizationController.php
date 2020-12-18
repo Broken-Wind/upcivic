@@ -40,6 +40,9 @@ class OrganizationController extends Controller
             $organization->administrators()->save($administrator, ['title' => $validated->administrator['title']]);
         }
 
+        $organization->enrollment_url = $validated->enrollment_url;
+        $organization->save();
+
         return back()->withSuccess('Organization added successfully.');
     }
 
@@ -55,6 +58,7 @@ class OrganizationController extends Controller
         $organization->update([
 
             'name' => $validated['name'],
+            'enrollment_url' => $validated['enrollment_url'],
 
         ]);
 

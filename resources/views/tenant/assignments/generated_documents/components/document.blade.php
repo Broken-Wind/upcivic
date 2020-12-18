@@ -60,11 +60,11 @@
         </table>
         <hr>
         <h3>Signatures</h3>
-        @include('tenant.assignments.components.generated_documents.signature_area', [
+        @include('tenant.assignments.generated_documents.components.signature_area', [
             'organization' => $assignment->assignedToOrganization,
             'signature' => $assignment->getSignatureFrom($assignment->assignedToOrganization)
         ])
-        @include('tenant.assignments.components.generated_documents.signature_area', [
+        @include('tenant.assignments.generated_documents.components.signature_area', [
             'organization' => $assignment->assignedByOrganization,
             'signature' => $assignment->getSignatureFrom($assignment->assignedByOrganization)
         ])

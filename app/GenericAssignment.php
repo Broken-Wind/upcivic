@@ -92,7 +92,18 @@ class GenericAssignment extends Model
     {
         return $this->assigned_to_organization_id == $organization->id
             && !$this->completed_at
-            && !$this->approved_at;
+            && !$this->approved_at
+            && $this->type == 'generic_assignment';
+    }
+    public function canUpload(Organization $organization)
+    {
+        if ($this->assigned_by_organization_id == $organization->id) {
+            return true;
+        };
+        if ($this->assigned_to_organization_id == $organization->id && $this->type == 'generic_assignment') {
+            return true;
+        }
+        return false;
     }
     public function canApprove(Organization $organization)
     {

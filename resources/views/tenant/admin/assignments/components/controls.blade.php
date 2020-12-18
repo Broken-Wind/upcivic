@@ -24,17 +24,19 @@
             ])
         </div>
 
-        <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
-            @csrf
-            <div class="row">
-                <div class="col-3">
-                    <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
+        @if($assignment->canUpload(tenant()->organization))
+            <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+                @csrf
+                <div class="row">
+                    <div class="col-3">
+                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-secondary btn-sm">Upload</button>
+                    </div>
                 </div>
-                <div class="col-1">
-                    <button type="submit" class="btn btn-secondary btn-sm">Upload</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        @endif
 
         @if($assignment->canComplete(tenant()->organization) && !$assignment->isPending())
             <form method="POST" action="{{ tenant()->route($routeActionString . 'complete', [$assignment]) }}" class="my-auto pt-3">

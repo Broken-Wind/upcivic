@@ -136,6 +136,23 @@ class ProgramController extends Controller
         return back()->withSuccess('Proposal sent successfully.');
     }
 
+    public function proposalPreview(Program $program) {
+        $sendingOrganization = tenant()->organization;
+        $recipientOrganizations = $program->contributors()->where('organization_id', '!=', $sendingOrganization->id)->get()->map(function ($contributor) {
+            return $contributor->organization;
+        });
+        $proposal = collect([
+            'sender' => Auth::user(),
+            'sending_organization' => $sendingOrganization,
+            'recipient_organizations' => $recipientOrganizations,
+            'programs' => [$program],
+        ]);
+
+        $this->proposed_at = Carbon::now();
+
+        return (new ProposalSent($proposal))->render();
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -233,4 +250,5 @@ class ProgramController extends Controller
 
         return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
     }
+
 }

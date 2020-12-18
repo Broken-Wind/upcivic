@@ -99,6 +99,7 @@ Route::group(['middleware' => 'verified'], function () {
         // Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');
         Route::post('/programs/{program}/meetings/update', 'ProgramMeetingController@update')->name('programs.meetings.update');
         Route::delete('/programs/{program}/contributors/{contributor}', 'ProgramContributorController@destroy')->name('programs.contributors.destroy');
+        Route::get('/programs/{program}/proposal_preview', 'ProgramController@proposalPreview')->name('programs.proposal_preview');
         Route::get('/sites', 'SiteController@index')->name('sites.index');
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');

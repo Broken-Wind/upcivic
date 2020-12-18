@@ -47,6 +47,34 @@ class GenericAssignment extends Model
     {
         return $this->completed_at && !$this->approved_at;
     }
+    public function isGenericAssignment()
+    {
+        return $this->task->type == 'generic_assignment';
+    }
+    public function isGeneratedDocument()
+    {
+        return $this->task->type == 'generated_document';
+    }
+    public function getSignatureFrom(Organization $organization)
+    {
+        if (isset($this->metadata['assigned_to_organization_signature']['organization_id']) && $this->metadata['assigned_to_organization_signature']['organization_id'] == $organization->id) {
+            return $this->metadata['assigned_to_organization_signature'];
+        }
+        if (isset($this->metadata['assigned_by_organization_signature']['organization_id']) && $this->metadata['assigned_by_organization_signature']['organization_id'] == $organization->id) {
+            return $this->metadata['assigned_by_organization_signature'];
+        }
+        return false;
+    }
+    public function isSignableBy(Organization $organization, $route)
+    {
+        if ($this->assignedByOrganization == $organization && $route == 'tenant:admin.assignments.edit') {
+            return true;
+        }
+        if ($this->assignedToOrganization == $organization && $route == 'tenant:assignments.sign') {
+            return true;
+        }
+        return false;
+    }
     public function getClassStringAttribute(){
         return self::STATUSES[$this->getStatus()]['class_string'];
     }
@@ -82,6 +110,7 @@ class GenericAssignment extends Model
     }
     public function sign($signature)
     {
+        // dd($signature);
         $metadata = $this->metadata;
         $metadata = array_merge($metadata, $signature);
         $this->metadata = $metadata;

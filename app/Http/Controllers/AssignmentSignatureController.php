@@ -13,7 +13,12 @@ class AssignmentSignatureController extends Controller
     public function store(StoreAssignmentSignature $request, Assignment $assignment)
     {
         $validated = $request->validated();
-        $signatureKey = 'assigned_to_organization_signature';
+        if ($assignment->assignedToOrganization->id == $validated['organization_id']) {
+            $signatureKey = 'assigned_to_organization_signature';
+            $assignment->complete();
+        } else {
+            $signatureKey = 'assigned_by_organization_signature';
+        }
         $signature = [
             $signatureKey => [
                 'organization_id' => $validated['organization_id'],
@@ -23,7 +28,6 @@ class AssignmentSignatureController extends Controller
             ]
         ];
         $assignment->sign($signature);
-        $assignment->complete();
         return back()->withSuccess('Signature applied.');
     }
 }

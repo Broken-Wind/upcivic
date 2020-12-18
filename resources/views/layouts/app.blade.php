@@ -36,7 +36,7 @@
                                 </li>
                             @endif
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Clients</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a>
                             </li>
 
                             <li class="nav-item">

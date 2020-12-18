@@ -22,7 +22,7 @@
                             <label for="name">Name</label>
                             <input id="name" type="text" class="form-control" name="name" value="{{ $organization['name'] }}" placeholder="Fakeville Rec" />
 
-                            <label for="enrollment-url">Registration Website Link</label>
+                            <label class="mt-2" for="enrollment-url">Registration Website Link</label>
                             <input id="enrollment-url" type="text" class="form-control" name="enrollment_url" value="{{ $organization['enrollment_url'] }}" placeholder="https://rec.center.com/fakeville/activities" />
 
                         </div>

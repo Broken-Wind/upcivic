@@ -116,6 +116,10 @@ class GenericAssignment extends Model
         $this->metadata = $metadata;
         $this->save();
     }
+    public function isFullySigned()
+    {
+        return !empty($this->metadata['assigned_by_organization_signature']) && !empty($this->metadata['assigned_to_organization_signature']);
+    }
     public function isSignedByOrganization(Organization $organization)
     {
         if (isset($this->metadata['assigned_by_organization_signature']['organization_id']) && $this->metadata['assigned_by_organization_signature']['organization_id'] == $organization->id) {

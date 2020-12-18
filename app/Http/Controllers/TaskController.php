@@ -63,8 +63,8 @@ class TaskController extends Controller
                 $task->assign_to_entity = Organization::class;
                 break;
         }
-        switch ($validated['isDocument']) {
-            case true:
+        switch (true) {
+            case !empty($validated['isDocument']):
                 $task->type = 'generated_document';
                 $task->metadata = [
                     'document_title' => $validated['documentTitle'],

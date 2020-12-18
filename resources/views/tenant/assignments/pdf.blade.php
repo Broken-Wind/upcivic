@@ -28,27 +28,12 @@
             padding: 5px;
         }
     </style>
-    <title>Letter of Agreement</title>
+    <title>{{ $assignment->metadata['document_title']}}</title>
 </head>
 <body>
-
-@forelse($contributorGroups as $programs)
-<h3>{{ $task->metadata['document_title'] }}</h3>
-{{ $task->metadata['document_text'] }}
-<table>
-    @forelse($programs->first()->contributors as $contributor)
-    <tr>
-        <th colspan="5" style="text-align: left; padding-top:20px;">{{ $contributor->organization->name }}</th>
-    </tr>
-    <tr>
-        <td class="signature">Jimbob Johnson</td>
-        <td></td>
-        <td style="vertical-align: bottom; padding-bottom: 10px;">12/24/2020 at 2:46pm</td>
-    </tr>
-    @empty
-    @endforelse
-</table>
-<h3>Programs ({{ $programs->count() }} total)</h3>
+    <h3>{{ $assignment->metadata['document_title'] }}</h3>
+    {{ $assignment->metadata['document_text'] }}
+    <h3>Programs ({{ $programs->count() }} total)</h3>
     <table>
         <tr>
             <th>ID</th>
@@ -72,10 +57,29 @@
         @empty
         @endforelse
     </table>
-    @if(!$loop->last)
-        <div class="page-break"></div>
-    @endif
-@empty
-@endforelse
+
+    <h3>Signatures</h3>
+    <h4>
+        {{ $assignment->assignedToOrganization->name }} Representative
+    </h4>
+    <span class="signature">
+        {{ $assignment->metadata['assigned_to_organization_signature']['signature'] ?? '' }}
+    </span>
+    <br>
+    <small class="text-muted">
+        {{ $assignment->metadata['assigned_to_organization_signature']['timestamp'] ?? '' }}
+        {{ $assignment->metadata['assigned_to_organization_signature']['ip'] ?? '' }}
+    </small>
+    <h4>
+        {{ $assignment->assignedToOrganization->name }} Representative
+    </h4>
+    <span class="signature">
+        {{ $assignment->metadata['assigned_by_organization_signature']['signature'] ?? '' }}
+    </span>
+    <br>
+    <small class="text-muted">
+        {{ $assignment->metadata['assigned_by_organization_signature']['timestamp'] ?? '' }}
+        {{ $assignment->metadata['assigned_by_organization_signature']['ip'] ?? '' }}
+    </small>
 
 </body>

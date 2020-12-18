@@ -6,16 +6,28 @@ use App\Assignment;
 use App\Http\Controllers\Controller;
 use App\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class AssignmentController extends Controller
 {
     //
+    public function pdf(Assignment $assignment)
+    {
+        $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $assignment->metadata['program_ids'])->get();
+
+        $pdf = App::make('dompdf.wrapper');
+        $content = view('tenant.assignments.pdf', compact('assignment', 'programs'));
+        $pdf->loadHTML($content->render());
+
+        return $pdf->stream();
+    }
     public function sign(Request $request, Assignment $assignment)
     {
         abort_if(!$request->hasValidSignature(), 401);
         $programs = Program::whereIn('id', $assignment->metadata['program_ids'])->get();
-        return view('tenant.assignments.sign', compact('assignment', 'programs'));
+        $routeActionString = "tenant:admin.assignments.";
+        return view('tenant.assignments.sign', compact('assignment', 'programs', 'routeActionString'));
     }
     public function complete(Assignment $assignment)
     {

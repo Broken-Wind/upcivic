@@ -14,8 +14,6 @@
     @include('tenant.assignments.components.generic_assignments.edit')
     @if($assignment->isGeneratedDocument())
         @include('tenant.assignments.components.generated_documents.edit')
-    @else
-        An error ocurred.
     @endif
 </div>
 @endsection

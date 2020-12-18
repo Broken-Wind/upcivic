@@ -19,7 +19,7 @@ class Task extends Model
         'metadata' => 'array',
     ];
 
-    public function assign($organizationId, $metadata = null)
+    public function assign($organizationId, $metadata = [])
     {
         $assignment = Assignment::make([
             'name' => $this->name,
@@ -29,7 +29,8 @@ class Task extends Model
         $assignment->assigned_by_organization_id = tenant()->organization_id;
         $assignment->assigned_to_organization_id = $organizationId;
         $assignment->task_id = $this->id;
-        $metadata = array_merge($this->metadata, $metadata);
+        $existingMetadata = $this->metadata ?? [];
+        $metadata = array_merge($existingMetadata, $metadata);
         $assignment->metadata = $metadata;
         $assignment->save();
         $assignedToOrganization = Organization::find($organizationId);

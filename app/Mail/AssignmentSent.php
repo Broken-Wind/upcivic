@@ -40,18 +40,9 @@ class AssignmentSent extends Mailable
      */
     public function build()
     {
-        switch ($this->assignment->task->type) {
-            case 'generated_document':
-                $message = $this->markdown('emails.generated_document_assignment_sent')
-                            ->subject('Action requested by ' . $this->assignedByOrganization['name'])
-                            ->replyTo($this->sender['email'], $this->sender['name']);
-                break;
-            default:
-                $message = $this->markdown('emails.assignment_sent')
-                            ->subject('Action requested by ' . $this->assignedByOrganization['name'])
-                            ->replyTo($this->sender['email'], $this->sender['name']);
-                break;
-        }
+        $message = $this->markdown('emails.assignment_sent')
+                    ->subject('Action requested by ' . $this->assignedByOrganization['name'])
+                    ->replyTo($this->sender['email'], $this->sender['name']);
 
         $recipients = $this->assignedToOrganization->emailableContacts()->flatten()->unique('email');
 

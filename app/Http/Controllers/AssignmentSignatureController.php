@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAssignmentSignature;
+use App\Mail\DocumentComplete;
 use Illuminate\Http\Request;
 
 class AssignmentSignatureController extends Controller
@@ -28,6 +29,9 @@ class AssignmentSignatureController extends Controller
             ]
         ];
         $assignment->sign($signature);
+        if ($assignment->isFullySigned()) {
+            \Mail::send(new DocumentComplete($assignment));
+        }
         return back()->withSuccess('Signature applied.');
     }
 }

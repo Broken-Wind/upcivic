@@ -37,6 +37,10 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     {
         return $this->belongsTo(Task::class)->withoutGlobalScope('TenantAccesibleTask');
     }
+    public function getPdfUrlAttribute()
+    {
+        return tenant()->route('tenant:assignments.pdf', [$this]);
+    }
     public function getAssigneeAttribute()
     {
         return $this->assignedToOrganization;

@@ -63,10 +63,6 @@
                             @endif
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Staff</a>
-                            </li>
-
-                            <li class="nav-item">
                                  <a class="nav-link" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a>
                             </li>
 
@@ -99,6 +95,11 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
                                             {{ $tenant['name'] }} Programs
                                         </a>
+
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">
+                                            My Staff
+                                        </a>
+
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>

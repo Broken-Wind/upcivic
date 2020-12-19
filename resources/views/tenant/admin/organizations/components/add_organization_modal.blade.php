@@ -28,8 +28,12 @@
                         <input type="text" class="form-control" name="administrator[email]" id="administrator-email" required placeholder="p.smith@fakeville.gov">
                     </div>
                     <div class="form-group">
+                        <label for="administrator-phone">Phone</label>
+                        <input type="text" class="form-control" name="administrator[phone]" id="administrator-phone" placeholder="415xxxxxx">
+                    </div>
+                    <div class="form-group">
                         <label for="administrator-title">Title</label>
-                        <input type="text" class="form-control" name="administrator[title]" id="administrator-title"  placeholder="Recreation Supervisor">
+                        <input type="text" class="form-control" name="administrator[title]" id="administrator-title" placeholder="Recreation Supervisor">
                     </div>
                     <div class="form-group">
                         <label for="enrollment-url">Registration Website Link</label>

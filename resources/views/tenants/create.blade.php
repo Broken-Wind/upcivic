@@ -21,7 +21,7 @@
 
                         <div class="form-group mb-3">
 
-                                <label for="slug">Vanity URL</label>
+                                <label for="slug">Organization Web Address</label>
 
                                 <div class="input-group">
 
@@ -31,11 +31,11 @@
 
                                     </div>
 
-                                    <input type="text" class="form-control" name="slug" id="slug" aria-describedby="slugHelp" placeholder="acmerec">
+                                    <input type="text" class="form-control" name="slug" id="slug" aria-describedby="slugHelp" placeholder="fakevillerec">
 
                                 </div>
 
-                                <small id="slugHelp" class="form-text text-muted">Your vanity URL cannot be easily changed. Choose well.</small>
+                                <small id="slugHelp" class="form-text text-muted">This is the URL you'll see when you visit your site. The Fakeville Parks & Recreation Department might use "fakevillerec" as their URL. Only letters, numbers, and dashes are allowed.</small>
 
                         </div>
 

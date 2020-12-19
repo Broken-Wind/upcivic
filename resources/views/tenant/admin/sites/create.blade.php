@@ -24,7 +24,7 @@
                     <label for="site_phone">Site Phone</label>
                     <input type="text" class="form-control" name="phone" id="site_phone" placeholder="555-555-5555">
                 </div>
-                <div class="form-group">
+                <div class="form-group d-none">
                     <label for="county_id">County</label>
                     <select class="form-control" name="county_id">
                         <option value="">Choose a county...</option>

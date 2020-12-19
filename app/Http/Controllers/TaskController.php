@@ -68,7 +68,7 @@ class TaskController extends Controller
                 $task->type = 'generated_document';
                 $task->metadata = [
                     'document_title' => $validated['documentTitle'],
-                    'document_text' => $validated['documentText']
+                    'document_content' => $validated['documentContent']
                 ];
                 break;
             default:

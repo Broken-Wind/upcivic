@@ -32,7 +32,7 @@ class StoreTask extends FormRequest
             'files.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048',
             'isDocument' => 'nullable|boolean',
             'documentTitle' => 'nullable|string',
-            'documentText' => 'nullable|string'
+            'documentContent' => 'nullable|string'
         ];
     }
 }

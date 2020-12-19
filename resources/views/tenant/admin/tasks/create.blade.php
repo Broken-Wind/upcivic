@@ -1,5 +1,26 @@
 @extends('layouts.app')
 @section('title', 'Add Task')
+@push('css')
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+@endpush
+@push('scripts')
+    <!-- Include the Quill library -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js" type="application/javascript"></script>
+
+    <!-- Initialize Quill editor -->
+    <script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+        document.getElementById('submit').addEventListener('click', function (event) {
+            var documentContent = document.getElementById('documentContent');
+            var editorElement = document.getElementById('editor');
+            documentContent.innerHTML = editorElement.children[0].innerHTML;
+        });
+    });
+    </script>
+@endpush
 @section('content')
 <div class="container">
     <div class="card mb-4">
@@ -48,16 +69,21 @@
                     Create a custom signable document for this task
                   </label>
                 </div>
-                <div class="form-group documentContainer" style="display:none;">
-                  <label for="documentTitle">Document Title</label>
-                  <input type="text"
-                    class="form-control" name="documentTitle" id="documentTitle" aria-describedby="helpId" placeholder="Letter of Agreement">
+
+                <!-- Create the editor container -->
+                <div class="documentContainer" style="display:none;">
+                    <div class="form-group">
+                        <label for="documentTitle">Document Title</label>
+                        <input type="text"
+                        class="form-control" name="documentTitle" id="documentTitle" aria-describedby="helpId" placeholder="Letter of Agreement">
+                    </div>
+                    <div class="form-group">
+                        <label for="editor">Document Contents</label>
+                        <div id="editor"></div>
+                        <textarea name="documentContent" id="documentContent" style="display:none;"></textarea>
+                    </div>
                 </div>
-                <div class="form-group documentContainer" style="display:none;">
-                  <label for="documentText">Document Text</label>
-                  <textarea class="form-control" name="documentText" id="documentText" rows="10"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Task</button>
+                <button type="submit" id="submit" class="btn btn-primary">Add Task</button>
             </form>
         </div>
     </div>

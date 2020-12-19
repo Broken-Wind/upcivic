@@ -32,7 +32,7 @@
 </head>
 <body>
     <h3>{{ $assignment->metadata['document_title'] }}</h3>
-    {{ $assignment->metadata['document_text'] }}
+    {!! $assignment->metadata['document_content'] !!}
     <h3>Programs ({{ $programs->count() }} total)</h3>
     <table>
         <tr>

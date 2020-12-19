@@ -32,7 +32,7 @@
     <div class="card-header">Document from {{ $assignment->assignedByOrganization->name }}</div>
     <div class="card-body">
         <h3>{{ $assignment->metadata['document_title'] ?? 'Untitled Document' }}</h3>
-        {!! $assignment->metadata['document_text'] ?? 'Document not found.' !!}
+        {!! $assignment->metadata['document_content'] ?? 'Document not found.' !!}
         <hr>
         <h3>Programs ({{ $programs->count() }} total)</h3>
         <table>

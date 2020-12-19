@@ -12,7 +12,7 @@
 
             @if($organizations->count() > 0)
 
-                <p>The following is a list of all organizations listed in {{ config('app.name') }}. If you'd like to offer programs at an organization that isn't listed below, please <a href="" data-toggle="modal" data-target="#add-organization-modal">add a new organization here.</a></p>
+                <p>The following is a list of all organizations listed in {{ config('app.name') }}. If you'd like to offer programs with an organization that isn't listed below, please <a href="" data-toggle="modal" data-target="#add-organization-modal">add a new organization here.</a></p>
                 <table class="table table-striped">
 
                     @foreach($organizations as $organization)

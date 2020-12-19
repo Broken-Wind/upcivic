@@ -26,9 +26,8 @@ class OrganizationController extends Controller
         $validated = $request;
 
         $organization = Organization::create([
-
             'name' => $validated->name,
-
+            'enrollment_url' => $validated->enrollment_url
         ]);
 
         if ($validated->administrator['email']){
@@ -36,12 +35,10 @@ class OrganizationController extends Controller
                 'first_name' => $validated->administrator['first_name'],
                 'last_name' => $validated->administrator['last_name'],
                 'email' => $validated->administrator['email'],
+                'phone' => $validated->administrator['phone'],
             ]);
             $organization->administrators()->save($administrator, ['title' => $validated->administrator['title']]);
         }
-
-        $organization->enrollment_url = $validated->enrollment_url;
-        $organization->save();
 
         return back()->withSuccess('Organization added successfully.');
     }

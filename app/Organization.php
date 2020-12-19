@@ -14,6 +14,7 @@ class Organization extends GenericAssignableEntity
 
     protected $fillable = [
         'name',
+        'enrollment_url',
     ];
 
     public function scopeHasAssignmentsTo($query, $organizationId) {

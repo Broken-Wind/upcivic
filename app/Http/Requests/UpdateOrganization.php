@@ -26,6 +26,7 @@ class UpdateOrganization extends FormRequest
         return [
             //
             'name' => 'required|max:255',
+            'enrollment_url' => 'nullable|url',
         ];
     }
 }

@@ -1,66 +1,54 @@
 @extends('layouts.app')
 
+@section('title', 'Organizations')
+
 @section('content')
+@include('tenant.admin.organizations.components.add_organization_modal')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-header">Organizations</div>
+    <div class="card mb-4">
+        <div class="card-header">Organizations</div>
 
-                <div class="card-body">
+        <div class="card-body">
 
-                    @include('shared.form_errors')
+            @if($organizations->count() > 0)
 
-                    <form class="form-inline" method="POST" action="{{ tenant()->route('tenant:admin.organizations.store') }}">
+                <p>The following is a list of all organizations listed in {{ config('app.name') }}. If you'd like to offer programs with an organization that isn't listed below, please <a href="" data-toggle="modal" data-target="#add-organization-modal">add a new organization here.</a></p>
+                <table class="table table-striped">
 
-                        @csrf
-                        <label class="sr-only" for="inlineFormInputName">Organization Name</label>
-                        <input type="text" name ="name" class="form-control mb-2 mr-sm-2" id="inlineFormInputName" placeholder="Exampleville Parks & Recreation">
+                    @foreach($organizations as $organization)
 
-                        <button type="submit" class="btn btn-primary mb-2">Add New Organization</button>
-                        </form>
+                        <tr>
 
-                    @if($organizations->count() > 0)
+                            <td>
 
+                                {{ $organization->name }}
 
-                        <p>The following is a list of all organizations listed in {{ config('app.name') }}.</p>
-                        <table class="table table-striped">
+                            </td>
 
-                            @foreach($organizations as $organization)
+                            <td class="text-right">
 
-                                <tr>
+                                @if(!$organization->isClaimed())
 
-                                    <td>
+                                    <a href="{{ tenant()->route('tenant:admin.organizations.edit', [$organization]) }}">
+                                        <i class="far fa-edit mr-2"></i>
+                                    </a>
 
-                                        {{ $organization->name }}
+                                @endif
 
-                                    </td>
-
-                                    <td>
-
-                                        @if(!$organization->isClaimed())
-
-                                            <a href="{{ tenant()->route('tenant:admin.organizations.edit', [$organization]) }}">Edit</a>
-
-                                        @endif
-
-                                    </td>
+                            </td>
 
 
-                                </tr>
+                        </tr>
 
-                            @endforeach
+                    @endforeach
 
-                        </table>
+                </table>
 
-                    @else
+            @else
 
-                        No sites yet! <a href="{{ tenant()->route('tenant:admin.sites.create') }}">Add a new site here.</a>
+                No sites yet! <a href="{{ tenant()->route('tenant:admin.sites.create') }}">Add a new site here.</a>
 
-                    @endif
-
-                </div>
-            </div>
+            @endif
 
         </div>
     </div>

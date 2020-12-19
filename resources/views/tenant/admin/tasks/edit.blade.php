@@ -7,7 +7,7 @@
         <div class="card-header">Edit Assignable Task</div>
 
         <div class="card-body">
-            <form method="POST" id="createOrUpdateTask" action="{{ tenant()->route('tenant:admin.tasks.update', [$task]) }}" enctype="multipart/form-data">
+            <form method="POST" id="updateTask" action="{{ tenant()->route('tenant:admin.tasks.update', [$task]) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 @include('shared.form_errors')
@@ -18,13 +18,13 @@
 
             <div class="form-group">
                 <label for="taskName">Task Name</label>
-                <input type="text" form="createOrUpdateTask"
+                <input type="text" form="updateTask"
                 class="form-control" name="name" id="taskName" value="{{ $task->name }}" placeholder="Submit Background Check Authorization" required>
             </div>
 
             <div class="form-group mt-3">
                 <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
-                <input type="file" form="createOrUpdateTask" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
+                <input type="file" form="updateTask" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
                 <small id="helpFiles" class="form-text text-muted">Upload any documents which will be needed to complete this task, such as a blank background check authorization form or an example of a valid liability insurance policy.</small>
             </div>
 
@@ -44,7 +44,7 @@
             @endforelse
             <div class="form-group">
                 <label for="taskDescription">Task Description</label>
-                <textarea class="form-control" form="createOrUpdateTask" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription">{{ $task->description }}</textarea>
+                <textarea class="form-control" form="updateTask" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription">{{ $task->description }}</textarea>
                 <small id="helpTaskDescription" class="form-text text-muted">Provide details including how to use any attached documents.</small>
             </div>
 
@@ -64,11 +64,11 @@
 
             @if($task->type == 'signable_document')
                 <div class="documentContainer">
-                    @include('tenant.admin.tasks.components.document_editor')
+                    @include('tenant.admin.tasks.components.document_editor', ['form' => 'updateTask'])
                 </div>
             @endif
 
-            <button type="submit" id="submit" form="createOrUpdateTask" class="btn btn-primary">Update Task</button>
+            <button type="submit" form="updateTask" class="btn btn-primary">Update Task</button>
             <button type="submit" form="archiveTask" class="btn btn-secondary">Archive Task</button>
         </div>
     </div>

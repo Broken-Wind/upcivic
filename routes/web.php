@@ -71,6 +71,9 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
         Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
         Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
+        Route::get('/organizations/{organization}/administrators/{administrator}/edit', 'OrganizationAdministratorController@edit')->name('organizations.administrators.edit')->middleware('unclaimed');
+        Route::delete('/organizations/{organization}/administrators/{administrator}', 'OrganizationAdministratorController@destroy')->name('organizations.administrators.destroy')->middleware('unclaimed');
+        Route::put('/organizations/{organization}/administrators/{administrator}', 'OrganizationAdministratorController@update')->name('organizations.administrators.update')->middleware('unclaimed');
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');
         Route::post('/templates', 'TemplateController@store')->name('templates.store');

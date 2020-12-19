@@ -58,7 +58,7 @@ class OrganizationController extends Controller
         $organization->update([
 
             'name' => $validated['name'],
-            'enrollment_url' => $validated['enrollment_url'],
+            'enrollment_url' => $request['enrollment_url'],
 
         ]);
 

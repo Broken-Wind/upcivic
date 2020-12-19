@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <a href="{{ tenant()->route('tenant:admin.sites.index')}}">
-        <i class="fas fa-angle-left pb-3"></i> Back to Sites 
+        <i class="fas fa-angle-left pb-3"></i> Back to Sites
     </a>
     <div class="card mb-4">
         <div class="card-header">Sites</div>
@@ -24,7 +24,7 @@
                     <label for="site_phone">Site Phone</label>
                     <input type="text" class="form-control" name="phone" id="site_phone" placeholder="555-555-5555">
                 </div>
-                <div class="form-group d-none">
+                {{-- <div class="form-group">
                     <label for="county_id">County</label>
                     <select class="form-control" name="county_id">
                         <option value="">Choose a county...</option>
@@ -34,7 +34,7 @@
                             <option disabled>No counties exist.</option>
                         @endforelse
                     </select>
-                </div>
+                </div> --}}
                 <button type="submit" id="submit" class="btn btn-primary">Add Site</button>
             </form>
         </div>

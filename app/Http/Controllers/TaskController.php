@@ -128,6 +128,12 @@ class TaskController extends Controller
                 $file->save();
             }
         }
+        if ($task->type == 'signable_document') {
+            $task->signableDocument->update([
+                'title' => $validated['documentTitle'],
+                'content' => $validated['documentContent'],
+            ]);
+        }
 
         return back()->withSuccess('Task has been updated.');
     }

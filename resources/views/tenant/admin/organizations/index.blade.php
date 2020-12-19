@@ -2,9 +2,8 @@
 
 @section('title', 'Organizations')
 
-@include('tenant.admin.organizations.components.add_organization_modal')
-
 @section('content')
+@include('tenant.admin.organizations.components.add_organization_modal')
 <div class="container">
     <div class="card mb-4">
         <div class="card-header">Organizations</div>

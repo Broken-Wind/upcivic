@@ -4,7 +4,7 @@
 <div class="container">
     @include('shared.form_errors')
     <a href="{{ tenant()->route('tenant:admin.organizations.edit', [$organization])}}">
-        <i class="fas fa-angle-left pb-3"></i> Back to organization {{$organization->name}}
+        <i class="fas fa-angle-left pb-3"></i> Back to editing {{$organization->name}}
     </a>
     <div class="card">
         <div class="card-header">Administrator</div>

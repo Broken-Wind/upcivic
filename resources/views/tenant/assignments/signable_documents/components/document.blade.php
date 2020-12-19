@@ -31,8 +31,8 @@
 <div class="card">
     <div class="card-header">Document from {{ $assignment->assignedByOrganization->name }}</div>
     <div class="card-body">
-        <h3>{{ $assignment->metadata['document_title'] ?? 'Untitled Document' }}</h3>
-        {!! $assignment->metadata['document_content'] ?? 'Document not found.' !!}
+        <h3>{{ $assignment->signableDocument->title ?? 'Untitled Document' }}</h3>
+        {!! $assignment->signableDocument->content ?? 'Document not found.' !!}
         <hr>
         <h3>Programs ({{ $programs->count() }} total)</h3>
         <table>
@@ -60,11 +60,11 @@
         </table>
         <hr>
         <h3>Signatures</h3>
-        @include('tenant.assignments.generated_documents.components.signature_area', [
+        @include('tenant.assignments.signable_documents.components.signature_area', [
             'organization' => $assignment->assignedToOrganization,
             'signature' => $assignment->getSignatureFrom($assignment->assignedToOrganization)
         ])
-        @include('tenant.assignments.generated_documents.components.signature_area', [
+        @include('tenant.assignments.signable_documents.components.signature_area', [
             'organization' => $assignment->assignedByOrganization,
             'signature' => $assignment->getSignatureFrom($assignment->assignedByOrganization)
         ])

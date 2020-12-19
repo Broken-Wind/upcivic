@@ -28,11 +28,11 @@
             padding: 5px;
         }
     </style>
-    <title>{{ $assignment->metadata['document_title']}}</title>
+    <title>{{ $assignment->signableDocument->title }}</title>
 </head>
 <body>
-    <h3>{{ $assignment->metadata['document_title'] }}</h3>
-    {!! $assignment->metadata['document_content'] !!}
+    <h1>{{ $assignment->signableDocument->title }}</h1>
+    {!! $assignment->signableDocument->content !!}
     <h3>Programs ({{ $programs->count() }} total)</h3>
     <table>
         <tr>
@@ -59,35 +59,13 @@
     </table>
 
     <h3>Signatures</h3>
-    <h4>
-        {{ $assignment->assignedToOrganization->name }} Representative
-    </h4>
-    @if(!empty($assignment->metadata['assigned_to_organization_signature']['signature']))
-        <span class="signature">
-            {{ $assignment->metadata['assigned_to_organization_signature']['signature'] }}
-        </span>
-    @else
-        {{ $assignment->assignedToOrganization->name }} hasn't signed this document yet.
-    @endif
-    <br>
-    <small class="text-muted">
-        {{ $assignment->metadata['assigned_to_organization_signature']['timestamp'] ?? '' }}
-        {{ $assignment->metadata['assigned_to_organization_signature']['ip'] ?? '' }}
-    </small>
-    <h4>
-        {{ $assignment->assignedByOrganization->name }} Representative
-    </h4>
-    @if(!empty($assignment->metadata['assigned_by_organization_signature']['signature']))
-        <span class="signature">
-            {{ $assignment->metadata['assigned_by_organization_signature']['signature'] }}
-        </span>
-    @else
-        {{ $assignment->assignedByOrganization->name }} hasn't signed this document yet.
-    @endif
-    <br>
-    <small class="text-muted">
-        {{ $assignment->metadata['assigned_by_organization_signature']['timestamp'] ?? '' }}
-        {{ $assignment->metadata['assigned_by_organization_signature']['ip'] ?? '' }}
-    </small>
+    @include('tenant.assignments.signable_documents.components.signature_area', [
+        'organization' => $assignment->assignedToOrganization,
+        'signature' => $assignment->getSignatureFrom($assignment->assignedToOrganization)
+    ])
+    @include('tenant.assignments.signable_documents.components.signature_area', [
+        'organization' => $assignment->assignedByOrganization,
+        'signature' => $assignment->getSignatureFrom($assignment->assignedByOrganization)
+    ])
 
 </body>

@@ -72,10 +72,8 @@ class ProgramController extends Controller
 
             $programGroups->each(function ($programs, $organizationId) use ($tasks) {
                 $tasks->each(function ($task) use ($programs, $organizationId) {
-                    $metadata = [
-                        'program_ids' => $programs->pluck('id')
-                    ];
-                    $task->assign($organizationId, $metadata);
+                    $programIds = $programs->pluck('id');
+                    $task->assign($organizationId, $programIds);
                 });
             });
             return back()->withSuccess('Tasks were successfully assigned!');
@@ -89,7 +87,7 @@ class ProgramController extends Controller
             // $contributorGroups = $programs->groupBy(function ($program, $key) {
             //     return $program->contributors->pluck('organization_id')->sort()->implode(',');
             // });
-            // $task = Task::where('type', 'generated_document')->first();
+            // $task = Task::where('type', 'signable_document')->first();
 
             // $loa = App::make('dompdf.wrapper');
             // $content = view('tenant.admin.programs.pdf', compact('contributorGroups', 'task'));

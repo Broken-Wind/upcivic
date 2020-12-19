@@ -51,19 +51,13 @@ class GenericAssignment extends Model
     {
         return $this->task->type == 'generic_assignment';
     }
-    public function isGeneratedDocument()
+    public function isSignableDocument()
     {
-        return $this->task->type == 'generated_document';
+        return $this->task->type == 'signable_document';
     }
     public function getSignatureFrom(Organization $organization)
     {
-        if (isset($this->metadata['assigned_to_organization_signature']['organization_id']) && $this->metadata['assigned_to_organization_signature']['organization_id'] == $organization->id) {
-            return $this->metadata['assigned_to_organization_signature'];
-        }
-        if (isset($this->metadata['assigned_by_organization_signature']['organization_id']) && $this->metadata['assigned_by_organization_signature']['organization_id'] == $organization->id) {
-            return $this->metadata['assigned_by_organization_signature'];
-        }
-        return false;
+        return $this->signableDocument->signatures->firstWhere('organization_id', $organization->id) ?? false;
     }
     public function isSignableBy(Organization $organization, $route)
     {
@@ -123,27 +117,20 @@ class GenericAssignment extends Model
         $this->save();
         return $this;
     }
-    public function sign($signature)
+
+    public function signableDocument()
     {
-        // dd($signature);
-        $metadata = $this->metadata;
-        $metadata = array_merge($metadata, $signature);
-        $this->metadata = $metadata;
-        $this->save();
+        return $this->hasOne(SignableDocumentAssignment::class);
     }
     public function isFullySigned()
     {
-        return !empty($this->metadata['assigned_by_organization_signature']) && !empty($this->metadata['assigned_to_organization_signature']);
+        return $this->isSignedByOrganization($this->assignedByOrganization)
+                && $this->isSignedByOrganization($this->assignedToOrganization);
     }
     public function isSignedByOrganization(Organization $organization)
     {
-        if (isset($this->metadata['assigned_by_organization_signature']['organization_id']) && $this->metadata['assigned_by_organization_signature']['organization_id'] == $organization->id) {
-            return true;
-        }
-        if (isset($this->metadata['assigned_to_organization_signature']['organization_id']) && $this->metadata['assigned_to_organization_signature']['organization_id'] == $organization->id) {
-            return true;
-        }
-        return false;
+        return $this->task->type == 'signable_document'
+                && $this->signableDocument->signatures->where('organization_id', $organization->id)->isNotEmpty();
     }
     public function assignedByOrganization()
     {

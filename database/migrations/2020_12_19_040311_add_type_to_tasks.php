@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class AddTypeAndMetadataToTasks extends Migration
+class AddTypeToTasks extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +17,6 @@ class AddTypeAndMetadataToTasks extends Migration
         Schema::table('tasks', function (Blueprint $table) {
             //
             $table->string('type')->nullable();
-            $table->json('metadata')->nullable();
         });
 
         DB::table('tasks')->update(['type' => 'generic_assignment']);
@@ -36,7 +36,6 @@ class AddTypeAndMetadataToTasks extends Migration
         Schema::table('tasks', function (Blueprint $table) {
             //
             $table->dropColumn('type');
-            $table->dropColumn('metadata');
         });
     }
 }

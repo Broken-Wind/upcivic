@@ -16,9 +16,7 @@ class AssignmentController extends Controller
     public function pdf(Request $request, Assignment $assignment)
     {
         abort_if(!$request->hasValidSignature(), 401);
-
-        $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $assignment->metadata['program_ids'])->get();
-
+        $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->get();
         $pdf = App::make('dompdf.wrapper');
         $content = view('tenant.assignments.pdf', compact('assignment', 'programs'));
         $pdf->loadHTML($content->render());
@@ -28,7 +26,7 @@ class AssignmentController extends Controller
     public function sign(Request $request, Assignment $assignment)
     {
         abort_if(!$request->hasValidSignature(), 401);
-        $programs = Program::whereIn('id', $assignment->metadata['program_ids'])->get();
+        $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->get();
         $routeActionString = "tenant:admin.assignments.";
         return view('tenant.assignments.sign', compact('assignment', 'programs', 'routeActionString'));
     }
@@ -47,9 +45,10 @@ class AssignmentController extends Controller
     {
         $isOutgoingFromTenant = $assignment->assigned_by_organization_id == tenant()->organization_id;
         $routeActionString = 'tenant:admin.assignments.';
-        $programs = [];
-        if (isset($assignment->metadata['program_ids'])) {
-            $programs = Program::whereIn('id', $assignment->metadata['program_ids'])->get();
+        if ($assignment->isSignableDocument()) {
+            $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->get();
+        } else {
+            $programs = collect();
         }
         $pdfUrl = URL::signedRoute('tenant:assignments.pdf', [tenant()->slug, $assignment]);
         return view('tenant.admin.assignments.edit', compact('assignment', 'isOutgoingFromTenant', 'routeActionString', 'programs', 'pdfUrl'));

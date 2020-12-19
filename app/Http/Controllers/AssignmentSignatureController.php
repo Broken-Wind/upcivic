@@ -15,20 +15,13 @@ class AssignmentSignatureController extends Controller
     {
         $validated = $request->validated();
         if ($assignment->assignedToOrganization->id == $validated['organization_id']) {
-            $signatureKey = 'assigned_to_organization_signature';
             $assignment->complete();
-        } else {
-            $signatureKey = 'assigned_by_organization_signature';
         }
-        $signature = [
-            $signatureKey => [
+        $assignment->signableDocument->signatures()->create([
                 'organization_id' => $validated['organization_id'],
                 'signature' => $validated['signature'],
-                'timestamp' => now()->toRfc7231String(),
                 'ip' => $request->ip()
-            ]
-        ];
-        $assignment->sign($signature);
+        ]);
         if ($assignment->isFullySigned()) {
             \Mail::send(new DocumentComplete($assignment));
         }

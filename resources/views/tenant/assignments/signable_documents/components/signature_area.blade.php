@@ -22,12 +22,12 @@
         @endif
     @else
         <span class="signature">
-            {{ $signature['signature'] ?? '' }}
+            {{ $signature->signature }}
         </span>
         <br>
         <small class="text-muted">
-            {{ $signature['timestamp'] ?? '' }}
-            {{ $signature['ip'] ?? '' }}
+            {{ $signature->created_at }}
+            {{ $signature->ip }}
         </small>
     @endif
 </div>

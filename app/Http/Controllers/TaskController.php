@@ -9,6 +9,7 @@ use App\Instructor;
 use App\Organization;
 use App\Task;
 use App\Services\TaskService;
+use App\SignableDocument;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,17 +66,18 @@ class TaskController extends Controller
         }
         switch (true) {
             case !empty($validated['isDocument']):
-                $task->type = 'generated_document';
-                $task->metadata = [
-                    'document_title' => $validated['documentTitle'],
-                    'document_content' => $validated['documentContent']
-                ];
+                $task->type = 'signable_document';
+                $task->save();
+                $task->signableDocument()->create([
+                    'title' => $validated['documentTitle'],
+                    'content' => $validated['documentContent']
+                ]);
                 break;
             default:
                 $task->type = 'generic_assignment';
+                $task->save();
                 break;
         }
-        $task->save();
         if ($request->hasFile('files')) {
             foreach($validated['files'] as $document) {
                 $path = Storage::putFile(File::getAdminStoragePath(), $document);

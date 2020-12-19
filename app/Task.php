@@ -19,7 +19,7 @@ class Task extends Model
         'metadata' => 'array',
     ];
 
-    public function assign($organizationId, $metadata = [])
+    public function assign($organizationId, $programIds = [])
     {
         $assignment = Assignment::make([
             'name' => $this->name,
@@ -29,9 +29,6 @@ class Task extends Model
         $assignment->assigned_by_organization_id = tenant()->organization_id;
         $assignment->assigned_to_organization_id = $organizationId;
         $assignment->task_id = $this->id;
-        $existingMetadata = $this->metadata ?? [];
-        $metadata = array_merge($existingMetadata, $metadata);
-        $assignment->metadata = $metadata;
         $assignment->save();
         $assignedToOrganization = Organization::find($organizationId);
         switch ($assignment->assign_to_entity) {
@@ -44,6 +41,13 @@ class Task extends Model
                 $assignment->statusModel()->create([]);
                 break;
         }
+        if ($this->type = 'signable_document') {
+            $assignment->signableDocument()->create([
+                'title' => $this->signableDocument->title,
+                'content' => $this->signableDocument->content,
+                'program_ids' => $programIds
+            ]);
+        }
         $sender = Auth::user();
         $assignedByOrganization = tenant()->organization;
         \Mail::send(new AssignmentSent($assignment, $sender, $assignedByOrganization, $assignedToOrganization));
@@ -52,6 +56,11 @@ class Task extends Model
     public function assignments()
     {
         return $this->hasMany(Assignment::class);
+    }
+
+    public function signableDocument()
+    {
+        return $this->hasOne(SignableDocument::class);
     }
 
     public function files()

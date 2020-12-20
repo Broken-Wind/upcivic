@@ -11,11 +11,9 @@
             <i class="fas fa-angle-left"></i> Back to assignments from {{ $assignment->assignedByOrganization->name }}
         </a>
     @endif
+    @include('tenant.admin.assignments.components.controls')
     @if($assignment->isSignableDocument())
-        @include('tenant.admin.assignments.components.controls')
         @include('tenant.assignments.signable_documents.components.document')
-    @else
-        @include('tenant.assignments.generic_assignments.components.controls')
     @endif
 </div>
 @endsection

@@ -37,7 +37,7 @@ class Task extends Model
                 $assignment->statusModel()->create([]);
                 break;
         }
-        if ($this->type = 'signable_document') {
+        if ($this->type == 'signable_document') {
             $assignment->signableDocument()->create([
                 'title' => $this->signableDocument->title,
                 'content' => $this->signableDocument->content,

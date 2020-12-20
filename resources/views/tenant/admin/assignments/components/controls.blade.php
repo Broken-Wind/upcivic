@@ -51,5 +51,13 @@
                 <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Approve</button>
             </form>
         @endif
+
+        @if($assignment->canDelete(tenant()->organization))
+            <form method="POST" action="{{ tenant()->route($routeActionString . 'destroy', [$assignment]) }}" class="my-auto pt-3">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger" onClick="return confirm('Are you sure you want to permanently delete this assignment?')">Delete</button>
+            </form>
+        @endif
     </div>
 </div>

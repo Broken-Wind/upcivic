@@ -100,6 +100,10 @@ class GenericAssignment extends Model
     {
         return $this->assigned_by_organization_id == $organization->id;
     }
+    public function canDelete(Organization $organization)
+    {
+        return $this->assigned_by_organization_id == $organization->id;
+    }
     public function complete(User $user = null) {
         $this->completed_at = Carbon::now();
         if (!empty($user)) {

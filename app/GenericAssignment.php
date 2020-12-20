@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class GenericAssignment extends Model
 {
-    protected $casts = [
-        'metadata' => 'array'
-    ];
     public const STATUSES = [
         'incomplete' => [
             'class_string' => 'alert-danger',

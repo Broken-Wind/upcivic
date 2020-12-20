@@ -15,10 +15,6 @@ class Task extends Model
         'description',
     ];
 
-    protected $casts = [
-        'metadata' => 'array',
-    ];
-
     public function assign($organizationId, $programIds = [])
     {
         $assignment = Assignment::make([

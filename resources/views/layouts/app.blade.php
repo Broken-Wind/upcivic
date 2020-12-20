@@ -41,7 +41,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Schedule</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
                             </li>
                             <li class="nav-link dropdown">
                                 <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Compliance

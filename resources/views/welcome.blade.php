@@ -92,7 +92,7 @@
                 @endguest
                 @auth
 
-                    <a class="btn btn-primary btn-lg mt-3" href="/home">Get Started</a><br />
+                    <a class="btn btn-primary btn-lg mt-3" href="/home">Visit Dashboard</a><br />
 
                 @endauth
 

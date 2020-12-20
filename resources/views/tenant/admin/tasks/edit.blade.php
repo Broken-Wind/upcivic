@@ -21,27 +21,6 @@
                 <input type="text" form="updateTask"
                 class="form-control" name="name" id="taskName" value="{{ $task->name }}" placeholder="Submit Background Check Authorization" required>
             </div>
-
-            <div class="form-group mt-3">
-                <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
-                <input type="file" form="updateTask" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
-                <small id="helpFiles" class="form-text text-muted">Upload any documents which will be needed to complete this task, such as a blank background check authorization form or an example of a valid liability insurance policy.</small>
-            </div>
-
-            @forelse($task->files as $file)
-                <a href="{{ $file->download_link }}">{{ $file->filename }}</a>
-                @if($file->canDelete(\Auth::user()))
-                    <form method="POST" id="delete_file_{{ $file->id }}" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" form="delete_file_{{ $file->id }}" class="btn btn-danger">
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </form>
-                @endif
-            @empty
-            None
-            @endforelse
             <div class="form-group">
                 <label for="taskDescription">Task Description</label>
                 <textarea class="form-control" form="updateTask" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription">{{ $task->description }}</textarea>
@@ -68,8 +47,31 @@
                 </div>
             @endif
 
-            <button type="submit" form="updateTask" class="btn btn-primary">Update Task</button>
-            <button type="submit" form="archiveTask" class="btn btn-secondary">Archive Task</button>
+            <div class="form-group mt-3">
+                <label for="files">Additional Documents <span class="text-muted">(optional)</span></label>
+                <input type="file" form="updateTask" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
+            </div>
+
+            @forelse($task->files as $file)
+                <a href="{{ $file->download_link }}">{{ $file->filename }}</a>
+                @if($file->canDelete(\Auth::user()))
+                    <form method="POST" id="delete_file_{{ $file->id }}" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" form="delete_file_{{ $file->id }}" class="btn btn-danger">
+                            <i class="far fa-trash-alt"></i>
+                        </button>
+                    </form>
+                @endif
+            @empty
+            None<br>
+            @endforelse
+            <div class="row">
+                <div class="col mt-3">
+                    <button type="submit" form="updateTask" class="btn btn-primary">Update Task</button>
+                    <button type="submit" form="archiveTask" class="btn btn-secondary">Archive Task</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

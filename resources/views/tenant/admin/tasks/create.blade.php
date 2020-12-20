@@ -1,12 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Add Task')
+@include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
     <div class="card mb-4">
         <div class="card-header">Add Assignable Task</div>
 
         <div class="card-body">
-            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data" id="createOrUpdateTask">
                 @csrf
                 @include('shared.form_errors')
 
@@ -42,7 +43,18 @@
                 </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Task</button>
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input" name="isDocument" id="isDocument" value="1" onClick="$('.documentContainer').toggle()">
+                    Create a custom signable document for this task
+                  </label>
+                </div>
+
+                <!-- Create the editor container -->
+                <div class="documentContainer" style="display:none;">
+                    @include('tenant.admin.tasks.components.document_editor')
+                </div>
+                <button type="submit" id="submit" class="btn btn-primary">Add Task</button>
             </form>
         </div>
     </div>

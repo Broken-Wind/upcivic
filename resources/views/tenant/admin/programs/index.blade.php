@@ -16,8 +16,9 @@
 <div class="container">
     @include('shared.form_errors')
     <form id="filters" action="{{ URL::current() }}" method="GET">
-        @include('tenant.admin.programs.filters_modal')
+        @include('tenant.admin.programs.components.filters_modal')
     </form>
+    @include('tenant.admin.programs.components.assignments_modal')
 
     @if($programsExist)
         @if(tenant()->isSubscribed())
@@ -32,7 +33,11 @@
                 <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
             @endif
             @if(tenant()->isSubscribed())
-                <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button>
+
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#assignmentsModal">
+                    Assign Tasks
+                </button>
+                {{-- <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button> --}}
                 <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="export">Export</button>
                 <div class="form-check form-check-inline mb-3 ml-3">
                     <label class="form-check-label">

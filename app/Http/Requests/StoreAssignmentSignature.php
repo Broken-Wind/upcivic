@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTask extends FormRequest
+class StoreAssignmentSignature extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdateTask extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->memberOfTenant(tenant());
+        return true;
     }
 
     /**
@@ -25,12 +25,8 @@ class UpdateTask extends FormRequest
     {
         return [
             //
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'files' => 'nullable|array',
-            'files.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048',
-            'documentTitle' => 'nullable|string',
-            'documentContent' => 'nullable|string'
+            'organization_id' => 'required|numeric',
+            'signature' => 'required|string'
         ];
     }
 }

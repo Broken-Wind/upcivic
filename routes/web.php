@@ -41,6 +41,9 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
+    Route::get('/assignments/{assignment}', 'AssignmentController@sign')->name('assignments.sign');
+    Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
+    Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
 });
 Route::group(['middleware' => 'verified'], function () {
     Route::group([
@@ -102,6 +105,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
+        Route::delete('/assignments/{assignment}', 'AssignmentController@destroy')->name('assignments.destroy');
         Route::post('/assignments/{assignment}/complete', 'AssignmentController@complete')->name('assignments.complete');
         Route::post('/assignments/{assignment}/approve', 'AssignmentController@approve')->name('assignments.approve');
         Route::get('/assignments/{assignment}/edit', 'AssignmentController@edit')->name('assignments.edit');
@@ -114,7 +118,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');
         Route::get('/assignments/to/organizations/{organization}', 'AssignmentToOrganizationController@index')->name('assignments.to.organizations.index');
         Route::get('/assignments/from/organizations/{organization}', 'AssignmentFromOrganizationController@index')->name('assignments.from.organizations.index');
-        Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
+        // Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/files/{file}/download', 'FileController@download')->name('files.download');

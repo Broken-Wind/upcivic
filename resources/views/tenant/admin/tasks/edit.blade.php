@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Edit Task')
+@include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
     <div class="card mb-4">
@@ -60,6 +61,12 @@
                 This task should be assigned to each instructor. (Fingerprinting, TB tests)
             </label>
             </div>
+
+            @if($task->type == 'signable_document')
+                <div class="documentContainer">
+                    @include('tenant.admin.tasks.components.document_editor', ['form' => 'updateTask'])
+                </div>
+            @endif
 
             <button type="submit" form="updateTask" class="btn btn-primary">Update Task</button>
             <button type="submit" form="archiveTask" class="btn btn-secondary">Archive Task</button>

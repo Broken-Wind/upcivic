@@ -35,37 +35,31 @@
                                 </form>
                                 </li>
                             @endif
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a>
-                            </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
-                            </li> 
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Schedule</a>
-                            </li> 
-
-                            @if(tenant()->isSubscribed())
-                                <li class="nav-link dropdown">
-                                    <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Compliance
-                                    <span class="caret"></span></div>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a class="dropdown-item" href="{{ tenant()->isSubscribed() ? tenant()->route('tenant:admin.assignments.outgoing.index') : tenant()->route('tenant:admin.assignments.incoming.index') }}">Assignments</a></li>
-                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Tasks</a></li>
-                                    </ul>
-                                </li>
-                            @else
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Compliance</a>
-                                </li>
-                            @endif
-
-                            <li class="nav-item">
-                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a>
                             </li>
 
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
+                            </li>
+                            <li class="nav-link dropdown">
+                                <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Compliance
+                                <span class="caret"></span></div>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Assignments</a></li>
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Tasks</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-link dropdown">
+                                <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Directory
+                                <span class="caret"></span></div>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a></li>
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a></li>
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">{{ tenant()->name }} Instructors</a></li>
+                                </ul>
+                            </li>
                         @endif
 
                         <!-- Authentication Links -->
@@ -81,7 +75,7 @@
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    Settings <span class="caret"></span>
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -95,11 +89,6 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
                                             {{ $tenant['name'] }} Programs
                                         </a>
-
-                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">
-                                            My Staff
-                                        </a>
-
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>

@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\URL;
+
 class Assignment extends GenericAssignment implements AssignmentInterface
 {
     //
@@ -36,6 +38,10 @@ class Assignment extends GenericAssignment implements AssignmentInterface
     public function task()
     {
         return $this->belongsTo(Task::class)->withoutGlobalScope('TenantAccesibleTask');
+    }
+    public function getPdfUrlAttribute()
+    {
+        return URL::signedRoute('tenant:assignments.pdf', [tenant()->slug, $this]);
     }
     public function getAssigneeAttribute()
     {

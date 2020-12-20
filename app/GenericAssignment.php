@@ -44,6 +44,32 @@ class GenericAssignment extends Model
     {
         return $this->completed_at && !$this->approved_at;
     }
+    public function isGenericAssignment()
+    {
+        return $this->task->type == 'generic_assignment';
+    }
+    public function isSignableDocument()
+    {
+        return $this->task->type == 'signable_document';
+    }
+    public function getSignatureFrom(Organization $organization)
+    {
+        return $this->signableDocument->signatures->firstWhere('organization_id', $organization->id) ?? false;
+    }
+    public function isSignableBy(Organization $organization, $route)
+    {
+        if ($this->assignedToOrganization == $organization && $route == 'tenant:assignments.sign') {
+            return true;
+        }
+
+        if (tenant()->organization == $organization && $route == 'tenant:admin.assignments.edit') {
+            if ($this->assignedByOrganization == $organization || $this->assignedToOrganization == $organization) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public function getClassStringAttribute(){
         return self::STATUSES[$this->getStatus()]['class_string'];
     }
@@ -57,15 +83,32 @@ class GenericAssignment extends Model
     {
         return $this->assigned_to_organization_id == $organization->id
             && !$this->completed_at
-            && !$this->approved_at;
+            && !$this->approved_at
+            && $this->type == 'generic_assignment';
+    }
+    public function canUpload(Organization $organization)
+    {
+        if ($this->assigned_by_organization_id == $organization->id) {
+            return true;
+        };
+        if ($this->assigned_to_organization_id == $organization->id && $this->type == 'generic_assignment') {
+            return true;
+        }
+        return false;
     }
     public function canApprove(Organization $organization)
     {
         return $this->assigned_by_organization_id == $organization->id;
     }
-    public function complete(User $user) {
+    public function canDelete(Organization $organization)
+    {
+        return $this->assigned_by_organization_id == $organization->id;
+    }
+    public function complete(User $user = null) {
         $this->completed_at = Carbon::now();
-        $this->completed_by_user_id = $user->id;
+        if (!empty($user)) {
+            $this->completed_by_user_id = $user->id;
+        }
         $this->save();
         return $this;
     }
@@ -74,6 +117,21 @@ class GenericAssignment extends Model
         $this->approved_by_user_id = $user->id;
         $this->save();
         return $this;
+    }
+
+    public function signableDocument()
+    {
+        return $this->hasOne(SignableDocumentAssignment::class);
+    }
+    public function isFullySigned()
+    {
+        return $this->isSignedByOrganization($this->assignedByOrganization)
+                && $this->isSignedByOrganization($this->assignedToOrganization);
+    }
+    public function isSignedByOrganization(Organization $organization)
+    {
+        return $this->task->type == 'signable_document'
+                && $this->signableDocument->signatures->where('organization_id', $organization->id)->isNotEmpty();
     }
     public function assignedByOrganization()
     {

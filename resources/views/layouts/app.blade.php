@@ -47,10 +47,9 @@
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Schedule</a>
                             </li>
 
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Staff</a>
-                                </li>
-                            @endif
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Staff</a>
+                            </li>
 
                             <li class="nav-item">
                                  <a class="nav-link" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a>

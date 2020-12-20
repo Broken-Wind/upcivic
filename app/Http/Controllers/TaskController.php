@@ -59,6 +59,9 @@ class TaskController extends Controller
         switch ($validated['assignToEntity']) {
             case Instructor::class:
                 $task->assign_to_entity = Instructor::class;
+                if (!empty($validated['isDocument'])) {
+                    return back()->withErrors('You cannot create signable documents for instructors.');
+                }
                 break;
             default:
                 $task->assign_to_entity = Organization::class;

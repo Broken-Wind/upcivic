@@ -38,11 +38,12 @@
                 </div>
 
                 <div class="form-check">
-                  <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" name="isDocument" id="isDocument" value="1" onClick="$('.documentContainer').toggle()">
-                    Create a custom signable document for this task
-                  </label>
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="isDocument" id="isDocument" value="1" onClick="$('.documentContainer').toggle()">
+                        Create a custom signable document for this task
+                    </label>
                 </div>
+                <small id="helpTaskDescription" class="form-text text-muted">Signable documents can only be created for tasks assigned to organizations. They may not be created for instructor tasks.</small>
 
                 <!-- Create the editor container -->
                 <div class="documentContainer" style="display:none;">

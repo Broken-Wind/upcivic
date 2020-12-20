@@ -17,12 +17,6 @@
                     class="form-control" name="name" id="taskName" placeholder="Submit Background Check Authorization" required>
                 </div>
 
-                <div class="form-group mt-3">
-                    <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
-                    <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
-                    <small id="helpFiles" class="form-text text-muted">Upload any documents which will be needed to complete this task, such as a blank background check authorization form or an example of a valid liability insurance policy.</small>
-                </div>
-
                 <div class="form-group">
                     <label for="taskDescription">Task Description</label>
                     <textarea class="form-control" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription"></textarea>
@@ -53,6 +47,11 @@
                 <!-- Create the editor container -->
                 <div class="documentContainer" style="display:none;">
                     @include('tenant.admin.tasks.components.document_editor')
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="files">Additional Documents <span class="text-muted">(optional)</span></label>
+                    <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
                 </div>
                 <button type="submit" id="submit" class="btn btn-primary">Add Task</button>
             </form>

@@ -9,6 +9,9 @@
 
     <title>@yield('title') - {{ config('app.name') }} </title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ URL::asset('favicon.ico') }}" type="image/x-icon"/>
+
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     @if(App::environment() == 'production')
@@ -35,7 +38,6 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @stack('css')
-
 
 </head>
 <body>

@@ -29,6 +29,7 @@ class StoreAdministrator extends FormRequest
             'last_name' => 'required|string|max:255',
             'email' => 'required|email',
             'title' => 'nullable|string|max:255|min:2',
+            'phone' => 'nullable|string|max:255|min:5',
         ];
     }
 }

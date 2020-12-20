@@ -1,12 +1,13 @@
 @extends('layouts.app')
 @section('title', 'Add Task')
+@include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
     <div class="card mb-4">
         <div class="card-header">Add Assignable Task</div>
 
         <div class="card-body">
-            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data" id="createOrUpdateTask">
                 @csrf
                 @include('shared.form_errors')
 
@@ -14,12 +15,6 @@
                     <label for="taskName">Task Name</label>
                     <input type="text"
                     class="form-control" name="name" id="taskName" placeholder="Submit Background Check Authorization" required>
-                </div>
-
-                <div class="form-group mt-3">
-                    <label for="files">Upload Documents <span class="text-muted">(optional)</span></label>
-                    <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
-                    <small id="helpFiles" class="form-text text-muted">Upload any documents which will be needed to complete this task, such as a blank background check authorization form or an example of a valid liability insurance policy.</small>
                 </div>
 
                 <div class="form-group">
@@ -42,7 +37,24 @@
                 </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Add Task</button>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" name="isDocument" id="isDocument" value="1" onClick="$('.documentContainer').toggle()">
+                        Create a custom signable document for this task
+                    </label>
+                </div>
+                <small id="helpTaskDescription" class="form-text text-muted">Signable documents can only be created for tasks assigned to organizations. They may not be created for instructor tasks.</small>
+
+                <!-- Create the editor container -->
+                <div class="documentContainer" style="display:none;">
+                    @include('tenant.admin.tasks.components.document_editor')
+                </div>
+
+                <div class="form-group mt-3">
+                    <label for="files">Additional Documents <span class="text-muted">(optional)</span></label>
+                    <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpFiles" multiple>
+                </div>
+                <button type="submit" id="submit" class="btn btn-primary">Add Task</button>
             </form>
         </div>
     </div>

@@ -52,7 +52,7 @@ class SiteController extends Controller
             'phone' => $validated['phone'],
         ]);
 
-        $site->county()->associate($validated['county_id']);
+        // $site->county()->associate($validated['county_id']);
         $site->save();
 
         // return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');

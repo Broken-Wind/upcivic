@@ -1,46 +1,42 @@
 @extends('layouts.app')
+@section('title', 'Sites')
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card mb-4">
-                <div class="card-header">Sites</div>
+    <div class="card mb-4">
+        <div class="card-header">Sites</div>
 
-                <div class="card-body">
+        <div class="card-body">
 
-                    @include('shared.form_errors')
+            @include('shared.form_errors')
 
-                    @if($sites->count() > 0)
+            @if($sites->count() > 0)
 
 
-                        <p>The following is a list of all sites listed in {{ config('app.name') }}. If you'd like to offer programs at a site that isn't listed below, please <a href="{{ tenant()->route('tenant:admin.sites.create') }}">add a new site here.</a></p>
-                        <table class="table table-striped">
+                <p>The following is a list of all sites listed in {{ config('app.name') }}. If you'd like to offer programs at a site that isn't listed below, please <a href="{{ tenant()->route('tenant:admin.sites.create') }}">add a new site here.</a></p>
+                <table class="table table-striped">
 
-                            @foreach($sites as $site)
+                    @foreach($sites as $site)
 
-                                <tr>
+                        <tr>
 
-                                    <td>
+                            <td>
 
-                                        {{ $site->name }} - <span class="text-muted">{{ $site->address }}</span>
+                                {{ $site->name }} - <span class="text-muted">{{ $site->address }}</span>
 
-                                    </td>
+                            </td>
 
-                                </tr>
+                        </tr>
 
-                            @endforeach
+                    @endforeach
 
-                        </table>
+                </table>
 
-                    @else
+            @else
 
-                        No sites yet! <a href="{{ tenant()->route('tenant:admin.sites.create') }}">Add a new site here.</a>
+                No sites yet! <a href="{{ tenant()->route('tenant:admin.sites.create') }}">Add a new site here.</a>
 
-                    @endif
-
-                </div>
-            </div>
+            @endif
 
         </div>
     </div>

@@ -41,6 +41,9 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
+    Route::get('/assignments/{assignment}', 'AssignmentController@sign')->name('assignments.sign');
+    Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
+    Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
 });
 Route::group(['middleware' => 'verified'], function () {
     Route::group([
@@ -67,15 +70,13 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');
         Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');
-        /**
-         * Disabling the ability to add organizations without users.
-         * This functionality will most likely return soon, but not for the MVP.
-         * Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
-         * Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
-         * Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
-         * Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
-         */
-
+        Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
+        Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
+        Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
+        Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
+        Route::get('/organizations/{organization}/administrators/{administrator}/edit', 'OrganizationAdministratorController@edit')->name('organizations.administrators.edit')->middleware('unclaimed');
+        Route::delete('/organizations/{organization}/administrators/{administrator}', 'OrganizationAdministratorController@destroy')->name('organizations.administrators.destroy')->middleware('unclaimed');
+        Route::put('/organizations/{organization}/administrators/{administrator}', 'OrganizationAdministratorController@update')->name('organizations.administrators.update')->middleware('unclaimed');
         Route::get('/templates', 'TemplateController@index')->name('templates.index');
         Route::get('/templates/create', 'TemplateController@create')->name('templates.create');
         Route::post('/templates', 'TemplateController@store')->name('templates.store');
@@ -99,10 +100,12 @@ Route::group(['middleware' => 'verified'], function () {
         // Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');
         Route::post('/programs/{program}/meetings/update', 'ProgramMeetingController@update')->name('programs.meetings.update');
         Route::delete('/programs/{program}/contributors/{contributor}', 'ProgramContributorController@destroy')->name('programs.contributors.destroy');
+        Route::get('/programs/{program}/proposal_preview', 'ProgramController@proposalPreview')->name('programs.proposal_preview');
         Route::get('/sites', 'SiteController@index')->name('sites.index');
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
+        Route::delete('/assignments/{assignment}', 'AssignmentController@destroy')->name('assignments.destroy');
         Route::post('/assignments/{assignment}/complete', 'AssignmentController@complete')->name('assignments.complete');
         Route::post('/assignments/{assignment}/approve', 'AssignmentController@approve')->name('assignments.approve');
         Route::get('/assignments/{assignment}/edit', 'AssignmentController@edit')->name('assignments.edit');
@@ -115,7 +118,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');
         Route::get('/assignments/to/organizations/{organization}', 'AssignmentToOrganizationController@index')->name('assignments.to.organizations.index');
         Route::get('/assignments/from/organizations/{organization}', 'AssignmentFromOrganizationController@index')->name('assignments.from.organizations.index');
-        Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
+        // Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/files/{file}/download', 'FileController@download')->name('files.download');

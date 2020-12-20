@@ -1,3 +1,5 @@
+@include('tenant.admin.programs.components.preview_program_modal')
+
 <div class="row mb-4">
     <div class="col-6">
         <div class="alert {{ $program->class_string }}">
@@ -32,16 +34,12 @@
         <form method="POST" action="{{tenant()->route('tenant:admin.programs.destroy', [$program])}}" id="delete-program">
             @csrf
             @method('DELETE')
-        </form>
-        <form method="POST" action="{{ tenant()->route('tenant:admin.programs.send', [$program]) }}">
             @if($program->isProposalSent())
                 <fieldset disabled="disabled"/>
             @else
-
                 <button type="submit" form="delete-program" class="btn btn-secondary" onClick="return confirm('Are you sure you want to delete this proposal? This cannot be undone.')">Delete Proposal</button>
-                <button type="submit" class="btn btn-primary" id="send-program-button">Approve & Send</button>
+                <a class="btn btn-primary" href="" data-toggle="modal" data-target="#preview-program-modal">Preview & Send</a>
             @endif
-            @csrf
         </form>
     </div>
 </div>

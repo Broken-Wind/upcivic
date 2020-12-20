@@ -81,7 +81,7 @@
                 </table>
 
                 <hr/>
-                <p>Add users to {{tenant()->name}}</p>
+                <strong><p>Add users to {{tenant()->name}}</p></strong>
                 <form method="POST" action="{{ tenant()->route('tenant:admin.users.invites.store') }}">
 
                     @csrf

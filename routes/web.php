@@ -117,7 +117,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');
         Route::get('/assignments/to/organizations/{organization}', 'AssignmentToOrganizationController@index')->name('assignments.to.organizations.index');
         Route::get('/assignments/from/organizations/{organization}', 'AssignmentFromOrganizationController@index')->name('assignments.from.organizations.index');
-        Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
+        // Route::post('/tasks/{task}/assignments', 'TaskAssignmentController@massUpdate')->name('task.assignments.mass_update');
         Route::get('/tasks', 'TaskController@index')->name('tasks.index');
         Route::post('/tasks', 'TaskController@store')->name('tasks.store');
         Route::get('/files/{file}/download', 'FileController@download')->name('files.download');

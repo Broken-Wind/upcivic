@@ -8,7 +8,6 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
 <script src="{{ asset('js/views/tasks/index.js') }}"></script>
 @endpush
 @section('content')
-@include('tenant.admin.tasks.components.task_assignments_modal')
 <div class="container">
     @include('shared.form_errors')
 
@@ -20,6 +19,9 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
         <div class="card-body">
 
             @if($tasks->count() > 0)
+                <div class="alert alert-info">
+                    You can assign tasks to your partner organizations via the proposals view.
+                </div>
 
                 <table class="table table-striped">
 
@@ -32,9 +34,6 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
                             <td class="text-right">
                                 <a href="{{ tenant()->route('tenant:admin.tasks.edit', ['task' => $task]) }}">
                                     <i class="fas fa-edit mr-2"></i>
-                                </a>
-                                <a href="#" class="edit-task-assignments" data-task-id="{{ $task->id }}">
-                                    <i class="fas fa-clinic-medical mr-2"></i>
                                 </a>
                             </td>
 

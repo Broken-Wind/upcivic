@@ -3,15 +3,18 @@
 
 @section('content')
 <div class="container">
+
     <a href="{{ tenant()->route('tenant:admin.sites.index')}}">
         <i class="fas fa-angle-left pb-3"></i> Back to Sites
     </a>
+
+    @include('shared.form_errors')
+
     <div class="card mb-4">
         <div class="card-header">Sites</div>
         <div class="card-body">
             <form method="POST" action="{{ tenant()->route('tenant:admin.sites.create') }}">
                 @csrf
-                @include('shared.form_errors')
                 <div class="form-group">
                     <label for="site_name">Site Name</label>
                     <input type="text" class="form-control" name="name" id="site_name" placeholder="Townville Rec Center" required>

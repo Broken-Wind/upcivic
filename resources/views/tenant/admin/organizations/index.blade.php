@@ -5,6 +5,8 @@
 @section('content')
 @include('tenant.admin.organizations.components.add_organization_modal')
 <div class="container">
+    @include('shared.form_errors')
+
     <div class="card mb-4">
         <div class="card-header">Organizations</div>
 

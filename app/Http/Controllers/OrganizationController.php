@@ -61,4 +61,10 @@ class OrganizationController extends Controller
 
         return back()->withSuccess('Organization updated.');
     }
+
+    public function create()
+    {
+        return view('tenant.admin.organizations.create');
+    }
+
 }

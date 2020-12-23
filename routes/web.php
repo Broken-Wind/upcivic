@@ -71,6 +71,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::patch('/settings', 'TenantController@update')->name('update');
         Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');
         Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
+        Route::get('/organizations/create', 'OrganizationController@create')->name('organizations.create');
         Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
         Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
         Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');

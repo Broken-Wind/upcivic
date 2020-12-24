@@ -33,7 +33,7 @@
                     @endforelse
                 </div>
 
-                <button type="submit" id="submit" class="btn btn-primary">Add & Review</button>
+                <button type="submit" id="submit" class="btn btn-primary">Review</button>
             </form>
         </div>
     </div>

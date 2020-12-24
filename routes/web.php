@@ -106,6 +106,9 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
+        Route::get('/assignments/create', 'AssignmentController@create')->name('assignments.create');
+        Route::get('/assignments/review', 'AssignmentController@review')->name('assignments.review');
+        Route::post('/assignments/storeMany', 'AssignmentController@storeMany')->name('assignments.store_many');
         Route::delete('/assignments/{assignment}', 'AssignmentController@destroy')->name('assignments.destroy');
         Route::post('/assignments/{assignment}/complete', 'AssignmentController@complete')->name('assignments.complete');
         Route::post('/assignments/{assignment}/approve', 'AssignmentController@approve')->name('assignments.approve');

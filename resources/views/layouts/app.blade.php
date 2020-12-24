@@ -41,23 +41,21 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Programs</a>
                             </li>
-                            <li class="nav-link dropdown">
-                                <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Compliance
-                                <span class="caret"></span></div>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Assignments</a></li>
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Tasks</a></li>
-                                </ul>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks</a>
                             </li>
+
                             <li class="nav-link dropdown">
                                 <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Directory
                                 <span class="caret"></span></div>
                                 <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Instructors</a></li>
                                     <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a></li>
                                     <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a></li>
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">{{ tenant()->name }} Instructors</a></li>
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a></li>
                                 </ul>
                             </li>
                         @endif
@@ -79,16 +77,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @forelse(Auth::user()->tenants as $tenant)
-                                        <a class="dropdown-item" href="{{ route('tenant:admin.edit', ['tenant' => $tenant['slug']]) }}">
-                                            {{ $tenant['name'] }} Settings
-                                        </a>
-                                    @empty
-                                    @endforelse
+                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.edit') }}">
+                                        Organization Settings
+                                    </a>
                                     @if(tenant())
-                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
-                                            {{ $tenant['name'] }} Programs
-                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>

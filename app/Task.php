@@ -58,6 +58,10 @@ class Task extends Model
     {
         return $this->hasOne(SignableDocument::class);
     }
+    public function isSignableDocument()
+    {
+        return $this->type == 'signable_document';
+    }
 
     public function files()
     {

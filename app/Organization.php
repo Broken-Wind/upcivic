@@ -38,6 +38,12 @@ class Organization extends GenericAssignableEntity
             return $query->whereNotNull('email');
         });
     }
+
+    public function getPartnersAttribute()
+    {
+        return Organization::partneredWith($this->id)->orderBy('name')->get();
+    }
+
     public function outgoingAssignments()
     {
         return $this->hasMany(Assignment::class, 'assigned_by_organization_id');

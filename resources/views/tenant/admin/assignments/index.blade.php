@@ -39,11 +39,13 @@
                 <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Outgoing Assignments</a>
             @endif
         </li>
-        
+
     </ul>
 
     <div class="card">
         <div class="card-body">
+
+            <a class="btn btn-primary mb-3" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
 
             @if($organizations->count() > 0)
 
@@ -55,8 +57,8 @@
                     @else
                         <th>Assigned By</th>
                     @endif
-                        <th>Organization Status</th>
-                        <th>Instructor Statuses</th>
+                        <th>Organization Tasks</th>
+                        <th>Instructor Tasks</th>
                         <th>&nbsp;</th>
                     </thead>
 

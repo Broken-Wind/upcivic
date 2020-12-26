@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
 
 class DocumentSigned extends Mailable
 {
@@ -13,7 +14,7 @@ class DocumentSigned extends Mailable
 
     public $assignment;
     public $organization;
-    public $assignmentUrl;
+    public $signedUrl;
 
     /**
      * Create a new message instance.
@@ -25,7 +26,7 @@ class DocumentSigned extends Mailable
         //
         $this->assignment = $assignment;
         $this->organization = $organization;
-        $this->assignmentUrl = tenant()->route('tenant:admin.assignments.edit', [$this->assignment->id]);
+        $this->signedUrl = URL::signedRoute('tenant:assignments.sign', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
     }
 
     /**

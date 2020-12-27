@@ -30,4 +30,16 @@ class ReviewAssignments extends FormRequest
             'organization_ids.*' => 'required|numeric',
         ];
     }
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'organization_ids.required' => 'You must select at least one organization to assign a task.',
+            'organization_ids.*.required' => 'You must select at least one organization to assign a task.',
+        ];
+    }
 }

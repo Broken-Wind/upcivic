@@ -26,9 +26,26 @@ class StoreManyAssignments extends FormRequest
         return [
             //
             'task_id' => 'required|numeric',
-            'organization_program_ids' => 'required|array',
-            'organization_program_ids.*' => 'required|array',
-            'organization_program_ids.*.*' => 'required|numeric',
+            'organization_ids' => 'required|array',
+            'organization_ids.*' => 'required|numeric',
+            'organization_program_ids' => 'exclude_unless:includes_programs,true|required|array',
+            'organization_program_ids.*' => 'exclude_unless:includes_programs,true|required|array',
+            'organization_program_ids.*.*' => 'exclude_unless:includes_programs,true|required|numeric',
+        ];
+    }
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'organization_ids.required' => 'You must include at least one organization.',
+            'organization_ids.*.required' => 'You must include at least one organization.',
+            'organization_program_ids.required' => 'You must include at least one program for each organization.',
+            'organization_program_ids.*.required' => 'You must include at least one program for each organization.',
+            'organization_program_ids.*.*.required' => 'You must include at least one program for each organization.',
         ];
     }
 }

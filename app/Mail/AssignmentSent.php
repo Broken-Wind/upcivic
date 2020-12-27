@@ -30,7 +30,7 @@ class AssignmentSent extends Mailable
         $this->sender = $sender;
         $this->assignedByOrganization = $assignedByOrganization;
         $this->assignedToOrganization = $assignedToOrganization;
-        $this->signedUrl = URL::signedRoute('tenant:assignments.sign', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
+        $this->publicEditUrl = URL::signedRoute('tenant:assignments.publicEdit', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
     }
 
     /**

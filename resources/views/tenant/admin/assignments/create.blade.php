@@ -3,6 +3,7 @@
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
+    @include('tenant.admin.tasks.components.create_task_modal')
     @include('shared.form_errors')
     <div class="card mb-4">
         <div class="card-header">Assign a Task</div>
@@ -17,7 +18,7 @@
                             <option value="{{ $task->id }}">{{ $task->name }}</option>
                         @endforeach
                     </select>
-                    <small id="add-task" class="text-muted">Can't find the task you'd like? <a href="" data-toggle="modal" data-target="#add-task-modal">Add a task </a></small>
+                    <small id="add-task" class="text-muted">Can't find the task you'd like? <a href="" data-toggle="modal" data-target="#create-task-modal">Add a task </a></small>
                 </div>
                 <div class="form-group">
                     <label for="taskName">Assign to Organizations:</label>

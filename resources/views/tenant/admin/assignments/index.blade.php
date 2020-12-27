@@ -45,7 +45,10 @@
     <div class="card">
         <div class="card-body">
 
-            <a class="btn btn-primary mb-3" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
+            @if($isOutgoingFromTenant)
+                <a class="btn btn-primary mb-3" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
+                <a class="btn btn-secondary mb-3" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
+            @endif
 
             @if($organizations->count() > 0)
 

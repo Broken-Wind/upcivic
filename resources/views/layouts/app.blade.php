@@ -55,7 +55,6 @@
                                     <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Instructors</a></li>
                                     <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a></li>
                                     <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a></li>
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a></li>
                                 </ul>
                             </li>
                         @endif

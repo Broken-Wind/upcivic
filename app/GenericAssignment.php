@@ -11,7 +11,7 @@ class GenericAssignment extends Model
         'incomplete' => [
             'class_string' => 'alert-danger',
             'status_string' => 'Incomplete',
-            'status_icon_string' => 'fa-times'
+            'status_icon_string' => 'fa-folder-minus'
         ],
         'pending' => [
             'class_string' => 'alert-warning',

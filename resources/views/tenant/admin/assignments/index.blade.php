@@ -65,13 +65,13 @@
                     @foreach($organizations as $organization)
                         @if($isOutgoingFromTenant)
                             @include('tenant.admin.assignments.components.organization_row', [
-                                'assignments' => tenant()->organization->assignmentsTo($organization),
+                                'assignments' => tenant()->organization->unapprovedAssignmentsTo($organization),
                                 'instructors' => $organization->instructorsAssignedTo(tenant()->organization),
                                 'assignerOrganization' => tenant()->organization
                             ])
                         @else
                             @include('tenant.admin.assignments.components.organization_row', [
-                                'assignments' => tenant()->organization->assignmentsBy($organization),
+                                'assignments' => tenant()->organization->unapprovedAssignmentsBy($organization),
                                 'instructors' => $organization->instructorsAssignedBy(tenant()->organization),
                                 'assignerOrganization' => $organization
                             ])

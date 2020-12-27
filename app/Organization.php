@@ -52,10 +52,6 @@ class Organization extends GenericAssignableEntity
     {
         return $this->hasMany(Assignment::class, 'assigned_to_organization_id');
     }
-    public function assignmentsTo(Organization $organization)
-    {
-        return $this->outgoingAssignments->where('assigned_to_organization_id', $organization->id);
-    }
     public function outgoingAssignmentsForInstructors()
     {
         return $this->hasMany(Assignment::class, 'assigned_by_organization_id')->forInstructors();

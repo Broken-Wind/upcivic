@@ -31,9 +31,25 @@ class GenericAssignableEntity extends Model
                 return 'incomplete';
         }
     }
+    public function assignmentsTo(Organization $organization)
+    {
+        return $this->outgoingAssignments->where('assigned_to_organization_id', $organization->id);
+    }
+    public function unapprovedAssignmentsTo(Organization $organization)
+    {
+        return $this->outgoingAssignments->where('assigned_to_organization_id', $organization->id)->filter(function ($assignment) {
+            return !$assignment->isApproved();
+        });
+    }
     public function assignmentsBy(Organization $organization)
     {
         return $this->incomingAssignments->where('assigned_by_organization_id', $organization->id);
+    }
+    public function unapprovedAssignmentsBy(Organization $organization)
+    {
+        return $this->incomingAssignments->where('assigned_by_organization_id', $organization->id)->filter(function ($assignment) {
+            return !$assignment->isApproved();
+        });
     }
     public function hasAssignmentsBy(Organization $organization)
     {

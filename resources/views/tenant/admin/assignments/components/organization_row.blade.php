@@ -6,7 +6,7 @@
         @forelse($assignments as $assignment)
         <a href="{{ tenant()->route('tenant:admin.assignments.edit', [$assignment])}}">
             <span class="organization-rectangle alert py-1 my-1 {{ $assignment->class_string }} organization-status" title="{{ $assignment->name }}">
-                {{ $assignment->acronyms }} <i class="fas fa-fw {{ $assignment->status_icon_string }}"></i>
+                {{ $assignment->name }} <i class="fas fa-fw {{ $assignment->status_icon_string }}"></i>
             </span>
         </a>
         @empty

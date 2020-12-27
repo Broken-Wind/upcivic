@@ -3,14 +3,13 @@
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
     <div class="card mb-4">
         <div class="card-header">Add Assignable Task</div>
 
         <div class="card-body">
             <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data" id="createOrUpdateTask">
                 @csrf
-                @include('shared.form_errors')
-
                 <div class="form-group">
                     <label for="taskName">Task Name</label>
                     <input type="text"

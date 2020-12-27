@@ -3,6 +3,7 @@
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
     <div class="card mb-4">
         <div class="card-header">Edit Assignable Task</div>
 
@@ -10,7 +11,6 @@
             <form method="POST" id="updateTask" action="{{ tenant()->route('tenant:admin.tasks.update', [$task]) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                @include('shared.form_errors')
             </form>
             <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.archive', ['task' => $task]) }}" id="archiveTask">
                 @csrf

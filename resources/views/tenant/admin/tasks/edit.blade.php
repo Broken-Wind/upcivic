@@ -68,7 +68,7 @@
             @endforelse
             <div class="row">
                 <div class="col mt-3">
-                    <button type="submit" form="updateTask" class="btn btn-primary">Update Task</button>
+                    <button type="submit" id="submit" form="updateTask" class="btn btn-primary">Update Task</button>
                     <button type="submit" form="archiveTask" class="btn btn-secondary">Archive Task</button>
                 </div>
             </div>

@@ -3,12 +3,12 @@
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
+    @include('shared.form_errors')
     <div class="card mb-4">
         <div class="card-header">Assign a Task</div>
 
         <div class="card-body">
             <form method="GET" action="{{ tenant()->route('tenant:admin.assignments.review') }}" enctype="multipart/form-data" id="createOrUpdateTask">
-                @include('shared.form_errors')
 
                 <div class="form-group">
                     <label for="taskName">Task</label>

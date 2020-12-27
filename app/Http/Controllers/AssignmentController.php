@@ -26,7 +26,7 @@ class AssignmentController extends Controller
     {
         $validated = $request->validated();
         $task = Task::find($validated['task_id']);
-        $organizations = Organization::find($validated['organization_ids']);
+        $organizations = Organization::find($validated['organization_ids'])->keyBy('id');
         return view('tenant.admin.assignments.review', compact('task', 'organizations'));
     }
     public function storeMany(StoreManyAssignments $request)
@@ -36,7 +36,7 @@ class AssignmentController extends Controller
         foreach($validated['organization_program_ids'] as $organizationId => $programIds) {
             $task->assign($organizationId, $programIds);
         }
-        return back()->withSuccess('Tasks were successfully assigned!');
+        return redirect(tenant()->route('tenant:admin.assignments.outgoing.index'))->withSuccess('Tasks were successfully assigned!');
     }
     public function pdf(Request $request, Assignment $assignment)
     {

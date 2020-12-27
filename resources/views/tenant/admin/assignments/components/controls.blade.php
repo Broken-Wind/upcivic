@@ -40,16 +40,15 @@
 
         <div class="row mt-4">
             <div class="col">
-                    @if($assignment->canComplete(tenant()->organization) && !$assignment->isPending())
-                        <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure you want to mark this as complete?')" form="complete">Complete</button>
-                    @endif
-                    @if($assignment->canApprove(tenant()->organization) && !$assignment->isApproved())
-                        <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure you want to mark this as approved?')" form="approve">Approve</button>
-                    @endif
-                    @if($assignment->canDelete(tenant()->organization))
-                        <button type="submit" class="btn btn-danger" onClick="return confirm('Are you sure you want to permanently delete this assignment?')" form="delete"><i class="fas fa-fw fa-trash"></i></button>
-                    @endif
-                </div>
+                @if($assignment->canComplete(tenant()->organization) && !$assignment->isPending())
+                    <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure you want to mark this as complete?')" form="complete">Complete</button>
+                @endif
+                @if($assignment->canApprove(tenant()->organization) && !$assignment->isApproved())
+                    <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure you want to mark this as approved?')" form="approve">Approve</button>
+                @endif
+                @if($assignment->canDelete(tenant()->organization))
+                    <button type="submit" class="btn btn-danger" onClick="return confirm('Are you sure you want to permanently delete this assignment?')" form="delete"><i class="fas fa-fw fa-trash"></i></button>
+                @endif
             </div>
         </div>
         @if($assignment->canComplete(tenant()->organization) && !$assignment->isPending())

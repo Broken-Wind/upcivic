@@ -19,7 +19,7 @@
             <div class="form-group">
                 <label for="taskName">Task Name</label>
                 <input type="text" form="updateTask"
-                class="form-control" name="name" id="taskName" value="{{ $task->name }}" placeholder="Submit Background Check Authorization" required>
+                class="form-control" name="name" id="taskName" value="{{ $task->name }}" placeholder="Background Check" required>
             </div>
             <div class="form-group">
                 <label for="taskDescription">Task Description</label>

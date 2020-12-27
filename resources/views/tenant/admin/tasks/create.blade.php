@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label for="taskName">Task Name</label>
                     <input type="text"
-                    class="form-control" name="name" id="taskName" placeholder="Submit Background Check Authorization" required>
+                    class="form-control" name="name" id="taskName" placeholder="Background Check" required>
                 </div>
 
                 <div class="form-group">

@@ -33,7 +33,11 @@ class AssignmentController extends Controller
     {
         $validated = $request->validated();
         $task = Task::find($validated['task_id']);
-        foreach($validated['organization_program_ids'] as $organizationId => $programIds) {
+        foreach($validated['organization_ids'] as $organizationId) {
+			$programIds = null;
+			if (!empty($validated['organization_program_ids'])) {
+				$programIds = $validated['organization_program_ids'][$organizationId] ?? null;
+			}
             $task->assign($organizationId, $programIds);
         }
         return redirect(tenant()->route('tenant:admin.assignments.outgoing.index'))->withSuccess('Tasks were successfully assigned!');

@@ -4,6 +4,7 @@
     <div class="row mb-2">
         <div class="col-auto mr-auto">
             <h3>{{ $organization->name }}</h3>
+            <input type="hidden" name="organization_ids[]" value="{{ $organization->id }}">
         </div>
         <div class="col-auto">
             <a href="{{ route('tenant:admin.assignments.review', ['tenant' => tenant()->slug, 'task_id' => $task->id, 'organization_ids' => $organizations->except($organization->id)->pluck('id')->toArray()]) }}" class="btn btn-danger" onClick="return confirm('Are you sure you don\'t want to assign the task to this organization?');">

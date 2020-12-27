@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ $organization->name }} have now signed the document listed below via {{ config('app.name') }}.
+{{ $organization->name }} has signed the document listed below via {{ config('app.name') }}.
 
 @component('mail::panel')
 ## {{ $organization->name }} signed {{ $assignment['name'] }}

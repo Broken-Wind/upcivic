@@ -30,7 +30,7 @@
 
             @if($templateCount > 0)
                 <a class="btn btn-primary" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
-                <a class="btn btn-secondary" href="{{ tenant()->route('tenant:admin.templates.index') }}">Proposal Templates</a>
+                <a class="btn btn-secondary" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
             @endif
             @if(tenant()->isSubscribed())
                 {{-- <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button> --}}

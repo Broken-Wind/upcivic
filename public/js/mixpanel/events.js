@@ -1,3 +1,14 @@
+function mxDocumentSigned(assignment) {
+    mixpanel.track('Assignment Document Signed', {
+        'Assignment ID': assignment.id,
+        'Assignment Name': assignment.name,
+        'Assigned By': assignment.assigned_by_organization_id,
+        'Assigned To': assignment.assigned_to_organization_id,
+    });
+    mixpanel.people.increment('Lifetime Documents Signed');
+    mixpanel.identify();
+}
+
 function mxProgramCreated(program) {
     mixpanel.track('Program Created', {
         'Program ID': program.id,

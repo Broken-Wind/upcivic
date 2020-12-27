@@ -28,9 +28,9 @@ class StoreManyAssignments extends FormRequest
             'task_id' => 'required|numeric',
             'organization_ids' => 'required|array',
             'organization_ids.*' => 'required|numeric',
-            'organization_program_ids' => 'exclude_unless:includes_programs,true|required|array',
-            'organization_program_ids.*' => 'exclude_unless:includes_programs,true|required|array',
-            'organization_program_ids.*.*' => 'exclude_unless:includes_programs,true|required|numeric',
+            'organization_program_ids' => 'exclude_unless:should_associate_programs,true|required|array',
+            'organization_program_ids.*' => 'exclude_unless:should_associate_programs,true|required|array',
+            'organization_program_ids.*.*' => 'exclude_unless:should_associate_programs,true|required|numeric',
         ];
     }
     /**

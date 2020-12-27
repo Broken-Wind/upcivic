@@ -23,6 +23,9 @@
             <form method="POST" action="{{ tenant()->route('tenant:admin.assignments.store_many') }}" id="storeAssignments">
                 @csrf
                 <input type="hidden" name="task_id" value="{{ $task->id }}">
+                @if($task->shouldAssociatePrograms())
+                    <input type="hidden" name="should_associate_programs" value="true">
+                @endif
 
                 @foreach($organizations as $organization)
                     @include('tenant.admin.assignments.components.organization_assignment_preview')

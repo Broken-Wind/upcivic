@@ -62,6 +62,10 @@ class Task extends Model
     {
         return $this->type == 'signable_document';
     }
+    public function shouldAssociatePrograms()
+    {
+        return $this->isSignableDocument();
+    }
 
     public function files()
     {

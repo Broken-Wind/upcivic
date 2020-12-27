@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="taskDescription">Task Description</label>
+                    <label for="taskDescription">Task Instructions</label>
                     <textarea class="form-control" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription"></textarea>
                     <small id="helpTaskDescription" class="form-text text-muted">Provide details including how to use any attached documents.</small>
                 </div>

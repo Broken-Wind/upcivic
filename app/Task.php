@@ -5,6 +5,7 @@ namespace App;
 use App\Mail\AssignmentSent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 
 class Task extends Model
 {
@@ -43,10 +44,13 @@ class Task extends Model
                 'content' => $this->signableDocument->content,
                 'program_ids' => $programIds
             ]);
+            $emailButtonLink = URL::signedRoute('tenant:assignments.sign', ['tenant' => tenant()->slug, 'assignment' => $assignment]);
+        } else {
+            $emailButtonLink = tenant()->route('tenant:admin.assignments.incoming.index');
         }
         $sender = Auth::user();
         $assignedByOrganization = tenant()->organization;
-        \Mail::send(new AssignmentSent($assignment, $sender, $assignedByOrganization, $assignedToOrganization));
+        \Mail::send(new AssignmentSent($assignment, $sender, $assignedByOrganization, $assignedToOrganization, $emailButtonLink));
     }
 
     public function assignments()

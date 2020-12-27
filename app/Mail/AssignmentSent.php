@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\URL;
 
 class AssignmentSent extends Mailable
 {
@@ -16,21 +15,21 @@ class AssignmentSent extends Mailable
     public $sender;
     public $assignedByOrganization;
     public $assignedToOrganization;
-    public $signedUrl;
+    public $emailButtonLink;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($assignment, $sender, $assignedByOrganization, $assignedToOrganization)
+    public function __construct($assignment, $sender, $assignedByOrganization, $assignedToOrganization, $emailButtonLink)
     {
         //
         $this->assignment = $assignment;
         $this->sender = $sender;
         $this->assignedByOrganization = $assignedByOrganization;
         $this->assignedToOrganization = $assignedToOrganization;
-        $this->signedUrl = URL::signedRoute('tenant:assignments.sign', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
+        $this->emailButtonLink = $emailButtonLink;
     }
 
     /**

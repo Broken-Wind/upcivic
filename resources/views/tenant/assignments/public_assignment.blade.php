@@ -1,36 +1,3 @@
-@push('css')
-    <style>
-        @font-face {
-            font-family: Otto;
-            src: url({{ asset('fonts/Otto.ttf') }}) format("truetype");
-            font-weight: 400; // use the matching font-weight here ( 100, 200, 300, 400, etc).
-            font-style: normal; // use the matching font-style here
-        }
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .signature {
-            font-family: Otto, Times, serif;
-            font-size: 36px;
-        }
-        .page-break {
-            page-break-after: always;
-        }
-        table {
-            width: 100%;
-        }
-        th {
-            text-align: left;
-            padding: 5px;
-        }
-        td {
-            padding: 5px;
-        }
-    </style>
-@endpush
-
-@include('shared.form_errors')
-
 <div class="card my-3">
     <div class="card-header">
         <strong>
@@ -57,7 +24,7 @@
         </div>
 
         @if($assignment->canUpload(tenant()->organization))
-            <form method="POST" action="{{ $assignment->upload_url }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ tenant()->route('tenant:assignments.public.upload', [$assignment]) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-3">
@@ -71,7 +38,7 @@
         @endif
 
         @if(!$assignment->isPending() && !$assignment->isApproved())
-            <form method="POST" action="{{ tenant()->route('tenant:assignments.tasks.complete', [$assignment]) }}" class="my-auto pt-3">
+            <form method="POST" action="{{ tenant()->route('tenant:assignments.public.complete', [$assignment]) }}" class="my-auto pt-3">
                 @csrf
                 <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Complete</button>
             </form>

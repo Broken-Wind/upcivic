@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\File;
 use App\Assignment;
+use App\Program;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePublicFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AssignmentPublicController extends Controller
 {
@@ -27,5 +31,25 @@ class AssignmentPublicController extends Controller
     {
         $assignment->complete();
         return back()->withSuccess('Marked complete!');
+    }
+
+    public function upload(StorePublicFile $request, Assignment $assignment)
+    {
+        $validated = $request->validated();
+
+        if ($request->hasFile('files')) {
+            foreach($validated['files'] as $document) {
+                $path = Storage::putFile(File::getAdminStoragePath(), $document);
+                $file = File::make([
+                    'path' => $path,
+                    'filename' => $document->getClientOriginalName()
+                ]);
+                $file->organization_id = tenant()->organization_id;
+                $file->entity_type = Assignment::class;
+                $file->entity_id = $assignment->id;
+                $file->save();
+            }
+        }
+        return back()->withSuccess('Files uploaded.');
     }
 }

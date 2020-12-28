@@ -33,7 +33,11 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
 
                             <td class="text-right">
                                 <a href="{{ tenant()->route('tenant:admin.tasks.edit', ['task' => $task]) }}">
-                                    <i class="fas fa-edit mr-2"></i>
+                                    Edit Task
+                                </a>
+                                &nbsp;|&nbsp;
+                                <a href="{{ tenant()->route('tenant:admin.assignments.create', ['task_id' => $task->id]) }}">
+                                    Assign Task
                                 </a>
                             </td>
 

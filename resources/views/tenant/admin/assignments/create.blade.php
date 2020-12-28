@@ -15,7 +15,7 @@
                     <label for="taskName">Task</label>
                     <select class="form-control" name="task_id" id="taskSelector">
                         @foreach($tasks as $task)
-                            <option value="{{ $task->id }}">{{ $task->name }}</option>
+                            <option value="{{ $task->id }}"{{ request()->has('task_id') && request()->task_id == $task->id ? ' selected' : '' }}>{{ $task->name }}</option>
                         @endforeach
                     </select>
                     <small id="add-task" class="text-muted">Can't find the task you'd like? <a href="" data-toggle="modal" data-target="#create-task-modal">Add a task </a></small>

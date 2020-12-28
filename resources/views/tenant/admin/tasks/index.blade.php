@@ -10,6 +10,9 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
 @section('content')
 <div class="container">
     @include('shared.form_errors')
+    <div class="alert alert-info">
+        You can assign tasks to your partner organizations via the proposals view.
+    </div>
 
     <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.tasks.create') }}">Add Task</a>
 
@@ -19,9 +22,6 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
         <div class="card-body">
 
             @if($tasks->count() > 0)
-                <div class="alert alert-info">
-                    You can assign tasks to your partner organizations via the proposals view.
-                </div>
 
                 <table class="table table-striped">
 

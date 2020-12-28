@@ -1,16 +1,3 @@
-@push('scripts')
-<script>
-    var assignment = {
-        'id': {{ $assignment->id }},
-        'name': '{{ $assignment->name }}',
-        'assigned_by_organization_id': {{ $assignment->assigned_by_organization_id }},
-        'assigned_to_organization_id': {{ $assignment->assigned_to_organization_id }},
-    };
-</script>
-<script src="{{ asset('js/views/edit_assignment.js') }}" defer></script>
-@endpush
-
-
 <div class="signature-container alert alert-secondary mb-4">
     <h4>
         {{ $organization->name }} Representative

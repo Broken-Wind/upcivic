@@ -3,3 +3,9 @@ $(document).ready(function () {
         mxDocumentSigned(assignment);
     });
 });
+
+$(document).ready(function () {
+    $('#approve-assignment-button').click(function () {
+        mxAssignmentApproved(assignment);
+    });
+});

@@ -14,11 +14,11 @@
     <div class="card-body">
     <p>{{ $assignment->description }}</p>
         <div class="col">
-            @include('tenant.admin.assignments.components.file_list', [
+            @include('tenant.admin.assignments.components.public_file_list', [
                 'files' => $assignment->assignee_files, 'organizationName' => $assignment->assignedToOrganization->name
             ])
 
-            @include('tenant.admin.assignments.components.file_list', [
+            @include('tenant.admin.assignments.components.public_file_list', [
                 'files' => $assignment->assigner_files, 'organizationName' => $assignment->assignedByOrganization->name
             ])
         </div>

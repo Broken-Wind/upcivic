@@ -46,6 +46,7 @@ Route::group([
     Route::post('/assignments/{assignment}/complete', 'AssignmentPublicController@complete')->name('assignments.public.complete');
     Route::get('/assignments/{assignment}/edit', 'AssignmentPublicController@edit')->name('assignments.public.edit');
     Route::post('/assignments/{assignment}/upload', 'AssignmentPublicController@upload')->name('assignments.public.upload');
+    Route::get('/assignments/{assignment}/download', 'AssignmentPublicController@download')->name('assignments.public.download');
 });
 Route::group(['middleware' => 'verified'], function () {
     Route::group([

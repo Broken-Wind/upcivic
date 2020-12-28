@@ -52,4 +52,10 @@ class AssignmentPublicController extends Controller
         }
         return back()->withSuccess('Files uploaded.');
     }
+
+    public function download($file)
+    {
+        $file = File::withoutGlobalScopes()->find($file);
+        return Storage::download($file->path, $file->filename);
+    }
 }

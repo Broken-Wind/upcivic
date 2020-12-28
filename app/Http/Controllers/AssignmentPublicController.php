@@ -44,7 +44,7 @@ class AssignmentPublicController extends Controller
                     'path' => $path,
                     'filename' => $document->getClientOriginalName()
                 ]);
-                $file->organization_id = tenant()->organization_id;
+                $file->organization_id = $assignment->assigned_to_organization_id;
                 $file->entity_type = Assignment::class;
                 $file->entity_id = $assignment->id;
                 $file->save();

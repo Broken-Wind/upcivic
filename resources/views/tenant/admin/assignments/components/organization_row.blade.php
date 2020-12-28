@@ -16,7 +16,15 @@
 
     <td class="{{ $instructors->isEmpty() ? 'my-1 py-1' : 'my-2 py-2' }}">
         @forelse($instructors as $instructor)
-            <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+            @if ($isOutgoingFromTenant)
+                <a href="{{ tenant()->route('tenant:admin.assignments.to.organizations.index', [$organization->id]) }}">
+                    <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+                </a>
+            @else
+                <a href="{{ tenant()->route('tenant:admin.assignments.from.organizations.index', [$organization->id]) }}">
+                    <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+                </a>
+            @endif
         @empty
             @if($isOutgoingFromTenant)
                 @if($organization->hasIncomingAssignmentsForInstructors())

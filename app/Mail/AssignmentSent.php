@@ -16,7 +16,7 @@ class AssignmentSent extends Mailable
     public $sender;
     public $assignedByOrganization;
     public $assignedToOrganization;
-    public $signedUrl;
+    public $publicEditUrl;
 
     /**
      * Create a new message instance.

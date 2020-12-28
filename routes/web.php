@@ -44,6 +44,7 @@ Route::group([
     Route::get('/assignments/{assignment}', 'AssignmentController@publicEdit')->name('assignments.publicEdit');
     Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
     Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
+    Route::post('/assignments/{assignment}/complete', 'AssignmentPublicController@complete')->name('assignments.tasks.complete');
 });
 Route::group(['middleware' => 'verified'], function () {
     Route::group([

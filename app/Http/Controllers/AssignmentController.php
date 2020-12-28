@@ -60,10 +60,10 @@ class AssignmentController extends Controller
 
         if ($assignment->isSignableDocument()) {
             $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->get();
-            return view('tenant.assignments.public_edit', compact('assignment', 'programs', 'routeActionString')); 
         } else {
-            return view('tenant.assignments.public_edit', compact('assignment', 'routeActionString')); 
+            $programs = null;
         }
+        return view('tenant.assignments.public_edit', compact('assignment', 'programs', 'routeActionString')); 
     }
     public function complete(Assignment $assignment)
     {

@@ -27,7 +27,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
-                            @if(Auth::user()->canGenerateDemoData())
+                            @if(Auth::check() && Auth::user()->canGenerateDemoData())
                                 <li class="nav-item">
                                 <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
                                     @csrf
@@ -58,11 +58,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Log in') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Log In') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign up') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign Up') }}</a>
                                 </li>
                             @endif
                         @else

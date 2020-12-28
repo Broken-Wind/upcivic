@@ -5,7 +5,7 @@
     @if($assignment->isSignableDocument())
         @include('tenant.assignments.signable_documents.components.document')
     @else
-        Error!
+        @include('tenant.assignments.public_assignment')
     @endif
 </div>
 @endsection

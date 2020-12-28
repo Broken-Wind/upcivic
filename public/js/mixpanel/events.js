@@ -1,3 +1,14 @@
+function mxAssignmentCompleted(assignment) {
+    mixpanel.track('Assignment Completed', {
+        'Assignment ID': assignment.id,
+        'Assignment Name': assignment.name,
+        'Assigned By Organization ID': assignment.assigned_by_organization_id,
+        'Assigned To Organization ID': assignment.assigned_to_organization_id,
+        'Completed By Organization ID': assignment.assigned_to_organization_id,
+    });
+    mixpanel.people.increment('Lifetime Completed Assignments');
+    mixpanel.identify();
+}
 
 function mxAssignmentApproved(assignment) {
     mixpanel.track('Assignment Approved', {
@@ -5,12 +16,13 @@ function mxAssignmentApproved(assignment) {
         'Assignment Name': assignment.name,
         'Assigned By Organization ID': assignment.assigned_by_organization_id,
         'Assigned To Organization ID': assignment.assigned_to_organization_id,
+        'Approved By Organization ID': assignment.assigned_by_organization_id,
     });
     mixpanel.people.increment('Lifetime Approved Assignments');
     mixpanel.identify();
 }
 
-function mxDocumentSigned(assignment) {
+function mxAssignmentDocumentSigned(assignment) {
     mixpanel.track('Assignment Document Signed', {
         'Assignment ID': assignment.id,
         'Assignment Name': assignment.name,

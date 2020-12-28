@@ -45,6 +45,19 @@
 @include('tenant.admin.resource_timeline.components.reject_program_modal')
 @include('tenant.admin.resource_timeline.components.approve_program_modal')
 <div class="container">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
+        </li>
+        @if(tenant()->isSubscribed())
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
+            </li>
+        @endif
+        <li class="nav-item">
+            <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
+        </li>
+    </ul>
     @include('shared.form_errors')
     <div id='calendar'></div>
 </div>

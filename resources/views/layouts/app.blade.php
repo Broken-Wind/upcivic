@@ -37,10 +37,6 @@
                             @endif
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
-                            </li>
-
-                            <li class="nav-item">
                                 <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Programs</a>
                             </li>
 

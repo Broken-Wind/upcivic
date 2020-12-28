@@ -52,19 +52,7 @@ class AssignmentController extends Controller
 
         return $pdf->stream();
     }
-    public function publicEdit(Request $request, Assignment $assignment)
-    {
-        abort_if(!$request->hasValidSignature(), 401);
 
-        $routeActionString = "tenant:admin.assignments.";
-
-        if ($assignment->isSignableDocument()) {
-            $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->get();
-        } else {
-            $programs = null;
-        }
-        return view('tenant.assignments.public_edit', compact('assignment', 'programs', 'routeActionString')); 
-    }
     public function complete(Assignment $assignment)
     {
         $assignment->complete(Auth::user());

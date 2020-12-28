@@ -38,7 +38,7 @@
                 <div class="form-check form-check-inline mb-3 ml-3">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" onClick="toggle(this)" />
-                        Select All Programs
+                        Select All Proposals
                     </label>
                 </div>
                 <br>

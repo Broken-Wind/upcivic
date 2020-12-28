@@ -34,11 +34,14 @@
         <li class="nav-item">
             <a class="nav-link {{ !$isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Incoming Assignments</a>
         </li>
-        <li class="nav-item">
-            @if(tenant()->isSubscribed())
+        @if(tenant()->isSubscribed())
+            <li class="nav-item">
                 <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Outgoing Assignments</a>
-            @endif
-        </li>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
+            </li>
+        @endif
 
     </ul>
 
@@ -47,7 +50,6 @@
 
             @if($isOutgoingFromTenant)
                 <a class="btn btn-primary mb-3" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
-                <a class="btn btn-secondary mb-3" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
             @endif
 
             @if($organizations->count() > 0)

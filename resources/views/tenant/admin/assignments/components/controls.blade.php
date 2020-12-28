@@ -47,7 +47,7 @@
                     <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure you want to mark this as approved?')" form="approve">Mark as Approved</button>
                 @endif
                 @if($assignment->canDelete(tenant()->organization))
-                    <button type="submit" class="btn btn-danger" onClick="return confirm('Are you sure you want to permanently delete this assignment?')" form="delete"><i class="fas fa-fw fa-trash"></i></button>
+                    <button type="submit" class="btn btn-danger" onClick="return confirm('Are you sure you want to permanently delete this assignment?')" form="delete">Delete</button>
                 @endif
             </div>
         </div>

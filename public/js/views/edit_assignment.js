@@ -1,11 +1,17 @@
 $(document).ready(function () {
     $('#apply-signature-button').click(function () {
-        mxDocumentSigned(assignment);
+        mxAssignmentDocumentSigned(assignment);
     });
 });
 
 $(document).ready(function () {
     $('#approve-assignment-button').click(function () {
         mxAssignmentApproved(assignment);
+    });
+});
+
+$(document).ready(function () {
+    $('#complete-assignment-button').click(function () {
+        mxAssignmentCompleted(assignment);
     });
 });

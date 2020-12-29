@@ -3,6 +3,9 @@
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
+    <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">
+        <i class="fas fa-angle-left pb-3"></i> Back to Tasks
+    </a>
     @include('shared.form_errors')
     <div class="card mb-4">
         <div class="card-header">Edit Assignable Task</div>

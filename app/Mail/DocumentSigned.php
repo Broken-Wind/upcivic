@@ -26,7 +26,7 @@ class DocumentSigned extends Mailable
         //
         $this->assignment = $assignment;
         $this->organization = $organization;
-        $this->signedUrl = URL::signedRoute('tenant:assignments.sign', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
+        $this->signedUrl = URL::signedRoute('tenant:assignments.public.edit', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
     }
 
     /**

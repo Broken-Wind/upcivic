@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use App\Organization;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAssignmentSignature;
 use App\Mail\DocumentComplete;
+use App\Mail\DocumentSigned;
 use Illuminate\Http\Request;
 
 class AssignmentSignatureController extends Controller
@@ -24,6 +26,9 @@ class AssignmentSignatureController extends Controller
         ]);
         if ($assignment->isFullySigned()) {
             \Mail::send(new DocumentComplete($assignment));
+        } else {
+            $organization = Organization::find($validated['organization_id']);
+            \Mail::send(new DocumentSigned($assignment, $organization));
         }
         return back()->withSuccess('Signature applied.');
     }

@@ -53,8 +53,10 @@ class AssignmentPublicController extends Controller
         return back()->withSuccess('Files uploaded.');
     }
 
-    public function download($file)
+    public function download(Request $request, $file)
     {
+        abort_if(!$request->hasValidSignature(), 401);
+
         $file = File::withoutGlobalScopes()->find($file);
         return Storage::download($file->path, $file->filename);
     }

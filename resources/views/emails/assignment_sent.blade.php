@@ -6,7 +6,7 @@
 {{ $assignment['description'] }}
 @endcomponent
 
-@component('mail::button', ['url' => $signedUrl])
+@component('mail::button', ['url' => $publicEditUrl])
 View Details on Upcivic
 @endcomponent
 

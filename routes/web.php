@@ -41,9 +41,12 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
-    Route::get('/assignments/{assignment}', 'AssignmentController@sign')->name('assignments.sign');
     Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
     Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
+    Route::post('/assignments/{assignment}/complete', 'AssignmentPublicController@complete')->name('assignments.public.complete');
+    Route::get('/assignments/{assignment}/edit', 'AssignmentPublicController@edit')->name('assignments.public.edit');
+    Route::post('/assignments/{assignment}/upload', 'AssignmentPublicController@upload')->name('assignments.public.upload');
+    Route::get('/assignments/{assignment}/download', 'AssignmentPublicController@download')->name('assignments.public.download');
 });
 Route::group(['middleware' => 'verified'], function () {
     Route::group([

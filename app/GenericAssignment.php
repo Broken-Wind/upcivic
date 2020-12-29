@@ -58,7 +58,7 @@ class GenericAssignment extends Model
     }
     public function isSignableBy(Organization $organization, $route)
     {
-        if ($this->assignedToOrganization == $organization && $route == 'tenant:assignments.sign') {
+        if ($this->assignedToOrganization == $organization && $route == 'tenant:assignments.public.edit') {
             return true;
         }
 

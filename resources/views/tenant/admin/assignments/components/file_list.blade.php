@@ -5,7 +5,7 @@
             <a href="{{ $file->download_link }}" class="ml-1">
                 {{ $file->filename }} <i class="fas fa-download mr-1"></i>
             </a>
-            @if($file->canDelete(\Auth::user()))
+            @if(Auth::check() && $file->canDelete(\Auth::user()))
                 <form method="POST" action="{{ tenant()->route('tenant:admin.files.destroy', [$file]) }}" enctype="multipart/form-data" class="">
                     @csrf
                     @method('DELETE')

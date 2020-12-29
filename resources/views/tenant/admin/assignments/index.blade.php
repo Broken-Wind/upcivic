@@ -34,16 +34,23 @@
         <li class="nav-item">
             <a class="nav-link {{ !$isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Incoming Assignments</a>
         </li>
-        <li class="nav-item">
-            @if(tenant()->isSubscribed())
+        @if(tenant()->isSubscribed())
+            <li class="nav-item">
                 <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Outgoing Assignments</a>
-            @endif
-        </li>
-        
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
+            </li>
+        @endif
+
     </ul>
 
     <div class="card">
         <div class="card-body">
+
+            @if($isOutgoingFromTenant)
+                <a class="btn btn-primary mb-3" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
+            @endif
 
             @if($organizations->count() > 0)
 
@@ -55,21 +62,21 @@
                     @else
                         <th>Assigned By</th>
                     @endif
-                        <th>Organization Status</th>
-                        <th>Instructor Statuses</th>
+                        <th>Organization Tasks</th>
+                        <th>Instructor Tasks</th>
                         <th>&nbsp;</th>
                     </thead>
 
                     @foreach($organizations as $organization)
                         @if($isOutgoingFromTenant)
                             @include('tenant.admin.assignments.components.organization_row', [
-                                'assignments' => tenant()->organization->assignmentsTo($organization),
+                                'assignments' => tenant()->organization->unapprovedAssignmentsTo($organization),
                                 'instructors' => $organization->instructorsAssignedTo(tenant()->organization),
                                 'assignerOrganization' => tenant()->organization
                             ])
                         @else
                             @include('tenant.admin.assignments.components.organization_row', [
-                                'assignments' => tenant()->organization->assignmentsBy($organization),
+                                'assignments' => tenant()->organization->unapprovedAssignmentsBy($organization),
                                 'instructors' => $organization->instructorsAssignedBy(tenant()->organization),
                                 'assignerOrganization' => $organization
                             ])
@@ -79,9 +86,10 @@
                 </table>
 
             @else
+                <br>
                 No tasks assigned yet.
                 @if($isOutgoingFromTenant)
-                    Asign tasks to a partner <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
+                    Assign tasks to a partner <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
                 @endif
             @endif
 

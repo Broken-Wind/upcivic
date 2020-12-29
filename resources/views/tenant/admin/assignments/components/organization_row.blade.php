@@ -6,7 +6,7 @@
         @forelse($assignments as $assignment)
         <a href="{{ tenant()->route('tenant:admin.assignments.edit', [$assignment])}}">
             <span class="organization-rectangle alert py-1 my-1 {{ $assignment->class_string }} organization-status" title="{{ $assignment->name }}">
-                {{ $assignment->acronyms }} <i class="fas fa-fw {{ $assignment->status_icon_string }}"></i>
+                {{ $assignment->name }} <i class="fas fa-fw {{ $assignment->status_icon_string }}"></i>
             </span>
         </a>
         @empty
@@ -16,7 +16,15 @@
 
     <td class="{{ $instructors->isEmpty() ? 'my-1 py-1' : 'my-2 py-2' }}">
         @forelse($instructors as $instructor)
-            <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+            @if ($isOutgoingFromTenant)
+                <a href="{{ tenant()->route('tenant:admin.assignments.to.organizations.index', [$organization->id]) }}">
+                    <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+                </a>
+            @else
+                <a href="{{ tenant()->route('tenant:admin.assignments.from.organizations.index', [$organization->id]) }}">
+                    <span class="instructor-bubble {{ $instructor->getSelfClassStringFor($assignerOrganization)}}" title="{{ $instructor->name }}">{{ $instructor->initials }}</span>
+                </a>
+            @endif
         @empty
             @if($isOutgoingFromTenant)
                 @if($organization->hasIncomingAssignmentsForInstructors())

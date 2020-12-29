@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ReviewAssignments;
+use App\Http\Requests\StoreManyAssignments;
+use App\Organization;
 use App\Program;
+use App\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +17,31 @@ use Illuminate\Support\Facades\URL;
 class AssignmentController extends Controller
 {
     //
+    public function create()
+    {
+        $tasks = Task::all();
+        return view('tenant.admin.assignments.create', compact('tasks'));
+    }
+    public function review(ReviewAssignments $request)
+    {
+        $validated = $request->validated();
+        $task = Task::find($validated['task_id']);
+        $organizations = Organization::find($validated['organization_ids'])->keyBy('id');
+        return view('tenant.admin.assignments.review', compact('task', 'organizations'));
+    }
+    public function storeMany(StoreManyAssignments $request)
+    {
+        $validated = $request->validated();
+        $task = Task::find($validated['task_id']);
+        foreach($validated['organization_ids'] as $organizationId) {
+			$programIds = null;
+			if (!empty($validated['organization_program_ids'])) {
+				$programIds = $validated['organization_program_ids'][$organizationId] ?? null;
+			}
+            $task->assign($organizationId, $programIds);
+        }
+        return redirect(tenant()->route('tenant:admin.assignments.outgoing.index'))->withSuccess('Tasks were successfully assigned!');
+    }
     public function pdf(Request $request, Assignment $assignment)
     {
         abort_if(!$request->hasValidSignature(), 401);

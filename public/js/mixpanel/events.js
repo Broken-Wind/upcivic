@@ -1,3 +1,32 @@
+function mxTaksAssigned(task) {
+    mixpanel.track('Task Assigned', {
+        'Task ID': task.id,
+        'Task Name': task.name,
+        'Task Type': task.type,
+        'Assigned To Entity': task.entity,
+        'Assigned Organization IDs': task.assigned_organization_ids,
+    });
+    mixpanel.identify();
+}
+
+function mxAssignmentCompleted(assignment) {
+    mixpanel.track('Assignment Completed', {
+        'Assignment ID': assignment.id,
+        'Assignment Name': assignment.name,
+        'Assigned By Organization ID': assignment.assigned_by_organization_id,
+        'Assigned To Organization ID': assignment.assigned_to_organization_id,
+        'Completed By Organization ID': assignment.assigned_to_organization_id,
+    });
+    mixpanel.people.set_once({
+        'First Assignment Completed': new Date(assignment.completed_at).toISOString()
+    });
+    mixpanel.people.set({
+        'Last Assignment Completed': new Date(assignment.completed_at).toISOString(),
+    });
+    mixpanel.people.increment('Lifetime Completed Assignments');
+    mixpanel.identify();
+}
+
 function mxAssignmentCompleted(assignment) {
     mixpanel.track('Assignment Completed', {
         'Assignment ID': assignment.id,

@@ -9,6 +9,7 @@ use App\Instructor;
 use App\Organization;
 use App\Task;
 use Illuminate\Http\Request;
+use Mixpanel;
 
 class TaskAssignmentController extends Controller
 {

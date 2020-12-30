@@ -21,3 +21,9 @@ $(document).ready(function () {
         mxAssignmentDeleted(assignment);
     });
 });
+
+$(document).ready(function () {
+    $('#assign-task-button').click(function () {
+        mxTaksAssigned(task);
+    });
+});

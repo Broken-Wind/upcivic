@@ -6,6 +6,12 @@ function mxAssignmentCompleted(assignment) {
         'Assigned To Organization ID': assignment.assigned_to_organization_id,
         'Completed By Organization ID': assignment.assigned_to_organization_id,
     });
+    mixpanel.people.set_once({
+        'First Assignment Completed': new Date(assignment.completed_at).toISOString()
+    });
+    mixpanel.people.set({
+        'Last Assignment Completed': new Date(assignment.completed_at).toISOString(),
+    });
     mixpanel.people.increment('Lifetime Completed Assignments');
     mixpanel.identify();
 }
@@ -18,7 +24,25 @@ function mxAssignmentApproved(assignment) {
         'Assigned To Organization ID': assignment.assigned_to_organization_id,
         'Approved By Organization ID': assignment.assigned_by_organization_id,
     });
+    mixpanel.people.set_once({
+        'First Assignment Approved': new Date(assignment.approved_at).toISOString()
+    });
+    mixpanel.people.set({
+        'Last Assignment Approved': new Date(assignment.approved_at).toISOString(),
+    });
     mixpanel.people.increment('Lifetime Approved Assignments');
+    mixpanel.identify();
+}
+
+function mxAssignmentDeleted(assignment) {
+    mixpanel.track('Assignment Deleted', {
+        'Assignment ID': assignment.id,
+        'Assignment Name': assignment.name,
+        'Assigned By Organization ID': assignment.assigned_by_organization_id,
+        'Assigned To Organization ID': assignment.assigned_to_organization_id,
+        'Deleted By Organization ID': assignment.assigned_by_organization_id,
+    });
+    mixpanel.people.increment('Lifetime Deleted Assignments');
     mixpanel.identify();
 }
 
@@ -28,6 +52,12 @@ function mxAssignmentDocumentSigned(assignment) {
         'Assignment Name': assignment.name,
         'Assigned By Organization ID': assignment.assigned_by_organization_id,
         'Assigned To Organization ID': assignment.assigned_to_organization_id,
+    });
+    mixpanel.people.set_once({
+        'First Assignment Document Signed': new Date(assignment.signed_at).toISOString()
+    });
+    mixpanel.people.set({
+        'Last Assignment Document Signed': new Date(assignment.signed_at).toISOString(),
     });
     mixpanel.people.increment('Lifetime Signed Documents');
     mixpanel.identify();

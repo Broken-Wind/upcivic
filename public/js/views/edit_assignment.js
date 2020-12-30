@@ -15,3 +15,9 @@ $(document).ready(function () {
         mxAssignmentCompleted(assignment);
     });
 });
+
+$(document).ready(function () {
+    $('#delete-assignment-button').click(function () {
+        mxAssignmentDeleted(assignment);
+    });
+});

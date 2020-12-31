@@ -4,7 +4,8 @@ function mxTaksAssigned(task) {
         'Task Name': task.name,
         'Task Type': task.type,
         'Assigned To Entity': task.entity,
-        'Assigned Organization IDs': task.assigned_organization_ids,
+        'Assigned To Organization IDs': task.assigned_to_organization_ids,
+        'Assigned By Organization ID': task.assigned_by_organization_id,
     });
     mixpanel.identify();
 }

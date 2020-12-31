@@ -9,7 +9,6 @@ use App\Http\Requests\StoreAssignmentSignature;
 use App\Mail\DocumentComplete;
 use App\Mail\DocumentSigned;
 use Illuminate\Http\Request;
-use Mixpanel;
 
 class AssignmentSignatureController extends Controller
 {

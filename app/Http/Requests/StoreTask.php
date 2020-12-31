@@ -25,7 +25,7 @@ class StoreTask extends FormRequest
     {
         return [
             //
-            'name' => 'required|string',
+            'name' => 'required|string|max:50',
             'description' => 'required|string',
             'assignToEntity' => 'required|string|in:App\Organization,App\Instructor',
             'files' => 'nullable|array',

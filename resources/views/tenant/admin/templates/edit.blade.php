@@ -35,18 +35,18 @@
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class="form-control" name="description" id="description" rows="3" required>{{ old('description') ?: $template['description'] }}</textarea>
+                    <textarea class="form-control" name="description" id="description" rows="6" required>{{ old('description') ?: $template['description'] }}</textarea>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Public Notes</label>
-                    <textarea class="form-control" name="public_notes" id="public_notes" aria-describedby="publicNotesHelp" rows="3">{{ old('public_notes') ?: $template['public_notes'] }}</textarea>
+                    <textarea class="form-control" name="public_notes" id="public_notes" aria-describedby="publicNotesHelp" rows="6">{{ old('public_notes') ?: $template['public_notes'] }}</textarea>
                     <small id="internalNameHelp" class="form-text text-muted">These are notes that should be published alongside the course description. Ex: "There is a $20 materials fee due on the first day of this program."</small>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Contributor Notes</label>
-                    <textarea class="form-control" name="contributor_notes" id="contributor_notes" aria-describedby="contributorNotesHelp" rows="3">{{ old('contributor_notes') ?: $template['contributor_notes'] }}</textarea>
+                    <textarea class="form-control" name="contributor_notes" id="contributor_notes" aria-describedby="contributorNotesHelp" rows="6">{{ old('contributor_notes') ?: $template['contributor_notes'] }}</textarea>
                     <small id="contributorNotesHelp" class="form-text text-muted">These notes will be shared with contributors and should not be published. Ex: "Please put us in a room with a projector."</small>
                 </div>
 

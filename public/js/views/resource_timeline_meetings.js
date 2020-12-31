@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
         today: 'Today'
     },
     headerToolbar: {
-        right: 'prev,next today',
+        left: 'prev,next today',
+        center: 'title',
+        right: 'resourceTimelineDay dayGridMonth'
     },
     editable: false, // don't allow event dragging
     eventResourceEditable: true, // except for between resources
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resourceTimelineDay: {
             type: 'resourceTimeline',
             duration: { weeks: 1 },
-            buttonText: 'week',
+            buttonText: 'Timeline',
             slotDuration: { days: 1 },
             slotLabelInterval: { days: 1 },
             slotMinWidth: 100,
@@ -59,6 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     datagridCell.appendChild(infoElement);
                 }
               }
+        },
+        dayGridMonth: {
+            buttonText: 'Month'
         }
     },
     eventDrop: function(info) {

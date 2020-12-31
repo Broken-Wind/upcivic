@@ -9,7 +9,24 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
 @endpush
 @section('content')
 <div class="container">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Incoming Assignments</a>
+        </li>
+        @if(tenant()->isSubscribed())
+            <li class="nav-item">
+                <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Outgoing Assignments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
+            </li>
+        @endif
+
+    </ul>
     @include('shared.form_errors')
+    <div class="alert alert-info">
+        You can assign tasks to your partner organizations via the proposals view.
+    </div>
 
     <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.tasks.create') }}">Add Task</a>
 
@@ -19,9 +36,6 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
         <div class="card-body">
 
             @if($tasks->count() > 0)
-                <div class="alert alert-info">
-                    You can assign tasks to your partner organizations via the proposals view.
-                </div>
 
                 <table class="table table-striped">
 
@@ -33,7 +47,11 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
 
                             <td class="text-right">
                                 <a href="{{ tenant()->route('tenant:admin.tasks.edit', ['task' => $task]) }}">
-                                    <i class="fas fa-edit mr-2"></i>
+                                    Edit Task
+                                </a>
+                                &nbsp;|&nbsp;
+                                <a href="{{ tenant()->route('tenant:admin.assignments.create', ['task_id' => $task->id]) }}">
+                                    Assign Task
                                 </a>
                             </td>
 

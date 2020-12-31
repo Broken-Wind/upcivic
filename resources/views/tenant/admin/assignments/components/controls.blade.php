@@ -38,26 +38,29 @@
             </form>
         @endif
 
-        @if($assignment->canComplete(tenant()->organization) && !$assignment->isPending())
-            <form method="POST" action="{{ tenant()->route($routeActionString . 'complete', [$assignment]) }}" class="my-auto pt-3">
-                @csrf
-                <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Complete</button>
-            </form>
-        @endif
+        <div class="row mt-4">
+            <div class="col">
+                @if($assignment->canComplete(tenant()->organization) && !$assignment->isPending())
+                    <form method="POST" action="{{ tenant()->route($routeActionString . 'complete', [$assignment]) }}" class="my-auto pt-3" id="complete">
+                        @csrf
+                        <button id="complete-assignment-button" type="submit" class="btn btn-primary" onClick="return confirm('Are you sure you want to mark this as complete?')" form="complete">Mark as Complete</button>
+                    </form>
+                @endif
+                @if($assignment->canApprove(tenant()->organization) && !$assignment->isApproved())
+                    <form method="POST" action="{{ tenant()->route($routeActionString . 'approve', [$assignment]) }}" class="my-auto pt-3" id="approve">
+                        @csrf
+                        <button id="approve-assignment-button" type="submit" class="btn btn-primary" onClick="return confirm('Are you sure you want to mark this as approved?')" form="approve">Mark as Approved</button>
+                    </form>
+                @endif
+                @if($assignment->canDelete(tenant()->organization))
+                <form method="POST" action="{{ tenant()->route($routeActionString . 'destroy', [$assignment]) }}" class="my-auto pt-3" id="delete">
+                    @method('DELETE')
+                    @csrf
+                    <button id="delete-assignment-button" type="submit" class="btn btn-danger" onClick="return confirm('Are you sure you want to permanently delete this assignment?')" form="delete">Delete</button>
+                </form>
+                @endif
+            </div>
+        </div>
 
-        @if($assignment->canApprove(tenant()->organization) && !$assignment->isApproved())
-            <form method="POST" action="{{ tenant()->route($routeActionString . 'approve', [$assignment]) }}" class="my-auto pt-3">
-                @csrf
-                <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Approve</button>
-            </form>
-        @endif
-
-        @if($assignment->canDelete(tenant()->organization))
-            <form method="POST" action="{{ tenant()->route($routeActionString . 'destroy', [$assignment]) }}" class="my-auto pt-3">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger" onClick="return confirm('Are you sure you want to permanently delete this assignment?')">Delete</button>
-            </form>
-        @endif
     </div>
 </div>

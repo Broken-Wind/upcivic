@@ -16,7 +16,7 @@ class AssignmentSent extends Mailable
     public $sender;
     public $assignedByOrganization;
     public $assignedToOrganization;
-    public $signedUrl;
+    public $publicEditUrl;
 
     /**
      * Create a new message instance.
@@ -30,7 +30,7 @@ class AssignmentSent extends Mailable
         $this->sender = $sender;
         $this->assignedByOrganization = $assignedByOrganization;
         $this->assignedToOrganization = $assignedToOrganization;
-        $this->signedUrl = URL::signedRoute('tenant:assignments.sign', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
+        $this->publicEditUrl = URL::signedRoute('tenant:assignments.public.edit', ['tenant' => tenant()->slug, 'assignment' => $this->assignment]);
     }
 
     /**

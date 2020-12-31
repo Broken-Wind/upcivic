@@ -3,22 +3,24 @@
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
+    <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">
+        <i class="fas fa-angle-left pb-3"></i> Back to Tasks
+    </a>
+    @include('shared.form_errors')
     <div class="card mb-4">
         <div class="card-header">Add Assignable Task</div>
 
         <div class="card-body">
             <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data" id="createOrUpdateTask">
                 @csrf
-                @include('shared.form_errors')
-
                 <div class="form-group">
                     <label for="taskName">Task Name</label>
                     <input type="text"
-                    class="form-control" name="name" id="taskName" placeholder="Submit Background Check Authorization" required>
+                    class="form-control" name="name" id="taskName" placeholder="Background Check" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="taskDescription">Task Description</label>
+                    <label for="taskDescription">Task Instructions</label>
                     <textarea class="form-control" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription"></textarea>
                     <small id="helpTaskDescription" class="form-text text-muted">Provide details including how to use any attached documents.</small>
                 </div>

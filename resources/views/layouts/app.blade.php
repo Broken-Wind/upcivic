@@ -27,7 +27,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
-                            @if(Auth::user()->canGenerateDemoData())
+                            @if(Auth::check() && Auth::user()->canGenerateDemoData())
                                 <li class="nav-item">
                                 <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
                                     @csrf
@@ -37,27 +37,20 @@
                             @endif
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Programs</a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
+                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks</a>
                             </li>
-                            <li class="nav-link dropdown">
-                                <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Compliance
-                                <span class="caret"></span></div>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Assignments</a></li>
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Tasks</a></li>
-                                </ul>
-                            </li>
+
                             <li class="nav-link dropdown">
                                 <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Directory
                                 <span class="caret"></span></div>
                                 <ul class="dropdown-menu dropdown-menu-right">
+                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Instructors</a></li>
                                     <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a></li>
                                     <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a></li>
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">{{ tenant()->name }} Instructors</a></li>
                                 </ul>
                             </li>
                         @endif
@@ -65,11 +58,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Log in') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Log In') }}</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign up') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Sign Up') }}</a>
                                 </li>
                             @endif
                         @else
@@ -79,16 +72,10 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    @forelse(Auth::user()->tenants as $tenant)
-                                        <a class="dropdown-item" href="{{ route('tenant:admin.edit', ['tenant' => $tenant['slug']]) }}">
-                                            {{ $tenant['name'] }} Settings
-                                        </a>
-                                    @empty
-                                    @endforelse
+                                    <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.edit') }}">
+                                        Organization Settings
+                                    </a>
                                     @if(tenant())
-                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">
-                                            {{ $tenant['name'] }} Programs
-                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             My Profile
                                         </a>

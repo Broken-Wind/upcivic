@@ -1,34 +1,4 @@
-@push('css')
-    <style>
-        @font-face {
-            font-family: Otto;
-            src: url({{ asset('fonts/Otto.ttf') }}) format("truetype");
-            font-weight: 400; // use the matching font-weight here ( 100, 200, 300, 400, etc).
-            font-style: normal; // use the matching font-style here
-        }
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        .signature {
-            font-family: Otto, Times, serif;
-            font-size: 36px;
-        }
-        .page-break {
-            page-break-after: always;
-        }
-        table {
-            width: 100%;
-        }
-        th {
-            text-align: left;
-            padding: 5px;
-        }
-        td {
-            padding: 5px;
-        }
-    </style>
-@endpush
-<div class="card">
+<div class="card my-3">
     <div class="card-header">Document from {{ $assignment->assignedByOrganization->name }}</div>
     <div class="card-body">
         <h3>{{ $assignment->signableDocument->title ?? 'Untitled Document' }}</h3>
@@ -70,5 +40,12 @@
         ])
 
         <a class="btn btn-primary" href="{{ $assignment->pdf_url }}">Download as PDF</a>
+
+        @if(!Auth::check())
+            <form action="{{ route('login') }}" class="my-auto pt-5">
+                <p>If your organization assigned this task, please log in to manage it. </p>
+                <input type="submit" class="btn btn-primary" value="Log In" />
+            </form>
+        @endif
     </div>
 </div>

@@ -14,11 +14,23 @@
 
 @endpush
 <div class="container">
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link active" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
+        </li>
+        @if(tenant()->isSubscribed())
+            <li class="nav-item">
+                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
+            </li>
+        @endif
+        <li class="nav-item">
+            <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
+        </li>
+    </ul>
     @include('shared.form_errors')
     <form id="filters" action="{{ URL::current() }}" method="GET">
         @include('tenant.admin.programs.components.filters_modal')
     </form>
-    @include('tenant.admin.programs.components.assignments_modal')
 
     @if($programsExist)
         @if(tenant()->isSubscribed())
@@ -27,22 +39,18 @@
             </form>
         @endif
         <div class="form-row mb-4">
-            <div class="col">
+            <div class="col-auto">
 
             @if($templateCount > 0)
-                <a class="btn btn-primary mr-4" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
+                <a class="btn btn-primary" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add Proposal</a>
             @endif
             @if(tenant()->isSubscribed())
-
-                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#assignmentsModal">
-                    Assign Tasks
-                </button>
                 {{-- <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="generate_loa">Generate LOAs</button> --}}
-                <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="export">Export</button>
+                <button type="submit" class="btn btn-secondary" form="bulk_action" name="action" value="export">Export to Excel</button>
                 <div class="form-check form-check-inline mb-3 ml-3">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input" onClick="toggle(this)" />
-                        Select All Programs
+                        Select All Proposals
                     </label>
                 </div>
                 <br>

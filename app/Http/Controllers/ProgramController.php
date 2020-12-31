@@ -53,52 +53,12 @@ class ProgramController extends Controller
     public function bulkAction(BulkActionPrograms $request)
     {
         $validated = $request->validated();
-        if ($validated['action'] == 'assign_tasks') {
-            $tasks = Task::whereIn('id', $validated['task_ids'])->get();
-            $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $validated['program_ids'])->get();
-            $organizationIds = $programs->map(function ($program) {
-                return $program->contributors->pluck('organization_id');
-            })->flatten()->unique()->filter(function ($id) {
-                return $id != tenant()->organization_id;
-            });
 
-            $programGroups = $organizationIds->mapWithKeys(function ($organizationId) use ($programs) {
-                return [
-                    $organizationId => $programs->filter(function ($program) use ($organizationId) {
-                        return $program->contributors->contains('organization_id', $organizationId);
-                    })
-                ];
-            });
-
-            $programGroups->each(function ($programs, $organizationId) use ($tasks) {
-                $tasks->each(function ($task) use ($programs, $organizationId) {
-                    $programIds = $programs->pluck('id');
-                    $task->assign($organizationId, $programIds);
-                });
-            });
-            return back()->withSuccess('Tasks were successfully assigned!');
-
-        } elseif ($validated['action'] == 'generate_loa') {
-            // Shouldn't happen. Leaving this here for later reference.
-
-
-            // $validated = $request->validated();
-            // $programs = Program::with(['meetings.site', 'contributors.organization'])->whereIn('id', $validated['program_ids'])->get();
-            // $contributorGroups = $programs->groupBy(function ($program, $key) {
-            //     return $program->contributors->pluck('organization_id')->sort()->implode(',');
-            // });
-            // $task = Task::where('type', 'signable_document')->first();
-
-            // $loa = App::make('dompdf.wrapper');
-            // $content = view('tenant.admin.programs.pdf', compact('contributorGroups', 'task'));
-            // $loa->loadHTML($content->render());
-
-            // return $loa->stream();
-        } elseif ($validated['action'] == 'export') {
+        if ($validated['action'] == 'export') {
             $today = Carbon::now()->toDateString();
-
             return Excel::download(new ProgramsExport($validated['program_ids']), 'Programs-' . $today . '.xlsx');
         }
+        return back()->withErrors('Error: No action was selected.');
     }
 
     /**

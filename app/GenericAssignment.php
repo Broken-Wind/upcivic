@@ -11,7 +11,7 @@ class GenericAssignment extends Model
         'incomplete' => [
             'class_string' => 'alert-danger',
             'status_string' => 'Incomplete',
-            'status_icon_string' => 'fa-times'
+            'status_icon_string' => 'fa-folder-minus'
         ],
         'pending' => [
             'class_string' => 'alert-warning',
@@ -46,11 +46,11 @@ class GenericAssignment extends Model
     }
     public function isGenericAssignment()
     {
-        return $this->task->type == 'generic_assignment';
+        return $this->type == 'generic_assignment';
     }
     public function isSignableDocument()
     {
-        return $this->task->type == 'signable_document';
+        return $this->type == 'signable_document';
     }
     public function getSignatureFrom(Organization $organization)
     {
@@ -58,7 +58,7 @@ class GenericAssignment extends Model
     }
     public function isSignableBy(Organization $organization, $route)
     {
-        if ($this->assignedToOrganization == $organization && $route == 'tenant:assignments.sign') {
+        if ($this->assignedToOrganization == $organization && $route == 'tenant:assignments.public.edit') {
             return true;
         }
 
@@ -84,7 +84,7 @@ class GenericAssignment extends Model
         return $this->assigned_to_organization_id == $organization->id
             && !$this->completed_at
             && !$this->approved_at
-            && $this->type == 'generic_assignment';
+            && $this->isGenericAssignment();
     }
     public function canUpload(Organization $organization)
     {
@@ -119,6 +119,11 @@ class GenericAssignment extends Model
         return $this;
     }
 
+    public function getTypeAttribute()
+    {
+        return $this->task->type;
+    }
+
     public function signableDocument()
     {
         return $this->hasOne(SignableDocumentAssignment::class);
@@ -130,7 +135,7 @@ class GenericAssignment extends Model
     }
     public function isSignedByOrganization(Organization $organization)
     {
-        return $this->task->type == 'signable_document'
+        return $this->type == 'signable_document'
                 && $this->signableDocument->signatures->where('organization_id', $organization->id)->isNotEmpty();
     }
     public function assignedByOrganization()

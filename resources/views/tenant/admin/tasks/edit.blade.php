@@ -3,6 +3,10 @@
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
+    <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">
+        <i class="fas fa-angle-left pb-3"></i> Back to Tasks
+    </a>
+    @include('shared.form_errors')
     <div class="card mb-4">
         <div class="card-header">Edit Assignable Task</div>
 
@@ -10,7 +14,6 @@
             <form method="POST" id="updateTask" action="{{ tenant()->route('tenant:admin.tasks.update', [$task]) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                @include('shared.form_errors')
             </form>
             <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.archive', ['task' => $task]) }}" id="archiveTask">
                 @csrf
@@ -19,10 +22,10 @@
             <div class="form-group">
                 <label for="taskName">Task Name</label>
                 <input type="text" form="updateTask"
-                class="form-control" name="name" id="taskName" value="{{ $task->name }}" placeholder="Submit Background Check Authorization" required>
+                class="form-control" name="name" id="taskName" value="{{ $task->name }}" placeholder="Background Check" required>
             </div>
             <div class="form-group">
-                <label for="taskDescription">Task Description</label>
+                <label for="taskDescription">Task Instructions</label>
                 <textarea class="form-control" form="updateTask" name="description" id="taskDescription" rows="3" required aria-describedby="helpTaskDescription">{{ $task->description }}</textarea>
                 <small id="helpTaskDescription" class="form-text text-muted">Provide details including how to use any attached documents.</small>
             </div>
@@ -68,8 +71,8 @@
             @endforelse
             <div class="row">
                 <div class="col mt-3">
-                    <button type="submit" form="updateTask" class="btn btn-primary">Update Task</button>
-                    <button type="submit" form="archiveTask" class="btn btn-secondary">Archive Task</button>
+                    <button type="submit" form="updateTask" class="btn btn-primary">Update</button>
+                    <button type="submit" form="archiveTask" class="btn btn-secondary">Archive</button>
                 </div>
             </div>
         </div>

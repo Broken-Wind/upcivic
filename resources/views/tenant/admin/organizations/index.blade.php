@@ -3,8 +3,9 @@
 @section('title', 'Organizations')
 
 @section('content')
-@include('tenant.admin.organizations.components.add_organization_modal')
 <div class="container">
+    @include('shared.form_errors')
+
     <div class="card mb-4">
         <div class="card-header">Organizations</div>
 
@@ -12,7 +13,8 @@
 
             @if($organizations->count() > 0)
 
-                <p>The following is a list of all organizations listed in {{ config('app.name') }}. If you'd like to offer programs with an organization that isn't listed below, please <a href="" data-toggle="modal" data-target="#add-organization-modal">add a new organization here.</a></p>
+                <p>The following is a list of all organizations listed in {{ config('app.name') }}. If you'd like to offer programs with an organization that isn't listed below, please <a href="{{ tenant()->route('tenant:admin.organizations.create') }}">add a new organization here.</a></p>
+
                 <table class="table table-striped">
 
                     @foreach($organizations as $organization)

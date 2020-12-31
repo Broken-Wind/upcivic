@@ -7,7 +7,6 @@
         @if($assignment->isSignableBy($organization, \Request::route()->getName()))
             <form method="POST" action="{{ tenant()->route('tenant:assignments.signatures.store', [$assignment]) }}">
                 @csrf
-                @include('shared.form_errors')
                 <input type="hidden" name="organization_id" value="{{ $organization->id }}">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Your signature" name="signature">

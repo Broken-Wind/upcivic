@@ -41,9 +41,12 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
-    Route::get('/assignments/{assignment}', 'AssignmentController@sign')->name('assignments.sign');
     Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
     Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
+    Route::post('/assignments/{assignment}/complete', 'AssignmentPublicController@complete')->name('assignments.public.complete');
+    Route::get('/assignments/{assignment}/edit', 'AssignmentPublicController@edit')->name('assignments.public.edit');
+    Route::post('/assignments/{assignment}/upload', 'AssignmentPublicController@upload')->name('assignments.public.upload');
+    Route::get('/assignments/{assignment}/download', 'AssignmentPublicController@download')->name('assignments.public.download');
 });
 Route::group(['middleware' => 'verified'], function () {
     Route::group([
@@ -71,6 +74,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::patch('/settings', 'TenantController@update')->name('update');
         Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');
         Route::get('/organizations', 'OrganizationController@index')->name('organizations.index');
+        Route::get('/organizations/create', 'OrganizationController@create')->name('organizations.create');
         Route::get('/organizations/{organization}/edit', 'OrganizationController@edit')->name('organizations.edit')->middleware('unclaimed');
         Route::put('/organizations/{organization}', 'OrganizationController@update')->name('organizations.update')->middleware('unclaimed');
         Route::post('/organizations/{organization}/administrators', 'OrganizationAdministratorController@store')->name('organizations.administrators.store')->middleware('unclaimed');
@@ -105,6 +109,9 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/sites/create', 'SiteController@create')->name('sites.create');
         Route::post('/sites/create', 'SiteController@store')->name('sites.store');
         Route::post('/users/invites/create', 'UserInviteController@store')->name('users.invites.store');
+        Route::get('/assignments/create', 'AssignmentController@create')->name('assignments.create');
+        Route::get('/assignments/review', 'AssignmentController@review')->name('assignments.review');
+        Route::post('/assignments/storeMany', 'AssignmentController@storeMany')->name('assignments.store_many');
         Route::delete('/assignments/{assignment}', 'AssignmentController@destroy')->name('assignments.destroy');
         Route::post('/assignments/{assignment}/complete', 'AssignmentController@complete')->name('assignments.complete');
         Route::post('/assignments/{assignment}/approve', 'AssignmentController@approve')->name('assignments.approve');

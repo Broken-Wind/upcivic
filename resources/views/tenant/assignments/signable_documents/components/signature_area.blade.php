@@ -1,4 +1,3 @@
-
 <div class="signature-container alert alert-secondary mb-4">
     <h4>
         {{ $organization->name }} Representative
@@ -11,7 +10,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Your signature" name="signature">
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="submit" onClick="return confirm('Are you sure you want to sign this document?')">Apply Signature</button>
+                        <button id="apply-signature-button" class="btn btn-primary" type="submit" onClick="return confirm('Are you sure you want to sign this document?')">Apply Signature</button>
                     </div>
                 </div>
                 <small class="form-text text-muted">Type your name</small>

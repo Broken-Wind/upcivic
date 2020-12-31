@@ -1,3 +1,16 @@
+@push('scripts')
+<script>
+    var assignment = {
+        'id': {{ $assignment->id }},
+        'name': '{{ $assignment->name }}',
+        'assigned_by_organization_id': {{ $assignment->assigned_by_organization_id }},
+        'assigned_to_organization_id': {{ $assignment->assigned_to_organization_id }},
+        'signed_at': '{{ $assignment->signableDocument->created_at }}',
+    };
+</script>
+<script src="{{ asset('js/views/edit_assignment.js') }}" defer></script>
+@endpush
+
 <div class="card my-3">
     <div class="card-header">Document from {{ $assignment->assignedByOrganization->name }}</div>
     <div class="card-body">

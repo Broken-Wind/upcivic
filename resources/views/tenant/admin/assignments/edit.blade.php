@@ -1,5 +1,20 @@
 @extends('layouts.app')
 @section('title', $assignment->name . ' - Assigned to ' . $assignment->assignee->name)
+
+@push('scripts')
+<script>
+    var assignment = {
+        'id': {{ $assignment->id }},
+        'name': '{{ $assignment->name }}',
+        'assigned_by_organization_id': {{ $assignment->assigned_by_organization_id }},
+        'assigned_to_organization_id': {{ $assignment->assigned_to_organization_id }},
+        'approved_at': '{{ $assignment->getApprovedAtAttribute() }}',
+        'completed_at': '{{ $assignment->getCompletedAtAttribute() }}',
+    };
+</script>
+<script src="{{ asset('js/views/edit_assignment.js') }}" defer></script>
+@endpush
+
 @section('content')
 <div class="container">
     @if($isOutgoingFromTenant)

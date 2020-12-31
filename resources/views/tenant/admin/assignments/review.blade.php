@@ -9,7 +9,8 @@
         'name': '{{ $task->name }}',
         'type': '{{ $task->type }}',
         'entity': '{{ $task->assign_to_entity }}',
-        {{-- 'assigned_organization_ids': {{ $organizations->except($organization->id)->pluck('id')->toArray()}}, --}}
+        'assigned_to_organization_ids': {{ $organizations->pluck('id')->toJson()}},
+        'assigned_by_organization_id': {{ tenant()->organization_id }},
     };
 </script>
 <script src="{{ asset('js/views/edit_assignment.js') }}" defer></script>

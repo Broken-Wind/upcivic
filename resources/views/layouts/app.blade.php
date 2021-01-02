@@ -1,6 +1,7 @@
 @extends('layouts.base')
-@push('head')
-    <!-- Usersnap for gathering user feedback -->
+{{--
+@push('scripts')
+    <!-- Usersnap for gathering user feedback; TODO: Renew subscription. -->
     <script>
         window.onUsersnapCXLoad = function(api) {
             api.init();
@@ -11,6 +12,7 @@
         document.getElementsByTagName('head')[0].appendChild(script);
     </script>
 @endpush
+--}}
 @section('body')
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">

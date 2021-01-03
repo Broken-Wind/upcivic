@@ -24,10 +24,6 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
 
     </ul>
     @include('shared.form_errors')
-    <div class="alert alert-info">
-        You can assign tasks to your partner organizations via the proposals view.
-    </div>
-
     <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.tasks.create') }}">Add Task</a>
 
     <div class="card">

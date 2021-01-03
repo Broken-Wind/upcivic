@@ -28,7 +28,7 @@ class UpdateTask extends FormRequest
             'name' => 'required|string|max:50',
             'description' => 'required|string',
             'files' => 'nullable|array',
-            'files.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048',
+            'files.*' => 'nullable|mimes:pdf,doc,docx,csv,xls,xlsx,jpeg,jpg,png|max:2048',
             'documentTitle' => 'nullable|string',
             'documentContent' => 'nullable|string'
         ];

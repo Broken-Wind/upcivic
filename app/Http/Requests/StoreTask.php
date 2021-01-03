@@ -29,7 +29,7 @@ class StoreTask extends FormRequest
             'description' => 'required|string',
             'assignToEntity' => 'required|string|in:App\Organization,App\Instructor',
             'files' => 'nullable|array',
-            'files.*' => 'nullable|mimes:pdf,docx,jpeg,jpg,png|max:2048',
+            'files.*' => 'nullable|mimes:pdf,doc,docx,csv,xls,xlsx,jpeg,jpg,png|max:2048',
             'isDocument' => 'nullable|boolean',
             'documentTitle' => 'nullable|string',
             'documentContent' => 'nullable|string'

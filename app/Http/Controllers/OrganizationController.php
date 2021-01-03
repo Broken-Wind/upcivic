@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrganization;
 use App\Http\Requests\UpdateOrganization;
+use App\Mail\ListedAsAdministrator;
 use App\Organization;
 use App\Person;
 use Illuminate\Http\Request;
@@ -38,6 +39,7 @@ class OrganizationController extends Controller
                 'phone' => $validated->administrator['phone'],
             ]);
             $organization->administrators()->save($administrator, ['title' => $validated->administrator['title']]);
+            \Mail::send(new ListedAsAdministrator(\Auth::user(), $organization, $administrator));
         }
 
         return back()->withSuccess('Organization added successfully.');

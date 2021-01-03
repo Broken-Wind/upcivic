@@ -16,7 +16,7 @@ class StorePublicFile extends FormRequest
         return [
             //
             'files' => 'required|array',
-            'files.*' => 'required|mimes:pdf,docx,jpeg,jpg,png|max:2048'
+            'files.*' => 'required|mimes:pdf,doc,docx,csv,xls,xlsx,jpeg,jpg,png|max:2048'
         ];
     }
 

@@ -125,6 +125,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Demo Programs Quantity
+    |--------------------------------------------------------------------------
+    |
+    | This value is the quantity of programs that are generated for demo purposes.
+    | This value is used when the user triggers the generate demo data action.
+    |
+    */
+
+    'demo_programs_qty' => env('DEMO_PROGRAMS_QTY', 15),
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |

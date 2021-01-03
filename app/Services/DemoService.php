@@ -26,7 +26,7 @@ class DemoService
         $templates = Template::withoutGlobalScopes()->where('organization_id', $demoProvider->organization_id)->get();
 
         for ($week = 0; $week < 4; $week++) {
-            for ($program = 0; $program < 40; $program++) {
+            for ($program = 0; $program < config('app.demo_programs_qty'); $program++) {
                 $demoSite = rand(1, 10) > 3 ? $demoSites->random() : null;
                 $demoSiteId = $demoSite->id ?? null;
                 $demoLocationId = is_object($demoSite) ? $demoSite->locations->pluck('id')->random() : null;

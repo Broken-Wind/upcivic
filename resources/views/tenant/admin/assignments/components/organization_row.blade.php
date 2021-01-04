@@ -10,7 +10,7 @@
             </span>
         </a>
         @empty
-            <div class="alert alert-warning py-1 my-1">No assignments yet.</div>
+            <div class="alert alert-info py-1 my-1">No outstanding organization assignments.</div>
         @endforelse
     </td>
 
@@ -30,13 +30,13 @@
                 @if($organization->hasIncomingAssignmentsForInstructors())
                     <div class="alert py-1 my-1 alert-danger">{{ $organization->name }} has not assigned any instructors yet.</div>
                 @else
-                    <div class="alert py-1 my-1 alert-warning">You have not assigned any instructor tasks.</div>
+                    <div class="alert py-1 my-1 alert-info">No outstanding instructor assignments.</div>
                 @endif
             @else
                 @if($organization->hasOutgoingAssignmentsForInstructors())
                     <div class="alert py-1 my-1 alert-danger">Please assign one or more instructors.</div>
                 @else
-                    <div class="alert py-1 my-1 alert-warning">No instructor tasks have been assigned by {{ $organization->name }} yet.</div>
+                    <div class="alert py-1 my-1 alert-info">No outstanding instructor assignments from {{ $organization->name }}.</div>
                 @endif
             @endif
         @endforelse

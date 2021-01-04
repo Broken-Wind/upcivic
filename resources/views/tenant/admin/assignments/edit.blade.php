@@ -26,6 +26,7 @@
             <i class="fas fa-angle-left"></i> Back to assignments from {{ $assignment->assignedByOrganization->name }}
         </a>
     @endif
+    @include('shared.form_errors')
     @include('tenant.admin.assignments.components.controls')
     @if($assignment->isSignableDocument())
         @include('tenant.assignments.signable_documents.components.document')

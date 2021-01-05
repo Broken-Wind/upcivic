@@ -1,10 +1,12 @@
 @include('tenant.admin.programs.components.preview_program_modal')
 
-<div class="row mb-4">
-    <div class="col-6">
+<div class="col-6">
+    <div class="row">
         <div class="alert {{ $program->class_string }}">
             {!! $program->status_description !!}
-        </div>
+        </div>  
+    </div>
+    <div class="row mb-4">
         @if($program->canBePublished())
             <form method="POST" id="publish_program" action="{{ tenant()->route('tenant:admin.programs.published.update', [$program]) }}">
                 @method('put')
@@ -31,15 +33,18 @@
                 @endif
             </form>
         @endif
-        <form method="POST" action="{{tenant()->route('tenant:admin.programs.destroy', [$program])}}" id="delete-program">
-            @csrf
-            @method('DELETE')
-            @if($program->isProposalSent())
-                <fieldset disabled="disabled"/>
-            @else
-                <button type="submit" form="delete-program" class="btn btn-secondary" onClick="return confirm('Are you sure you want to delete this proposal? This cannot be undone.')">Delete Proposal</button>
-                <a class="btn btn-primary" href="" data-toggle="modal" data-target="#preview-program-modal">Preview & Send</a>
-            @endif
-        </form>
+
+        @if(!$program->isProposalSent())
+            <a class="btn btn-primary" href="" data-toggle="modal" data-target="#preview-program-modal">Preview & Send</a>
+        @endif
+
+        @if($program->proposing_organization_id == tenant()->organization->id)
+            <form method="POST" action="{{tenant()->route('tenant:admin.programs.destroy', [$program])}}" id="delete-program">
+                @csrf
+                @method('DELETE')
+                    <button type="submit" form="delete-program" class="btn btn-danger ml-1" onClick="return confirm('Are you sure you want to cancel this proposal? This cannot be undone.')">Cancel</button>
+            </form>
+        @endif
+
     </div>
 </div>

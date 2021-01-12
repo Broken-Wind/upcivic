@@ -12,7 +12,7 @@
     </div>
 
     <div class="card-body">
-    <p>{{ $assignment->description }}</p>
+        <p>{{ $assignment->description }}</p>
         <div class="col">
             @include('tenant.admin.assignments.components.public_file_list', [
                 'files' => $assignment->assignee_files, 'organizationName' => $assignment->assignedToOrganization->name
@@ -24,17 +24,19 @@
         </div>
 
         @if($assignment->canUpload(tenant()->organization))
+            <hr/>
             <form method="POST" action="{{ tenant()->route('tenant:assignments.public.upload', [$assignment]) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-3">
-                        <input type="file" class="form-control-file" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
+                        <input type="file" style="overflow:hidden" class="form-control-file mt-1" name="files[]" id="files" placeholder="Background Check Authorization.pdf" aria-describedby="helpfiles" multiple required>
                     </div>
                     <div class="col-1">
-                        <button type="submit" class="btn btn-secondary btn-sm">Upload</button>
+                        <button type="submit" class="btn btn-secondary">Upload</button>
                     </div>
                 </div>
             </form>
+            <hr/>
         @endif
 
         @if(!$assignment->isPending() && !$assignment->isApproved())

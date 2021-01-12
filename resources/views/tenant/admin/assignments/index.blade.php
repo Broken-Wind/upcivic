@@ -45,12 +45,11 @@
 
     </ul>
 
+    @if($isOutgoingFromTenant)
+        <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
+    @endif
     <div class="card">
         <div class="card-body">
-
-            @if($isOutgoingFromTenant)
-                <a class="btn btn-primary mb-3" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
-            @endif
 
             @if($organizations->count() > 0)
 

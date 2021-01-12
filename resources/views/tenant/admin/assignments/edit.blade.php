@@ -1,5 +1,20 @@
 @extends('layouts.app')
 @section('title', $assignment->name . ' - Assigned to ' . $assignment->assignee->name)
+
+@push('scripts')
+<script>
+    var assignment = {
+        'id': {{ $assignment->id }},
+        'name': '{{ $assignment->name }}',
+        'assigned_by_organization_id': {{ $assignment->assigned_by_organization_id }},
+        'assigned_to_organization_id': {{ $assignment->assigned_to_organization_id }},
+        'approved_at': '{{ $assignment->approved_at }}',
+        'completed_at': '{{ $assignment->approved_at }}',
+    };
+</script>
+<script src="{{ asset('js/views/edit_assignment.js') }}" defer></script>
+@endpush
+
 @section('content')
 <div class="container">
     @if($isOutgoingFromTenant)
@@ -11,6 +26,7 @@
             <i class="fas fa-angle-left"></i> Back to assignments from {{ $assignment->assignedByOrganization->name }}
         </a>
     @endif
+    @include('shared.form_errors')
     @include('tenant.admin.assignments.components.controls')
     @if($assignment->isSignableDocument())
         @include('tenant.assignments.signable_documents.components.document')

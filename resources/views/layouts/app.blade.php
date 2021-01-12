@@ -1,6 +1,7 @@
 @extends('layouts.base')
-@push('head')
-    <!-- Usersnap for gathering user feedback -->
+{{--
+@push('scripts')
+    <!-- Usersnap for gathering user feedback; TODO: Renew subscription. -->
     <script>
         window.onUsersnapCXLoad = function(api) {
             api.init();
@@ -11,6 +12,7 @@
         document.getElementsByTagName('head')[0].appendChild(script);
     </script>
 @endpush
+--}}
 @section('body')
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
@@ -27,32 +29,44 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
-                            @if(Auth::check() && Auth::user()->canGenerateDemoData())
-                                <li class="nav-item">
-                                <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
-                                    @csrf
-                                    <button type="submit" class="btn btn-primary mr-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
-                                </form>
+                            @auth
+                                @if(Auth::user()->canGenerateDemoData())
+                                    <li class="nav-item">
+                                    <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-primary mr-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
+                                    </form>
+                                    </li>
+                                @endif
+
+                                @if(tenant()->isSubscribed())
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Programs</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks</a>
+                                    </li>
+                                @else
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Programs</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Tasks</a>
+                                    </li>
+                                @endif
+
+                                <li class="nav-link dropdown">
+                                    <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Directory
+                                    <span class="caret"></span></div>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Instructors</a></li>
+                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a></li>
+                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a></li>
+                                    </ul>
                                 </li>
-                            @endif
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Programs</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Tasks</a>
-                            </li>
-
-                            <li class="nav-link dropdown">
-                                <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Directory
-                                <span class="caret"></span></div>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Instructors</a></li>
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a></li>
-                                    <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a></li>
-                                </ul>
-                            </li>
+                            @endauth
                         @endif
 
                         <!-- Authentication Links -->

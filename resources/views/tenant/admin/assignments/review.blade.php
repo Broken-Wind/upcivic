@@ -1,6 +1,21 @@
 @extends('layouts.app')
 @section('title', 'Review Task Assignments')
 @include('tenant.admin.tasks.components.document_head_content')
+
+@push('scripts')
+<script>
+    var task = {
+        'id': {{ $task->id }},
+        'name': '{{ $task->name }}',
+        'type': '{{ $task->type }}',
+        'entity': '{{ $task->assign_to_entity }}',
+        'assigned_to_organization_ids': {{ $organizations->pluck('id')->toJson()}},
+        'assigned_by_organization_id': {{ tenant()->organization_id }},
+    };
+</script>
+<script src="{{ asset('js/views/edit_assignment.js') }}" defer></script>
+@endpush
+
 @section('content')
 <div class="container">
     @include('shared.form_errors')
@@ -31,7 +46,7 @@
                     @include('tenant.admin.assignments.components.organization_assignment_preview')
                 @endforeach
 
-                <button type="submit" id="submit" class="btn btn-primary">Send Assignments</button>
+                <button id="assign-task-button" type="submit" id="submit" class="btn btn-primary">Send Assignments</button>
             </form>
         </div>
     </div>

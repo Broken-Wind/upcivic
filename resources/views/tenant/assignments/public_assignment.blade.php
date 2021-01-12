@@ -40,7 +40,7 @@
         @if(!$assignment->isPending() && !$assignment->isApproved())
             <form method="POST" action="{{ tenant()->route('tenant:assignments.public.complete', [$assignment]) }}" class="my-auto pt-3">
                 @csrf
-                <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Complete</button>
+                <button type="submit" class="btn btn-primary" onClick="return confirm('Are you sure?')">Mark as Complete</button>
             </form>
         @endif
 

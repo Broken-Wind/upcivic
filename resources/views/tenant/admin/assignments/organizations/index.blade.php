@@ -28,10 +28,17 @@
         <div class="card-body">
             @forelse($instructors as $instructor)
                 <h5 class="card-title text-muted mt-4">{{ $instructor->name }}'s Assignments</h5>
-                @include('tenant.admin.assignments.organizations.components.assignment_list', [
-                    'assignments' => $instructor->incomingAssignmentsFrom($organization),
-                    'editRouteString' => 'tenant:admin.instructor_assignments.edit',
-                ])
+                @if($isOutgoingFromTenant)
+                    @include('tenant.admin.assignments.organizations.components.assignment_list', [
+                        'assignments' => $instructor->incomingAssignmentsFrom(tenant()->organization),
+                        'editRouteString' => 'tenant:admin.instructor_assignments.edit',
+                    ])
+                @else
+                    @include('tenant.admin.assignments.organizations.components.assignment_list', [
+                        'assignments' => $instructor->incomingAssignmentsFrom($organization),
+                        'editRouteString' => 'tenant:admin.instructor_assignments.edit',
+                    ])
+                @endif
             @empty
                 @if($isOutgoingFromTenant)
                     @if($organization->hasIncomingAssignmentsForInstructors())

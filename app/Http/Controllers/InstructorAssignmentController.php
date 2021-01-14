@@ -27,4 +27,15 @@ class InstructorAssignmentController extends Controller
         return view('tenant.admin.assignments.edit', compact('assignment', 'isOutgoingFromTenant', 'routeActionString'));
     }
 
+    public function destroy(InstructorAssignment $assignment)
+    {
+        $isOutgoingFromTenant = $assignment->assignedByOrganization->id == tenant()->organization_id;
+        $redirectToOrganization = $isOutgoingFromTenant ? $assignment->assignedToOrganization->id : $assignment->assignedByOrganization->id;
+        $assignment->delete();
+        if ($isOutgoingFromTenant) {
+            return redirect()->route('tenant:admin.assignments.to.organizations.index', [tenant()->slug, $redirectToOrganization]);
+        } else {
+            return redirect()->route('tenant:admin.assignments.from.organizations.index', [tenant()->slug, $redirectToOrganization]);
+        }
+    }
 }

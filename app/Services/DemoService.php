@@ -29,8 +29,7 @@ class DemoService
             for ($program = 0; $program < config('app.demo_programs_qty'); $program++) {
                 $demoSite = rand(1, 10) > 3 ? $demoSites->random() : null;
                 $demoSiteId = $demoSite->id ?? null;
-                $demoLocationId = is_object($demoSite) ? $demoSite->locations->pluck('id')->random() : null;
-                $demoLocationId = (rand(1, 10) > 5 && ! empty($demoSiteId)) ? $demoSite->locations->random()->id : null;
+                $demoLocationId = is_object($demoSite) && $demoSite->locations->isNotEmpty() ? $demoSite->locations->pluck('id')->random() : null;
                 $startDate = Carbon::now()->startOfWeek()->addWeeks($week)->toDateString();
                 $template = $templates->random();
                 $proposal = [

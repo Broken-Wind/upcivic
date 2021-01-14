@@ -121,6 +121,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/instructor_assignments/{assignment}/approve', 'InstructorAssignmentController@approve')->name('instructor_assignments.approve');
         Route::get('/instructor_assignments/{assignment}/edit', 'InstructorAssignmentController@edit')->name('instructor_assignments.edit');
         Route::post('/instructor_assignments/{assignment}/files', 'InstructorAssignmentFilesController@store')->name('instructor_assignments.files.store');
+        Route::delete('/instructor_assignments/{assignment}', 'InstructorAssignmentController@destroy')->name('instructor_assignments.destroy');
         Route::get('/assignments/outgoing', 'OutgoingAssignmentController@index')->name('assignments.outgoing.index');
         Route::get('/assignments/incoming', 'IncomingAssignmentController@index')->name('assignments.incoming.index');
         Route::get('/assignments/to/organizations/{organization}', 'AssignmentToOrganizationController@index')->name('assignments.to.organizations.index');

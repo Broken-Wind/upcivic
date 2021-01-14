@@ -70,6 +70,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/resource_timeline_meetings', 'ResourceTimelineController@meetings')->name('resource_timeline.meetings');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
+        Route::get('/billing/portal', 'BillingController@billingPortal')->name('billing.portal');
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');
         Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');

@@ -91,7 +91,7 @@
                                             Organization Settings
                                         </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
-                                            My Profile
+                                            Account 
                                         </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"

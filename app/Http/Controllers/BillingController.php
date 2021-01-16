@@ -15,4 +15,10 @@ class BillingController extends Controller
         
         return $user->redirectToBillingPortal();
     }
+
+    public function updatePaymentMethod(Request $request)
+    {
+        $user = $request->user();
+        return view('tenant.admin.payments', ['intent' => $user->createSetupIntent()]);
+    }
 }

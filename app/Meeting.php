@@ -16,6 +16,11 @@ class Meeting extends Model
         'end_datetime',
     ];
 
+    public function scopeExcludePast($query)
+    {
+        return $query->where('end_datetime', '>', Carbon::now()->subDays(5));
+    }
+
     public function getLinkedPinHtml()
     {
         return $this->site->getLinkedPinHtml();
@@ -67,5 +72,15 @@ class Meeting extends Model
         }
 
         return '0';
+    }
+
+    public function getSequenceAttribute()
+    {
+        return $this->program->meetings->where("start_datetime", "<=", $this->start_datetime)->count();
+    }
+
+    public function getTotalMeetingsAttribute()
+    {
+        return $this->program->meetings->count();
     }
 }

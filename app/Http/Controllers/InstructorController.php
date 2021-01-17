@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ShowInstructor;
 use App\Http\Requests\StoreInstructor;
 use App\Http\Requests\UpdateInstructor;
 use App\Instructor;
@@ -48,6 +49,18 @@ class InstructorController extends Controller
             $instructor->assignToOrganization($validated['assign_to_organization_id']);
         }
         return back()->withSuccess('Instructor added.');
+    }
+
+    public function show(ShowInstructor $request, Instructor $instructor)
+    {
+        //
+        $validated = $request->validated();
+        if (empty($validated['show_all'])) {
+            $meetings = $instructor->meetings()->excludePast()->get();
+        } else {
+            $meetings = $instructor->meetings;
+        }
+        return view('tenant.admin.instructors.show', compact('instructor', 'meetings'));
     }
 
     public function edit(Instructor $instructor)

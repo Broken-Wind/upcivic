@@ -140,6 +140,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/instructors', 'InstructorController@index')->name('instructors.index');
         Route::get('/instructors/create', 'InstructorController@create')->name('instructors.create');
         Route::post('/instructors', 'InstructorController@store')->name('instructors.store');
+        Route::get('/instructors/{instructor}', 'InstructorController@show')->name('instructors.show');
         Route::get('/instructors/{instructor}/edit', 'InstructorController@edit')->name('instructors.edit');
         Route::delete('/instructors/{instructor}', 'InstructorController@destroy')->name('instructors.destroy');
         Route::put('/instructors/{instructor}', 'InstructorController@update')->name('instructors.update');

@@ -24,8 +24,12 @@
                                 <td>{{ $instructor->phone }}</td>
 
                                 <td class="text-right">
+                                    <a href="{{ tenant()->route('tenant:admin.instructors.show', ['instructor' => $instructor->id]) }}">
+                                        View Assignments
+                                    </a>
+                                    &nbsp;|&nbsp;
                                     <a href="{{ tenant()->route('tenant:admin.instructors.edit', ['instructor' => $instructor->id]) }}">
-                                        <i class="far fa-edit mr-2"></i>
+                                        Edit
                                     </a>
                                 </td>
 

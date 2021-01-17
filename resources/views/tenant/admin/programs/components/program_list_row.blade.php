@@ -44,6 +44,11 @@
                 <div class="col-12">
                     Min/Max Enrollments: {{ $program['min_enrollments'] ?? 0 }}/{{ $program['max_enrollments'] ?? 0 }}
                 </div>
+                <div class="col-12">
+                    <small>
+                        {{ $program['description_of_age_range'] }}
+                    </small>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
@@ -82,11 +87,28 @@
                         </div>
                     </div>
                     --}}
-                    &nbsp;
                 </div>
                 <div class="col-12">
-                    {{ $program['description_of_age_range'] }}
+                        @if($program->hasUnstaffedMeetings())
+                            <span class="bg-warning" title="This program has one or more unstaffed meetings!"><i class="fas fa-fw fa-exclamation-triangle"></i></span>
+                        @endif
+                        {{ $program->instructors->implode(', ') }}
                 </div>
+                @if($instructors->isNotEmpty())
+                    <div class="col-7">
+                        <select class="form-control form-control-sm" style="min-width:100px;" name="instructor_id">
+                            @foreach ( $instructors as $instructor )
+                                <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-5">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-light btn-sm" name="delete_instructor" value="delete_instructor"><i class="fas fa-fw fa-minus"></i></button>
+                            <button type="submit" class="btn btn-light btn-sm" name="add_instructor" value="add_instructor"><i class="fas fa-fw fa-plus"></i></button>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="col-md-2 text-center">

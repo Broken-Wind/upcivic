@@ -20,6 +20,7 @@ use App\Site;
 use App\Template;
 use Carbon\Carbon;
 use App\Exports\ProgramsExport;
+use App\Instructor;
 use App\Task;
 use DB;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class ProgramController extends Controller
         $groupsIncludeArea = tenant()->organization->hasAreas();
         $organizations = Organization::orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
+        $instructors = Instructor::all()->sortBy('person.first_name');
         $templateCount = Template::count();
         $tasks = Task::orderBy('name')->get();
 

@@ -26,6 +26,11 @@ class Meeting extends Model
         return $this->belongsTo(Program::class);
     }
 
+    public function instructors()
+    {
+        return $this->belongsToMany(Instructor::class);
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class)->withDefault([

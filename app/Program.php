@@ -391,6 +391,20 @@ class Program extends Model
         return $this->hasMany(Meeting::class);
     }
 
+    public function getInstructorsAttribute()
+    {
+        return $this->meetings->map(function ($meeting) {
+            return $meeting->instructors;
+        })->flatten();
+    }
+
+    public function hasUnstaffedMeetings()
+    {
+        return $this->meetings->every(function ($meeting) {
+            return $meeting->instructors->isNotEmpty();
+        }) ? false : true;
+    }
+
     public function contributors()
     {
         return $this->hasMany(Contributor::class);

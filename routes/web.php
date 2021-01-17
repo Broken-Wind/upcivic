@@ -55,6 +55,7 @@ Route::group(['middleware' => 'verified'], function () {
         'as' => 'tenant:api.',
     ], function () {
         Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
+        Route::post('/programs/get', 'ProgramController@getJson')->name('programs.get_json');
         Route::post('/programs/contributors', 'ProgramContributorController@index')->name('programs.contributors.index');
         Route::post('/resource_timeline_meetings/page/', 'ResourceTimelineController@page')->name('resource_timeline_meetings.page');
     });

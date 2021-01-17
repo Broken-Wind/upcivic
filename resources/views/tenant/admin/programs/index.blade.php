@@ -4,6 +4,7 @@
 
 @push('scripts')
 <script type="application/javascript">
+    var getProgramUrl = "{{ tenant()->route('tenant:api.programs.get_json') }}";
     function toggle(source) {
         checkboxes = document.querySelectorAll('.bulk-action-checkbox');
         for(var i=0, n=checkboxes.length;i<n;i++) {
@@ -11,13 +12,14 @@
         }
     }
 </script>
-
+<script src="{{ asset('js/views/programs/index.js')}}"></script>
 @endpush
 <div class="container">
     @include('shared.form_errors')
     <form id="filters" action="{{ URL::current() }}" method="GET">
         @include('tenant.admin.programs.components.filters_modal')
     </form>
+    @include('tenant.admin.programs.components.manage_instructors_modal')
 
     @if($programsExist)
         @if(tenant()->isSubscribed())

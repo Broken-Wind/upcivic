@@ -95,25 +95,9 @@
                         {{ $program->instructors->implode(', ') }}
                 </div>
                 @if($instructors->isNotEmpty())
-                    <form action="{{ tenant()->route('tenant:admin.programs.instructors.update', ['program' => $program->id]) }}" method="POST">
-                        @csrf
-                        <div class="form-row">
-                            <div class="col">
-                                <select class="form-control form-control-sm" style="min-width:100px;" name="instructor_id">
-                                    <option>Select an instructor.</option>
-                                    @foreach ( $instructors as $instructor )
-                                        <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <div class="btn-group">
-                                    <button type="submit" class="btn btn-light btn-sm" name="action" value="remove_instructor"><i class="fas fa-fw fa-minus"></i></button>
-                                    <button type="submit" class="btn btn-light btn-sm" name="action" value="add_instructor"><i class="fas fa-fw fa-plus"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <button type="button" class="btn btn-light btn-sm manageInstructorsButton" data-program-id="{{ $program->id }}" data-toggle="modal" data-target="#manage-instructors-modal" form="filters">
+                        Manage Instructors
+                    </button>
                 @endif
             </div>
         </div>

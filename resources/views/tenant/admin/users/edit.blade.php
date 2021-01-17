@@ -50,9 +50,12 @@
             <div class="jumbotron">
                 <h1 class="display-4">Upcivic Pro</h1>
                 <p class="lead">All the tools you need to go paperless, reduce manual data entry, manage instructors, and optimize your activity schedule.</p>
-                <p class="lead">
-                    <a class="btn btn-secondary" href="#" role="button" onClick="return confirm('Are you sure you want to cancel your Upcivic Pro plan?');">Cancel Pro</a>
-                </p>
+                
+                @if ($user->isPaymentCardHolder())
+                    <p class="lead">
+                        <a class="btn btn-secondary" href="{{ tenant()->route('tenant:admin.billing.subscriptions.cancel') }}" role="button" onClick="return confirm('Are you sure you want to cancel your Upcivic Pro plan?');">Cancel Pro</a>
+                    </p>
+                @endif
 
                 <div class="text-mutted small" role="alert">
                     Canceling Pro plan will automatically stiwtch to Free plan. You'll no longer benefit of Partner Paperwork Submission, Document Generation & E-Signing, Instructor / Facility Management, 

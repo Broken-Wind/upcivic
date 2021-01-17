@@ -37,6 +37,20 @@ class BillingController extends Controller
             config('app.subscription_price_id')
         )->quantity($noOfSeats)->create($paymentMethod);
 
-        return [42];
+        return [42]; //TODO: Redirect to the user account page
+    }
+
+    public function cancelSubscription(Request $request)
+    {
+
+        $user = $request->user();
+
+        $subscription_name = config('app.subscription_name');
+        $stripe_subscription = $user->subscription($subscription_name);
+        if ($stripe_subscription) {
+            $stripe_subscription->cancelNow(); //TODO: Cancel subscription after the grace period
+        }
+
+        return redirect()->route('tenant:admin.users.edit', [tenant()->slug]);
     }
 }

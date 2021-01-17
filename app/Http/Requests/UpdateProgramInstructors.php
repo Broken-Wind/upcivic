@@ -34,4 +34,12 @@ class UpdateProgramInstructors extends FormRequest
             'instructor_id' => 'required|numeric'
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'instructor_id.required' => 'You must select an instructor.',
+            'instructor_id.numeric' => 'You must select an instructor.',
+        ];
+    }
 }

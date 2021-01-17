@@ -100,6 +100,7 @@
                         <div class="form-row">
                             <div class="col">
                                 <select class="form-control form-control-sm" style="min-width:100px;" name="instructor_id">
+                                    <option>Select an instructor.</option>
                                     @foreach ( $instructors as $instructor )
                                         <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
                                     @endforeach

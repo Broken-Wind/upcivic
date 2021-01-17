@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Tenant extends Model
 {
@@ -59,7 +60,11 @@ class Tenant extends Model
 
     public function isSubscribed()
     {
-        return !empty($this->next_payment_due_at);
+        if (Auth::user()->subscribed(config('app.subscription_name'))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function getPlanTypeAttribute()

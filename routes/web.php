@@ -57,6 +57,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
         Route::post('/programs/contributors', 'ProgramContributorController@index')->name('programs.contributors.index');
         Route::post('/resource_timeline_meetings/page/', 'ResourceTimelineController@page')->name('resource_timeline_meetings.page');
+        Route::post('/billing/subscriptions/', 'BillingController@subscribe')->name('billing.subscribe');
     });
     Route::group([
         'prefix' => '/{tenant}/admin',

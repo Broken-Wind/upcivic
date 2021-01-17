@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class BillingController extends Controller
 {
@@ -20,5 +21,22 @@ class BillingController extends Controller
     {
         $user = $request->user();
         return view('tenant.admin.payments', ['intent' => $user->createSetupIntent()]);
+    }
+
+    public function subscribe(Request $request)
+    {
+        $user = $request->user();
+
+        $paymentMethod = $request['paymentMethod'];
+        $noOfSeats = $request['noOfSeats'];
+
+        $user->addPaymentMethod($paymentMethod);
+
+        $user->newSubscription(
+            config('app.subscription_name'), 
+            config('app.subscription_price_id')
+        )->quantity($noOfSeats)->create($paymentMethod);
+
+        return [42];
     }
 }

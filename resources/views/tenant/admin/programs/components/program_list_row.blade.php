@@ -95,19 +95,24 @@
                         {{ $program->instructors->implode(', ') }}
                 </div>
                 @if($instructors->isNotEmpty())
-                    <div class="col-7">
-                        <select class="form-control form-control-sm" style="min-width:100px;" name="instructor_id">
-                            @foreach ( $instructors as $instructor )
-                                <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-5">
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-light btn-sm" name="delete_instructor" value="delete_instructor"><i class="fas fa-fw fa-minus"></i></button>
-                            <button type="submit" class="btn btn-light btn-sm" name="add_instructor" value="add_instructor"><i class="fas fa-fw fa-plus"></i></button>
+                    <form action="{{ tenant()->route('tenant:admin.programs.instructors.update', ['program' => $program->id]) }}" method="POST">
+                        @csrf
+                        <div class="form-row">
+                            <div class="col">
+                                <select class="form-control form-control-sm" style="min-width:100px;" name="instructor_id">
+                                    @foreach ( $instructors as $instructor )
+                                        <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-light btn-sm" name="action" value="remove_instructor"><i class="fas fa-fw fa-minus"></i></button>
+                                    <button type="submit" class="btn btn-light btn-sm" name="action" value="add_instructor"><i class="fas fa-fw fa-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 @endif
             </div>
         </div>

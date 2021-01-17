@@ -394,8 +394,22 @@ class Program extends Model
     public function getInstructorsAttribute()
     {
         return $this->meetings->map(function ($meeting) {
-            return $meeting->instructors;
-        })->flatten();
+            return $meeting->instructors->pluck('first_name');
+        })->flatten()->unique();
+    }
+
+    public function addInstructor(Instructor $instructor)
+    {
+        $this->meetings->each(function ($meeting) use ($instructor) {
+            $meeting->instructors()->syncWithoutDetaching($instructor);
+        });
+    }
+
+    public function removeInstructor(Instructor $instructor)
+    {
+        $this->meetings->each(function ($meeting) use ($instructor) {
+            $meeting->instructors()->detach($instructor);
+        });
     }
 
     public function hasUnstaffedMeetings()

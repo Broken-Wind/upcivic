@@ -105,6 +105,15 @@
                                 <td>{{ $meeting['start_date'] }}{{ $meeting['start_date'] != $meeting['end_date'] ? '-' . $meeting['end_date'] : '' }}</td>
                                 <td>{{ $meeting['start_time'] . "-" . $meeting['end_time'] }}</td>
                                 <td>{{ $meeting->site['name'] }}</td>
+                                <td>
+                                    @if($meeting->hasInstructors())
+                                        {{ $meeting->instructor_list }}
+                                    @else
+                                        <span class="bg-warning">
+                                            <i class="fas fa-fw fa-exclamation-triangle"></i> No instructors assigned!
+                                        </span>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>

@@ -31,6 +31,16 @@ class Meeting extends Model
         return $this->belongsToMany(Instructor::class);
     }
 
+    public function hasInstructors()
+    {
+        return $this->instructors->isNotEmpty();
+    }
+
+    public function getInstructorListAttribute()
+    {
+        return $this->instructors->pluck('first_name')->implode(', ');
+    }
+
     public function location()
     {
         return $this->belongsTo(Location::class)->withDefault([

@@ -414,9 +414,10 @@ class Program extends Model
 
     public function hasUnstaffedMeetings()
     {
-        return $this->meetings->every(function ($meeting) {
-            return $meeting->instructors->isNotEmpty();
-        }) ? false : true;
+        return tenant()->organization->hasInstructors()
+            && !$this->meetings->every(function ($meeting) {
+                return $meeting->instructors->isNotEmpty();
+            });
     }
 
     public function contributors()

@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 class AreaController extends Controller
 {
     //
+    public function index()
+    {
+        $areas = Area::orderBy('name')->get();
+        return view('tenant.admin.areas.index', compact('areas'));
+    }
     public function store(StoreArea $request) {
         $validated = $request->validated();
         $area = Area::make([

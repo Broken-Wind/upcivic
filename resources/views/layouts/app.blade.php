@@ -61,6 +61,7 @@
                                     <div class="dropdown-toggle" data-toggle="dropdown" role="button" style="cursor:pointer">Directory
                                     <span class="caret"></span></div>
                                     <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.areas.index') }}">Areas</a></li>
                                         <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.instructors.index') }}">Instructors</a></li>
                                         <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.organizations.index') }}">Organizations</a></li>
                                         <li><a class="dropdown-item" href="{{ tenant()->route('tenant:admin.sites.index') }}">Sites</a></li>

@@ -23,6 +23,11 @@ class Site extends Model
         return $this->belongsToMany(Meeting::class);
     }
 
+    public function area()
+    {
+        return $this->belongsToMany(Area::class)->first();
+    }
+
     public function county()
     {
         return $this->belongsTo(County::class);

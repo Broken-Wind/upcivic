@@ -3,19 +3,17 @@ document.addEventListener('DOMContentLoaded', function() {
     $('.manageInstructorsButton').on('click', function (event) {
         $('#manage-instructors-program-summary').html('Loading...');
         $('#manage-instructors-meetings').html('');
-        let program;
-        getProgram(
-            $(this).data('program-id')
-        ).then(program => {
+        getProgram($(this).data('program-id')).then(program => {
+            $('#update-program-instructors-form').attr('action', getActionString(program.id));
             $('#manage-instructors-program-summary').html(getManageInstructorsProgramSummaryHtml(program));
             $('#manage-instructors-meetings').html(getManageInstructorsMeetingsHtml(program));
         });
-
-        // #{{ $program['id'] }} - {{ $program['name'] }} at {{ $program['site']['name'] }}<br/>
-        // {{ $program['description_of_meetings'] }}
-        // {{ $program['start_time'] }}-{{ $program['end_time'] }}<br/>
     });
 });
+
+function getActionString(programId) {
+    return updateProgramInstructorsUrl + '/' + programId + '/instructors';
+}
 
 function getManageInstructorsProgramSummaryHtml(program) {
     return `#${program.id} - ${program.name} at ${program.site}<br />
@@ -35,7 +33,7 @@ function getManageInstructorsMeetingsHtml(program) {
 function getMeetingRowHtml(meeting) {
     return `<tr>
         <td>
-            <input name="" id="" type="checkbox" value="checkedValue" aria-label="Text for screen reader">
+            <input name="meeting_ids[]" type="checkbox" value="${meeting.id}" aria-label="Select this meeting" checked>
         </td>
         <td>
             ${meeting.start_date}${meeting.start_date != meeting.end_date ? '-' . $meeting.end_date : '' }

@@ -29,9 +29,11 @@ class UpdateProgramInstructors extends FormRequest
             'action' => [
                 'required',
                 'string',
-                Rule::in(['add_instructor', 'remove_instructor'])
+                Rule::in(['add_all', 'add_selected', 'remove_all', 'remove_selected'])
             ],
-            'instructor_id' => 'required|numeric'
+            'instructor_id' => 'required|numeric',
+            'meeting_ids' => 'required|array',
+            'meeting_ids.*' => 'required|numeric',
         ];
     }
 
@@ -40,6 +42,10 @@ class UpdateProgramInstructors extends FormRequest
         return [
             'instructor_id.required' => 'You must select an instructor.',
             'instructor_id.numeric' => 'You must select an instructor.',
+            'meeting_ids.array' => 'Instructor assignment error',
+            'meeting_ids.*.numeric' => 'Instructor assignment error',
+            'meeting_ids.required' => 'You must select at least one meeting.',
+            'meeting_ids.*.required' => 'You must select at least one meeting.',
         ];
     }
 }

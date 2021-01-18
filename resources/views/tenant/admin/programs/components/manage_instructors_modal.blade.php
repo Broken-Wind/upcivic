@@ -15,13 +15,13 @@
                 <div id="manage-instructors-program-summary"></div>
                 <hr>
 
-                <form action="{{ tenant()->route('tenant:admin.programs.instructors.update', ['program' => 1]) }}" method="POST">
+                <form id="update-program-instructors-form" action="" method="POST">
                     @csrf
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="selectInstructor">Select an Instructor</label>
-                                <select class="form-control" name="selectInstructor" id="selectInstructor">
+                                <label for="instructorId">Select an Instructor</label>
+                                <select class="form-control" name="instructor_id" id="instructorId">
                                     @foreach ( $instructors as $instructor )
                                         <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
                                     @endforeach
@@ -32,10 +32,8 @@
                             <div class="form-group">
                                 <label for="action">Select an Action</label>
                                 <select class="form-control" name="action" id="action">
-                                    <option>Add to selected meetings</option>
-                                    <option>Add to all meetings</option>
-                                    <option>Remove from selected meetings</option>
-                                    <option>Remove from all meetings</option>
+                                    <option value="add_selected">Add to selected meetings</option>
+                                    <option value="remove_selected">Remove from selected meetings</option>
                                 </select>
                             </div>
                         </div>
@@ -43,7 +41,7 @@
 
                     <table class="table table-sm table-striped" id="manage-instructors-meetings">
                     </table>
-                    <button type="submit" class="btn btn-primary" name="action" value="add_instructor">Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
             </div>
         </div>

@@ -187,6 +187,7 @@ class ProgramController extends Controller
             'contributors' => $program->contributors->pluck('name')->implode(', '),
             'meetings' => $program->meetings->map(function ($meeting) {
                 return [
+                    'id' => $meeting->id,
                     'start_date' => $meeting->start_date,
                     'end_date' => $meeting->end_date,
                     'start_time' => $meeting->start_time,

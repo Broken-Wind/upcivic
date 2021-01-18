@@ -16,14 +16,14 @@ class ProgramInstructorsController extends Controller
         $validated = $request->validated();
         $instructor = Instructor::findOrFail($validated['instructor_id']);
         switch ($validated['action']) {
-            case ('add_instructor'):
-                $program->addInstructor($instructor);
-                return back()->withSuccess($instructor->name . ' was added to ' . $program->name . ', ID ' . $program->id . '.');
-            case ('remove_instructor'):
-                $program->removeInstructor($instructor);
-                return back()->withSuccess($instructor->name . ' was removed from ' . $program->name . ', ID ' . $program->id . '.');
-            default:
-                return back()->withErrors('Instructor assignment error');
+            case ('add_selected'):
+                $instructor->meetings()->attach($validated['meeting_ids']);
+                return back()->withSuccess($instructor->name . ' was added to ' . count($validated['meeting_ids']) . ' meetings of ' . $program->name . ', #' . $program->id . '.');
+            case ('remove_selected'):
+                $instructor->meetings()->detach($validated['meeting_ids']);
+                return back()->withSuccess($instructor->name . ' was removed from ' . count($validated['meeting_ids']) . ' meetings of ' . $program->name . ', #' . $program->id . '.');
+            case ('remove_all'):
         }
+        return back()->withErrors('Instructor assignment error');
     }
 }

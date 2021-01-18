@@ -5,6 +5,7 @@
 @push('scripts')
 <script type="application/javascript">
     var getProgramUrl = "{{ tenant()->route('tenant:api.programs.get_json') }}";
+    var updateProgramInstructorsUrl = "{{ tenant()->route('tenant:admin.programs.index') }}";
     function toggle(source) {
         checkboxes = document.querySelectorAll('.bulk-action-checkbox');
         for(var i=0, n=checkboxes.length;i<n;i++) {

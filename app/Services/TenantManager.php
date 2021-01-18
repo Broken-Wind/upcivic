@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Area;
 use App\Assignment;
 use App\AssignmentStatus;
 use App\File;
@@ -83,6 +84,9 @@ class TenantManager
             return $builder->where('instructors.organization_id', tenant()->organization_id);
         });
         File::addGlobalScope('TenantOwnedFile', function (Builder $builder) {
+            return $builder->where('organization_id', tenant()->organization_id);
+        });
+        Area::addGlobalScope('TenantOwnedArea', function (Builder $builder) {
             return $builder->where('organization_id', tenant()->organization_id);
         });
     }

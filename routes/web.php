@@ -143,5 +143,6 @@ Route::group(['middleware' => 'verified'], function () {
         Route::delete('/instructors/{instructor}', 'InstructorController@destroy')->name('instructors.destroy');
         Route::put('/instructors/{instructor}', 'InstructorController@update')->name('instructors.update');
         Route::post('/organizations/{organization}/assigned_instructors', 'OrganizationAssignedInstructorsController@massUpdate')->name('organizations.assigned_instructors.mass_update');
+        Route::post('/areas', 'AreaController@store')->name('areas.store');
     });
 });

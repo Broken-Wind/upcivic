@@ -44,6 +44,10 @@ class Organization extends GenericAssignableEntity
         return Organization::partneredWith($this->id)->orderBy('name')->get();
     }
 
+    public function areas()
+    {
+        return $this->hasMany(Area::class);
+    }
     public function outgoingAssignments()
     {
         return $this->hasMany(Assignment::class, 'assigned_by_organization_id');

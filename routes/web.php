@@ -145,5 +145,6 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/organizations/{organization}/assigned_instructors', 'OrganizationAssignedInstructorsController@massUpdate')->name('organizations.assigned_instructors.mass_update');
         Route::get('/areas', 'AreaController@index')->name('areas.index');
         Route::post('/areas', 'AreaController@store')->name('areas.store');
+        Route::post('/sites/{site}/areas', 'SiteAreasController@update')->name('site.areas.update');
     });
 });

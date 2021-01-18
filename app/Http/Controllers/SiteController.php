@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
 use App\County;
 use App\Http\Requests\StoreSite;
 use App\Site;
@@ -18,8 +19,16 @@ class SiteController extends Controller
     {
         //
         $sites = Site::orderBy('name')->get();
+        $sitesJson = $sites->map(function ($site) {
+            return [
+                'id' => $site->id,
+                'name' => $site->name,
+                'area_id' => $site->area->id ?? null
+            ];
+        })->toJson();
+        $areas = Area::orderBy('name')->get();
 
-        return view('tenant.admin.sites.index', compact('sites'));
+        return view('tenant.admin.sites.index', compact('sites', 'sitesJson', 'areas'));
     }
 
     /**

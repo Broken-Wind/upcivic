@@ -16,7 +16,6 @@
                         <td>
                             {{ $area->name }}
                         </td>
-                        <td></td>
                     </tr>
                 @empty
                     <tr>

@@ -23,9 +23,14 @@ class Site extends Model
         return $this->belongsToMany(Meeting::class);
     }
 
-    public function area()
+    public function getAreaAttribute()
     {
-        return $this->belongsToMany(Area::class)->first();
+        return $this->areas->first();
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class);
     }
 
     public function county()

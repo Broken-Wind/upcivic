@@ -1,10 +1,17 @@
 @extends('layouts.app')
 
 @section('title', 'Sites')
-
+@push('scripts')
+<script type="application/javascript">
+    var sites = {!! $sitesJson !!};
+var updateSiteAreaUrl = "{{ tenant()->route('tenant:admin.sites.index') }}";
+</script>
+<script src="{{ asset('js/views/sites/index.js')}}"></script>
+@endpush
 @section('content')
 <div class="container">
     @include('shared.form_errors')
+    @include('tenant.admin.sites.components.select_area_modal')
 
     <div class="card mb-4">
         <div class="card-header">Sites</div>
@@ -24,6 +31,17 @@
 
                                 {{ $site->name }} - <span class="text-muted">{{ $site->address }}</span>
 
+                            </td>
+                            <td class="text-right">
+                                @if(isset($site->area->name))
+                                    <button type="button" class="btn btn-sm btn-light select-area-button" data-site-id="{{ $site->id }}"data-toggle="modal" data-target="#select-area-modal">
+                                        {{ $site->area->name }}
+                                    </button>
+                                @else
+                                    <button type="button" class="btn btn-sm btn-secondary select-area-button" data-site-id="{{ $site->id }}"data-toggle="modal" data-target="#select-area-modal">
+                                        Set an Area
+                                    </button>
+                                @endif
                             </td>
 
                         </tr>

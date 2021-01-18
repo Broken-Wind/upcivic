@@ -25,7 +25,9 @@ class Site extends Model
 
     public function getAreaAttribute()
     {
-        return $this->areas->first();
+        return $this->areas->first() ?? new Area([
+            'name' => 'Other'
+        ]);
     }
 
     public function areas()

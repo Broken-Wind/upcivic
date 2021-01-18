@@ -59,12 +59,24 @@ class Tenant extends Model
     {
         $currentUser = Auth::user();
         $subscriptionName = config('app.subscription_name');
-        $noOfUsers = $this->users->count();
 
         if ($currentUser->subscribed($subscriptionName)) {
             return true;
         } 
         
+        if ($this->hasAvailableProSeats()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public function hasAvailableProSeats() {
+
+        $noOfUsers = $this->users->count();
+        $subscriptionName = config('app.subscription_name');
+
         foreach($this->users->all() as $user) {
             if ($user->subscribed($subscriptionName)) {
 
@@ -75,7 +87,19 @@ class Tenant extends Model
                 return true;
             }
         }
-        return false;
+
+    }
+    
+    public function hasStripeCustomer() {
+
+        $subscriptionName = config('app.subscription_name');
+
+        foreach($this->users->all() as $user) {
+            if ($user->subscribed($subscriptionName)) {
+                return true;
+            }
+            return false;
+        }
 
     }
 

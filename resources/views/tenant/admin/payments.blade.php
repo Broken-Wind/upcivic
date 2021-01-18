@@ -1,35 +1,25 @@
-@extends('layouts.app')
-@section('title', 'Subscribe')
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<div class="container">
-    @include('shared.form_errors')
-    <div class="card mb-4">
-        <div class="card-header">Upgrade to Pro</div>
-            <div class="card-body">
-                Name: <input id="card-holder-name" type="text">
+<div class="card-header">Upgrade to Pro</div>
+    <div class="card-body">
+        Name: <input id="card-holder-name" type="text">
 
-                <div class="col-4">
-                    <!-- Stripe Elements Placeholder -->
-                    <div id="card-element"></div>
-                </div>
+        <!-- Stripe Elements Placeholder -->
+        <div id="card-element"></div>
 
-                Number of seats: 
-                <input type="text" id="noOfSeats" name="noOfSeats" value="3" min="1" max="100">
+        Number of seats: 
+        <input type="text" id="noOfSeats" name="noOfSeats" value="3" min="1" max="100">
 
-                </br>
+        </br>
 
-                <button id="card-button" data-secret="{{ $intent->client_secret }}">
-                    Subscribe
-                </button>
-            </div>
-        </div>
+        <button id="card-button" data-secret="{{ $intent->client_secret }}">
+            Subscribe
+        </button>
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="application/javascript" src="https://js.stripe.com/v3/"></script>
 
 <script type="application/javascript">

@@ -95,7 +95,7 @@
                         </div>
                     </div>
                         
-                    @if ($user->isPaymentCardHolder())
+                    @if (!(tenant()->hasStripeCustomer()) || $user->isPaymentCardHolder())
                         <p class="lead">
                             <a class="btn btn-primary btn-lg" href="{{ tenant()->route('tenant:admin.billing.payments') }}">Upgrade to Pro</a>
                         </p>

@@ -26,6 +26,7 @@ class BillingController extends Controller
     public function subscribe(Request $request)
     {
         $user = $request->user();
+        $user->createOrGetStripeCustomer();
 
         $paymentMethod = $request['paymentMethod'];
         $noOfSeats = $request['noOfSeats'];

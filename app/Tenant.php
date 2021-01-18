@@ -60,19 +60,19 @@ class Tenant extends Model
 
     public function isSubscribed()
     {
-        $current_user = Auth::user();
-        $subscription_name = config('app.subscription_name');
-        $no_of_users = $this->users->count();
+        $currentUser = Auth::user();
+        $subscriptionName = config('app.subscription_name');
+        $noOfUsers = $this->users->count();
 
-        if ($current_user->subscribed($subscription_name)) {
+        if ($currentUser->subscribed($subscriptionName)) {
             return true;
         } 
         
         foreach($this->users->all() as $user) {
-            if ($user->subscribed($subscription_name)) {
+            if ($user->subscribed($subscriptionName)) {
 
-                $no_of_seats = $user->subscription($subscription_name)->quantity;
-                if ($no_of_users > $no_of_seats) {
+                $noOfSeats = $user->subscription($subscriptionName)->quantity;
+                if ($noOfUsers > $noOfSeats) {
                     return false;
                 }
                 return true;

@@ -126,7 +126,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function isPaymentCardHolder() {
-        return ($this->stripe_id != null); // TODO: Use Cashier::findBillable($stripeId); instead
+        return ($this->card_last_four != null);
     }
 
 }

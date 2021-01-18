@@ -45,10 +45,10 @@ class BillingController extends Controller
 
         $user = $request->user();
 
-        $subscription_name = config('app.subscription_name');
-        $stripe_subscription = $user->subscription($subscription_name);
-        if ($stripe_subscription) {
-            $stripe_subscription->cancelNow(); //TODO: Cancel subscription after the grace period
+        $subscriptionName = config('app.subscription_name');
+        $stripeSubscription = $user->subscription($subscriptionName);
+        if ($stripeSubscription) {
+            $stripeSubscription->cancel();
         }
 
         return redirect()->route('tenant:admin.users.edit', [tenant()->slug]);

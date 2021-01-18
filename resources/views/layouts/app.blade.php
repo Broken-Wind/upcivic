@@ -30,11 +30,14 @@
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
                             @auth
+                                @if(!tenant()->isSubscribed())
+                                    <a href="{{ tenant()->route('tenant:admin.users.edit') }}#availablePlans"><h2><span class="badge badge-pill badge-primary">Upgrade to Pro</span></h2></a>
+                                @endif
                                 @if(Auth::user()->canGenerateDemoData())
                                     <li class="nav-item">
                                     <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-primary mr-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
+                                        <button type="submit" class="btn btn-primary mx-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
                                     </form>
                                     </li>
                                 @endif

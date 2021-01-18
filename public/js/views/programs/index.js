@@ -1,9 +1,11 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     $('.manageInstructorsButton').on('click', function (event) {
-        $('#manage-instructors-program-summary').html('Loading...');
-        $('#manage-instructors-meetings').html('');
+        $('#manage-instructors-modal-loader').show();
+        $('#manage-instructors-modal-program-container').hide();
         getProgram($(this).data('program-id')).then(program => {
+            $('#manage-instructors-modal-loader').hide();
+            $('#manage-instructors-modal-program-container').show();
             $('#update-program-instructors-form').attr('action', getActionString(program.id));
             $('#manage-instructors-program-summary').html(getManageInstructorsProgramSummaryHtml(program));
             $('#manage-instructors-meetings').html(getManageInstructorsMeetingsHtml(program));

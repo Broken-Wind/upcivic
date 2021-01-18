@@ -9,40 +9,45 @@
             </div>
 
             <div class="modal-body" id="modal-body">
-                @php
-                    $program = tenant()->organization->programs->first();
-                @endphp
-                <div id="manage-instructors-program-summary"></div>
-                <hr>
+                <div id="manage-instructors-modal-loader">
+                    <h3>
+                        <i class="fas fa-fw fa-spinner fa-spin"></i>
+                        Loading...
+                    </h3>
+                </div>
+                <div id="manage-instructors-modal-program-container">
+                    <div id="manage-instructors-program-summary"></div>
+                    <hr>
 
-                <form id="update-program-instructors-form" action="" method="POST">
-                    @csrf
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="instructorId">Select an Instructor</label>
-                                <select class="form-control" name="instructor_id" id="instructorId">
-                                    @foreach ( $instructors as $instructor )
-                                        <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
-                                    @endforeach
-                                </select>
+                    <form id="update-program-instructors-form" action="" method="POST">
+                        @csrf
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="instructorId">Select an Instructor</label>
+                                    <select class="form-control" name="instructor_id" id="instructorId">
+                                        @foreach ( $instructors as $instructor )
+                                            <option value="{{ $instructor['id'] }}">{{ $instructor['first_name'] . " " . $instructor['last_name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="action">Select an Action</label>
+                                    <select class="form-control" name="action" id="action">
+                                        <option value="add_selected">Add to selected meetings</option>
+                                        <option value="remove_selected">Remove from selected meetings</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="action">Select an Action</label>
-                                <select class="form-control" name="action" id="action">
-                                    <option value="add_selected">Add to selected meetings</option>
-                                    <option value="remove_selected">Remove from selected meetings</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
-                    <table class="table table-sm table-striped" id="manage-instructors-meetings">
-                    </table>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </form>
+                        <table class="table table-sm table-striped" id="manage-instructors-meetings">
+                        </table>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

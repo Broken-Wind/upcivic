@@ -12,10 +12,7 @@ class Tenant extends Model
         'slug',
         'proposal_next_steps'
     ];
-    protected $casts = [
-        'next_payment_due_at' => 'datetime'
-    ];
-
+    
     public function users()
     {
         return $this->belongsToMany(User::class);

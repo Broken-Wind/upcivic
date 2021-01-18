@@ -27,6 +27,6 @@ class UserInviteController extends Controller
             return back()->withErrors(tenant()->name . " already using all available seats for the current plan. Please contact " . config('mail.support_email') . " to add more seats.");
         }
 
-        return back()->withSuccess($validated['email'].' has been invited to your organization.');
+        return back()->withSuccess($validated['email'].' has been added to your organization.');
     }
 }

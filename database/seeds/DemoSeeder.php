@@ -41,7 +41,6 @@ class DemoSeeder extends Seeder
         $demoHostTenant = Tenant::create([
             'organization_id' => $demoHostOrg->id,
             'slug' => 'demo-host',
-            'next_payment_due_at' => Carbon::now()->add(1, 'year')
         ]);
         $demoHostUser->joinTenant($demoHostTenant);
         $this->seedDemoSites($demoHostOrg);

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
+use App\Exceptions\NoMoreSeatsException;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -60,6 +61,18 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function joinTenant(Tenant $tenant)
     {
+        $subscriptionName = config('app.subscription_name');
+        $noOfUsers = $tenant->users->count() + 1;
+
+        foreach($tenant->users->all() as $user) {
+            if ($user->subscribed($subscriptionName)) {
+                $noOfSeats = $user->subscription($subscriptionName)->quantity;
+                if ($noOfUsers > $noOfSeats) {
+                    throw new NoMoreSeatsException();
+                }
+            }
+        }
+
         $this->tenants()->attach($tenant);
 
         if (! $tenant->organization->administrators->pluck('email')->contains($this->email)) {

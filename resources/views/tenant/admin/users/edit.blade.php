@@ -73,7 +73,7 @@
 
     @if(!tenant()->isSubscribed())
         <div class="card">
-            <div class="card-header" id="availablePlans">Available Plans</div>
+            <div class="card-header">Available Plans</div>
             <div class="card-body">
                 <div class="jumbotron">
                     <h1 class="display-4 text-primary">Upcivic Pro</h1>

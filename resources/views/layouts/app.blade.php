@@ -94,7 +94,7 @@
                                             Organization Settings
                                         </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
-                                            Account 
+                                            Account
                                         </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -110,8 +110,8 @@
                         @endguest
                     </ul>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
 
         <main class="py-4">
             @if(App::environment() != 'production')

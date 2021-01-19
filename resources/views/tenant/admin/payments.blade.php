@@ -1,5 +1,6 @@
-<meta name="csrf-token" content="{{ csrf_token() }}">
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+@extends('layouts.app')
+@section('title', 'Subscription')
+@section('content')
 
 
 <label for="card-element">
@@ -9,7 +10,7 @@
 <!-- Stripe Elements Placeholder -->
 <div id="card-element"></div>
 
-Number of Seats: 
+Number of Seats:
 <input type="text" id="noOfSeats" name="noOfSeats" value="3" min="1" max="100">
 
 
@@ -122,3 +123,5 @@ Number of Seats:
         background-color: #fefde5 !important;
     }
 </style>
+
+@endsection

@@ -30,15 +30,25 @@ class BillingController extends Controller
 
         $paymentMethod = $request['paymentMethod'];
         $noOfSeats = $request['noOfSeats'];
+        $subscriptionName = config('app.subscription_name');
 
         $user->addPaymentMethod($paymentMethod);
 
-        $user->newSubscription(
-            config('app.subscription_name'), 
-            config('app.subscription_price_id')
-        )->quantity($noOfSeats)->create($paymentMethod);
-
-        return [42]; //TODO: Redirect to the user account page
+        try {
+            $response = $user->newSubscription(
+                $subscriptionName,
+                config('app.subscription_price_id')
+            )->quantity($noOfSeats)->create($paymentMethod);
+        } catch (\Throwable $th) {
+            return json_encode([
+                'message' => $th->getMessage(),
+                'status' => 'fail'
+            ]);
+        }
+        return json_encode([
+            'message' => 'Successfully subcribed to Upcivic Pro.',
+            'status' => 'success'
+        ]);
     }
 
     public function cancelSubscription(Request $request)

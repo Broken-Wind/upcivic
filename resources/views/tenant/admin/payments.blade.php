@@ -4,7 +4,12 @@
 
 <div class="container">
     @include('shared.form_errors')
-    <div class="card mb-4">
+    <div id="statusSuccess" class="alert alert-success" style="display: none"></div>
+    <div id="statusFailContainer" class="alert alert-danger" style="display: none">
+        <span id="statusFail"></span>
+        <a href="{{ \URL::current() }}">Please try again.</a>
+    </div>
+    <div id="paymentCard" class="card mb-4">
         <div class="card-header">Upgrade to Pro</div>
         <div class="card-body">
             <!-- Stripe Elements Placeholder -->
@@ -80,7 +85,8 @@
         );
 
         if (error) {
-            // Display "error.message" to the user...
+            document.getElementById('statusFailContainer').style.display = 'block';
+            document.getElementById('statusFail').innerHTML = error.message;
         } else {
             // The card has been verified successfully...
 
@@ -90,7 +96,20 @@
                 "noOfSeats": parseInt(document.getElementById("noOfSeats").value)
             };
 
-            return asyncRequest(data, url);
+            asyncRequest(data, url).then(data => {
+                document.getElementById('paymentCard').style.display = 'none';
+                if (data.status == 'success') {
+                    document.getElementById('upgradeProBadge').style.display = 'none';
+                    document.getElementById('statusFailContainer').style.display = 'none';
+
+                    document.getElementById('statusSuccess').style.display = 'block';
+                    document.getElementById('statusSuccess').innerHTML = data.message;
+                } else {
+                    document.getElementById('statusFailContainer').style.display = 'block';
+                    document.getElementById('statusFail').innerHTML = data.message;
+                }
+            });
+
         }
     });
 

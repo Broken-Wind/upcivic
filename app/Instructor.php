@@ -24,6 +24,10 @@ class Instructor extends GenericAssignableEntity
     {
         return $this->hasMany(InstructorAssignment::class);
     }
+    public function meetings()
+    {
+        return $this->belongsToMany(Meeting::class);
+    }
     public function organization()
     {
         return $this->belongsTo(Organization::class);

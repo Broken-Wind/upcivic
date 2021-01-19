@@ -16,6 +16,11 @@ class Meeting extends Model
         'end_datetime',
     ];
 
+    public function scopeExcludePast($query)
+    {
+        return $query->where('end_datetime', '>', Carbon::now()->subDays(5));
+    }
+
     public function getLinkedPinHtml()
     {
         return $this->site->getLinkedPinHtml();
@@ -24,6 +29,21 @@ class Meeting extends Model
     public function program()
     {
         return $this->belongsTo(Program::class);
+    }
+
+    public function instructors()
+    {
+        return $this->belongsToMany(Instructor::class);
+    }
+
+    public function hasInstructors()
+    {
+        return $this->instructors->isNotEmpty();
+    }
+
+    public function getInstructorListAttribute()
+    {
+        return $this->instructors->pluck('first_name')->implode(', ');
     }
 
     public function location()
@@ -52,5 +72,15 @@ class Meeting extends Model
         }
 
         return '0';
+    }
+
+    public function getSequenceAttribute()
+    {
+        return $this->program->meetings->where("start_datetime", "<=", $this->start_datetime)->count();
+    }
+
+    public function getTotalMeetingsAttribute()
+    {
+        return $this->program->meetings->count();
     }
 }

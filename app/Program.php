@@ -391,6 +391,35 @@ class Program extends Model
         return $this->hasMany(Meeting::class);
     }
 
+    public function getInstructorsAttribute()
+    {
+        return $this->meetings->map(function ($meeting) {
+            return $meeting->instructors;
+        })->flatten()->unique('id');
+    }
+
+    public function addInstructor(Instructor $instructor)
+    {
+        $this->meetings->each(function ($meeting) use ($instructor) {
+            $meeting->instructors()->syncWithoutDetaching($instructor);
+        });
+    }
+
+    public function removeInstructor(Instructor $instructor)
+    {
+        $this->meetings->each(function ($meeting) use ($instructor) {
+            $meeting->instructors()->detach($instructor);
+        });
+    }
+
+    public function hasUnstaffedMeetings()
+    {
+        return tenant()->organization->hasInstructors()
+            && !$this->meetings->every(function ($meeting) {
+                return $meeting->instructors->isNotEmpty();
+            });
+    }
+
     public function contributors()
     {
         return $this->hasMany(Contributor::class);

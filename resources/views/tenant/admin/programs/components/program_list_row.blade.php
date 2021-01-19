@@ -44,6 +44,11 @@
                 <div class="col-12">
                     Min/Max Enrollments: {{ $program['min_enrollments'] ?? 0 }}/{{ $program['max_enrollments'] ?? 0 }}
                 </div>
+                <div class="col-12">
+                    <small>
+                        {{ $program['description_of_age_range'] }}
+                    </small>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
@@ -82,11 +87,18 @@
                         </div>
                     </div>
                     --}}
-                    &nbsp;
                 </div>
                 <div class="col-12">
-                    {{ $program['description_of_age_range'] }}
+                        @if($program->hasUnstaffedMeetings())
+                            <span class="bg-warning" title="This program has one or more unstaffed meetings!"><i class="fas fa-fw fa-exclamation-triangle"></i></span>
+                        @endif
+                        @include('tenant.admin.programs.components.instructor_linked_list', ['instructors' => $program->instructors])
                 </div>
+                @if($instructors->isNotEmpty())
+                    <button type="button" class="btn btn-light btn-sm manageInstructorsButton" data-program-id="{{ $program->id }}" data-toggle="modal" data-target="#manage-instructors-modal" form="filters">
+                        Manage Instructors
+                    </button>
+                @endif
             </div>
         </div>
         <div class="col-md-2 text-center">

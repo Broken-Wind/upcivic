@@ -106,6 +106,10 @@ class Organization extends GenericAssignableEntity
     {
         return $this->hasMany(Instructor::class);
     }
+    public function hasInstructors()
+    {
+        return $this->instructors->isNotEmpty();
+    }
 
     public function administrators()
     {

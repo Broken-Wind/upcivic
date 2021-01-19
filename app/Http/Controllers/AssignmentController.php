@@ -61,7 +61,7 @@ class AssignmentController extends Controller
     public function approve(Assignment $assignment)
     {
         $assignment->approve(Auth::user());
-        return back()->withSuccess('Marked complete!');
+        return back()->withSuccess('Marked approved!');
     }
 
     public function edit(Assignment $assignment)

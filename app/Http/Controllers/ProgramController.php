@@ -42,12 +42,13 @@ class ProgramController extends Controller
         $programs = Program::with(['meetings.site', 'contributors.organization'])->filter($programFilters)->get()->sortBy('start_datetime');
         $programGroups = Program::groupPrograms($programs);
         $programsExist = Program::get()->count() > 0;
+        $groupsIncludeArea = tenant()->organization->hasAreas();
         $organizations = Organization::orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
         $templateCount = Template::count();
         $tasks = Task::orderBy('name')->get();
 
-        return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites', 'tasks'));
+        return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'groupsIncludeArea', 'templateCount', 'organizations', 'sites', 'tasks'));
     }
 
     public function bulkAction(BulkActionPrograms $request)

@@ -9,18 +9,6 @@ var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}
 @endpush
 @section('content')
 <div class="container">
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Incoming Assignments</a>
-        </li>
-        @if(tenant()->isSubscribed())
-            <li class="nav-item">
-                <a class="nav-link" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Outgoing Assignments</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
-            </li>
-        @endif
 
     </ul>
     @include('shared.form_errors')

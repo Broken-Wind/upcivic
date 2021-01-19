@@ -14,19 +14,6 @@
 
 @endpush
 <div class="container">
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link active" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
-        </li>
-        @if(tenant()->isSubscribed())
-            <li class="nav-item">
-                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
-            </li>
-        @endif
-        <li class="nav-item">
-            <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
-        </li>
-    </ul>
     @include('shared.form_errors')
     <form id="filters" action="{{ URL::current() }}" method="GET">
         @include('tenant.admin.programs.components.filters_modal')

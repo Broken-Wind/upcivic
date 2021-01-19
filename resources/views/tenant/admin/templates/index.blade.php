@@ -2,19 +2,6 @@
 @section('title', 'Programs')
 @section('content')
 <div class="container">
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
-        </li>
-        @if(tenant()->isSubscribed())
-            <li class="nav-item">
-                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
-            </li>
-        @endif
-        <li class="nav-item">
-            <a class="nav-link active" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
-        </li>
-    </ul>
     @include('shared.form_errors')
 
     <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.templates.create') }}">Add Program</a>

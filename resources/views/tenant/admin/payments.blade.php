@@ -1,23 +1,21 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<div class="card-header">Upgrade to Pro</div>
-    <div class="card-body">
-        Name: <input id="card-holder-name" type="text">
 
-        <!-- Stripe Elements Placeholder -->
-        <div id="card-element"></div>
+<label for="card-element">
+    Credit or Debit Card
+</label>
 
-        Number of seats: 
-        <input type="text" id="noOfSeats" name="noOfSeats" value="3" min="1" max="100">
+<!-- Stripe Elements Placeholder -->
+<div id="card-element"></div>
 
-        </br>
+Number of Seats: 
+<input type="text" id="noOfSeats" name="noOfSeats" value="3" min="1" max="100">
 
-        <button id="card-button" data-secret="{{ $intent->client_secret }}">
-            Subscribe
-        </button>
-    </div>
-</div>
+
+<button id="card-button" data-secret="{{ $intent->client_secret }}">
+    Subscribe
+</button>
 
 <script type="application/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="application/javascript" src="https://js.stripe.com/v3/"></script>
@@ -26,11 +24,28 @@
     const stripe = Stripe('pk_test_51I9XCwGuEpAR4AJ4vR7GrbA4AXqHKjEpQPPMNxYbBbJzjwa9pDkXe0HsqB57CT5JUlran00D4gN5tAosPmO2GWKQ00shLzd316');
 
     const elements = stripe.elements();
-    const cardElement = elements.create('card');
+
+    var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+            color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+
+    const cardElement = elements.create('card', {style: style});
 
     cardElement.mount('#card-element');
 
-    const cardHolderName = document.getElementById('card-holder-name');
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
 
@@ -39,7 +54,6 @@
             clientSecret, {
                 payment_method: {
                     card: cardElement,
-                    billing_details: { name: cardHolderName.value }
                 }
             }
         );
@@ -78,3 +92,33 @@
     }
 
 </script>
+
+<style>
+    .StripeElement {
+        box-sizing: border-box;
+
+        height: 40px;
+
+        padding: 10px 12px;
+
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: white;
+
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+</style>

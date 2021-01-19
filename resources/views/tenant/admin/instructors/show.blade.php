@@ -3,6 +3,9 @@
 @section('content')
 <div class="container">
     @include('shared.form_errors')
+    <p class="lead">
+        {{ $instructor->name }}'s Schedule
+    </p>
 
     <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
@@ -20,7 +23,6 @@
                 <th>Program</th>
                 <th>Site</th>
                 <th>Staff</th>
-                <th>&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -33,13 +35,14 @@
                     </td>
                     <td>{{ $meeting['start_time'] . "-" . $meeting['end_time'] }}</td>
                     <td>
-                        {{ $meeting->program->name }}
+                        <a href="{{ tenant()->route('tenant:admin.programs.show', ['program' => $meeting->program->id]) }}">
+                            #{{ $meeting->program['id'] }} - {{ $meeting->program['internal_name'] }}
+                        </a>
                     </td>
                     <td>{{ $meeting->site->name}} {!! $meeting->getLinkedPinHtml() !!}</td>
                     <td>
-                        {!! $meeting->instructor_list !!}
+                        @include('tenant.admin.programs.components.instructor_linked_list', ['instructors' => $meeting->instructors])
                     </td>
-                    <td><a href="{{ tenant()->route('tenant:admin.programs.show', [$meeting->program]) }}"><i class="fas fa-fw fa-eye"></i></a></td>
                 </tr>
             @endforeach
         </tbody>

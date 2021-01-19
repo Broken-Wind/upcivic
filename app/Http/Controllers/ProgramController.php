@@ -50,7 +50,7 @@ class ProgramController extends Controller
         $templateCount = Template::count();
         $tasks = Task::orderBy('name')->get();
 
-        return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'groupsIncludeArea', 'templateCount', 'organizations', 'sites', 'tasks'));
+        return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'groupsIncludeArea', 'instructors', 'templateCount', 'organizations', 'sites', 'tasks'));
     }
 
     public function bulkAction(BulkActionPrograms $request)

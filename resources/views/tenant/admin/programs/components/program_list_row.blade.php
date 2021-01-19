@@ -92,7 +92,7 @@
                         @if($program->hasUnstaffedMeetings())
                             <span class="bg-warning" title="This program has one or more unstaffed meetings!"><i class="fas fa-fw fa-exclamation-triangle"></i></span>
                         @endif
-                        {{ $program->instructors->implode(', ') }}
+                        @include('tenant.admin.programs.components.instructor_linked_list', ['instructors' => $program->instructors])
                 </div>
                 @if($instructors->isNotEmpty())
                     <button type="button" class="btn btn-light btn-sm manageInstructorsButton" data-program-id="{{ $program->id }}" data-toggle="modal" data-target="#manage-instructors-modal" form="filters">

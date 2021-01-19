@@ -394,8 +394,8 @@ class Program extends Model
     public function getInstructorsAttribute()
     {
         return $this->meetings->map(function ($meeting) {
-            return $meeting->instructors->pluck('first_name');
-        })->flatten()->unique();
+            return $meeting->instructors;
+        })->flatten()->unique('id');
     }
 
     public function addInstructor(Instructor $instructor)

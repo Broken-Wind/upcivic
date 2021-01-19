@@ -6,6 +6,7 @@ use App\Concerns\Filterable;
 use App\Concerns\HasDatetimeRange;
 use App\Mail\ProposalSent;
 use Carbon\Carbon;
+use DateTime;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -119,7 +120,9 @@ class Program extends Model
                 return $area;
             });
         })->sortBy(function ($areas, $startDate) {
-            return $startDate;
+            // Start dates in the format d/m/Y would not sort correctly, so we must convert them to a sortable form.
+            // We use the built-in function instead of Carbon as I believe it is higher performance
+            return DateTime::createFromFormat("d/m/Y H:i:s", $startDate);
         });
         return $sorted;
     }
@@ -142,7 +145,9 @@ class Program extends Model
                 return $site;
             });
         })->sortBy(function ($sites, $startDate) {
-            return $startDate;
+            // Start dates in the format d/m/Y would not sort correctly, so we must convert them to a sortable form.
+            // We use the built-in function instead of Carbon as I believe it is higher performance
+            return DateTime::createFromFormat("d/m/Y H:i:s", $startDate);
         });
         return $sorted;
     }

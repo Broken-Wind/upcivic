@@ -45,7 +45,7 @@
                                         </div>
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li class="nav-item">
-                                                <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.programs.index') }}">Program List</a>
+                                                <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.programs.index') }}">List</a>
                                             </li>
                                             @if(tenant()->isSubscribed())
                                                 <li class="nav-item">
@@ -53,7 +53,7 @@
                                                 </li>
                                             @endif
                                             <li class="nav-item">
-                                                <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
+                                                <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">Templates</a>
                                             </li>
                                         </ul>
                                     </li>

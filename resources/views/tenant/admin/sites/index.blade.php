@@ -33,7 +33,7 @@ var updateSiteAreaUrl = "{{ tenant()->route('tenant:admin.sites.index') }}";
 
                             </td>
                             <td class="text-right">
-                                @if(isset($site->area->name))
+                                @if(isset($site->area->id))
                                     <button type="button" class="btn btn-sm btn-light select-area-button" data-site-id="{{ $site->id }}"data-toggle="modal" data-target="#select-area-modal">
                                         {{ $site->area->name }}
                                     </button>

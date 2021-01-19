@@ -8,6 +8,9 @@
         <!-- Alerts and main actions -->
         @include('tenant.admin.programs.components.status_actions')
 
+        <!-- Form Errors -->
+        @include('shared.form_errors')
+
         <!-- Program -->
         <div class="card mb-4">
             <div class="card-header">Program</div>
@@ -17,7 +20,6 @@
                 </form>
                 <form>
                     <fieldset disabled="disabled"/>
-                    @include('shared.form_errors')
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" name="name"

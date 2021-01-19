@@ -11,6 +11,7 @@ use App\Http\Requests\BulkActionPrograms;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
+use App\Mail\ProgramCanceled;
 use App\Mail\ProgramApproved;
 use App\Mail\ProposalSent;
 use App\Organization;
@@ -267,9 +268,14 @@ class ProgramController extends Controller
     public function destroy(Program $program)
     {
         //
+
+        if ($program->isProposalSent()) {
+            \Mail::send(new ProgramCanceled($program, Auth::user()));
+        }
+        
         $program->delete();
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Proposal has been canceled. An email has been sent to the receivning organizations.');
     }
 
 }

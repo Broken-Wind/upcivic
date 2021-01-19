@@ -26,7 +26,7 @@ class Site extends Model
     public function getAreaAttribute()
     {
         return $this->areas->first() ?? new Area([
-            'name' => 'Other'
+            'name' => 'Other/Unspecified Area'
         ]);
     }
 

@@ -4,7 +4,7 @@
 <div class="container">
     @include('shared.form_errors')
     <div class="card mb-4">
-        <div class="card-header">Billing Plans</div>
+        <div class="card-header">Current Plan</div>
         <div class="card-body">
             @include('tenant.admin.billing.components.current_plan')
         </div>
@@ -35,9 +35,10 @@
                     </div>
 
                     @if (!(tenant()->hasStripeCustomer()) || $user->isPaymentCardHolder())
-                        <p class="lead">
+                        <form method="POST" action="{{ tenant()->route('tenant:admin.billing.payments') }}" enctype="multipart/form-data" id="updatePaymentMethod">
+                            @csrf
                             <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                       <label for="number-of-seats">Number of Users</label>
                                       <input type="number"
@@ -45,13 +46,13 @@
                                       <small id="seats-help" class="form-text text-muted">The maximum number of administrators from your organization using {{ config('app.name') }}.</small>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <a class="btn btn-primary btn-block" style="height:100%; display: inline-flex; align-items: center; justify-content: center;" href="{{ tenant()->route('tenant:admin.billing.payments') }}">
-                                        <h2>Upgrade to Pro</h2>
-                                    </a>
+                                <div class="col-md-3">
+                                    <button type="submit" class="btn btn-primary btn-lg mt-3" style="height:53%; display: inline-flex; align-items: center; justify-content: center;" href="">
+                                        Upgrade to Pro
+                                    </button>
                                 </div>
                             </div>
-                        </p>
+                        </form>
                     @else
                         <p class="lead text-danger">All Upcivic Pro seats are taken.</p>
                         <h5>Contact your card holder to increase the number of seats.</h5>

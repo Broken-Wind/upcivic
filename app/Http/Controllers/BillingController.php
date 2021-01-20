@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\SubscriptionSeats;
 
 class BillingController extends Controller
 {
     public function index()
     {
-        return view('tenant.admin.billing.index');
+        $user = Auth::user();
+
+        return view('tenant.admin.billing.index', compact('user'));
     }
     public function billingPortal(Request $request)
     {
@@ -21,7 +24,7 @@ class BillingController extends Controller
         return $user->redirectToBillingPortal();
     }
 
-    public function updatePaymentMethod(Request $request)
+    public function updatePaymentMethod(SubscriptionSeats $request)
     {
         $user = $request->user();
         return view('tenant.admin.payments', ['intent' => $user->createSetupIntent()]);

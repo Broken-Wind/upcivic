@@ -73,7 +73,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
         Route::get('/billing', 'BillingController@index')->name('billing.index');
         Route::get('/billing/portal', 'BillingController@billingPortal')->name('billing.portal');
-        Route::get('/billing/payment', 'BillingController@updatePaymentMethod')->name('billing.payments');
+        Route::post('/billing/payment', 'BillingController@updatePaymentMethod')->name('billing.payments');
         Route::get('/billing/subscriptions/cancel', 'BillingController@cancelSubscription')->name('billing.subscriptions.cancel');
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');

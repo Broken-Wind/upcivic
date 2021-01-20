@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\SubscriptionSeats;
 
 class BillingController extends Controller
 {
@@ -21,7 +22,7 @@ class BillingController extends Controller
         return $user->redirectToBillingPortal();
     }
 
-    public function updatePaymentMethod(Request $request)
+    public function updatePaymentMethod(SubscriptionSeats $request)
     {
         $user = $request->user();
         return view('tenant.admin.payments', ['intent' => $user->createSetupIntent()]);

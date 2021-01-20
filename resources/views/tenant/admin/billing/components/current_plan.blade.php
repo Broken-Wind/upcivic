@@ -1,5 +1,5 @@
 @if(!tenant()->isSubscribed())
-    <h1>Current Plan: Upcivic Free</h1>
+    <h1>Upcivic Free</h1>
     <p class="lead">Reduce manual data entry and optimize your activity schedule.</p>
 @else
     <div class="jumbotron">

@@ -55,6 +55,7 @@ Route::group(['middleware' => 'verified'], function () {
         'as' => 'tenant:api.',
     ], function () {
         Route::post('/programs/locations', 'ProgramLocationsController@update')->name('programs.locations.update');
+        Route::post('/programs/get', 'ProgramController@getJson')->name('programs.get_json');
         Route::post('/programs/contributors', 'ProgramContributorController@index')->name('programs.contributors.index');
         Route::post('/resource_timeline_meetings/page/', 'ResourceTimelineController@page')->name('resource_timeline_meetings.page');
     });
@@ -103,6 +104,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::put('/programs/{program}/contributors', 'ProgramContributorController@update')->name('programs.contributors.update');
         // Route::post('/programs/{program}/meetings/create', 'ProgramMeetingController@store')->name('programs.meetings.store');
         Route::post('/programs/{program}/meetings/update', 'ProgramMeetingController@update')->name('programs.meetings.update');
+        Route::post('/programs/{program}/instructors', 'ProgramInstructorsController@update')->name('programs.instructors.update');
         Route::delete('/programs/{program}/contributors/{contributor}', 'ProgramContributorController@destroy')->name('programs.contributors.destroy');
         Route::get('/programs/{program}/proposal_preview', 'ProgramController@proposalPreview')->name('programs.proposal_preview');
         Route::get('/sites', 'SiteController@index')->name('sites.index');
@@ -139,9 +141,13 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/instructors', 'InstructorController@index')->name('instructors.index');
         Route::get('/instructors/create', 'InstructorController@create')->name('instructors.create');
         Route::post('/instructors', 'InstructorController@store')->name('instructors.store');
+        Route::get('/instructors/{instructor}', 'InstructorController@show')->name('instructors.show');
         Route::get('/instructors/{instructor}/edit', 'InstructorController@edit')->name('instructors.edit');
         Route::delete('/instructors/{instructor}', 'InstructorController@destroy')->name('instructors.destroy');
         Route::put('/instructors/{instructor}', 'InstructorController@update')->name('instructors.update');
         Route::post('/organizations/{organization}/assigned_instructors', 'OrganizationAssignedInstructorsController@massUpdate')->name('organizations.assigned_instructors.mass_update');
+        Route::get('/areas', 'AreaController@index')->name('areas.index');
+        Route::post('/areas', 'AreaController@store')->name('areas.store');
+        Route::post('/sites/{site}/areas', 'SiteAreasController@update')->name('site.areas.update');
     });
 });

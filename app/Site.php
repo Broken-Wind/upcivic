@@ -23,6 +23,18 @@ class Site extends Model
         return $this->belongsToMany(Meeting::class);
     }
 
+    public function getAreaAttribute()
+    {
+        return $this->areas->first() ?? new Area([
+            'name' => 'Other/Unspecified Area'
+        ]);
+    }
+
+    public function areas()
+    {
+        return $this->belongsToMany(Area::class);
+    }
+
     public function county()
     {
         return $this->belongsTo(County::class);

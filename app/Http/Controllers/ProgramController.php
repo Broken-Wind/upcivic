@@ -11,6 +11,7 @@ use App\Http\Requests\BulkActionPrograms;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
+use App\Mail\ProgramCanceled;
 use App\Mail\ProgramApproved;
 use App\Mail\ProposalSent;
 use App\Organization;
@@ -20,6 +21,7 @@ use App\Site;
 use App\Template;
 use Carbon\Carbon;
 use App\Exports\ProgramsExport;
+use App\Instructor;
 use App\Task;
 use DB;
 use Illuminate\Http\Request;
@@ -39,15 +41,17 @@ class ProgramController extends Controller
     public function index(ProgramFilters $programFilters)
     {
         //
-        $programs = Program::with(['meetings.site', 'contributors.organization'])->filter($programFilters)->get()->sortBy('start_datetime');
+        $programs = Program::with(['meetings.site', 'meetings.instructors', 'contributors.organization'])->filter($programFilters)->get()->sortBy('start_datetime');
         $programGroups = Program::groupPrograms($programs);
         $programsExist = Program::get()->count() > 0;
+        $groupsIncludeArea = tenant()->organization->hasAreas();
         $organizations = Organization::orderBy('name')->get();
         $sites = Site::orderBy('name')->get();
+        $instructors = Instructor::all()->sortBy('person.first_name');
         $templateCount = Template::count();
         $tasks = Task::orderBy('name')->get();
 
-        return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'templateCount', 'organizations', 'sites', 'tasks'));
+        return view('tenant.admin.programs.index', compact('programGroups', 'programsExist', 'groupsIncludeArea', 'instructors', 'templateCount', 'organizations', 'sites', 'tasks'));
     }
 
     public function bulkAction(BulkActionPrograms $request)
@@ -168,6 +172,33 @@ class ProgramController extends Controller
 
         return view('tenant.admin.programs.show', compact('program', 'organizations', 'sites'));
     }
+    public function getJson(Request $request) {
+        try {
+            $program = Program::findOrFail($request['program_id']);
+        } catch (Exception $e) {
+            return json_encode($e);
+        }
+        return json_encode([
+            'id' => $program->id,
+            'name' => $program->name,
+            'site' => $program->site->name,
+            'description_of_meetings' => $program->description_of_meetings,
+            'start_time' => $program->start_time,
+            'end_time' => $program->end_time,
+            'contributors' => $program->contributors->pluck('name')->implode(', '),
+            'meetings' => $program->meetings->map(function ($meeting) {
+                return [
+                    'id' => $meeting->id,
+                    'start_date' => $meeting->start_date,
+                    'end_date' => $meeting->end_date,
+                    'start_time' => $meeting->start_time,
+                    'end_time' => $meeting->end_time,
+                    'site' => $meeting->site->name,
+                    'instructor_list' => empty($meeting->instructor_list) ? 'No instructors!' : $meeting->instructor_list,
+                ];
+            })
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -237,9 +268,14 @@ class ProgramController extends Controller
     public function destroy(Program $program)
     {
         //
+
+        if ($program->isProposalSent()) {
+            \Mail::send(new ProgramCanceled($program, Auth::user()));
+        }
+        
         $program->delete();
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Program has been deleted.');
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Proposal has been canceled. An email has been sent to the receivning organizations.');
     }
 
 }

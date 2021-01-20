@@ -8,6 +8,9 @@
         <!-- Alerts and main actions -->
         @include('tenant.admin.programs.components.status_actions')
 
+        <!-- Form Errors -->
+        @include('shared.form_errors')
+
         <!-- Program -->
         <div class="card mb-4">
             <div class="card-header">Program</div>
@@ -17,7 +20,6 @@
                 </form>
                 <form>
                     <fieldset disabled="disabled"/>
-                    @include('shared.form_errors')
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" name="name"
@@ -105,6 +107,15 @@
                                 <td>{{ $meeting['start_date'] }}{{ $meeting['start_date'] != $meeting['end_date'] ? '-' . $meeting['end_date'] : '' }}</td>
                                 <td>{{ $meeting['start_time'] . "-" . $meeting['end_time'] }}</td>
                                 <td>{{ $meeting->site['name'] }}</td>
+                                <td>
+                                    @if($meeting->hasInstructors())
+                                        {{ $meeting->instructor_list }}
+                                    @else
+                                        <span class="bg-warning">
+                                            <i class="fas fa-fw fa-exclamation-triangle"></i> No instructors assigned!
+                                        </span>
+                                    @endif
+                                </td>
                             </tr>
                         @empty
                             <tr>

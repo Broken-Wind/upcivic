@@ -6,6 +6,7 @@ use App\Concerns\Filterable;
 use App\Concerns\HasDatetimeRange;
 use App\Mail\ProposalSent;
 use Carbon\Carbon;
+use DateTime;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -87,9 +88,73 @@ class Program extends Model
 
     public static function groupPrograms($programs)
     {
-        return $programs->groupBy([function ($program) {
-            return $program['start_date'];
-        }]);
+        if (tenant()->organization->hasAreas()) {
+            return self::groupProgramsWithAreas($programs);
+        }
+        return self::groupProgramsWithoutAreas($programs);
+    }
+
+    public static function groupProgramsWithAreas($programs)
+    {
+        $grouped = $programs->groupBy([
+            function ($program) {
+                return $program->start_date;
+            },
+            function ($program) {
+                return $program->area->name;
+            },
+            function ($program) {
+                return $program->site->name;
+            }
+        ]);
+        $sorted = $grouped->transform(function ($startDate) {
+            $startDate->transform(function ($area) {
+                $area->transform(function ($site) {
+                    return $site->sortBy('start_datetime')->sortBy('end_datetime');
+                });
+                return $area->sortBy(function ($programs, $site) {
+                    return $site;
+                });
+            });
+            return $startDate->sortBy(function ($sites, $area) {
+                return $area;
+            });
+        })->sortBy(function ($areas, $startDate) {
+            // Start dates in the format d/m/Y would not sort correctly, so we must convert them to a sortable form.
+            // We use the built-in function instead of Carbon as I believe it is higher performance
+            return DateTime::createFromFormat("d/m/Y H:i:s", $startDate);
+        });
+        return $sorted;
+    }
+
+    public static function groupProgramsWithoutAreas($programs)
+    {
+        $grouped = $programs->groupBy([
+            function ($program) {
+                return $program->start_date;
+            },
+            function ($program) {
+                return $program->site->name;
+            }
+        ]);
+        $sorted = $grouped->transform(function ($startDate) {
+            $startDate->transform(function ($site) {
+                return $site->sortBy('start_datetime')->sortBy('end_datetime');
+            });
+            return $startDate->sortBy(function ($programs, $site) {
+                return $site;
+            });
+        })->sortBy(function ($sites, $startDate) {
+            // Start dates in the format d/m/Y would not sort correctly, so we must convert them to a sortable form.
+            // We use the built-in function instead of Carbon as I believe it is higher performance
+            return DateTime::createFromFormat("d/m/Y H:i:s", $startDate);
+        });
+        return $sorted;
+    }
+
+    public function getAreaAttribute()
+    {
+        return $this->site->area;
     }
 
     public function getContributorFromTenant($tenant = null)
@@ -329,6 +394,35 @@ class Program extends Model
     public function meetings()
     {
         return $this->hasMany(Meeting::class);
+    }
+
+    public function getInstructorsAttribute()
+    {
+        return $this->meetings->map(function ($meeting) {
+            return $meeting->instructors;
+        })->flatten()->unique('id');
+    }
+
+    public function addInstructor(Instructor $instructor)
+    {
+        $this->meetings->each(function ($meeting) use ($instructor) {
+            $meeting->instructors()->syncWithoutDetaching($instructor);
+        });
+    }
+
+    public function removeInstructor(Instructor $instructor)
+    {
+        $this->meetings->each(function ($meeting) use ($instructor) {
+            $meeting->instructors()->detach($instructor);
+        });
+    }
+
+    public function hasUnstaffedMeetings()
+    {
+        return tenant()->organization->hasInstructors()
+            && !$this->meetings->every(function ($meeting) {
+                return $meeting->instructors->isNotEmpty();
+            });
     }
 
     public function contributors()

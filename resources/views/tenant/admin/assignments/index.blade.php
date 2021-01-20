@@ -30,21 +30,6 @@
 @include('tenant.admin.assignments.components.assignment_details_modal')
 <div class="container">
     @include('shared.form_errors')
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link {{ !$isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.incoming.index') }}">Incoming Assignments</a>
-        </li>
-        @if(tenant()->isSubscribed())
-            <li class="nav-item">
-                <a class="nav-link {{ $isOutgoingFromTenant ? 'active' : '' }}" href="{{ tenant()->route('tenant:admin.assignments.outgoing.index') }}">Outgoing Assignments</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
-            </li>
-        @endif
-
-    </ul>
-
     @if($isOutgoingFromTenant)
         <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
     @endif

@@ -4,6 +4,8 @@
 
 @push('scripts')
 <script type="application/javascript">
+    var getProgramUrl = "{{ tenant()->route('tenant:api.programs.get_json') }}";
+    var updateProgramInstructorsUrl = "{{ tenant()->route('tenant:admin.programs.index') }}";
     function toggle(source) {
         checkboxes = document.querySelectorAll('.bulk-action-checkbox');
         for(var i=0, n=checkboxes.length;i<n;i++) {
@@ -11,26 +13,14 @@
         }
     }
 </script>
-
+<script src="{{ asset('js/views/programs/index.js')}}"></script>
 @endpush
 <div class="container">
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link active" href="{{ tenant()->route('tenant:admin.programs.index') }}">Proposals</a>
-        </li>
-        @if(tenant()->isSubscribed())
-            <li class="nav-item">
-                <a class="nav-link" href="{{ tenant()->route('tenant:admin.resource_timeline.meetings') }}">Calendar</a>
-            </li>
-        @endif
-        <li class="nav-item">
-            <a class="nav-link" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
-        </li>
-    </ul>
     @include('shared.form_errors')
     <form id="filters" action="{{ URL::current() }}" method="GET">
         @include('tenant.admin.programs.components.filters_modal')
     </form>
+    @include('tenant.admin.programs.components.manage_instructors_modal')
 
     @if($programsExist)
         @if(tenant()->isSubscribed())
@@ -71,29 +61,10 @@
         </div>
     @endif
 
-    @forelse($programGroups as $startDate => $programs)
-        <div class="card bg-light mb-3">
-            <div class="card-header">
-                <strong>Starting {{ $startDate }}</strong>
-            </div>
-            <div class="card-body pl-0 pr-0">
-                @foreach($programs as $program)
-                    @include('tenant.admin.programs.components.program_list_row', ['program' => $program])
-                @endforeach
-            </div>
-        </div>
-    @empty
-        <p>Are you an activity provider?</p>
-        <ul>
-            <li><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add program</a>, then use it to submit a proposal</li>
-            @if(tenant()->organization->templates->count() > 0)
-                <li><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Add proposal</a></li>
-            @endif
-        </ul>
-        <p>Are you a host?</p>
-        <ul>
-            <li>If you host programs, ask your partners to propose programs to you via {{ config('app.name') }} using this link <a href="{{URL::to('/')}}">{{URL::to('/')}}</a></li>
-        </ul>
-    @endforelse
+    @if($groupsIncludeArea)
+        @include('tenant.admin.programs.components.program_list_with_areas')
+    @else
+        @include('tenant.admin.programs.components.program_list')
+    @endif
 </div>
 @endsection

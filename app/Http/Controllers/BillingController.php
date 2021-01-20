@@ -8,12 +8,16 @@ use Illuminate\Support\Facades\Log;
 
 class BillingController extends Controller
 {
+    public function index()
+    {
+        return view('tenant.admin.billing.index');
+    }
     public function billingPortal(Request $request)
     {
         $user = $request->user();
 
         $user->createOrGetStripeCustomer();
-        
+
         return $user->redirectToBillingPortal();
     }
 

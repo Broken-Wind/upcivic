@@ -96,6 +96,9 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             Account
                                         </a>
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.billing.index') }}">
+                                            Billing
+                                        </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

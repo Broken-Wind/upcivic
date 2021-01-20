@@ -71,6 +71,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/resource_timeline_meetings', 'ResourceTimelineController@meetings')->name('resource_timeline.meetings');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
+        Route::get('/billing', 'BillingController@index')->name('billing.index');
         Route::get('/billing/portal', 'BillingController@billingPortal')->name('billing.portal');
         Route::get('/billing/payment', 'BillingController@updatePaymentMethod')->name('billing.payments');
         Route::get('/billing/subscriptions/cancel', 'BillingController@cancelSubscription')->name('billing.subscriptions.cancel');

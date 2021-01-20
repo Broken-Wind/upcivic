@@ -15,16 +15,16 @@ class SetProposingOrganizationAndProposedAtOnPrograms extends Migration
     public function up()
     {
         //
-        $exampleId = DB::table('organizations')->where('name', 'Exampleville Parks & Recreation')->first()->id;
-        $techsplosionId = DB::table('organizations')->where('name', 'Techsplosion')->first()->id;
-        if (!empty($exampleId) && !empty($techsplosionId)) {
+        $example = DB::table('organizations')->where('name', 'Exampleville Parks & Recreation')->first();
+        $techsplosion = DB::table('organizations')->where('name', 'Techsplosion')->first();
+        if (!empty($example) && !empty($techsplosion)) {
             DB::table('programs')->where('created_at', '<=', '2020-02-09 22:30:52')->where('name', 'Example Cooking Camp')->update([
                 'proposed_at' => '2020-02-09 22:30:52',
-                'proposing_organization_id' => $exampleId
+                'proposing_organization_id' => $example->id
             ]);
             DB::table('programs')->where('created_at', '<=', '2020-02-09 22:30:52')->where('name', '!=', 'Example Cooking Camp')->update([
                 'proposed_at' => '2020-02-09 22:30:52',
-                'proposing_organization_id' => $techsplosionId
+                'proposing_organization_id' => $techsplosion->id
             ]);
         }
     }

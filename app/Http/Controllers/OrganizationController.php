@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Area;
 use App\Http\Requests\StoreOrganization;
 use App\Http\Requests\UpdateOrganization;
 use App\Mail\ListedAsAdministrator;
@@ -14,8 +15,16 @@ class OrganizationController extends Controller
     public function index()
     {
         $organizations = Organization::where('id', '!=', tenant()->organization_id)->orderBy('name')->get();
+        $organizationsJson = $organizations->map(function ($organization) {
+            return [
+                'id' => $organization->id,
+                'name' => $organization->name,
+                'area_id' => $organization->area->id ?? null
+            ];
+        })->toJson();
+        $areas = Area::orderBy('name')->get();
 
-        return view('tenant.admin.organizations.index', compact('organizations'));
+        return view('tenant.admin.organizations.index', compact('organizations', 'organizationsJson', 'areas'));
     }
 
     /**

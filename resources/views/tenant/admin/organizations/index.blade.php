@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Organizations')
-
+@push('scripts')
+<script type="application/javascript">
+    var organizations = {!! $organizationsJson !!};
+    var updateOrganizationAreaUrl = "{{ tenant()->route('tenant:admin.organizations.index') }}";
+</script>
+<script src="{{ asset('js/views/organizations/index.js')}}"></script>
+@endpush
 @section('content')
+@include('tenant.admin.areas.components.select_area_modal')
 <div class="container">
     @include('shared.form_errors')
 
@@ -27,18 +34,25 @@
 
                             </td>
 
-                            <td class="text-right">
-
-                                @if(!$organization->isClaimed())
-
+                            @if(!$organization->isClaimed())
+                                <td class="text-right">
                                     <a href="{{ tenant()->route('tenant:admin.organizations.edit', [$organization]) }}">
                                         <i class="far fa-edit mr-2"></i>
                                     </a>
+                                </td>
+                            @endif
 
+                            <td class="text-right">
+                                @if(isset($organization->area->id))
+                                    <button type="button" class="btn btn-sm btn-light select-area-button" data-organization-id="{{ $organization->id }}"data-toggle="modal" data-target="#select-area-modal">
+                                        {{ $organization->area->name }}
+                                    </button>
+                                @else
+                                    <button type="button" class="btn btn-sm btn-secondary select-area-button" data-organization-id="{{ $organization->id }}"data-toggle="modal" data-target="#select-area-modal">
+                                        Set an Area
+                                    </button>
                                 @endif
-
                             </td>
-
 
                         </tr>
 

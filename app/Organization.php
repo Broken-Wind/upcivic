@@ -44,9 +44,16 @@ class Organization extends GenericAssignableEntity
         return Organization::partneredWith($this->id)->orderBy('name')->get();
     }
 
+    public function getAreaAttribute()
+    {
+        return $this->areas->first() ?? new Area([
+            'name' => 'Other/Unspecified Area'
+        ]);
+    }
+
     public function areas()
     {
-        return $this->hasMany(Area::class);
+        return $this->belongsToMany(Area::class);
     }
     public function hasAreas()
     {

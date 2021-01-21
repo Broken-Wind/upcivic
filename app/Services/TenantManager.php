@@ -87,7 +87,7 @@ class TenantManager
             return $builder->where('organization_id', tenant()->organization_id);
         });
         Area::addGlobalScope('TenantOwnedArea', function (Builder $builder) {
-            return $builder->where('organization_id', tenant()->organization_id);
+            return $builder->where('areas.organization_id', tenant()->organization_id);
         });
     }
 

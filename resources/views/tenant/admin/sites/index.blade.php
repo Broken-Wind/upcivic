@@ -11,7 +11,7 @@ var updateSiteAreaUrl = "{{ tenant()->route('tenant:admin.sites.index') }}";
 @section('content')
 <div class="container">
     @include('shared.form_errors')
-    @include('tenant.admin.sites.components.select_area_modal')
+    @include('tenant.admin.areas.components.select_area_modal')
 
     <div class="card mb-4">
         <div class="card-header">Sites</div>

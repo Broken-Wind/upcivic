@@ -19,7 +19,7 @@
                         </label>
                         </div>
                     @empty
-                        No areas found.
+                        No areas found. <a href="{{ tenant()->route('tenant:admin.areas.index') }}">Add an area.</a><br />
                     @endforelse
                     <button type="submit" class="btn btn-primary mt-4">Update Area</button>
                 </form>

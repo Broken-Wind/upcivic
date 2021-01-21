@@ -11,7 +11,9 @@ class BillingController extends Controller
 {
     public function index()
     {
-        return view('tenant.admin.billing.index');
+        $user = Auth::user();
+
+        return view('tenant.admin.billing.index', compact('user'));
     }
     public function billingPortal(Request $request)
     {

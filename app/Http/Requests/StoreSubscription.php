@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SubscriptionSeats extends FormRequest
+class StoreSubscription extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,19 +25,8 @@ class SubscriptionSeats extends FormRequest
     {
         return [
             //
-            'number-of-seats' => 'integer|min:' . strval(tenant()->users->count()),
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'number-of-seats.min' => 'The number of users must be at least :min, equal to the amount of administrators currently in your organization. ',
+            'numberOfSeats' => "required|numeric",
+            'paymentMethod' => 'required|string'
         ];
     }
 }

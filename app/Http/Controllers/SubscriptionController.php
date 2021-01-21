@@ -2,41 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSubscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\SubscriptionSeats;
 
-class BillingController extends Controller
+class SubscriptionController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
 
-        return view('tenant.admin.billing.index', compact('user'));
+        return view('tenant.admin.subscriptions.index', compact('user'));
     }
-    public function billingPortal(Request $request)
-    {
-        $user = $request->user();
+    // public function billingPortal(Request $request)
+    // {
+    //     $user = $request->user();
+    //     $user->createOrGetStripeCustomer();
+    //     return $user->redirectToBillingPortal();
+    // }
 
-        $user->createOrGetStripeCustomer();
-
-        return $user->redirectToBillingPortal();
-    }
-
-    public function updatePaymentMethod(SubscriptionSeats $request)
+    public function create(Request $request)
     {
         $user = $request->user();
         return view('tenant.admin.payments', ['intent' => $user->createSetupIntent()]);
     }
 
-    public function subscribe(Request $request)
+    public function store(StoreSubscription $request)
     {
+        $validated = $request->validated();
+        $userCount = tenant()->users->count();
+        if ($validated['numberOfSeats'] < $userCount) {
+            return json_encode([
+                'message' => tenant()->name . ' has ' . $userCount . ' users on ' . config('app.name') . '. You must purchase at least that many seats to upgrade to pro.',
+                'status' => 'fail'
+            ]);
+        }
         $user = $request->user();
         $user->createOrGetStripeCustomer();
 
         $paymentMethod = $request['paymentMethod'];
-        $noOfSeats = $request['noOfSeats'];
+        $numberOfSeats = $request['numberOfSeats'];
         $subscriptionName = config('app.subscription_name');
 
         $user->addPaymentMethod($paymentMethod);
@@ -45,7 +52,7 @@ class BillingController extends Controller
             $response = $user->newSubscription(
                 $subscriptionName,
                 config('app.subscription_price_id')
-            )->quantity($noOfSeats)->create($paymentMethod);
+            )->quantity($numberOfSeats)->create($paymentMethod);
         } catch (\Throwable $th) {
             return json_encode([
                 'message' => $th->getMessage(),
@@ -58,7 +65,7 @@ class BillingController extends Controller
         ]);
     }
 
-    public function cancelSubscription(Request $request)
+    public function destroy(Request $request)
     {
 
         $user = $request->user();

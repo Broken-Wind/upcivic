@@ -12,7 +12,7 @@ class Tenant extends Model
         'slug',
         'proposal_next_steps'
     ];
-    
+
     public function users()
     {
         return $this->belongsToMany(User::class);
@@ -62,8 +62,8 @@ class Tenant extends Model
 
         if ($currentUser->subscribed($subscriptionName)) {
             return true;
-        } 
-        
+        }
+
         if ($this->hasAvailableProSeats()) {
             return true;
         }
@@ -74,14 +74,14 @@ class Tenant extends Model
 
     public function hasAvailableProSeats() {
 
-        $noOfUsers = $this->users->count();
+        $numberOfUsers = $this->users->count();
         $subscriptionName = config('app.subscription_name');
 
         foreach($this->users->all() as $user) {
             if ($user->subscribed($subscriptionName)) {
 
-                $noOfSeats = $user->subscription($subscriptionName)->quantity;
-                if ($noOfUsers > $noOfSeats) {
+                $numberOfSeats = $user->subscription($subscriptionName)->quantity;
+                if ($numberOfUsers > $numberOfSeats) {
                     return false;
                 }
                 return true;
@@ -89,7 +89,7 @@ class Tenant extends Model
         }
 
     }
-    
+
     public function hasStripeCustomer() {
 
         $subscriptionName = config('app.subscription_name');

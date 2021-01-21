@@ -13,7 +13,7 @@
             @else
                 <p class="lead text-primary">Need more seats for your organization? Contact us at <a href="mailto:support@upcivic.com?subject=Increase number of seats">support@upcivic.com</a>.</p>
                 <p class="lead">
-                    <a class="btn btn-secondary" href="{{ tenant()->route('tenant:admin.billing.subscriptions.cancel') }}" role="button" onClick="return confirm('Are you sure you want to cancel your Upcivic Pro plan?');">Cancel Pro</a>
+                    <a class="btn btn-secondary" href="{{ tenant()->route('tenant:admin.subscriptions.destroy') }}" role="button" onClick="return confirm('Are you sure you want to cancel your Upcivic Pro plan?');">Cancel Pro</a>
                 </p>
                 <div class="text-mutted small" role="alert">
                     Canceling Pro plan will automatically switch to the Free plan. You'll no longer benefit from Partner Paperwork Submission, Document Generation & E-Signing, Instructor / Facility Management,

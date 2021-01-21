@@ -6,7 +6,7 @@
     <div class="card mb-4">
         <div class="card-header">Current Plan</div>
         <div class="card-body">
-            @include('tenant.admin.billing.components.current_plan')
+            @include('tenant.admin.subscriptions.components.current_plan')
         </div>
     </div>
 
@@ -35,24 +35,13 @@
                     </div>
 
                     @if (!(tenant()->hasStripeCustomer()) || $user->isPaymentCardHolder())
-                        <form method="POST" action="{{ tenant()->route('tenant:admin.billing.payments') }}" enctype="multipart/form-data" id="updatePaymentMethod">
-                            @csrf
-                            <div class="form-row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                      <label for="number-of-seats">Number of Users</label>
-                                      <input type="number"
-                                          class="form-control" name="number-of-seats" id="number-of-seats" aria-describedby="seats-help" value="{{ tenant()->users->count() }}">
-                                      <small id="seats-help" class="form-text text-muted">The maximum number of administrators from your organization using {{ config('app.name') }}.</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <button type="submit" class="btn btn-primary btn-lg mt-3" style="height:53%; display: inline-flex; align-items: center; justify-content: center;" href="">
-                                        Upgrade to Pro
-                                    </button>
-                                </div>
+                        <div class="form-row">
+                            <div class="col-md-3">
+                                <a type="submit" class="btn btn-primary btn-lg mt-3" style="height:53%; display: inline-flex; align-items: center; justify-content: center;" href="{{ tenant()->route('tenant:admin.subscriptions.create') }}">
+                                    Upgrade to Pro
+                                </a>
                             </div>
-                        </form>
+                        </div>
                     @else
                         <p class="lead text-danger">All Upcivic Pro seats are taken.</p>
                         <h5>Contact your card holder to increase the number of seats.</h5>
@@ -61,7 +50,6 @@
                         Upgrading to Pro you'll instantly gain access to Partner Paperwork Submission, Document Generation & E-Signing, Instructor / Facility Management,
                         Full Compliance Management and One-Click Exports.
                     </div>
-                    {{-- <a href="{{ tenant()->route('tenant:admin.billing.portal') }}" role="button">Access Portal</a> --}}
                 </div>
             </div>
         </div>

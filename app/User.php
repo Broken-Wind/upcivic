@@ -62,12 +62,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function joinTenant(Tenant $tenant)
     {
         $subscriptionName = config('app.subscription_name');
-        $noOfUsers = $tenant->users->count() + 1;
+        $numberOfUsers = $tenant->users->count() + 1;
 
         foreach($tenant->users->all() as $user) {
             if ($user->subscribed($subscriptionName)) {
-                $noOfSeats = $user->subscription($subscriptionName)->quantity;
-                if ($noOfUsers > $noOfSeats) {
+                $numberOfSeats = $user->subscription($subscriptionName)->quantity;
+                if ($numberOfUsers > $numberOfSeats) {
                     throw new NoMoreSeatsException();
                 }
             }

@@ -96,7 +96,7 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             Account
                                         </a>
-                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.billing.index') }}">
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.subscriptions.index') }}">
                                             Billing
                                         </a>
                                     @endif

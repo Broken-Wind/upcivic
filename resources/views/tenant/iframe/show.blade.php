@@ -56,7 +56,7 @@
                 @if($contributor->name == 'Techsplosion')
                     <h5>Questions about our programs?</h5>
                     <ul>
-                        <li>Read our <a href="http://techsplosion.org/summer-camp-descriptions/#{{ $program->enrichmentProgram['standard_name'] }}" target="_blank">camp descriptions</a></li>
+                        <li>Read our <a href="http://techsplosion.org/summer-camp-descriptions/#{{ $program->name }}" target="_blank">camp descriptions</a></li>
                         <li>Read our <a href="http://techsplosion.org/faq/" target="_blank">FAQ</a></li>
                         <li>Contact us via camp@techsplosion.org or 415.223.4312 (we can respond to email fastest)</li>
                     </ul>

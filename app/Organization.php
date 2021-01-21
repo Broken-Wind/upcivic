@@ -46,14 +46,16 @@ class Organization extends GenericAssignableEntity
 
     public function getAreaAttribute()
     {
-        return $this->areas->first() ?? new Area([
-            'name' => 'Other/Unspecified Area'
-        ]);
+        return $this->assignedAreas->first() ?? Area::defaultArea();
     }
 
-    public function areas()
+    public function assignedAreas()
     {
         return $this->belongsToMany(Area::class);
+    }
+    public function areas()
+    {
+        return $this->hasMany(Area::class);
     }
     public function hasAreas()
     {

@@ -154,7 +154,13 @@ class Program extends Model
 
     public function getAreaAttribute()
     {
-        return $this->site->area;
+        if (!empty($this->site->area->id)) {
+            return $this->site->area;
+        }
+        $id = $this->otherContributors()->map(function ($contributor) {
+            return $contributor->organization->area;
+        })->mode('id')[0];
+        return Area::find($id) ?? Area::defaultArea();;
     }
 
     public function getContributorFromTenant($tenant = null)

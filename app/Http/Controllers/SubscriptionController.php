@@ -25,8 +25,7 @@ class SubscriptionController extends Controller
 
     public function create(Request $request)
     {
-        $user = $request->user();
-        return view('tenant.admin.payments', ['intent' => $user->createSetupIntent()]);
+        return view('tenant.admin.subscriptions.create', ['intent' => Auth::user()->createSetupIntent()]);
     }
 
     public function store(StoreSubscription $request)

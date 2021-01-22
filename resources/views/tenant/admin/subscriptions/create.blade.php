@@ -20,7 +20,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Number of Seats</span>
                 </div>
-                <input class="form-control" type="number" name="numberOfSeats" id="numberOfSeats" aria-describedby="helpId" value="3" min="1" max="100" aria-label="The maximum number of users from your organization on Upcivic.">
+                <input class="form-control" type="number" name="numberOfSeats" id="numberOfSeats" aria-describedby="helpId" value="{{tenant()->users->count()}}" min="1" max="100" aria-label="The maximum number of users from your organization on Upcivic.">
                 <div class="input-group-append">
                     <span class="input-group-text">x $49/month</span>
                 </div>

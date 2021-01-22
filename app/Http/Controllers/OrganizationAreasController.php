@@ -15,7 +15,7 @@ class OrganizationAreasController extends Controller
     {
         $validated = $request->validated();
         $area = Area::find($validated['area_id']);
-        $organization->areas()->sync($validated['area_id']);
+        $organization->assignedAreas()->sync($validated['area_id']);
         return back()->withSuccess($organization->name . " area was set to " . $area->name);
     }
 }

@@ -25,7 +25,7 @@ class UpdateSiteAreas extends FormRequest
     {
         return [
             //
-            'area_id' => 'required|numeric'
+            'area_id' => 'nullable|numeric'
         ];
     }
 }

@@ -15,7 +15,7 @@ class SiteAreasController extends Controller
     {
         $validated = $request->validated();
         $area = Area::find($validated['area_id']);
-        $site->areas()->sync($validated['area_id']);
-        return back()->withSuccess($site->name . " area was set to " . $area->name);
+        $site->areas()->sync($validated['area_id'] ?? null);
+        return back()->withSuccess($site->name . " area was updated.");
     }
 }

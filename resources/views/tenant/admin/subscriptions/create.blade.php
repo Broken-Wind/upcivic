@@ -4,7 +4,7 @@
 
 <div class="container">
     @include('shared.form_errors')
-    <div id="loader" class="alert alert-info text-center" style="display: none"><h2><i class="fas fa-fw fa-spinner fa-spin mt-3"></i> Loading...</h2></div>
+    @include('shared.loader')
     <div id="statusSuccess" class="alert alert-success" style="display: none"></div>
     <div id="statusFailContainer" class="alert alert-danger" style="display: none">
         <span id="statusFail"></span>
@@ -28,14 +28,14 @@
             <small id="helpId" class="form-text text-muted">The maximum number of users from your organization on Upcivic.</small>
 
             <div class="row">
-                <div class="col-6 mt-4 text-center">
+                <div class="col-6 mt-4 mb-3">
                     <strong>Total Monthly Cost: $<span id="total-cost">147</span>.00</strong>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-6">
-                    <button id="card-button" class="btn btn-primary btn-block ml-3" data-secret="{{ $intent->client_secret }}">
+                    <button id="card-button" class="btn btn-primary btn-lg" data-secret="{{ $intent->client_secret }}">
                         Subscribe
                     </button>
                 </div>
@@ -83,8 +83,6 @@
     const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
     cardButton.addEventListener('click', async (e) => {
-        document.getElementById('paymentCard').style.display = 'none';
-        document.getElementById('upgradeProBadge').style.display = 'none';
         document.getElementById('statusFailContainer').style.display = 'none';
         document.getElementById('loader').style.display = 'block';
         const { setupIntent, error } = await stripe.confirmCardSetup(
@@ -109,7 +107,9 @@
 
             asyncRequest(data, url).then(data => {
                 document.getElementById('loader').style.display = 'none';
+                document.getElementById('paymentCard').style.display = 'none';
                 if (data.status == 'success') {
+                    document.getElementById('upgradeProBadge').style.display = 'none';
                     document.getElementById('statusSuccess').style.display = 'block';
                     document.getElementById('statusSuccess').innerHTML = data.message;
                 } else {

@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     @include('shared.form_errors')
+    @include('shared.loader')
     <div class="card mb-4">
         <div class="card-header">Current Plan</div>
         <div class="card-body">
@@ -37,7 +38,7 @@
                     @if (!(tenant()->hasStripeCustomer()) || $user->isPaymentCardHolder())
                         <div class="form-row">
                             <div class="col-md-3">
-                                <a type="submit" class="btn btn-primary btn-lg mt-3" style="height:53%; display: inline-flex; align-items: center; justify-content: center;" href="{{ tenant()->route('tenant:admin.subscriptions.create') }}">
+                                <a type="submit" class="btn btn-primary btn-lg my-3" href="{{ tenant()->route('tenant:admin.subscriptions.create') }}">
                                     Upgrade to Pro
                                 </a>
                             </div>
@@ -47,7 +48,7 @@
                         <h5>Contact your card holder to increase the number of seats.</h5>
                     @endif
                     <div class="text-mutted" role="alert">
-                        Upgrading to Pro you'll instantly gain access to Partner Paperwork Submission, Document Generation & E-Signing, Instructor / Facility Management,
+                        You'll gain instant access to all features including Document Generation & E-Signing, Instructor / Facility Management,
                         Full Compliance Management and One-Click Exports.
                     </div>
                 </div>

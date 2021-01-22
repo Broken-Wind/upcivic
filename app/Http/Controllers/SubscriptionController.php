@@ -67,14 +67,18 @@ class SubscriptionController extends Controller
     public function destroy(Request $request)
     {
 
-        $user = $request->user();
+        try {
+            $user = $request->user();
 
-        $subscriptionName = config('app.subscription_name');
-        $stripeSubscription = $user->subscription($subscriptionName);
-        if ($stripeSubscription) {
-            $stripeSubscription->cancel();
+            $subscriptionName = config('app.subscription_name');
+            $stripeSubscription = $user->subscription($subscriptionName);
+            if ($stripeSubscription) {
+                $stripeSubscription->cancel();
+            }
+        } catch (\Throwable $th) {
+            return back()->withErrors($th->getMessage());
         }
 
-        return redirect()->route('tenant:admin.users.edit', [tenant()->slug]);
+        return back()->withSuccess('Subscription will be canceled.');
     }
 }

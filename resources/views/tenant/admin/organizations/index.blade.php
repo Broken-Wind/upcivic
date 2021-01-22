@@ -34,15 +34,13 @@
 
                             </td>
 
-                            @if(!$organization->isClaimed())
-                                <td class="text-right">
+
+                            <td class="text-right">
+                                @if(!$organization->isClaimed())
                                     <a href="{{ tenant()->route('tenant:admin.organizations.edit', [$organization]) }}">
                                         <i class="far fa-edit mr-2"></i>
                                     </a>
-                                </td>
-                            @endif
-
-                            <td class="text-right">
+                                @endif
                                 @if(isset($organization->area->id))
                                     <button type="button" class="btn btn-sm btn-light select-area-button" data-organization-id="{{ $organization->id }}"data-toggle="modal" data-target="#select-area-modal">
                                         {{ $organization->area->name }}

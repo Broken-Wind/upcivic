@@ -272,10 +272,10 @@ class ProgramController extends Controller
         if ($program->isProposalSent()) {
             \Mail::send(new ProgramCanceled($program, Auth::user()));
         }
-        
+
         $program->delete();
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('Proposal has been canceled. An email has been sent to the receivning organizations.');
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled and a cancellation email was sent to any involved organizations.');
     }
 
 }

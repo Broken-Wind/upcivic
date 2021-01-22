@@ -7,6 +7,7 @@ use App\Meeting;
 use App\Organization;
 use App\Program;
 use App\Site;
+use App\Tenant;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
@@ -27,13 +28,23 @@ $factory->define(Program::class, function (Faker $faker) {
 
         'max_age' =>  '7',
 
+        'proposed_at' => Carbon::now(),
+
     ];
 });
 
 $factory->afterCreatingState(Program::class, 'amCamp', function (Program $program, Faker $faker) {
     $site = factory(Site::class)->create();
 
-    $organization = factory(Organization::class)->create();
+    $tenant = factory(Tenant::class)->create();
+
+    $contributor = new Contributor();
+
+    $contributor['organization_id'] = $tenant->organization_id;
+
+    $program->contributors()->save($contributor);
+
+    $program->proposing_organization_id = $tenant->organization_id;
 
     $startDatetime = Carbon::parse('9am +2 weeks');
 
@@ -71,7 +82,7 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
 
     ]);
 
-    $contributor['organization_id'] = $organization->id;
+    $contributor['organization_id'] = $tenant->organization->id;
 
     $contributor['program_id'] = $program->id;
 

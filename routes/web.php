@@ -29,10 +29,11 @@ Route::group(['middleware' => 'verified'], function () {
 });
 Route::group([
     'prefix' => '/{tenant}',
-    'middleware' => ['tenant', 'tenant.auth'],
+    'middleware' => ['tenant'],
     'as' => 'tenant:',
 ], function () {
-    Route::get('/', 'PublicTenantController@index');
+    Route::get('/programs', 'RegistrationController@index')->name('registrations.index');
+    Route::get('/programs/{program}', 'RegistrationController@show')->name('registrations.programs.show');
 });
 Route::group([
     'prefix' => '/{tenant}',

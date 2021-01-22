@@ -87,7 +87,7 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
-    
+
     /*
     |--------------------------------------------------------------------------
     | Customer Support Email Address
@@ -98,6 +98,17 @@ return [
     */
 
     'support_email' => env('SUPPORT_EMAIL_ADDRESS', 'support@upcivic.com'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sales Email Address
+    |--------------------------------------------------------------------------
+    |
+    | Used for sales related emails.
+    |
+    */
+
+    'sales_email' => env('SUPPORT_EMAIL_ADDRESS', 'sales@upcivic.com'),
 
     /*
     |--------------------------------------------------------------------------

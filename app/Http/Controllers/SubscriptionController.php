@@ -38,6 +38,12 @@ class SubscriptionController extends Controller
                 'status' => 'fail'
             ]);
         }
+        if ($validated['numberOfSeats'] > 20) {
+            return json_encode([
+                'message' => 'To purchase more than 20 seats, please email ' . config('mail.sales_email'),
+                'status' => 'fail'
+            ]);
+        }
         $user = $request->user();
         $user->createOrGetStripeCustomer();
 

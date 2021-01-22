@@ -50,9 +50,19 @@
 
 <script type="application/javascript">
     const seatsElem = document.querySelector('#numberOfSeats');
+    const minSeats = {{ tenant()->users->count() }}
     seatsElem.addEventListener('input', function (e) {
-        if (Number.isInteger(parseInt(e.target.value))) {
-            document.querySelector('#total-cost').innerHTML = parseInt(e.target.value) * 49;
+        let quantity = parseInt(e.target.value);
+        if (Number.isInteger(quantity)) {
+            if (quantity > 20) {
+                quantity = 20;
+                e.target.value = 20;
+            }
+            if (quantity < minSeats) {
+                quantity = minSeats;
+                e.target.value = minSeats;
+            }
+            document.querySelector('#total-cost').innerHTML = quantity * 49;
         }
     });
     const stripe = Stripe('pk_test_51I9XCwGuEpAR4AJ4vR7GrbA4AXqHKjEpQPPMNxYbBbJzjwa9pDkXe0HsqB57CT5JUlran00D4gN5tAosPmO2GWKQ00shLzd316');

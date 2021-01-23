@@ -88,3 +88,18 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
 
     $contributor->save();
 });
+
+
+$factory->afterCreatingState(Program::class, 'published', function (Program $program, Faker $faker) {
+    $firstContributor = $program->contributors->first();
+    $firstContributor->published_at = Carbon::parse('-1 weeks');
+    $firstContributor->save();
+
+});
+
+$factory->afterCreatingState(Program::class, 'unpublished', function (Program $program, Faker $faker) {
+    $firstContributor = $program->contributors->first();
+    $firstContributor->published_at = null;
+    $firstContributor->save();
+
+});

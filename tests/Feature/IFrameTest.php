@@ -15,30 +15,21 @@ use App\User;
 use App\Meeting;
 use App\Tenant;
 
-class RegistrationTest extends TestCase
+class IFrameTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_view_all_programs()
-    {
-        $tenant = factory(Tenant::class)->create();
-
-        $response = $this->get("/{$tenant->slug}/programs/");
-
-        $response->assertSee('Programs', $escaped = true);
-
-    }
-    
-    /** @test */
-    public function user_can_view_a_program_listing()
+    public function user_can_view_a_published_program_listing()
     {
 
-        $program = factory(Program::class)->states('amCamp')->create();
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $tenantSlug = $program->contributors->first()->organization->tenant->slug;
-        $response = $this->get("/{$tenantSlug}/programs/{$program->id}");
+        $firstContributor = $program->contributors->first();
 
+        $tenantSlug = $firstContributor->organization->tenant->slug;
+
+        $response = $this->get("/{$tenantSlug}/iframe/{$program->id}");
         $response->assertStatus(200);
 
         $response->assertSee('Factory Program', $escaped = true);
@@ -48,6 +39,19 @@ class RegistrationTest extends TestCase
         $response->assertSee('5', $escaped = true);
         $response->assertSee('7', $escaped = true);
 
-        
+    }
+
+
+    /** @test */
+    public function user_cannot_view_unpublish_program_listing()
+    {
+        $program = factory(Program::class)->states('amCamp', 'unpublished')->create();
+
+        $firstContributor = $program->contributors->first();
+        $tenantSlug = $firstContributor->organization->tenant->slug;
+
+        $response = $this->get("/{$tenantSlug}/iframe/{$program->id}");
+
+        $response->assertStatus(404);
     }
 }

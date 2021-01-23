@@ -31,7 +31,7 @@
                         @if(tenant())
                             @auth
                                 @if(!tenant()->isSubscribed())
-                                    <a href="{{ tenant()->route('tenant:admin.users.edit') }}#availablePlans"><h2><span id="upgradeProBadge" class="badge badge-pill badge-primary">Upgrade to Pro</span></h2></a>
+                                    <a href="{{ tenant()->route('tenant:admin.subscriptions.index') }}#availablePlans"><h2><span id="upgradeProBadge" class="badge badge-pill badge-primary">Upgrade to Pro</span></h2></a>
                                 @endif
                                 @if(Auth::user()->canGenerateDemoData())
                                     <li class="nav-item">

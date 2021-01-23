@@ -5,9 +5,8 @@
     <div class="jumbotron">
         <h1 class="display-4 text-primary">Upcivic Pro</h1>
         <p class="lead">All the tools you need to go paperless, reduce manual data entry, manage instructors, and optimize your activity schedule.</p>
-        <hr/>
-
         @if ($user->isPaymentCardHolder())
+            <hr/>
             @if ($user->subscription(config('app.subscription_name'))->onGracePeriod())
                 <p class="lead text-primary"> Cancels on {{ $user->subscription(config('app.subscription_name'))->ends_at->format('j F, Y') }} </p>
             @else

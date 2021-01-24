@@ -21,11 +21,10 @@ class IframeOrdersController extends Controller
     {
         $program = Program::find($programId);
 
-        $quantity = request('registration_quantity');
-        $token = request('payment_token');
+        $this->paymentGateway->charge(request('registration_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
+        
+        $order = $program->orderRegistration(request('email'), request('registration_quantity'));
 
-        $amount = $quantity * $program->contributors->last()->invoice_amount;
-        $this->paymentGateway->charge($amount, $token);
         return response()->json([], 201);
     }
 }

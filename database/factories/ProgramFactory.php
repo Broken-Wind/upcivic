@@ -41,6 +41,8 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
     $contributor = new Contributor();
 
     $contributor['organization_id'] = $tenant->organization_id;
+    $contributor['invoice_amount'] = 13000;
+    $contributor['invoice_type'] = 'per_participant';
 
     $program->contributors()->save($contributor);
 
@@ -74,7 +76,7 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
 
     $contributor = Contributor::make([
 
-        'invoice_amount' => 13000,
+        'invoice_amount' => 1000,
 
         'invoice_type' => 'per participant',
 

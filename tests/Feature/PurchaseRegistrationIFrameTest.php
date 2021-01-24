@@ -38,11 +38,10 @@ class PurchaseRegistrationIFrameTest extends TestCase
         $this->assertEquals(39000, $paymentGateway->totalCharges());
 
         // Make sure that an order exists for this customer 
-        $this->assertTrue($program->orders()->contains(function($order){
-            return $order->email == 'macarie@example.com';
-        }));
+        $order = $program->orders()->where('email', 'macarie@example.com')->first();
 
-        $order = $concert->orders()->where('email', 'macarie@example.com')->first();
-        $this->assertEquals(3, $order->registrations->count());
+        $this->assertNotNull($order);
+        
+        $this->assertEquals(3, $order->registrations()->count());
     }
 }

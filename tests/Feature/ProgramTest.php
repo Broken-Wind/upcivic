@@ -19,7 +19,7 @@ class ProgramTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_see_program_create_view()
+    public function user_can_see_program_create_vieuser_can_see_program_create_vieww()
     {
         $user = factory(User::class)->states('hasTenant')->create();
 
@@ -29,11 +29,14 @@ class ProgramTest extends TestCase
 
         $response = $this->actingAs($user)->followingRedirects()->get("/{$tenant->slug}/admin/programs/create");
 
-        $response->assertSeeText('Create Programs');
+        $response->assertSeeText('Program');
+
+        $response->assertSeeText('Site');
 
         $response->assertSeeText('Start Date');
 
-        $response->assertSeeText('Additional Recipient:');
+        $response->assertSeeText('End Date');
+
     }
 
     /** @test */
@@ -168,5 +171,17 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['max_age'], '99');
         $this->assertEquals($program['min_enrollments'], '393');
         $this->assertEquals($program['max_enrollments'], '494');
+    }
+
+    /** @test */
+    function user_can_order_program_registrations()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $order = $program->orderRegistrations('jane@example.com', 3);
+
+        $this->assertEquals('jane@example.com', $order->email); 
+        $this->assertEquals(3 , $order->registrations()->count()); 
+
     }
 }

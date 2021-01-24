@@ -543,6 +543,7 @@ class Program extends Model
     {
         return self::STATUSES[$this->getStatus()]['status_string'];
     }
+
     public function getStatusDescriptionAttribute()
     {
         $statusStrings = [
@@ -553,5 +554,21 @@ class Program extends Model
             // 'published' => 'This program is now listed on your <a href="' . tenant()->route('tenant:admin.edit') . '#publishing">iFrame widget.</a>',
         ];
         return $statusStrings[$this->getStatus()];
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function orderRegistrations($email, $quantity)
+    {
+        $order = $this->orders()->create(['email' => $email]);
+
+        foreach (range(1, $quantity) as $i) {
+            $order->registrations()->create([]);
+        }
+        return $order;
+
     }
 }

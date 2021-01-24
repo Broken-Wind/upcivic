@@ -42,6 +42,8 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
+    Route::post('/iframe/{id}/orders', 'IframeOrdersController@store')->name('iframe.orders.store');  
+
     Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
     Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
     Route::post('/assignments/{assignment}/complete', 'AssignmentPublicController@complete')->name('assignments.public.complete');

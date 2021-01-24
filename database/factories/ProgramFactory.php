@@ -74,7 +74,7 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
 
     $contributor = Contributor::make([
 
-        'invoice_amount' => 1300,
+        'invoice_amount' => 13000,
 
         'invoice_type' => 'per participant',
 

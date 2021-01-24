@@ -7,15 +7,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
-use App\Contributor;
-use App\Organization;
 use App\Program;
-use App\Template;
-use App\User;
-use App\Meeting;
-use App\Tenant;
 
-class IFrameTest extends TestCase
+class ViewIFrameListingTest extends TestCase
 {
     use RefreshDatabase;
 

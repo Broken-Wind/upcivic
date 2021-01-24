@@ -50,7 +50,6 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        throw $exception; //Used for more verbose unit testing.
         return parent::render($request, $exception);
     }
 }

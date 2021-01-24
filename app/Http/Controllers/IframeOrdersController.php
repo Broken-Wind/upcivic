@@ -21,9 +21,15 @@ class IframeOrdersController extends Controller
     {
         $program = Program::find($programId);
 
+        $this->validate(request(), [
+            'email' => ['required', 'email'],
+            'registration_quantity' => ['required', 'integer', 'min:1'],
+            'payment_token' => ['required'],
+        ]);
+
         $this->paymentGateway->charge(request('registration_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
         
-        $order = $program->orderRegistration(request('email'), request('registration_quantity'));
+        $order = $program->orderRegistrations(request('email'), request('registration_quantity'));
 
         return response()->json([], 201);
     }

@@ -11,11 +11,11 @@ use App\Program;
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
 
-class PurchaseRegistrationTest extends TestCase
+class PurchaseTicketTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function purchase_registration_path($program) {
+    public function purchase_ticket_path($program) {
         $path = 'iframe';
 
         $tenantSlug = $program->contributors->first()->organization->tenant->slug;
@@ -23,7 +23,7 @@ class PurchaseRegistrationTest extends TestCase
     }
 
     /** @test */
-    public function user_can_purchase_registrations()
+    public function user_can_purchase_tickets()
     {
 
         $paymentGateway = new FakePaymentGateway;
@@ -31,11 +31,13 @@ class PurchaseRegistrationTest extends TestCase
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->purchase_registration_path($program), [
+        $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'macarie@example.com',
-            'registration_quantity' => 3,
+            'ticket_quantity' => 3,
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
+
+        
 
         $response->assertStatus(201);
 
@@ -47,19 +49,19 @@ class PurchaseRegistrationTest extends TestCase
 
         $this->assertNotNull($order);
         
-        $this->assertEquals(3, $order->registrations()->count());
+        $this->assertEquals(3, $order->tickets()->count());
     }
 
     /** @test */
-    function email_is_required_to_purchase_registrations()
+    function email_is_required_to_purchase_tickets()
     {
         $paymentGateway = new FakePaymentGateway;
         $this->app->instance(PaymentGateway::class, $paymentGateway); 
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->purchase_registration_path($program), [
-            'registration_quantity' => 3,
+        $response = $this->postJson($this->purchase_ticket_path($program), [
+            'ticket_quantity' => 3,
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
 
@@ -77,9 +79,9 @@ class PurchaseRegistrationTest extends TestCase
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->purchase_registration_path($program), [
+        $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'not-an-email-address',
-            'registration_quantity' => 3,
+            'ticket_quantity' => 3,
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
 
@@ -89,7 +91,7 @@ class PurchaseRegistrationTest extends TestCase
 
 
     /** @test */
-    function registration_quantity_is_required_to_purchase_rerigstrations()
+    function ticket_quantity_is_required_to_purchase_rerigstrations()
     {
 
         $paymentGateway = new FakePaymentGateway;
@@ -97,32 +99,32 @@ class PurchaseRegistrationTest extends TestCase
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->purchase_registration_path($program), [
+        $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'not-an-email-address',
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(422);
-        $this->assertArrayHasKey('registration_quantity', $response->decodeResponseJson()['errors']);
+        $this->assertArrayHasKey('ticket_quantity', $response->decodeResponseJson()['errors']);
     }
 
 
     /** @test */
-    function registration_quantity_must_be_at_least_1_to_purchase_registrations()
+    function ticket_quantity_must_be_at_least_1_to_purchase_tickets()
     {
         $paymentGateway = new FakePaymentGateway;
         $this->app->instance(PaymentGateway::class, $paymentGateway); 
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->purchase_registration_path($program), [
+        $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'not-an-email-address',
-            'registration_quantity' => 0,
+            'ticket_quantity' => 0,
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(422);
-        $this->assertArrayHasKey('registration_quantity', $response->decodeResponseJson()['errors']); 
+        $this->assertArrayHasKey('ticket_quantity', $response->decodeResponseJson()['errors']); 
 
     }
 
@@ -134,9 +136,9 @@ class PurchaseRegistrationTest extends TestCase
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->purchase_registration_path($program), [
+        $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'not-an-email-address',
-            'registration_quantity' => 0,
+            'ticket_quantity' => 0,
         ]);
 
         $response->assertStatus(422);

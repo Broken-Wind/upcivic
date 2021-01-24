@@ -561,12 +561,12 @@ class Program extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function orderRegistrations($email, $quantity)
+    public function orderTickets($email, $quantity)
     {
         $order = $this->orders()->create(['email' => $email]);
 
         foreach (range(1, $quantity) as $i) {
-            $order->registrations()->create([]);
+            $order->tickets()->create([]);
         }
         return $order;
 

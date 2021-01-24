@@ -8,8 +8,8 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    public function registrations()
+    public function tickets()
     {
-        return $this->hasMany(Registration::class);
+        return $this->hasMany(Ticket::class);
     }
 }

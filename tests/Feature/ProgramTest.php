@@ -174,14 +174,14 @@ class ProgramTest extends TestCase
     }
 
     /** @test */
-    function user_can_order_program_registrations()
+    function user_can_order_program_tickets()
     {
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $order = $program->orderRegistrations('jane@example.com', 3);
+        $order = $program->orderTickets('jane@example.com', 3);
 
         $this->assertEquals('jane@example.com', $order->email); 
-        $this->assertEquals(3 , $order->registrations()->count()); 
+        $this->assertEquals(3 , $order->tickets()->count()); 
 
     }
 }

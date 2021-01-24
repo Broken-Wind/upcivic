@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Billing\PaymentGateway;  
 use App\Program;
 
-class IframeOrdersController extends Controller
+class OrdersController extends Controller
 {
     // 
     
@@ -23,13 +23,13 @@ class IframeOrdersController extends Controller
 
         $this->validate(request(), [
             'email' => ['required', 'email'],
-            'registration_quantity' => ['required', 'integer', 'min:1'],
+            'ticket_quantity' => ['required', 'integer', 'min:1'],
             'payment_token' => ['required'],
         ]);
 
-        $this->paymentGateway->charge(request('registration_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
+        $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
         
-        $order = $program->orderRegistrations(request('email'), request('registration_quantity'));
+        $order = $program->orderTickets(request('email'), request('ticket_quantity'));
 
         return response()->json([], 201);
     }

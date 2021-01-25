@@ -27,7 +27,7 @@ class TicketOrdersController extends Controller
         ]);
 
         try {
-            $program = Program::find($programId);
+            $program = Program::publishedForTenant()->findOrFail($programId);
 
             $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
         

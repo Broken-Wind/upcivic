@@ -49,8 +49,8 @@ class ProposalSentTest extends TestCase
 
             'sending_organization' => $proposingTenant->organization,
 
-            'recipient_organization' => $recipientTenant->organization,
-
+            'recipient_organizations' => $recipientTenant->organization,
+        
             'programs' => [$program],
 
         ]);

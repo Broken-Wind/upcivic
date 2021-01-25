@@ -23,7 +23,7 @@ class PurchaseTicketTest extends TestCase
     }
 
     /** @test */
-    public function user_can_purchase_tickets()
+    public function can_purchase_tickets_for_a_published_program()
     {
 
         $paymentGateway = new FakePaymentGateway;
@@ -37,8 +37,6 @@ class PurchaseTicketTest extends TestCase
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
 
-        
-
         $response->assertStatus(201);
 
         // Make sure the customer was charged the right amount
@@ -51,6 +49,7 @@ class PurchaseTicketTest extends TestCase
         
         $this->assertEquals(3, $order->tickets()->count());
     }
+
 
     /** @test */
     function email_is_required_to_purchase_tickets()
@@ -69,6 +68,7 @@ class PurchaseTicketTest extends TestCase
         $this->assertArrayHasKey('email', $response->decodeResponseJson()['errors']);
 
     }
+
 
     /** @test */
     function email_must_be_valid_to_purchase_rerigstrations()
@@ -128,6 +128,7 @@ class PurchaseTicketTest extends TestCase
 
     }
 
+
     /** @test */
     function payment_token_is_required()
     {
@@ -163,7 +164,28 @@ class PurchaseTicketTest extends TestCase
 
         $response->assertStatus(422);
         $order = $program->orders()->where('email', 'macarie@example.com')->first();
+
         $this->assertNull($order);
 
+    }
+
+
+    /** @test */
+    function cannot_purchase_tickets_for_an_unpublished_program()
+    {
+        $paymentGateway = new FakePaymentGateway;
+        $this->app->instance(PaymentGateway::class, $paymentGateway); 
+
+        $program = factory(Program::class)->states('amCamp', 'unpublished')->create();
+
+        $response = $this->postJson($this->purchase_ticket_path($program), [
+            'email' => 'macarie@example.com',
+            'ticket_quantity' => 3,
+            'payment_token' => $paymentGateway->getValidTestToken()
+        ]);
+
+        $response->assertStatus(404);
+        $this->assertEquals(0, $program->orders()->count());
+        $this->assertEquals(0, $paymentGateway->totalCharges());
     }
 }

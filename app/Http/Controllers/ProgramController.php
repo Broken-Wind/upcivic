@@ -75,10 +75,10 @@ class ProgramController extends Controller
         //
         $templates = Template::all()->sortBy('internal_name');
         $sites = Site::all()->sortBy('name');
+        $areas = tenant()->organization->areas()->orderBy('name')->get();
         $organizations = Organization::emailable()->where('id', '!=', tenant()['organization_id'])->orderBy('name')->get();
-        $counties = County::orderBy('name')->get();
 
-        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations', 'counties'));
+        return view('tenant.admin.programs.create', compact('templates', 'sites', 'organizations', 'areas'));
     }
 
     /**

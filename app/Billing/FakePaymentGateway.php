@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Billing;
+use App\Billing\PaymentFailedException; 
+use App\Billing\PaymentGateway;
 
 
 class FakePaymentGateway implements PaymentGateway
@@ -19,7 +21,11 @@ class FakePaymentGateway implements PaymentGateway
 
     public function charge($amount, $token)
     {
-        # code...
+        if ($token !== $this->getValidTestToken()) {
+
+            throw new PaymentFailedException;
+        }
+
         $this->charges[] = $amount;
     }
 

@@ -2,14 +2,15 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Billing\FakePaymentGateway;
+use App\Billing\FakePaymentGateway; 
+use App\Billing\PaymentFailedException; 
 
 
 class FakePaymentGatewayTest extends TestCase 
 {
 
     use RefreshDatabase;
-
+ 
     /** @test */
     public function charges_with_a_valid_payment_token_are_succesful()
     {
@@ -19,5 +20,23 @@ class FakePaymentGatewayTest extends TestCase
 
         $this->assertEquals(2500, $paymentGateway->totalCharges());
     }
+
+
+    /** @test */
+    public function charges_with_an_invalid_payment_token_fail()
+    {
+        try {
+            $paymentGateway = new FakePaymentGateway;
+
+            $paymentGateway->charge(2500, 'invalid-payment-token');
+
+        } catch (PaymentFailedException $e) {
+
+            return; 
+        }
+
+        $this->fail(); 
+    }
+
 
 }

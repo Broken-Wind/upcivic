@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Billing\PaymentGateway;  
+use App\Billing\PaymentFailedException;  
 use App\Program;
 
-class OrdersController extends Controller
+class TicketOrdersController extends Controller
 {
     // 
     
@@ -19,17 +20,23 @@ class OrdersController extends Controller
 
     public function store($programId)
     {
-        $program = Program::find($programId);
-
         $this->validate(request(), [
             'email' => ['required', 'email'],
             'ticket_quantity' => ['required', 'integer', 'min:1'],
             'payment_token' => ['required'],
         ]);
 
-        $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
+        try {
+            $program = Program::find($programId);
+
+            $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
         
-        $order = $program->orderTickets(request('email'), request('ticket_quantity'));
+            $order = $program->orderTickets(request('email'), request('ticket_quantity'));
+        } catch (PaymentFailedException $e) {
+
+            return response()->json([], 422);
+
+        }
 
         return response()->json([], 201);
     }

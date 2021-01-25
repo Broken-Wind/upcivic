@@ -118,7 +118,7 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
         $response = $this->postJson($this->purchase_ticket_path($program), [
-            'email' => 'not-an-email-address',
+            'email' => 'macarie@example.com',
             'ticket_quantity' => 0,
             'payment_token' => $paymentGateway->getValidTestToken(),
         ]);
@@ -137,12 +137,33 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
         $response = $this->postJson($this->purchase_ticket_path($program), [
-            'email' => 'not-an-email-address',
+            'email' => 'macarie@example.com',
             'ticket_quantity' => 0,
         ]);
 
         $response->assertStatus(422);
         $this->assertArrayHasKey('payment_token', $response->decodeResponseJson()['errors']); 
+
+    }
+
+
+    /** @test */
+    function an_order_is_not_created_if_payment_fails()
+    {
+        $paymentGateway = new FakePaymentGateway;
+        $this->app->instance(PaymentGateway::class, $paymentGateway); 
+
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $response = $this->postJson($this->purchase_ticket_path($program), [
+            'email' => 'macarie@example.com',
+            'ticket_quantity' => 3,
+            'payment_token' => 'invalid-payment-token',
+        ]);
+
+        $response->assertStatus(422);
+        $order = $program->orders()->where('email', 'macarie@example.com')->first();
+        $this->assertNull($order);
 
     }
 }

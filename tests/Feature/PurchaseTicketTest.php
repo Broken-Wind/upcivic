@@ -50,7 +50,6 @@ class PurchaseTicketTest extends TestCase
         $this->assertEquals(3, $order->tickets()->count());
     }
 
-
     /** @test */
     function email_is_required_to_purchase_tickets()
     {
@@ -68,7 +67,6 @@ class PurchaseTicketTest extends TestCase
         $this->assertArrayHasKey('email', $response->decodeResponseJson()['errors']);
 
     }
-
 
     /** @test */
     function email_must_be_valid_to_purchase_rerigstrations()
@@ -89,7 +87,6 @@ class PurchaseTicketTest extends TestCase
         $this->assertArrayHasKey('email', $response->decodeResponseJson()['errors']);
     }
 
-
     /** @test */
     function ticket_quantity_is_required_to_purchase_rerigstrations()
     {
@@ -107,7 +104,6 @@ class PurchaseTicketTest extends TestCase
         $response->assertStatus(422);
         $this->assertArrayHasKey('ticket_quantity', $response->decodeResponseJson()['errors']);
     }
-
 
     /** @test */
     function ticket_quantity_must_be_at_least_1_to_purchase_tickets()
@@ -128,7 +124,6 @@ class PurchaseTicketTest extends TestCase
 
     }
 
-
     /** @test */
     function payment_token_is_required()
     {
@@ -146,7 +141,6 @@ class PurchaseTicketTest extends TestCase
         $this->assertArrayHasKey('payment_token', $response->decodeResponseJson()['errors']); 
 
     }
-
 
     /** @test */
     function an_order_is_not_created_if_payment_fails()
@@ -169,7 +163,6 @@ class PurchaseTicketTest extends TestCase
 
     }
 
-
     /** @test */
     function cannot_purchase_tickets_for_an_unpublished_program()
     {
@@ -187,5 +180,30 @@ class PurchaseTicketTest extends TestCase
         $response->assertStatus(404);
         $this->assertEquals(0, $program->orders()->count());
         $this->assertEquals(0, $paymentGateway->totalCharges());
+    }
+
+    /** @test */
+    function cannot_purchase_more_tickets_than_remain() 
+    {
+        $paymentGateway = new FakePaymentGateway;
+        $this->app->instance(PaymentGateway::class, $paymentGateway); 
+
+        $program = factory(Program::class)->states('amCamp', 'published')->create(); 
+        $program->addTickets(50);
+
+        $response = $this->postJson($this->purchase_ticket_path($program), [
+            'email' => 'macarie@example.com',
+            'ticket_quantity' => 51,
+            'payment_token' => $paymentGateway->getValidTestToken()
+        ]);
+
+        $response->assertStatus(422);
+
+        $order = $program->orders()->where('email', 'macarie@example.com')->first();
+        $this->assertNull($order);
+
+        $this->assertEquals(0, $this->paymentGateway->totalCharges());
+        $this->assertEquals(50, $program->ticketsRemaining());
+
     }
 }

@@ -7,7 +7,7 @@ use App\Billing\PaymentGateway;
 use App\Billing\PaymentFailedException;  
 use App\Program;
 
-class TicketOrdersController extends Controller
+class ProgramOrdersController extends Controller
 {
     // 
     
@@ -20,6 +20,8 @@ class TicketOrdersController extends Controller
 
     public function store($programId)
     {
+        $program = Program::publishedForTenant()->findOrFail($programId);
+
         $this->validate(request(), [
             'email' => ['required', 'email'],
             'ticket_quantity' => ['required', 'integer', 'min:1'],
@@ -27,15 +29,10 @@ class TicketOrdersController extends Controller
         ]);
 
         try {
-            $program = Program::publishedForTenant()->findOrFail($programId);
-
             $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
-        
             $order = $program->orderTickets(request('email'), request('ticket_quantity'));
         } catch (PaymentFailedException $e) {
-
             return response()->json([], 422);
-
         }
 
         return response()->json([], 201);

@@ -5,6 +5,7 @@ namespace App;
 use App\Http\Concerns\Filterable;
 use App\Http\Concerns\HasDatetimeRange;
 use App\Mail\ProposalSent;
+use App\Exceptions\NotEnoughTicketsException;
 use Carbon\Carbon;
 use DateTime;
 use DB;
@@ -561,14 +562,38 @@ class Program extends Model
         return $this->hasMany(Order::class);
     }
 
-    public function orderTickets($email, $quantity)
+    public function tickets() {
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function orderTickets($email, $ticketQuantity)
     {
+        $tickets = $this->tickets()->available()->take($ticketQuantity)->get();
+
+        if ($tickets->count() < $ticketQuantity) {
+            throw new NotEnoughTicketsException;
+        }
+
         $order = $this->orders()->create(['email' => $email]);
 
-        foreach (range(1, $quantity) as $i) {
-            $order->tickets()->create([]);
+        foreach ($tickets as $ticket) {
+            $order->tickets()->save($ticket);
         }
+
         return $order;
 
+    }
+
+    public function addTickets($quantity)
+    {
+
+        foreach (range(1, $quantity) as $i) {
+            $this->tickets()->create([]);
+        }
+    }
+
+    public function ticketsRemaining()
+    {
+        return $this->tickets()->available()->count();
     }
 }

@@ -19,7 +19,7 @@ class ProgramTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_see_program_create_vieuser_can_see_program_create_vieww()
+    public function user_can_see_program_create_view()
     {
         $user = factory(User::class)->states('hasTenant')->create();
 
@@ -173,15 +173,4 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['max_enrollments'], '494');
     }
 
-    /** @test */
-    function user_can_order_program_tickets()
-    {
-        $program = factory(Program::class)->states('amCamp', 'published')->create();
-
-        $order = $program->orderTickets('jane@example.com', 3);
-
-        $this->assertEquals('jane@example.com', $order->email); 
-        $this->assertEquals(3 , $order->tickets()->count()); 
-
-    }
 }

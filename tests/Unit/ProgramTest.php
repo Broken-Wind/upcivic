@@ -20,7 +20,7 @@ class ProgramTest extends TestCase
         $order = $program->orderTickets('jane@example.com', 3);
 
         $this->assertEquals('jane@example.com', $order->email); 
-        $this->assertEquals(3 , $order->tickets()->count()); 
+        $this->assertEquals(3 , $order->ticketsQuantity()); 
 
     }
 
@@ -52,8 +52,7 @@ class ProgramTest extends TestCase
         try {
             $order = $program->orderTickets('jane@example.com', 11);
         } catch (NotEnoughTicketsException $e) {
-            $order = $program->orders()->where('email', 'macarie@example.com')->first();
-            $this->assertNull($order);
+            $this->assertFalse($program->hasOrderFor('macarie@example.com'));
             $this->assertEquals(10 , $program->ticketsRemaining()); 
             return;
         }
@@ -72,8 +71,7 @@ class ProgramTest extends TestCase
         try {
             $order = $program->orderTickets('ilona@example.com', 3);
         } catch (NotEnoughTicketsException $e) {
-            $ilonasOrder = $program->orders()->where('email', 'ilona@example.com')->first();
-            $this->assertNull($ilonasOrder);
+            $this->assertFalse($program->hasOrderFor('ilona@example.com'));
             $this->assertEquals(2 , $program->ticketsRemaining()); 
             return;
         }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Billing\PaymentGateway;  
 use App\Billing\PaymentFailedException;  
 use App\Program;
+use App\Exceptions\NotEnoughTicketsException;
 
 class ProgramOrdersController extends Controller
 {
@@ -29,12 +30,15 @@ class ProgramOrdersController extends Controller
         ]);
 
         try {
-            $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
             $order = $program->orderTickets(request('email'), request('ticket_quantity'));
+            $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
+
+            return response()->json([], 201);
         } catch (PaymentFailedException $e) {
+            $order->cancel();
+            return response()->json([], 422);
+        } catch (NotEnoughTicketsException $e) {
             return response()->json([], 422);
         }
-
-        return response()->json([], 201);
     }
 }

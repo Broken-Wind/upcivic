@@ -29,7 +29,7 @@ class PurchaseTicketTest extends TestCase
         $paymentGateway = new FakePaymentGateway;
         $this->app->instance(PaymentGateway::class, $paymentGateway); 
 
-        $program = factory(Program::class)->states('amCamp', 'published')->create();
+        $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
 
         $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'macarie@example.com',
@@ -43,11 +43,8 @@ class PurchaseTicketTest extends TestCase
         $this->assertEquals(39000, $paymentGateway->totalCharges());
 
         // Make sure that an order exists for this customer 
-        $order = $program->orders()->where('email', 'macarie@example.com')->first();
-
-        $this->assertNotNull($order);
-        
-        $this->assertEquals(3, $order->tickets()->count());
+        $this->assertTrue($program->hasOrderFor('macarie@example.com'));
+        $this->assertEquals(3, $program->ordersFor('macarie@example.com')->first()->ticketsQuantity());
     }
 
     /** @test */
@@ -149,6 +146,7 @@ class PurchaseTicketTest extends TestCase
         $this->app->instance(PaymentGateway::class, $paymentGateway); 
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
+        $program->addTickets(3);
 
         $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'macarie@example.com',
@@ -157,9 +155,7 @@ class PurchaseTicketTest extends TestCase
         ]);
 
         $response->assertStatus(422);
-        $order = $program->orders()->where('email', 'macarie@example.com')->first();
-
-        $this->assertNull($order);
+        $this->assertFalse($program->hasOrderFor('macarie@example.com'));
 
     }
 
@@ -170,6 +166,7 @@ class PurchaseTicketTest extends TestCase
         $this->app->instance(PaymentGateway::class, $paymentGateway); 
 
         $program = factory(Program::class)->states('amCamp', 'unpublished')->create();
+        $program->addTickets(3);
 
         $response = $this->postJson($this->purchase_ticket_path($program), [
             'email' => 'macarie@example.com',
@@ -198,11 +195,9 @@ class PurchaseTicketTest extends TestCase
         ]);
 
         $response->assertStatus(422);
+        $this->assertFalse($program->hasOrderFor('macarie@example.com'));
 
-        $order = $program->orders()->where('email', 'macarie@example.com')->first();
-        $this->assertNull($order);
-
-        $this->assertEquals(0, $this->paymentGateway->totalCharges());
+        $this->assertEquals(0, $paymentGateway->totalCharges());
         $this->assertEquals(50, $program->ticketsRemaining());
 
     }

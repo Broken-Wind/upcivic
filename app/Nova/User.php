@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\DateTime;
 
 class User extends Resource
 {
@@ -70,6 +71,8 @@ class User extends Resource
             Boolean::make('Verified', 'email_verified_at'),
 
             BelongsToMany::make('Tenants'),
+
+            DateTime::make('Trial Ends At'),
         ];
     }
 

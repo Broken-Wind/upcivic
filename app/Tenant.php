@@ -60,6 +60,10 @@ class Tenant extends Model
         $currentUser = Auth::user();
         $subscriptionName = config('app.subscription_name');
 
+        if ($currentUser->onTrial()) {
+            return true;
+        }
+
         if ($currentUser->subscribed($subscriptionName)) {
             return true;
         }

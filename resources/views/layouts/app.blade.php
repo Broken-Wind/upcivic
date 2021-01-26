@@ -97,7 +97,7 @@
                                             Account
                                         </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.subscriptions.index') }}">
-                                            Billing
+                                            Available Plans
                                         </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"

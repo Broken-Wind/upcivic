@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Billing')
+@section('title', 'Available Plans')
 @section('content')
 <div class="container">
     @include('shared.form_errors')

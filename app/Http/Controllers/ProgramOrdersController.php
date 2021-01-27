@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Billing\PaymentGateway;  
 use App\Billing\PaymentFailedException;  
 use App\Program;
+use App\Order;
+use App\Reservation;
 use App\Exceptions\NotEnoughTicketsException;
 
 class ProgramOrdersController extends Controller
@@ -31,11 +33,13 @@ class ProgramOrdersController extends Controller
 
         try {
             
-            $tickets = $program->findTickets(request('tickets_quantity'));
+            $tickets = $program->findTickets(request('ticket_quantity'));
 
-            $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
+            $reservation = new Reservation($tickets);
+
+            $this->paymentGateway->charge($reservation->totalCost(), request('payment_token'));
             
-            $order = $program->createOrder(request('email'), $tickets);
+            $order = Order::forTickets($tickets, request('email'), $reservation->totalCost());
 
             return response()->json($order, 201);
 

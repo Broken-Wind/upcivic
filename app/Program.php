@@ -559,7 +559,7 @@ class Program extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsToMany(Order::class, 'tickets');
     }
 
     public function tickets() {
@@ -584,17 +584,9 @@ class Program extends Model
         return $tickets;
     }
 
-    public function createOrder($email, $tickets) {
-        $order = $this->orders()->create([
-            'email' => $email,
-            'amount' => $tickets->count() * $this->contributors->first()->invoice_amount,
-        ]);
-
-        foreach ($tickets as $ticket) {
-            $order->tickets()->save($ticket);
-        }
-
-        return $order;
+    public function createOrder($email, $tickets) 
+    {
+        return Order::forTickets($tickets, $email, $tickets->sum('price'));
     }
 
     public function addTickets($quantity)

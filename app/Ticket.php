@@ -17,4 +17,14 @@ class Ticket extends Model
     {
         $this->update(['order_id' => null]);
     }
+
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+
+    public function getPriceAttribute()
+    {
+        return $this->program->contributors->first()->invoice_amount;
+    }
 }

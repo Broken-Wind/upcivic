@@ -203,6 +203,7 @@ class PurchaseTicketTest extends TestCase
 
         $response->assertStatus(422);
         $this->assertFalse($program->hasOrderFor('macarie@example.com'));
+        $this->assertEquals(3, $program->ticketsRemaining());
 
     }
 

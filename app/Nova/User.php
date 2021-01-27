@@ -56,7 +56,7 @@ class User extends Resource
 
             Text::make('Phone')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('nullable', 'max:255'),
 
             Text::make('Email')
                 ->sortable()

@@ -41,7 +41,7 @@ class Order extends Model
         $this->delete();
     }
 
-    public function ticketsQuantity()
+    public function ticketQuantity()
     {
         return $this->tickets()->count();
     }
@@ -52,7 +52,7 @@ class Order extends Model
             //'confirmation_number' => $this->confirmation_number,
             'email' => $this->email,
             'amount' => $this->amount,
-            'ticket_quantity' => $this->ticketsQuantity(),
+            'ticket_quantity' => $this->ticketQuantity(),
             // 'tickets' => $this->tickets->map(function ($ticket) {
             //     return ['code' => $ticket->code];
             // })->all(),

@@ -33,7 +33,7 @@ class ProgramOrdersController extends Controller
 
         try {
             
-            $tickets = $program->findTickets(request('ticket_quantity'));
+            $tickets = $program->reserveTickets(request('ticket_quantity'));
 
             $reservation = new Reservation($tickets);
 

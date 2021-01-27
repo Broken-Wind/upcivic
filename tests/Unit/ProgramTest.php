@@ -20,7 +20,7 @@ class ProgramTest extends TestCase
         $order = $program->orderTickets('jane@example.com', 3);
 
         $this->assertEquals('jane@example.com', $order->email); 
-        $this->assertEquals(3 , $order->ticketsQuantity()); 
+        $this->assertEquals(3 , $order->ticketQuantity()); 
 
     }
 
@@ -77,6 +77,36 @@ class ProgramTest extends TestCase
         }
         
         $this->fail("Order succseeded eve though there were not enough tickets remaining.");
+    }
+
+    /** @test */
+    function cannot_reserve_tickets_that_have_already_been_reserved()
+    {
+         $program = factory(Program::class)->create()->addTickets(3);
+
+         $order = $program->reserveTickets(2);
+
+         try {
+             $program->reserveTickets(2);
+         } catch (NotEnoughTicketsException $e) {
+             $this->assertEquals(1, $program->ticketsRemaining());
+             return;
+         }
+
+         $this->fail("Reserving tickets succeeded even though the tickets were already reserved.");
+    }
+
+    /** @test */
+    function can_reserve_available_tickets()
+    {
+        $program = factory(Program::class)->create()->addTickets(3);
+        $this->assertEquals(3, $program->ticketsRemaining());
+
+        $reservedTickets = $program->reserveTickets(2);
+
+        $this->assertCount(2, $reservedTickets);
+        //$this->assertEquals('dumitru@example.com', $reservation->email());
+        $this->assertEquals(1, $program->ticketsRemaining());
     }
 
 

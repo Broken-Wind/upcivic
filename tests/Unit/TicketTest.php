@@ -6,6 +6,7 @@ use App\Order;
 use App\Ticket;
 use App\Program;
 use Tests\TestCase;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TicketTest extends TestCase
@@ -27,15 +28,13 @@ class TicketTest extends TestCase
     /** @test */
     function a_ticket_can_be_released()
     {
-        $program = factory(Program::class)->create();
-        $program->addTickets(3);
-        $order = $program->orderTickets('jane@example.com', 3);
-        $ticket = $order->tickets()->first();
-        $this->assertEquals($order->id, $ticket->order_id);
+
+        $ticket = factory(Ticket::class)->states('reserved')->create();
+        $this->assertNotNull($ticket->reserved_at);
 
         $ticket->release();
 
-        $this->assertNull($ticket->fresh()->order_id);
+        $this->assertNull($ticket->fresh()->reserved_at);
     }
 
 }

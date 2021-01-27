@@ -8,6 +8,11 @@ class Order extends Model
 {
     protected $guarded = [];
 
+    public function program()
+    {
+        return $this->belongsTo(Program::class);
+    }
+
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
@@ -25,5 +30,18 @@ class Order extends Model
     public function ticketsQuantity()
     {
         return $this->tickets()->count();
+    }
+
+    public function toArray()
+    {
+        return [
+            //'confirmation_number' => $this->confirmation_number,
+            'email' => $this->email,
+            'amount' => $this->amount,
+            'ticket_quantity' => $this->ticketsQuantity(),
+            // 'tickets' => $this->tickets->map(function ($ticket) {
+            //     return ['code' => $ticket->code];
+            // })->all(),
+        ];
     }
 }

@@ -30,12 +30,16 @@ class ProgramOrdersController extends Controller
         ]);
 
         try {
-            $order = $program->orderTickets(request('email'), request('ticket_quantity'));
-            $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
+            
+            $tickets = $program->findTickets(request('tickets_quantity'));
 
-            return response()->json([], 201);
+            $this->paymentGateway->charge(request('ticket_quantity') * $program->contributors->first()->invoice_amount, request('payment_token'));
+            
+            $order = $program->createOrder(request('email'), $tickets);
+
+            return response()->json($order, 201);
+
         } catch (PaymentFailedException $e) {
-            $order->cancel();
             return response()->json([], 422);
         } catch (NotEnoughTicketsException $e) {
             return response()->json([], 422);

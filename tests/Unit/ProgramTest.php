@@ -84,10 +84,10 @@ class ProgramTest extends TestCase
     {
          $program = factory(Program::class)->create()->addTickets(3);
 
-         $order = $program->reserveTickets(2);
+         $order = $program->reserveTickets(2, 'ilona@example.com');
 
          try {
-             $program->reserveTickets(2);
+             $program->reserveTickets(2, 'jane@example.com');
          } catch (NotEnoughTicketsException $e) {
              $this->assertEquals(1, $program->ticketsRemaining());
              return;
@@ -102,10 +102,10 @@ class ProgramTest extends TestCase
         $program = factory(Program::class)->create()->addTickets(3);
         $this->assertEquals(3, $program->ticketsRemaining());
 
-        $reservedTickets = $program->reserveTickets(2);
+        $reservation = $program->reserveTickets(2, 'dumitru@example.com');
 
-        $this->assertCount(2, $reservedTickets);
-        //$this->assertEquals('dumitru@example.com', $reservation->email());
+        $this->assertCount(2, $reservation->tickets());
+        $this->assertEquals('dumitru@example.com', $reservation->email());
         $this->assertEquals(1, $program->ticketsRemaining());
     }
 

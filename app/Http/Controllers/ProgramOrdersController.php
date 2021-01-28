@@ -33,13 +33,9 @@ class ProgramOrdersController extends Controller
 
         try {
             
-            $tickets = $program->reserveTickets(request('ticket_quantity'));
+            $reservation = $program->reserveTickets(request('ticket_quantity'), request('email'));
 
-            $reservation = new Reservation($tickets);
-
-            $this->paymentGateway->charge($reservation->totalCost(), request('payment_token'));
-            
-            $order = Order::forTickets($tickets, request('email'), $reservation->totalCost());
+            $order = $reservation->complete($this->paymentGateway, request('payment_token'));
 
             return response()->json($order, 201);
 

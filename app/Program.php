@@ -584,12 +584,14 @@ class Program extends Model
         return $tickets;
     }
 
-    public function reserveTickets($quantity)
+    public function reserveTickets($quantity, $email)
     {
-        return $this->findTickets($quantity)->each(function ($ticket)
+        $tickets = $this->findTickets($quantity)->each(function ($ticket)
         {
             $ticket->reserve();
         });
+
+        return new Reservation($tickets, $email);
     }
 
     public function createOrder($email, $tickets) 

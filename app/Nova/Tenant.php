@@ -50,7 +50,6 @@ class Tenant extends Resource
     {
         return [
             ID::make()->sortable(),
-            Date::make('Next Payment Due At')->sortable(),
             BelongsTo::make('Organization'),
             BelongsToMany::make('Users'),
         ];

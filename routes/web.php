@@ -58,6 +58,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/programs/get', 'ProgramController@getJson')->name('programs.get_json');
         Route::post('/programs/contributors', 'ProgramContributorController@index')->name('programs.contributors.index');
         Route::post('/resource_timeline_meetings/page/', 'ResourceTimelineController@page')->name('resource_timeline_meetings.page');
+        Route::post('/subscriptions/', 'SubscriptionController@store')->name('subscriptions.store');
     });
     Route::group([
         'prefix' => '/{tenant}/admin',
@@ -71,6 +72,9 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/resource_timeline_meetings', 'ResourceTimelineController@meetings')->name('resource_timeline.meetings');
         Route::get('/profile', 'UserController@edit')->name('users.edit');
         Route::put('/users/{user}', 'UserController@update')->name('users.update');
+        Route::get('/subscriptions', 'SubscriptionController@index')->name('subscriptions.index');
+        Route::get('/subscriptions/create', 'SubscriptionController@create')->name('subscriptions.create');
+        Route::delete('/subscriptions', 'SubscriptionController@destroy')->name('subscriptions.destroy');
         Route::get('/settings', 'TenantController@edit')->name('edit');
         Route::patch('/settings', 'TenantController@update')->name('update');
         Route::post('/organizations', 'OrganizationController@store')->name('organizations.store');

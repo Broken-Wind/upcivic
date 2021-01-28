@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Tenant extends Model
 {
@@ -10,9 +11,6 @@ class Tenant extends Model
     protected $fillable = [
         'slug',
         'proposal_next_steps'
-    ];
-    protected $casts = [
-        'next_payment_due_at' => 'datetime'
     ];
 
     public function users()
@@ -59,7 +57,54 @@ class Tenant extends Model
 
     public function isSubscribed()
     {
-        return !empty($this->next_payment_due_at);
+        $currentUser = Auth::user();
+        $subscriptionName = config('app.subscription_name');
+
+        if ($currentUser->onTrial()) {
+            return true;
+        }
+
+        if ($currentUser->subscribed($subscriptionName)) {
+            return true;
+        }
+
+        if ($this->hasAvailableProSeats()) {
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public function hasAvailableProSeats() {
+
+        $numberOfUsers = $this->users->count();
+        $subscriptionName = config('app.subscription_name');
+
+        foreach($this->users->all() as $user) {
+            if ($user->subscribed($subscriptionName)) {
+
+                $numberOfSeats = $user->subscription($subscriptionName)->quantity;
+                if ($numberOfUsers > $numberOfSeats) {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+    }
+
+    public function hasStripeCustomer() {
+
+        $subscriptionName = config('app.subscription_name');
+
+        foreach($this->users->all() as $user) {
+            if ($user->subscribed($subscriptionName)) {
+                return true;
+            }
+            return false;
+        }
+
     }
 
     public function getPlanTypeAttribute()

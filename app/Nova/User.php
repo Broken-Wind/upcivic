@@ -5,10 +5,12 @@ namespace App\Nova;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\DateTime;
 
 class User extends Resource
 {
@@ -54,7 +56,7 @@ class User extends Resource
 
             Text::make('Phone')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('nullable', 'max:255'),
 
             Text::make('Email')
                 ->sortable()
@@ -67,9 +69,11 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            Boolean::make('Verified', 'email_verified_at'),
+            Date::make('Email Verified On', 'email_verified_at'),
 
             BelongsToMany::make('Tenants'),
+
+            Date::make('Trial Ends At')->sortable(),
         ];
     }
 

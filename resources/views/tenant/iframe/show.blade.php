@@ -31,6 +31,31 @@
             @endif
         </div>
     </div>
+    <div class="card">
+        <div class="card-header">Register</div>
+        <div class="card-body">
+            <form id="payment-form" action="{{tenant()->route('tenant:iframe.checkout.create', [$program])}}">
+                <div class="input-group mt-3">
+                    <div class="form-group">
+                      <label for="numberOfSpots">Number of Spots</label>
+                      <select class="form-control" name="numberOfSpots" id="numberOfSpots">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                      </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <button id="card-button" class="btn btn-primary">
+                            Register
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
     @forelse($program->contributors->sortByDesc('organization.enrollment_url') as $contributor)
         <p />
         <div class="card">

@@ -622,4 +622,9 @@ class Program extends Model
     {
         return $this->orders()->where('email', $customerEmail)->get();
     }
+
+    public function getPriceAttribute()
+    {
+        return $this->contributors->sum('invoice_amount');
+    }
 }

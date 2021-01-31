@@ -40,7 +40,6 @@ class ProgramOrdersController extends Controller
         ]);
 
         try {
-            
             $reservation = $program->reserveTickets(request('ticket_quantity'), request('stripeEmail'));
 
             $order = $reservation->complete($this->paymentGateway, request('stripeToken'));

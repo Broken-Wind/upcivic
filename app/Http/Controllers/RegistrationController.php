@@ -12,11 +12,11 @@ class RegistrationController extends Controller
     //
     public function index()
     {
-        return view('tenant.registrations.index');
+        return view('tenant.programs.index');
     }
 
     public function show(Program $program)
     {
-        return view('tenant.registrations.show', compact('program'));
+        return view('tenant.programs.show', compact('program'));
     }
 }

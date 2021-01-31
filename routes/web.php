@@ -32,8 +32,8 @@ Route::group([
     'middleware' => ['tenant'],
     'as' => 'tenant:',
 ], function () {
-    Route::get('/programs', 'RegistrationController@index')->name('registrations.index');
-    Route::get('/programs/{program}', 'RegistrationController@show')->name('registrations.programs.show');
+    Route::get('/programs', 'RegistrationController@index')->name('programs.index');
+    Route::get('/programs/{program}', 'RegistrationController@show')->name('programs.show');
 });
 Route::group([
     'prefix' => '/{tenant}',

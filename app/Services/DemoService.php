@@ -42,6 +42,7 @@ class DemoService
                     'location_id' => $demoLocationId,
                 ];
                 $amProgram = Program::fromTemplate($proposal, $template);
+                $amProgram->addTickets($amProgram->max_enrollments);
                 $amContributor = $amProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
                 $demoProviderUser->approveProgramForContributor($amProgram, $amContributor);
                 if (rand(0, 10) < 5) {

@@ -117,6 +117,9 @@ class Program extends Model
                 });
             });
             return $startDate->sortBy(function ($sites, $area) {
+                if ($area == 'Other/Unspecified Area') {
+                    return '~'; //Sort last
+                }
                 return $area;
             });
         })->sortBy(function ($areas, $startDate) {

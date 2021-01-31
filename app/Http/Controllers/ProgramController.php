@@ -268,14 +268,14 @@ class ProgramController extends Controller
     public function destroy(Program $program)
     {
         //
-
         if ($program->isProposalSent()) {
             \Mail::send(new ProgramCanceled($program, Auth::user()));
+            $program->delete();
+            return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled and a cancellation email was sent to any involved organizations.');
         }
-
         $program->delete();
+        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled.');
 
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled and a cancellation email was sent to any involved organizations.');
     }
 
 }

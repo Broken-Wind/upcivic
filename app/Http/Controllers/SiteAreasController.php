@@ -14,6 +14,10 @@ class SiteAreasController extends Controller
     public function update(Site $site, UpdateSiteAreas $request)
     {
         $validated = $request->validated();
+        if ($validated['action'] == 'unset') {
+            $site->areas()->sync(null);
+            return back()->withSuccess($site->name . " area was unset.");
+        }
         $area = Area::find($validated['area_id']);
         $site->areas()->sync($validated['area_id'] ?? null);
         return back()->withSuccess($site->name . " area was updated.");

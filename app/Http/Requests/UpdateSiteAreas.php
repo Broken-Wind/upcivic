@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateSiteAreas extends FormRequest
 {
@@ -25,7 +26,10 @@ class UpdateSiteAreas extends FormRequest
     {
         return [
             //
-            'area_id' => 'nullable|numeric'
+            'area_id' => 'nullable|numeric',
+            'action' => 'required',
+                        'string',
+                        Rule::in(['update', 'unset']),
         ];
     }
 }

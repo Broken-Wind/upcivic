@@ -21,14 +21,10 @@
                     @empty
                         No areas found.
                     @endforelse
-
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input type="radio" class="form-check-input area-radio" name="area_id" value="">
-                            Other/Unspecified Area
-                        </label>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary" name="action" value="update">Update Area</button>
+                        <button type="submit" class="btn btn-outline-secondary" name="action" value="unset">Unset Area</button>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-4">Update Area</button>
                 </form>
             </div>
         </div>

@@ -38,7 +38,7 @@
             <a class="btn btn-primary" href="" data-toggle="modal" data-target="#preview-program-modal">Preview & Send</a>
             <form method="POST" action="{{tenant()->route('tenant:admin.programs.mark_sent', [$program])}}">
                 @csrf
-                    <button type="submit" class="btn btn-secondary ml-1">Mark as Sent</button>
+                    <button type="submit" class="btn btn-secondary ml-1" onClick="return confirm('You cannot send a proposal email via {{ config('app.name') }} after marking as sent. Are you sure?');">Mark as Sent</button>
             </form>
         @endif
 

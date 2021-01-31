@@ -4,9 +4,9 @@
 @endsection
 @section('content')
 <div class="container">
-    <form method="POST" action="/program_sessions/111/orders">        
+    <form method="POST" action="{{tenant()->route('tenant:iframe.orders.store', [$program])}}">
+        @csrf
         @include('shared.form_errors')
-        {{ csrf_field() }}
         <input type="hidden" name="ticket_quantity" value="{{ $numberOfSpots }}">
         <div class="card">
             <div class="card-header">
@@ -95,57 +95,17 @@
                 </div> 
             </div>
         </div>
+        <br/>
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+
+            data-key="{{ config('app.stripe.key') }}"
+
+            data-amount="{{ $program->price * $numberOfSpots }}"
+
+            data-name="Default Company"
+
+            data-locale="auto" id="stripe-button">
+        </script>
     </form>
 </div>
 @endsection
-
-
-<script type="application/javascript" src="https://js.stripe.com/v3/"></script>
-<script type="application/javascript">
-    var stripe = Stripe('pk_test_51I9XCwGuEpAR4AJ4vR7GrbA4AXqHKjEpQPPMNxYbBbJzjwa9pDkXe0HsqB57CT5JUlran00D4gN5tAosPmO2GWKQ00shLzd316');
-    var elements = stripe.elements();
-    var style = {
-        base: {
-            color: "#32325d",
-        }
-    };
-    var card = elements.create("card", { style: style });
-    card.mount("#card-element");
-
-    card.on('change', function(event) {
-        var displayError = document.getElementById('card-errors');
-        if (event.error) {
-            displayError.textContent = event.error.message;
-        } else {
-            displayError.textContent = '';
-        }
-    });
-
-    var form = document.getElementById('payment-form');
-
-    form.addEventListener('submit', function(ev) {
-        ev.preventDefault();
-        stripe.confirmCardPayment('imooaa', {
-            payment_method: {
-            card: card,
-            billing_details: {
-                name: 'Jenny Rosen'
-            }
-        }
-        }).then(function(result) {
-            if (result.error) {
-                // Show error to your customer (e.g., insufficient funds)
-                console.log(result.error.message);
-            } else {
-            // The payment has been processed!
-                if (result.paymentIntent.status === 'succeeded') {
-                    // Show a success message to your customer
-                    // There's a risk of the customer closing the window before callback
-                    // execution. Set up a webhook or plugin to listen for the
-                    // payment_intent.succeeded event that handles any business critical
-                    // post-payment actions.
-                }
-            }
-        });
-    });
-</script>

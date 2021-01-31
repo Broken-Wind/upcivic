@@ -14,6 +14,24 @@
                 {{ $program['description_of_meetings'] }}<br />
                 {{ $program['start_time'] }}-{{ $program['end_time'] }}
             </p>
+            <form id="payment-form" action="{{tenant()->route('tenant:iframe.orders.create', [$program])}}">
+                <div class="form-row align-items-center">
+                    <div class="col-auto my-1">
+                        <label class="my-1" for="numberOfSpots">Number of Participants</label>
+                    </div>
+                    <div class="col-auto my-1">
+                        <select class="form-control" name="numberOfSpots" id="numberOfSpots">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    </div>
+                    <div class="col-auto my-1">
+                        <button id="card-button" class="btn btn-primary"> Register </button>
+                    </div>
+                </div>
+            </form>
             <hr />
             {{ $program['description'] }}
             <hr />
@@ -29,31 +47,6 @@
             @elseif($program->hasOtherContributors())
                 <strong>Partner:</strong> {{ $program->otherContributors()->first()['name'] }}
             @endif
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header">Register</div>
-        <div class="card-body">
-            <form id="payment-form" action="{{tenant()->route('tenant:iframe.checkout.create', [$program])}}">
-                <div class="input-group mt-3">
-                    <div class="form-group">
-                      <label for="numberOfSpots">Number of Spots</label>
-                      <select class="form-control" name="numberOfSpots" id="numberOfSpots">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                      </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <button id="card-button" class="btn btn-primary">
-                            Register
-                        </button>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
     @forelse($program->contributors->sortByDesc('organization.enrollment_url') as $contributor)
@@ -113,4 +106,5 @@
             @include('tenant.iframe.components.meetings', ['meetings' => $program->meetings])
         </div>
     </div>
+    <p />
 @endsection

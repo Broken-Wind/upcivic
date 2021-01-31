@@ -14,14 +14,17 @@
                     @forelse($areas as $area)
                         <div class="form-check">
                             <label class="form-check-label">
-                            <input type="radio" class="form-check-input area-radio" name="area_id" value="{{ $area->id }}">
-                            {{ $area->name }}
-                        </label>
+                                <input type="radio" class="form-check-input area-radio" name="area_id" value="{{ $area->id }}">
+                                {{ $area->name }}
+                            </label>
                         </div>
                     @empty
                         No areas found.
                     @endforelse
-                    <button type="submit" class="btn btn-primary mt-4">Update Area</button>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary" name="action" value="update">Update Area</button>
+                        <button type="submit" class="btn btn-outline-secondary" name="action" value="unset">Unset Area</button>
+                    </div>
                 </form>
             </div>
         </div>

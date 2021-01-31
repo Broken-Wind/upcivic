@@ -39,9 +39,9 @@ class SiteController extends Controller
     public function create()
     {
         //
-        $counties = County::orderBy('name')->get();
+        $areas = tenant()->organization->areas()->orderBy('name')->get();
 
-        return view('tenant.admin.sites.create', compact('counties'));
+        return view('tenant.admin.sites.create', compact('areas'));
     }
 
     /**
@@ -61,8 +61,7 @@ class SiteController extends Controller
             'phone' => $validated['phone'],
         ]);
 
-        // $site->county()->associate($validated['county_id']);
-        $site->save();
+        $site->areas()->sync($validated['area_id']);
 
         // return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
         return back()->withSuccess('Site added successfully.');

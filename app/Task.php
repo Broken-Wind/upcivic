@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Mail\AssignmentSent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,6 +15,11 @@ class Task extends Model
         'name',
         'description',
     ];
+
+
+    public function scopeActive (Builder $builder) {
+        return $builder->whereNull('archived_at');
+    }
 
     public function assign($organizationId, $programIds = [])
     {

@@ -61,9 +61,6 @@ class TenantManager
         Task::addGlobalScope('TenantAccesibleTask', function (Builder $builder) {
             return $builder->where('organization_id', tenant()->organization_id);
         });
-        Task::addGlobalScope('ActiveTask', function (Builder $builder) {
-            return $builder->whereNull('archived_at');
-        });
         Assignment::addGlobalScope('TenantAccessibleAssignment', function (Builder $builder) {
             return $builder->where('assigned_by_organization_id', tenant()->organization_id)->orWhere('assigned_to_organization_id', tenant()->organization_id);
         });

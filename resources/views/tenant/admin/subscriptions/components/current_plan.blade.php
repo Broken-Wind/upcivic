@@ -21,8 +21,8 @@
             @endif
         @elseif ($user->isPaymentCardHolder())
             <hr/>
-            @if ($user->subscription(config('app.subscription_name'))->onGracePeriod())
-                <p class="lead text-primary"> Cancels on {{ $user->subscription(config('app.subscription_name'))->ends_at->format('j F, Y') }} </p>
+            @if ($user->subscription(config('services.stripe.subscription_name'))->onGracePeriod())
+                <p class="lead text-primary"> Cancels on {{ $user->subscription(config('services.stripe.subscription_name'))->ends_at->format('j F, Y') }} </p>
             @else
                 <p class="lead text-primary">Need more seats for your organization? Contact us at <a href="mailto:support@upcivic.com?subject=Increase number of seats">support@upcivic.com</a>.</p>
                 <p class="lead">

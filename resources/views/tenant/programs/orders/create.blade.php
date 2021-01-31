@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <div class="container">
-    <form method="POST" action="{{tenant()->route('tenant:iframe.orders.store', [$program])}}">
+    <form method="POST" action="{{tenant()->route('tenant:programs.orders.store', [$program])}}">
         @csrf
         @include('shared.form_errors')
         <input type="hidden" name="ticket_quantity" value="{{ $numberOfSpots }}">
@@ -98,7 +98,7 @@
         <br/>
         <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 
-            data-key="{{ config('app.stripe.key') }}"
+            data-key="{{ config('services.stripe.key') }}"
 
             data-amount="{{ $program->price * $numberOfSpots }}"
 

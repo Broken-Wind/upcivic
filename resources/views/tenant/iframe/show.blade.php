@@ -14,7 +14,7 @@
                 {{ $program['description_of_meetings'] }}<br />
                 {{ $program['start_time'] }}-{{ $program['end_time'] }}
             </p>
-            <form id="payment-form" action="{{tenant()->route('tenant:iframe.orders.create', [$program])}}">
+            <form id="payment-form" action="{{tenant()->route('tenant:programs.orders.create', [$program])}}">
                 <div class="form-row align-items-center">
                     <div class="col-auto my-1">
                         <label class="my-1" for="numberOfSpots">Number of Participants</label>

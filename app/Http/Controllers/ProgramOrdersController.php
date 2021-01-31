@@ -26,7 +26,7 @@ class ProgramOrdersController extends Controller
         $numberOfSpots = $request['numberOfSpots'];
         $amount = $program->price * $numberOfSpots;
 
-        return view('tenant.iframe.orders.create', compact('program', 'numberOfSpots'));
+        return view('tenant.programs.orders.create', compact('program', 'numberOfSpots'));
     }
 
     public function store($programId)

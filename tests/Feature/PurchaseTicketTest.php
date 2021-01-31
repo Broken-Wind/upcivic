@@ -23,7 +23,7 @@ class PurchaseTicketTest extends TestCase
     }
 
     public function ordersUrlPath($program) {
-        $path = 'iframe';
+        $path = 'programs';
 
         $tenantSlug = $program->contributors->first()->organization->tenant->slug;
         return "{$tenantSlug}/{$path}/{$program->id}/orders";

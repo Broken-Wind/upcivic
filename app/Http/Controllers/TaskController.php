@@ -33,7 +33,7 @@ class TaskController extends Controller
     {
         abort_if(!tenant()->isSubscribed(), 401);
 
-        $tasks = Task::all();
+        $tasks = Task::active()->get();
         $organizations = Organization::partneredWith(tenant()->organization_id)->orderBy('name')->get();
         $taskJson = $this->taskService->getIndexJson();
         return view('tenant.admin.tasks.index', compact('tasks', 'organizations', 'taskJson'));

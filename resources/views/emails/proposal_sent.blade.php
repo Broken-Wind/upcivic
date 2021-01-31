@@ -26,6 +26,6 @@
 View Details on Upcivic
 @endcomponent
 
-Descriptions, notes, specific meeting dates, and more will be available when you [sign up]({{ route('register') }}) **with the same email this message was addressed to.**
+Descriptions, notes, specific meeting dates, and more will be available when you [sign up]({{ route('register') }}) or [sign in]({{ route('login') }}).
 
 @endcomponent

@@ -29,21 +29,21 @@ class ProgramOrdersController extends Controller
         return view('tenant.programs.orders.create', compact('program', 'numberOfSpots'));
     }
 
-    public function store($programId)
+    public function store(Program $program)
     {
-        $program = Program::publishedForTenant()->findOrFail($programId);
+        $program = Program::publishedForTenant()->findOrFail($program->id);
 
         $this->validate(request(), [
-            'email' => ['required', 'email'],
+            'stripeEmail' => ['required', 'email'],
             'ticket_quantity' => ['required', 'integer', 'min:1'],
-            'payment_token' => ['required'],
+            'stripeToken' => ['required'],
         ]);
 
         try {
             
-            $reservation = $program->reserveTickets(request('ticket_quantity'), request('email'));
+            $reservation = $program->reserveTickets(request('ticket_quantity'), request('stripeEmail'));
 
-            $order = $reservation->complete($this->paymentGateway, request('payment_token'));
+            $order = $reservation->complete($this->paymentGateway, request('stripeToken'));
 
             return response()->json($order, 201);
 

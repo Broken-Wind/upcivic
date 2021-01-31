@@ -47,9 +47,9 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'macarie@example.com',
+            'stripeEmail' => 'macarie@example.com',
             'ticket_quantity' => 3,
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'stripeToken' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(201);
@@ -73,9 +73,9 @@ class PurchaseTicketTest extends TestCase
 
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($program) {
             $response = $this->orderTickets($program, [
-                'email' => 'personB@example.com',
+                'stripeEmail' => 'personB@example.com',
                 'ticket_quantity' => 1,
-                'payment_token' => $this->paymentGateway->getValidTestToken(),
+                'stripeToken' => $this->paymentGateway->getValidTestToken(),
             ]);
 
             $response->assertStatus(422);
@@ -84,9 +84,9 @@ class PurchaseTicketTest extends TestCase
         });
 
         $this->orderTickets($program, [
-            'email' => 'personA@example.com',
+            'stripeEmail' => 'personA@example.com',
             'ticket_quantity' => 3,
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'stripeToken' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $this->assertEquals(39000, $this->paymentGateway->totalCharges());
@@ -101,11 +101,11 @@ class PurchaseTicketTest extends TestCase
 
         $response = $this->postJson($this->ordersUrlPath($program), [
             'ticket_quantity' => 3,
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'stripeToken' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(422);
-        $this->assertArrayHasKey('email', $response->decodeResponseJson()['errors']);
+        $this->assertArrayHasKey('stripeEmail', $response->decodeResponseJson()['errors']);
 
     }
 
@@ -115,13 +115,13 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'not-an-email-address',
+            'stripeEmail' => 'not-an-email-address',
             'ticket_quantity' => 3,
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'stripeToken' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(422);
-        $this->assertArrayHasKey('email', $response->decodeResponseJson()['errors']);
+        $this->assertArrayHasKey('stripeEmail', $response->decodeResponseJson()['errors']);
     }
 
     /** @test */
@@ -132,8 +132,8 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'not-an-email-address',
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'stripeEmail' => 'not-an-email-address',
+            'stripeToken' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(422);
@@ -146,9 +146,9 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'macarie@example.com',
+            'stripeEmail' => 'macarie@example.com',
             'ticket_quantity' => 0,
-            'payment_token' => $this->paymentGateway->getValidTestToken(),
+            'stripeToken' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(422);
@@ -162,12 +162,12 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'macarie@example.com',
+            'stripeEmail' => 'macarie@example.com',
             'ticket_quantity' => 0,
         ]);
 
         $response->assertStatus(422);
-        $this->assertArrayHasKey('payment_token', $response->decodeResponseJson()['errors']); 
+        $this->assertArrayHasKey('stripeToken', $response->decodeResponseJson()['errors']); 
 
     }
 
@@ -178,9 +178,9 @@ class PurchaseTicketTest extends TestCase
         $program->addTickets(3);
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'macarie@example.com',
+            'stripeEmail' => 'macarie@example.com',
             'ticket_quantity' => 3,
-            'payment_token' => 'invalid-payment-token',
+            'stripeToken' => 'invalid-payment-token',
         ]);
 
         $response->assertStatus(422);
@@ -196,9 +196,9 @@ class PurchaseTicketTest extends TestCase
         $program->addTickets(3);
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'macarie@example.com',
+            'stripeEmail' => 'macarie@example.com',
             'ticket_quantity' => 3,
-            'payment_token' => $this->paymentGateway->getValidTestToken()
+            'stripeToken' => $this->paymentGateway->getValidTestToken()
         ]);
 
         $response->assertStatus(404);
@@ -213,9 +213,9 @@ class PurchaseTicketTest extends TestCase
         $program->addTickets(50);
 
         $response = $this->postJson($this->ordersUrlPath($program), [
-            'email' => 'macarie@example.com',
+            'stripeEmail' => 'macarie@example.com',
             'ticket_quantity' => 51,
-            'payment_token' => $this->paymentGateway->getValidTestToken()
+            'stripeToken' => $this->paymentGateway->getValidTestToken()
         ]);
 
         $response->assertStatus(422);

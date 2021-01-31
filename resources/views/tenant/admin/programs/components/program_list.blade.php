@@ -1,7 +1,7 @@
 @forelse($programGroups as $startDate => $sites)
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <strong>Starting {{ $startDate }}</strong>
+            <strong>Starting {{ \Carbon\Carbon::parse($startDate)->format('l') }} {{ $startDate }}</strong>
         </div>
         <div class="card-body pl-0 pr-0">
             @foreach($sites as $programs)

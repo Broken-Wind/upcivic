@@ -5,8 +5,8 @@
         var showProgramUrl = "{{ tenant()->route('tenant:admin.programs.show', ['program' => 1]) }}";
         showProgramUrl = showProgramUrl.substr(0, showProgramUrl.lastIndexOf('/')+1);
         var eventColor = "{{\App\Program::STATUSES['unsent']['event_color']}}";
-        var events = {!! $meetingEvents['meetings']->toJson() !!};
-        var programs = {!! json_encode($meetingEvents['programs']) !!};
+        var events = {!! $meetings !!};
+        var programs = {!! $programs !!};
         var resources = {!! $resources !!};
         var initialDate = "{{ $initialDate->toDateString() }}";
         var updateLocationsUrl = "{{ route('tenant:api.programs.locations.update', tenant()->slug) }}";

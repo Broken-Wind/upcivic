@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Stevebauman\Purify\Facades\Purify;
 
 class ResourceTimelineController extends Controller
 {
@@ -25,8 +26,8 @@ class ResourceTimelineController extends Controller
     public function index()
     {
         abort_if(!tenant()->isSubscribed(), 401);
-        $resources = $this->resourcetimelineService->getResources();
-        $events = $this->resourcetimelineService->getEvents();
+        $resources = Purify::clean($this->resourcetimelineService->getResources());
+        $events = Purify::clean($this->resourcetimelineService->getEvents());
 
         return view('tenant.admin.resource_timeline.index', compact('resources', 'events'));
     }
@@ -40,15 +41,16 @@ class ResourceTimelineController extends Controller
         $user = Auth::user();
         $userInitialDate = Carbon::parse($user->calendar_initial_date);
         if (!empty($userInitialDate)) {
-            $initialDate = $userInitialDate; 
+            $initialDate = $userInitialDate;
         } else {
             $initialDate = Carbon::now()->startOfWeek(Carbon::SUNDAY);
         }
         $endDate = $initialDate->copy()->addDays(7);
 
-        $meetingEvents = $this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate);
-
-        return view('tenant.admin.resource_timeline.meetings', compact('resources', 'meetingEvents', 'initialDate', 'userInitialDate'));
+        $meetings = Purify::clean($this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate)['meetings']->toJson());
+        $programs = Purify::clean($this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate)['programs']->toJson());
+        // dd($meetingEvents);
+        return view('tenant.admin.resource_timeline.meetings', compact('resources', 'meetings', 'programs', 'initialDate', 'userInitialDate'));
     }
 
     public function page(Request $request) {

@@ -106,20 +106,6 @@
                 <div class="col-12">
                     <div class="{{ $program->class_string }} font-weight-bold">{{ $program->status_string }}</div>
                 </div>
-                <div class="col-12 text-left">
-                    @if($program['proposed_at'] == null)
-                    <form action="{{ tenant()->route('tenant:admin.programs.destroy', ['program' => $program->id]) }}" method="POST" id="delete_program_{{ $program->id }}">
-                        @method('delete')
-                        @csrf
-                            <a href="{{ tenant()->route('tenant:admin.programs.edit', ['program' => $program->id]) }}">
-                                <i class="far fa-edit"></i>
-                            </a>
-                            <button type="submit" class="btn btn-sm btn-link text-secondary" form="delete_program_{{ $program->id }}" onClick="return confirm('Are you sure you want to delete {{ $program["id"] }} - {{ $program["name"] }}?')">
-                                <i class="far fa-trash-alt"></i>
-                            </button>
-                        </form>
-                    @endif
-                </div>
             </div>
         </div>
     </div>

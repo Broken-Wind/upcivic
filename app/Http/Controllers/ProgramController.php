@@ -102,11 +102,10 @@ class ProgramController extends Controller
     /**
      * Send a Proposal and set Program status to Sent
      *
-     * @param UpdateProgram $request
      * @param Program $program
      * @return \Illuminate\Http\Response
      */
-    public function send(Request $request, Program $program) {
+    public function send(Program $program) {
         $sendingOrganization = tenant()->organization;
         $recipientOrganizations = $program->contributors()->where('organization_id', '!=', $sendingOrganization->id)->get()->map(function ($contributor) {
             return $contributor->organization;

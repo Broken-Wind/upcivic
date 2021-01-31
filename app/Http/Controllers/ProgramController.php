@@ -131,6 +131,20 @@ class ProgramController extends Controller
         return back()->withSuccess('Proposal sent successfully.');
     }
 
+    /**
+     * Set Program status to Sent without sending Proposal Sent email
+     *
+     * @param Program $program
+     * @return \Illuminate\Http\Response
+     */
+    public function markSent(Program $program) {
+
+        $program->proposed_at = Carbon::now();
+        Auth::user()->approveProgram($program);
+        $program->save();
+        return back()->withSuccess('Proposal sent successfully.');
+    }
+
     public function proposalPreview(Program $program) {
         $sendingOrganization = tenant()->organization;
         $recipientOrganizations = $program->contributors()->where('organization_id', '!=', $sendingOrganization->id)->get()->map(function ($contributor) {

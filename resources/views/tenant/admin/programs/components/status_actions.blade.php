@@ -4,7 +4,7 @@
     <div class="row">
         <div class="alert {{ $program->class_string }}">
             {!! $program->status_description !!}
-        </div>  
+        </div>
     </div>
     <div class="row mb-4">
         @if($program->canBePublished())
@@ -36,6 +36,10 @@
 
         @if(!$program->isProposalSent())
             <a class="btn btn-primary" href="" data-toggle="modal" data-target="#preview-program-modal">Preview & Send</a>
+            <form method="POST" action="{{tenant()->route('tenant:admin.programs.mark_sent', [$program])}}">
+                @csrf
+                    <button type="submit" class="btn btn-secondary ml-1">Mark as Sent</button>
+            </form>
         @endif
 
         <form method="POST" action="{{tenant()->route('tenant:admin.programs.destroy', [$program])}}" id="delete-program">

@@ -69,7 +69,7 @@ class AssignmentController extends Controller
         $isOutgoingFromTenant = $assignment->assigned_by_organization_id == tenant()->organization_id;
         $routeActionString = 'tenant:admin.assignments.';
         if ($assignment->isSignableDocument()) {
-            $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->get();
+            $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->with(['meetings.site', 'meetings.location', 'contributors.organization'])->get();
         } else {
             $programs = collect();
         }

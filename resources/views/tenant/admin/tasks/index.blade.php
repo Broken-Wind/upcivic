@@ -1,12 +1,5 @@
 @extends('layouts.app')
 @section('title', 'Tasks')
-@push('scripts')
-<script type="application/javascript">
-var tasks = {!! $taskJson !!};
-var taskAssignmentBaseUrl = "{!! tenant()->route('tenant:admin.tasks.index') !!}";
-</script>
-<script src="{{ asset('js/views/tasks/index.js') }}"></script>
-@endpush
 @section('content')
 <div class="container">
 

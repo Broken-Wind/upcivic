@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Concerns;
+namespace App\Http\Concerns;
 trait IsPerson
 {
     public function getNameAttribute()

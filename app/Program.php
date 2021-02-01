@@ -2,8 +2,8 @@
 
 namespace App;
 
-use App\Concerns\Filterable;
-use App\Concerns\HasDatetimeRange;
+use App\Http\Concerns\Filterable;
+use App\Http\Concerns\HasDatetimeRange;
 use App\Mail\ProposalSent;
 use Carbon\Carbon;
 use DateTime;

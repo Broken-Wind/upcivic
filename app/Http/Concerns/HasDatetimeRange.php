@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Concerns;
+namespace App\Http\Concerns;
 
 use Carbon\Carbon;
 

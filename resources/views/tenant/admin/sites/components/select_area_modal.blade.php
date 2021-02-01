@@ -18,13 +18,15 @@
                                 {{ $area->name }}
                             </label>
                         </div>
+                        @if($loop->last)
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary" name="action" value="update">Update Area</button>
+                                <button type="submit" class="btn btn-outline-secondary" name="action" value="unset">Unset Area</button>
+                            </div>
+                        @endif
                     @empty
-                        No areas found.
+                        No areas found. <a href="{{ tenant()->route('tenant:admin.areas.index') }}">Add an area.</a>
                     @endforelse
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-primary" name="action" value="update">Update Area</button>
-                        <button type="submit" class="btn btn-outline-secondary" name="action" value="unset">Unset Area</button>
-                    </div>
                 </form>
             </div>
         </div>

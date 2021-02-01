@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Concerns\IsPerson;
+use App\Http\Concerns\IsPerson;
 use Illuminate\Database\Eloquent\Model;
 
 class Instructor extends GenericAssignableEntity

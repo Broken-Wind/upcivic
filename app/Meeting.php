@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Concerns\HasDatetimeRange;
+use App\Http\Concerns\HasDatetimeRange;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 

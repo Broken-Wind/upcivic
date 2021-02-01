@@ -53,4 +53,10 @@ class ProgramOrdersController extends Controller
             return response()->json([], 422);
         }
     }
+
+    public function show(Program $program)
+    {
+        $programs = Program::all()->take(3);
+        return view('tenant.programs.orders.show', compact('programs'));
+    }
 }

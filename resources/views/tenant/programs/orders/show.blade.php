@@ -1,0 +1,88 @@
+@extends('layouts.app')
+
+@section('title')
+    Order Summary
+@endsection
+
+@section('content')
+
+<div class="container">
+
+    <p />
+
+    <div class="container-fluid">
+
+        <h5>Order Total: order->formatted_amount</h5>
+
+        <strong>Billed to Card: **** **** **** order->card_last_four</strong><br />
+
+        Confirmation #: <a href="order->confirmation_number">order->confirmation_number</a><br />
+
+        order->email
+
+    </div>
+
+    @forelse($programs as $program)
+        <p />
+        <div class="card">
+            <div class="card-header">
+                <div class="container-fluid">
+
+                    <h4>{{ $program->name }} <i class="fa fa-fw fa-info-circle text-muted" title="{{ $program->description }}"></i></h4>
+
+                    <h5>By {{ $program->propsing_organization_id }}</h5>
+
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        {{-- <div class="col-md-6">
+                            <h4 class="text-center">Registrants:</h4>
+                            @forelse($order->tickets as $ticket)
+                                <h5>{{ $ticket->participant->first_name }} {{ $ticket->participant->last_name }}<span class="text-muted ml-2">{{ $ticket->code }}</span></h5>
+                                <strong>Contacts:</strong>
+                                <ul>
+                                @forelse($ticket->participant->contacts as $contact)
+                                    <li>{{ $contact->fullName() }} - {{ $contact->phone }}</li>
+                                @empty
+                                    <li>No contacts for {{ $ticket->participant->first_name }}.</li>
+                                @endforelse
+                                </ul>
+
+                                <hr />
+                            @empty
+                            @endforelse
+                        </div> --}}
+
+                        <div class="col-md-6 text-center">
+
+                            <h4>Meetings:</h4>
+
+                            @include('tenant.iframe.components.meetings', ['meetings' => $program->meetings])
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            @if(!empty($program->publicNotes))
+                                <hr />
+
+                                <h4  class="text-center">Additional Information:</h4>
+
+                                <ul>
+                                        <li>{{ $program->publicNote }}</li>
+                                </ul>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @empty
+    @endforelse
+</div>
+@endsection

@@ -27,14 +27,9 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
     Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
 });
-Route::group([
-    'prefix' => '/{tenant}',
-    'middleware' => ['tenant'],
-    'as' => 'tenant:',
-], function () {
-    Route::get('/programs', 'RegistrationController@index')->name('programs.index');
-    Route::get('/programs/{program}', 'RegistrationController@show')->name('programs.show');
-});
+
+Route::get('orders/{confirmationNumber}', 'ProgramOrdersController@show')->name('programs.orders.show');
+
 Route::group([
     'prefix' => '/{tenant}',
     'middleware' => ['tenant', 'tenant.public'],
@@ -45,6 +40,10 @@ Route::group([
     Route::post('/programs/{program}/orders', 'ProgramOrdersController@store')->name('programs.orders.store');  
     Route::get('/programs/{program}/orders/create', 'ProgramOrdersController@create')->name('programs.orders.create');
     Route::get('/programs/{program}/orders/show', 'ProgramOrdersController@show')->name('programs.orders.show');
+
+    Route::get('/programs', 'RegistrationController@index')->name('programs.index');
+    Route::get('/programs/{program}', 'RegistrationController@show')->name('programs.show');
+
 
     Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
     Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');

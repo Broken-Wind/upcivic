@@ -54,9 +54,11 @@ class ProgramOrdersController extends Controller
         }
     }
 
-    public function show(Program $program)
+    public function show($confirmationNumber)
     {
         $programs = Program::all()->take(3);
-        return view('tenant.programs.orders.show', compact('programs'));
+        $order = Order::findByConfirmationNumber($confirmationNumber);
+
+        return view('tenant.programs.orders.show', compact('programs', 'order'));
     }
 }

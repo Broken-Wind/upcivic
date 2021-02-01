@@ -36,7 +36,7 @@ class ResourceTimelineController extends Controller
     {
         abort_if(!tenant()->isSubscribed(), 401);
 
-        $resources = $this->resourcetimelineService->getResources();
+        $resources = Purify::clean($this->resourcetimelineService->getResources());
 
         $user = Auth::user();
         $userInitialDate = Carbon::parse($user->calendar_initial_date);

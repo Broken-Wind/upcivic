@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Stevebauman\Purify\Facades\Purify;
 
 class TaskController extends Controller
 {
@@ -35,7 +36,7 @@ class TaskController extends Controller
 
         $tasks = Task::active()->get();
         $organizations = Organization::partneredWith(tenant()->organization_id)->orderBy('name')->get();
-        $taskJson = $this->taskService->getIndexJson();
+        $taskJson = Purify::clean($this->taskService->getIndexJson());
         return view('tenant.admin.tasks.index', compact('tasks', 'organizations', 'taskJson'));
     }
 

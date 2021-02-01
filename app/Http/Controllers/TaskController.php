@@ -36,8 +36,7 @@ class TaskController extends Controller
 
         $tasks = Task::active()->get();
         $organizations = Organization::partneredWith(tenant()->organization_id)->orderBy('name')->get();
-        $taskJson = Purify::clean($this->taskService->getIndexJson());
-        return view('tenant.admin.tasks.index', compact('tasks', 'organizations', 'taskJson'));
+        return view('tenant.admin.tasks.index', compact('tasks', 'organizations'));
     }
 
     public function create()

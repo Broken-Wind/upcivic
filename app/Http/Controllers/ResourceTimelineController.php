@@ -49,7 +49,6 @@ class ResourceTimelineController extends Controller
 
         $meetings = Purify::clean($this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate)['meetings']->toJson());
         $programs = Purify::clean($this->resourcetimelineService->getMeetingsEvents($initialDate, $endDate)['programs']->toJson());
-        // dd($meetingEvents);
         return view('tenant.admin.resource_timeline.meetings', compact('resources', 'meetings', 'programs', 'initialDate', 'userInitialDate'));
     }
 

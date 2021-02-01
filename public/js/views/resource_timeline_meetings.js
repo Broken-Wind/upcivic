@@ -150,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
           initial_date: calendar.view.currentStart.toISOString(),
           end_date: calendar.view.currentEnd.toISOString()
       }).then(data => {
-          console.log(data.meetings);
           programs = data.programs;
           var eventSources = calendar.getEventSources();
           var len = eventSources.length;

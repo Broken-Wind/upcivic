@@ -63,7 +63,7 @@
             document.querySelector('#total-cost').innerHTML = quantity * 49;
         }
     });
-    const stripe = Stripe('pk_test_51I9XCwGuEpAR4AJ4vR7GrbA4AXqHKjEpQPPMNxYbBbJzjwa9pDkXe0HsqB57CT5JUlran00D4gN5tAosPmO2GWKQ00shLzd316');
+    const stripe = Stripe('{{ config('app.stripe_public_key') }}');
 
     const elements = stripe.elements();
 

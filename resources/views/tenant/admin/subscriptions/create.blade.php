@@ -29,7 +29,7 @@
 
             <div class="row">
                 <div class="col-6 mt-4 mb-3">
-                    <strong>Total Monthly Cost: $<span id="total-cost">147</span>.00</strong>
+                    <strong>Total Monthly Cost: $<span id="total-cost">{{ tenant()->users->count() * 49 }}</span>.00</strong>
                 </div>
             </div>
 

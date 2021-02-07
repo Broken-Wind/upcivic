@@ -137,6 +137,22 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Stripe Subscription IDs
+    |--------------------------------------------------------------------------
+    |
+    | Required when addining subscription to a user, passed to the newSubscription method.
+    | 
+    | The first argument should be the name of the subscription. 
+    | The second argument is the specific plan the user is subscribing to. This value 
+    | should correspond to the plan's price identifier in Stripe. 
+    |
+    */
+
+    'subscription_name' => 'Upcivic Pro',
+    'subscription_price_id' => env('STRIPE_SUBCRIPTION_PRICE_ID'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Autoloaded Service Providers
     |--------------------------------------------------------------------------
     |

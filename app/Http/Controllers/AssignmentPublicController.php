@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 class AssignmentPublicController extends Controller
 {
     //
-    
+
     public function edit(Request $request, Assignment $assignment)
     {
         abort_if(!$request->hasValidSignature(), 401);
@@ -22,11 +22,11 @@ class AssignmentPublicController extends Controller
 
         $programs = null;
         if ($assignment->isSignableDocument()) {
-            $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->get();
+            $programs = Program::whereIn('id', $assignment->signableDocument->program_ids)->with(['meetings.site', 'meetings.location', 'contributors.organization'])->get();
         }
-        return view('tenant.assignments.public_edit', compact('assignment', 'programs', 'routeActionString')); 
+        return view('tenant.assignments.public_edit', compact('assignment', 'programs', 'routeActionString'));
     }
-    
+
     public function complete(Assignment $assignment)
     {
         $assignment->complete();

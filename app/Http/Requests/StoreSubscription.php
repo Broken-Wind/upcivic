@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateSiteAreas extends FormRequest
+class StoreSubscription extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +25,8 @@ class UpdateSiteAreas extends FormRequest
     {
         return [
             //
-            'area_id' => 'nullable|numeric',
-            'action' => 'required',
-                        'string',
-                        Rule::in(['update', 'unset']),
+            'numberOfSeats' => "required|numeric",
+            'paymentMethod' => 'required|string'
         ];
     }
 }

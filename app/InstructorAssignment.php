@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Concerns\HasParentAssignment;
+use App\Http\Concerns\HasParentAssignment;
 
 class InstructorAssignment extends GenericAssignment implements AssignmentInterface
 {

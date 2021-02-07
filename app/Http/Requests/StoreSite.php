@@ -13,7 +13,7 @@ class StoreSite extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->memberOfTenant(tenant());
     }
 
     /**
@@ -28,7 +28,7 @@ class StoreSite extends FormRequest
             'name' => 'required|string',
             'address' => 'required|string',
             'phone' => 'nullable|string',
-            'county_id' => 'nullable|numeric',
+            'area_id' => 'nullable|numeric',
         ];
     }
 }

@@ -30,11 +30,14 @@
                     <ul class="navbar-nav ml-auto">
                         @if(tenant())
                             @auth
+                                @if(!tenant()->isSubscribed())
+                                    <a href="{{ tenant()->route('tenant:admin.subscriptions.index') }}#availablePlans"><h2><span id="upgradeProBadge" class="badge badge-pill badge-primary">Upgrade to Pro</span></h2></a>
+                                @endif
                                 @if(Auth::user()->canGenerateDemoData())
                                     <li class="nav-item">
                                     <form method="POST" action="{{ tenant()->route('tenant:admin.demo.store') }}">
                                         @csrf
-                                        <button type="submit" class="btn btn-primary mr-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
+                                        <button type="submit" class="btn btn-primary mx-3" onClick="return confirm('Are you sure?')">REGENERATE DEMO DATA</button>
                                     </form>
                                     </li>
                                 @endif
@@ -123,7 +126,10 @@
                                             Organization Settings
                                         </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
-                                            My Profile
+                                            Account
+                                        </a>
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.subscriptions.index') }}">
+                                            Available Plans
                                         </a>
                                     @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
@@ -139,8 +145,8 @@
                         @endguest
                     </ul>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
 
         <main class="py-4">
             @if(App::environment() != 'production')

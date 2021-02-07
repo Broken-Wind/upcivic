@@ -23,17 +23,17 @@
                         <label for="site-phone">Phone</label>
                         <input type="text" class="form-control" name="phone" id="site-phone" placeholder="">
                     </div>
-                    <div class="form-group">
-                        <label for="county_id">County</label>
-                        <select class="form-control" name="county_id">
-                            <option value="">Choose a county...</option>
-                            @forelse ($counties as $county)
-                                <option value="{{ $county['id'] }}">{{ $county['name'] }}</option>
-                            @empty
-                                <option disabled>No counties exist.</option>
-                            @endforelse
-                        </select>
-                    </div>
+                    @if($areas->isNotEmpty())
+                        <div class="form-group">
+                            <label for="county_id">Area</label>
+                            <select class="form-control" name="area_id">
+                                <option value="">Choose an area...</option>
+                                @foreach ($areas as $area)
+                                    <option value="{{ $area['id'] }}">{{ $area['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
                     <button type="submit" class="btn btn-primary mb-2">Add Site</button>
                 </form>
             </div>

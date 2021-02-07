@@ -3,15 +3,18 @@
 namespace App;
 
 use Carbon\Carbon;
+use Laravel\Cashier\Billable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
+use App\Exceptions\NoMoreSeatsException;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -38,6 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'trial_ends_at' => 'datetime',
     ];
 
     public function authToTenant()
@@ -58,6 +62,18 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function joinTenant(Tenant $tenant)
     {
+        $subscriptionName = config('app.subscription_name');
+        $numberOfUsers = $tenant->users->count() + 1;
+
+        foreach($tenant->users->all() as $user) {
+            if ($user->subscribed($subscriptionName)) {
+                $numberOfSeats = $user->subscription($subscriptionName)->quantity;
+                if ($numberOfUsers > $numberOfSeats) {
+                    throw new NoMoreSeatsException();
+                }
+            }
+        }
+
         $this->tenants()->attach($tenant);
 
         if (! $tenant->organization->administrators->pluck('email')->contains($this->email)) {
@@ -121,6 +137,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function canGenerateDemoData()
     {
         return App::environment() == 'local' || App::environment() == 'demo';
+    }
+
+    public function isPaymentCardHolder() {
+        return ($this->card_last_four != null);
     }
 
 }

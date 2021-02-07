@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Stevebauman\Purify\Facades\Purify;
 
 class Site extends Model
 {
@@ -14,7 +15,8 @@ class Site extends Model
 
     public function getLinkedPinHtml()
     {
-        return "<a href=\"https://www.google.com/maps/search/?api=1&query={$this['address']}\" target=\"_blank\"><i class=\"fas fa-fw fa-map-marker-alt ml-2\"></i></a>";
+        $address = Purify::clean($this['address']);
+        return "<a href=\"https://www.google.com/maps/search/?api=1&query={$address}\" target=\"_blank\"><i class=\"fas fa-fw fa-map-marker-alt ml-2\"></i></a>";
     }
 
     //

@@ -25,11 +25,11 @@
                     <span class="input-group-text">x $49/month</span>
                 </div>
             </div>
-            <small id="helpId" class="form-text text-muted">The maximum number of users from your organization on Upcivic.</small>
+            <small id="helpId" class="form-text text-muted">The maximum number of users from your organization on Upcivic. Must be between {{ tenant()->users->count() }} and 20. For more than 20 seats, contact {{ config('mail.sales_email') }}.</small>
 
             <div class="row">
                 <div class="col-6 mt-4 mb-3">
-                    <strong>Total Monthly Cost: $<span id="total-cost">147</span>.00</strong>
+                    <strong>Total Monthly Cost: $<span id="total-cost">{{ tenant()->users->count() * 49 }}</span>.00</strong>
                 </div>
             </div>
 
@@ -49,18 +49,16 @@
 <script type="application/javascript" src="https://js.stripe.com/v3/"></script>
 
 <script type="application/javascript">
+    const cardButton = document.getElementById('card-button');
     const seatsElem = document.querySelector('#numberOfSeats');
     const minSeats = {{ tenant()->users->count() }}
     seatsElem.addEventListener('input', function (e) {
         let quantity = parseInt(e.target.value);
         if (Number.isInteger(quantity)) {
-            if (quantity > 20) {
-                quantity = 20;
-                e.target.value = 20;
-            }
-            if (quantity < minSeats) {
-                quantity = minSeats;
-                e.target.value = minSeats;
+            if (quantity > 20 || quantity < minSeats) {
+                cardButton.disabled = true;
+            } else {
+                cardButton.disabled = false;
             }
             document.querySelector('#total-cost').innerHTML = quantity * 49;
         }
@@ -90,7 +88,6 @@
 
     cardElement.mount('#card-element');
 
-    const cardButton = document.getElementById('card-button');
     const clientSecret = cardButton.dataset.secret;
     cardButton.addEventListener('click', async (e) => {
         document.getElementById('statusFailContainer').style.display = 'none';

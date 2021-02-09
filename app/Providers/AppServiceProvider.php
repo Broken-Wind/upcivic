@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Services\TenantManager;
 use App\Tenant;
 use App\Billing\PaymentGateway;
+use App\OrderConfirmationNumberGenerator;
+use App\RandomOrderConfirmationNumberGenerator;
 use App\Billing\StripePaymentGateway;
 use Illuminate\Support\ServiceProvider;
 
@@ -30,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(PaymentGateway::class, StripePaymentGateway::class);
+
+        $this->app->bind(OrderConfirmationNumberGenerator::class, RandomOrderConfirmationNumberGenerator::class);
     }
 
     /**

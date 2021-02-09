@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 use App\Program;
+use App\OrderConfirmationNumberGenerator;
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
 
@@ -45,7 +46,7 @@ class PurchaseTicketTest extends TestCase
     public function can_purchase_tickets_for_a_published_program()
     {
         //$orderConfirmationNumberGenerator->generate();
-        
+
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
 
         $response = $this->postJson($this->ordersUrlPath($program), [

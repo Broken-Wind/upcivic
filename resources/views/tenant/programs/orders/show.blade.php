@@ -11,14 +11,13 @@
     <p />
 
     <div class="container-fluid">
+        <h5>Order Total: ${{number_format($order->amount / 100, 2)}}</h5>
 
-        <h5>Order Total: order->formatted_amount</h5>
+        <strong>Billed to Card: **** **** **** {{$order->card_last_four}}</strong><br />
 
-        <strong>Billed to Card: **** **** **** order->card_last_four</strong><br />
+        Confirmation #: <a href="{{$order->confirmation_number}}">{{$order->confirmation_number}}</a><br />
 
-        Confirmation #: <a href="order->confirmation_number">order->confirmation_number</a><br />
-
-        order->email
+        order-email
 
     </div>
 
@@ -38,10 +37,11 @@
             <div class="card-body">
                 <div class="container-fluid">
                     <div class="row">
-
-                        {{-- <div class="col-md-6">
-                            <h4 class="text-center">Registrants:</h4>
+                        <div class="col-md-6">
+                            <h4 class="text-center">Tickets:</h4>
                             @forelse($order->tickets as $ticket)
+                                <h5>{{ $ticket }}</h5>
+                                {{--
                                 <h5>{{ $ticket->participant->first_name }} {{ $ticket->participant->last_name }}<span class="text-muted ml-2">{{ $ticket->code }}</span></h5>
                                 <strong>Contacts:</strong>
                                 <ul>
@@ -53,9 +53,10 @@
                                 </ul>
 
                                 <hr />
+                                --}}
                             @empty
                             @endforelse
-                        </div> --}}
+                        </div>
 
                         <div class="col-md-6 text-center">
 
@@ -68,13 +69,13 @@
 
                     <div class="row">
                         <div class="col">
-                            @if(!empty($program->publicNotes))
+                            @if(!empty($program->public_notes))
                                 <hr />
 
                                 <h4  class="text-center">Additional Information:</h4>
 
                                 <ul>
-                                        <li>{{ $program->publicNote }}</li>
+                                        <li>{{ $program->public_notes }}</li>
                                 </ul>
                             @endif
                         </div>

@@ -44,6 +44,8 @@ class PurchaseTicketTest extends TestCase
     /** @test */
     public function can_purchase_tickets_for_a_published_program()
     {
+        //$orderConfirmationNumberGenerator->generate();
+        
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
 
         $response = $this->postJson($this->ordersUrlPath($program), [

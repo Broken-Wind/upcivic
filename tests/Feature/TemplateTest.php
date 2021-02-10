@@ -39,7 +39,6 @@ class TemplateTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSeeText('Add Program Template');
-        $response->assertSeeText('Edit');
         foreach ($templates as $template) {
             $response->assertSeeText($template['name']);
             $response->assertSeeText($template['internal_name']);

@@ -125,6 +125,6 @@ class TemplateController extends Controller
 
         $template->delete();
 
-        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Program has been deleted.');
+        return redirect()->route('tenant:admin.templates.index', tenant()['slug'])->withSuccess('Template has been deleted.');
     }
 }

@@ -24,11 +24,23 @@ class StripePaymentGatewayTest extends TestCase
         $paymentGateway = $this->getPaymentGateway();
 
         $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
-            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER));
         });
 
         $this->assertCount(1, $newCharges);
-        $this->assertEquals(2500, $newCharges->sum());
+        $this->assertEquals(2500, $newCharges->map->amount()->sum());
+    }
+
+
+    /** @test */
+    function can_get_details_about_a_successful_charge()
+    {
+        $paymentGateway = $this->getPaymentGateway();
+
+        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER));
+
+        $this->assertEquals(substr($paymentGateway::TEST_CARD_NUMBER, -4), $charge->cardLastFour());
+        $this->assertEquals(2500, $charge->amount());
     }
 
 }

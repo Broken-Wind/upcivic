@@ -14,20 +14,16 @@ class AdminDashboardTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function can_visit_dashboard()
+    public function can_visit_program_list()
     {
         $user = factory(User::class)->states('hasTenant')->create();
-
         $tenant = $user->tenants()->first();
 
         $response = $this->actingAs($user)->followingRedirects()->get('/home');
 
         $response->assertStatus(200);
-
-        $this->assertEquals(url()->current(), config('app.url')."/{$tenant->slug}/admin/home");
-
-        $response->assertSeeText('Welcome to Upcivic!');
-
+        $this->assertEquals(url()->current(), config('app.url')."/{$tenant->slug}/admin/programs");
+        $response->assertSeeText('Add program');
         $response->assertSeeText($tenant->name);
     }
 
@@ -45,13 +41,11 @@ class AdminDashboardTest extends TestCase
     public function user_cannot_visit_dashboard_if_not_member()
     {
         $user = factory(User::class)->create();
-
         $tenant = factory(Tenant::class)->create();
 
         $response = $this->actingAs($user)->followingRedirects()->get("/{$tenant->slug}/admin/home");
 
         $response->assertStatus(401);
-
         $response->assertDontSeeText($tenant->name);
     }
 
@@ -63,9 +57,7 @@ class AdminDashboardTest extends TestCase
         $response = $this->followingRedirects()->get("/{$tenant->slug}/admin/home");
 
         $response->assertViewIs('auth.login');
-
         $this->assertEquals(url()->current(), config('app.url').'/login');
-
         $response->assertDontSeeText($tenant->name);
     }
 }

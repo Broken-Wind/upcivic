@@ -32,7 +32,7 @@ class Reservation
     {
         $charge = $paymentGateway->charge($this->totalCost(), $paymentToken);
 
-        return Order::forTickets($this->tickets(), $this->email(), $this->totalCost(), $cardLastFour);
+        return Order::forTickets($this->tickets(), $this->email(), $charge);
     }
 
     public function cancel()

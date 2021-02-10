@@ -5,24 +5,13 @@ namespace Tests\Unit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Program;
+use App\Ticket;
+use App\Order;
 use App\Exceptions\NotEnoughTicketsException;
 
 class ProgramTest extends TestCase
 {
     use RefreshDatabase;
-
-    /** @test */
-    function can_order_program_tickets()
-    {
-        $program = factory(Program::class)->states('amCamp', 'published')->create();
-        $program->addTickets(3);
-
-        $order = $program->orderTickets('jane@example.com', 3);
-
-        $this->assertEquals('jane@example.com', $order->email); 
-        $this->assertEquals(3 , $order->ticketQuantity()); 
-
-    }
 
     /** @test */
     function can_add_program_tickets() 
@@ -37,46 +26,28 @@ class ProgramTest extends TestCase
     function tickets_remaining_does_not_include_tickets_associated_with_an_order()
     {
         $program = factory(Program::class)->states('amCamp', 'published')->create();
-        $program->addTickets(12);
-        $order = $program->orderTickets('jane@example.com', 3);
+        $program->tickets()->saveMany(factory(Ticket::class, 3)->create(['order_id' => 1]));
+        $program->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => null]));
 
-        $this->assertEquals(9 , $program->ticketsRemaining()); 
+        $this->assertEquals(2, $program->ticketsRemaining());
     }
 
     /** @test */
-    function trying_to_purchase_more_tickets_than_remain_throws_an_exception()
+    function trying_to_reserve_more_tickets_than_remain_throws_an_exception()
     {
         $program = factory(Program::class)->states('amCamp', 'published')->create();
         $program->addTickets(10);
 
         try {
-            $order = $program->orderTickets('jane@example.com', 11);
+            $reservation = $program->reserveTickets(11, 'dumitru@example.com');
         } catch (NotEnoughTicketsException $e) {
             $this->assertFalse($program->hasOrderFor('macarie@example.com'));
             $this->assertEquals(10 , $program->ticketsRemaining()); 
             return;
         }
             
-        $this->fail("Order succseeded eve though there were not enough tickets remaining.");
+        $this->fail("Order succseeded even though there were not enough tickets remaining.");
 
-    }
-
-    /** @test */
-    public function cannot_order_tickets_that_have_already_been_purchased()
-    {
-        $program = factory(Program::class)->states('amCamp', 'published')->create();
-        $program->addTickets(10);
-        $order = $program->orderTickets('jane@example.com', 8);
-
-        try {
-            $order = $program->orderTickets('ilona@example.com', 3);
-        } catch (NotEnoughTicketsException $e) {
-            $this->assertFalse($program->hasOrderFor('ilona@example.com'));
-            $this->assertEquals(2 , $program->ticketsRemaining()); 
-            return;
-        }
-        
-        $this->fail("Order succseeded eve though there were not enough tickets remaining.");
     }
 
     /** @test */
@@ -94,6 +65,23 @@ class ProgramTest extends TestCase
          }
 
          $this->fail("Reserving tickets succeeded even though the tickets were already reserved.");
+    }
+
+    /** @test */
+    function cannot_reserve_tickets_that_have_already_been_purchased()
+    {
+        $program = factory(Program::class)->create()->addTickets(3);
+        $order = factory(Order::class)->create();
+        $order->tickets()->saveMany($program->tickets->take(2));
+
+        try {
+            $program->reserveTickets(2, 'john@example.com');
+        } catch (NotEnoughTicketsException $e) {
+            $this->assertEquals(1, $program->ticketsRemaining());
+            return;
+        }
+
+        $this->fail("Reserving tickets succeeded even though the tickets were already sold.");
     }
 
     /** @test */

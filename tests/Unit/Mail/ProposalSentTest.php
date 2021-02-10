@@ -48,15 +48,11 @@ class ProposalSentTest extends TestCase
         ]);
 
         $email = new ProposalSent($proposal);
-
         $rendered = $email->render();
 
         $this->assertStringContainsString($proposal['sender']->name, $rendered);
-
         $this->assertStringContainsString($proposingOrganization->name, $rendered);
-
         $this->assertStringContainsString($recipientOrganization->name, $rendered);
-
         $this->assertStringContainsString(route('root'), $rendered);
     }
 

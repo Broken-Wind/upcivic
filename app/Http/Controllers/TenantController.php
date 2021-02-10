@@ -79,9 +79,11 @@ class TenantController extends Controller
         $tenant->organization->update([
             'name' => $validated['name'],
         ]);
-        $tenant->update([
-            'proposal_next_steps' => $validated['proposal_next_steps']
-        ]);
+        if (isset($validated['proposal_next_steps'])) {
+            $tenant->update([
+                'proposal_next_steps' => $validated['proposal_next_steps']
+            ]);
+        }
 
         return back()->withSuccess('Organization updated.');
     }

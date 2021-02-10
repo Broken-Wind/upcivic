@@ -43,4 +43,9 @@ class Person extends Model
     {
         return $this->hasMany(Instructor::class);
     }
+
+    public function getTitleAttribute()
+    {
+        return $this->administrator->title;
+    }
 }

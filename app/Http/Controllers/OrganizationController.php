@@ -36,9 +36,9 @@ class OrganizationController extends Controller
                 'first_name' => $validated->administrator['first_name'],
                 'last_name' => $validated->administrator['last_name'],
                 'email' => $validated->administrator['email'],
-                'phone' => $validated->administrator['phone'],
+                'phone' => $validated->administrator['phone'] ?? null,
             ]);
-            $organization->administrators()->save($administrator, ['title' => $validated->administrator['title']]);
+            $organization->administrators()->save($administrator, ['title' => $validated->administrator['title'] ?? null]);
             \Mail::send(new ListedAsAdministrator(\Auth::user(), $organization, $administrator));
         }
 

@@ -28,7 +28,7 @@ class OrganizationController extends Controller
 
         $organization = Organization::create([
             'name' => $validated->name,
-            'enrollment_url' => $validated->enrollment_url
+            'enrollment_url' => $validated->enrollment_url ?? ''
         ]);
 
         if ($validated->administrator['email']){
@@ -57,7 +57,7 @@ class OrganizationController extends Controller
         $organization->update([
 
             'name' => $validated['name'],
-            'enrollment_url' => $validated['enrollment_url'],
+            'enrollment_url' => $validated['enrollment_url'] ?? '',
 
         ]);
 

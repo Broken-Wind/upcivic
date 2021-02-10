@@ -37,7 +37,7 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
-    Route::post('/programs/{program}/orders', 'ProgramOrdersController@store')->name('programs.orders.store');  
+    Route::post('/programs/{program}/orders', 'ProgramOrdersController@store')->name('programs.orders.store');
     Route::get('/programs/{program}/orders/create', 'ProgramOrdersController@create')->name('programs.orders.create');
     Route::get('/programs/{program}/orders/show', 'ProgramOrdersController@show')->name('programs.orders.show');
 

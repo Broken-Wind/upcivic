@@ -1,7 +1,5 @@
 <?php
-
 namespace Tests\Feature;
-
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -13,49 +11,31 @@ use App\Organization;
 use App\Program;
 use App\Template;
 use App\User;
-
 class ProgramTest extends TestCase
 {
     use RefreshDatabase;
-
     /** @test */
     public function user_can_see_program_create_view()
     {
         $user = factory(User::class)->states('hasTenant')->create();
-
         $tenant = $user->tenants()->first();
-
         $template = factory(Template::class)->create(['organization_id' => $tenant->organization->id]);
-
         $response = $this->actingAs($user)->followingRedirects()->get("/{$tenant->slug}/admin/programs/create");
-
         $response->assertSeeText('Program');
-
         $response->assertSeeText('Site');
-
         $response->assertSeeText('Start Date');
-
         $response->assertSeeText('End Date');
-
     }
-
     /** @test */
     public function user_can_create_program()
     {
         $this->withoutExceptionHandling();
-
         Mail::fake();
-
         $user = factory(User::class)->states('hasTenant')->create();
-
         $tenant = $user->tenants()->first();
-
         $recipientOrganization = factory(Organization::class)->create();
-
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
-
         $template = factory(Template::class)->create([
-
             'name' => 'Template Name',
             'internal_name' => 'Internal Name',
             'description' => 'Long description',
@@ -71,41 +51,26 @@ class ProgramTest extends TestCase
             'meeting_count' => '3',
             'min_enrollments' => '11',
             'max_enrollments' => '111',
-
             'organization_id' => $tenant->organization->id,
-
-        ]);
+		]);
 
         $response = $this->actingAs($user)->followingRedirects()->post("/{$tenant->slug}/admin/programs", [
-
             'recipient_organization_id' => $recipientOrganization->id,
             'site_id' => null,
-            'programs' => [
-                0 => [
-                    'start_date' => '1212-01-01',
-                    'start_time' => '09:00',
-                    'end_date' => null,
-                    'end_time' => null,
-                    'template_id' => $template->id,
-                    'ages_type' => null,
-                    'min_age' => null,
-                    'max_age' => null,
-                ],
-
-            ],
-
-            'cc_emails' => [],
-
+			'start_date' => '1212-01-01',
+			'start_time' => '09:00',
+			'end_date' => null,
+			'end_time' => null,
+			'template_id' => $template->id,
+			'ages_type' => null,
+			'min_age' => null,
+			'max_age' => null,
         ]);
-
-        $tenant->refresh();
+		$tenant->refresh();
 
         $response->assertStatus(200);
-
-        Mail::assertSent(ProposalSent::class);
-
+        Mail::assertNotSent(ProposalSent::class);
         $program = Program::first();
-
         $this->assertEquals($program['name'], 'Template Name');
         $this->assertEquals($program['internal_name'], 'Internal Name');
         $this->assertEquals($program['description'], 'Long description');
@@ -122,28 +87,21 @@ class ProgramTest extends TestCase
         $this->assertEquals(Carbon::parse($program->meetings[0]['start_datetime'])->diffInDays($program->meetings[1]['start_datetime']), 7);
         $this->assertEquals($program->meetings->count(), 3);
     }
-
     /** @test */
     public function user_can_edit_program()
     {
         $this->withoutExceptionHandling();
-
         $user = factory(User::class)->states('hasTenant')->create();
-
         $tenant = $user->tenants()->first();
-
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
-
-        $program = factory(Program::class)->create();
-
+        $program = factory(Program::class)->state('amCamp')->create([
+            'proposing_organization_id' => $tenant->organization_id
+        ]);
         $contributor = new Contributor();
-
         $contributor['organization_id'] = $tenant->organization_id;
-
         $program->contributors()->save($contributor);
 
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}", [
-
             'name' => 'Sweet Radcamp',
             'internal_name' => 'Sweet',
             'description' => 'Radcamp',
@@ -154,13 +112,10 @@ class ProgramTest extends TestCase
             'max_age' => '99',
             'min_enrollments' => '393',
             'max_enrollments' => '494',
-
         ]);
-
-        $program->refresh();
+		$program->refresh();
 
         $response->assertStatus(200);
-
         $this->assertEquals($program['name'], 'Sweet Radcamp');
         $this->assertEquals($program['internal_name'], 'Sweet');
         $this->assertEquals($program['description'], 'Radcamp');
@@ -172,5 +127,4 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['min_enrollments'], '393');
         $this->assertEquals($program['max_enrollments'], '494');
     }
-
 }

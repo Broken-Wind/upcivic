@@ -166,6 +166,18 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ticket Code Salt
+    |--------------------------------------------------------------------------
+    |
+    | To ensure ticket codes cannot be guessed, a random salt should be set in .env
+    |
+    */
+
+    'ticket_code_salt' => env('TICKET_CODE_SALT'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Billing\PaymentGateway;  
-use App\Billing\PaymentFailedException;  
+use App\Billing\PaymentGateway;
+use App\Billing\PaymentFailedException;
 use App\Program;
 use App\Order;
 use App\Reservation;
@@ -44,7 +44,7 @@ class ProgramOrdersController extends Controller
 
             $order = $reservation->complete($this->paymentGateway, request('stripeToken'));
 
-            return response()->json($order, 201);
+            return redirect(tenant()->route('tenant:programs.orders.show', [$program, $order->confirmation_number]));
 
         } catch (PaymentFailedException $e) {
             $reservation->cancel();
@@ -54,11 +54,10 @@ class ProgramOrdersController extends Controller
         }
     }
 
-    public function show($confirmationNumber)
+    public function show(Program $program, $confirmationNumber)
     {
-        $programs = Program::all()->take(3);
         $order = Order::findByConfirmationNumber($confirmationNumber);
 
-        return view('tenant.programs.orders.show', compact('programs', 'order'));
+        return view('tenant.programs.orders.show', compact('program', 'order'));
     }
 }

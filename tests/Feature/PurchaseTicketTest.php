@@ -11,6 +11,9 @@ use App\Program;
 use App\OrderConfirmationNumberGenerator;
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
+use App\Facades\OrderConfirmationNumber;
+use App\Facades\TicketCode;
+use Mockery;
 
 class PurchaseTicketTest extends TestCase
 {
@@ -45,22 +48,26 @@ class PurchaseTicketTest extends TestCase
     /** @test */
     public function can_purchase_tickets_for_a_published_program()
     {
-        //$orderConfirmationNumberGenerator->generate();
-
+        OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
+        TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');;
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
+        $response = $this->orderTickets($program, [
             'stripeEmail' => 'macarie@example.com',
             'ticket_quantity' => 3,
             'stripeToken' => $this->paymentGateway->getValidTestToken(),
         ]);
 
         $response->assertStatus(201);
-
         $response->assertJson([
+            'confirmation_number' => 'ORDERCONFIRMATION1234',
             'email' => 'macarie@example.com',
-            'ticket_quantity' => 3,
             'amount' => 39000,
+            'tickets' => [
+                ['code' => 'TICKETCODE1'],
+                ['code' => 'TICKETCODE2'],
+                ['code' => 'TICKETCODE3'],
+            ],
         ]);
 
         $this->assertEquals(39000, $this->paymentGateway->totalCharges());
@@ -68,7 +75,7 @@ class PurchaseTicketTest extends TestCase
         $this->assertTrue($program->hasOrderFor('macarie@example.com'));
         $this->assertEquals(3, $program->ordersFor('macarie@example.com')->first()->ticketQuantity());
     }
-    
+
     /** @test */
     function cannot_purchase_tickets_another_customer_is_already_trying_to_purchase()
     {
@@ -130,7 +137,7 @@ class PurchaseTicketTest extends TestCase
     /** @test */
     function ticket_quantity_is_required_to_purchase_rerigstrations()
     {
-        $this->app->instance(PaymentGateway::class, $this->paymentGateway); 
+        $this->app->instance(PaymentGateway::class, $this->paymentGateway);
 
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
@@ -155,7 +162,7 @@ class PurchaseTicketTest extends TestCase
         ]);
 
         $response->assertStatus(422);
-        $this->assertArrayHasKey('ticket_quantity', $response->decodeResponseJson()['errors']); 
+        $this->assertArrayHasKey('ticket_quantity', $response->decodeResponseJson()['errors']);
 
     }
 
@@ -170,7 +177,7 @@ class PurchaseTicketTest extends TestCase
         ]);
 
         $response->assertStatus(422);
-        $this->assertArrayHasKey('stripeToken', $response->decodeResponseJson()['errors']); 
+        $this->assertArrayHasKey('stripeToken', $response->decodeResponseJson()['errors']);
 
     }
 
@@ -210,9 +217,9 @@ class PurchaseTicketTest extends TestCase
     }
 
     /** @test */
-    function cannot_purchase_more_tickets_than_remain() 
+    function cannot_purchase_more_tickets_than_remain()
     {
-        $program = factory(Program::class)->states('amCamp', 'published')->create(); 
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
         $program->addTickets(50);
 
         $response = $this->postJson($this->ordersUrlPath($program), [
@@ -226,6 +233,5 @@ class PurchaseTicketTest extends TestCase
 
         $this->assertEquals(0, $this->paymentGateway->totalCharges());
         $this->assertEquals(50, $program->ticketsRemaining());
-
     }
 }

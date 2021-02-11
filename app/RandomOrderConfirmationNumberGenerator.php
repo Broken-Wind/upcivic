@@ -15,6 +15,6 @@ class RandomOrderConfirmationNumberGenerator implements OrderConfirmationNumberG
         return $confirmationNumber;
 
     }
-    
+
 }
 

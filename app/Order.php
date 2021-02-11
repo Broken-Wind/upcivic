@@ -18,9 +18,7 @@ class Order extends Model
             'card_last_four' => $charge->cardLastFour(),
         ]);
 
-        foreach ($tickets as $ticket) {
-            $order->tickets()->save($ticket);
-        }
+        $tickets->each->claimFor($order);
 
         return $order;
     }
@@ -48,13 +46,13 @@ class Order extends Model
     public function toArray()
     {
         return [
-            //'confirmation_number' => $this->confirmation_number,
+            'confirmation_number' => $this->confirmation_number,
             'email' => $this->email,
             'amount' => $this->amount,
             'ticket_quantity' => $this->ticketQuantity(),
-            // 'tickets' => $this->tickets->map(function ($ticket) {
-            //     return ['code' => $ticket->code];
-            // })->all(),
+            'tickets' => $this->tickets->map(function ($ticket) {
+                return ['code' => $ticket->code];
+            })->all(),
         ];
     }
 }

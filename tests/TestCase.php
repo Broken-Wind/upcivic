@@ -8,6 +8,7 @@ use Illuminate\Database\Schema\SQLiteBuilder;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Fluent;
+use Mockery;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -22,7 +23,7 @@ abstract class TestCase extends BaseTestCase
     protected function setUp() :void
     {
         parent::setUp();
-
+        Mockery::getConfiguration()->allowMockingNonExistentMethods(false);
         $this->artisan('db:seed', ['--class' => 'DatabaseSeeder']);
     }
 

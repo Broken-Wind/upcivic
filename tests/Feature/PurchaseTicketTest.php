@@ -13,11 +13,53 @@ use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
+use Illuminate\Http\Request;
 use Mockery;
 
 class PurchaseTicketTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function validParams($overrides = [])
+    {
+        return array_merge([
+            'stripeEmail' => 'personA@example.com',
+            'ticket_quantity' => 3,
+            'stripeToken' => $this->paymentGateway->getValidTestToken(),
+            'participants' => [
+                [
+                    'first_name' => 'Lefty',
+                    'last_name' => 'Hefty',
+                    'birthday' => Carbon::parse('-2 years')->format('Y-m-d'),
+                    'needs' => 'Really cool pants.',
+                ],
+                [
+                    'first_name' => 'Lucy',
+                    'last_name' => 'Hucy',
+                    'birthday' => Carbon::parse('-9 years')->format('Y-m-d'),
+                    'needs' => '18 dandelions.',
+                ],
+                [
+                    'first_name' => 'Testy',
+                    'last_name' => 'Hesty',
+                    'birthday' => Carbon::parse('-15 years')->format('Y-m-d'),
+                    'needs' => 'Better parenting.',
+                ],
+            ],
+            'primary_contact' => [
+                'first_name' => 'John',
+                'last_name' => 'Smithenstein',
+                'phone' => '2342342345',
+                'alternate_phone' => '222.222.2222',
+            ],
+            'alternate_contact' => [
+                'first_name' => 'Slon',
+                'last_name' => 'Jonenstein',
+                'phone' => '666-234-4213',
+                'alternate_phone' => '555.333.6666',
+            ],
+        ], $overrides);
+    }
 
     protected function setUp(): void
     {
@@ -38,7 +80,7 @@ class PurchaseTicketTest extends TestCase
         $savedRequest = $this->app['request'];
 
         $ordersPath = $this->ordersUrlPath($program);
-        $response = $this->response = $this->postJson($ordersPath, $params);
+        $response = $this->response = $this->followingRedirects()->postJson($ordersPath, $params);
 
         $this->app['request'] = $savedRequest;
 
@@ -51,27 +93,19 @@ class PurchaseTicketTest extends TestCase
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');;
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
+        $tenantSlug = $program->contributors->first()->organization->tenant->slug;
 
-        $response = $this->orderTickets($program, [
-            'stripeEmail' => 'macarie@example.com',
-            'ticket_quantity' => 3,
-            'stripeToken' => $this->paymentGateway->getValidTestToken(),
-        ]);
+        $response = $this->orderTickets($program, $this->validParams(['stripeEmail' => 'macarie@example.com']));
 
-        $response->assertStatus(201);
-        $response->assertJson([
-            'confirmation_number' => 'ORDERCONFIRMATION1234',
-            'email' => 'macarie@example.com',
-            'amount' => 39000,
-            'tickets' => [
-                ['code' => 'TICKETCODE1'],
-                ['code' => 'TICKETCODE2'],
-                ['code' => 'TICKETCODE3'],
-            ],
-        ]);
-
+        $response->assertStatus(200);
+        $this->assertEquals(url()->current(), config('app.url')."/{$tenantSlug}/programs/{$program->id}/orders/ORDERCONFIRMATION1234");
+        // $response->assertSeeText('macarie@example.com');
+        $response->assertSeeText('ORDERCONFIRMATION1234');
+        $response->assertSeeText('$390.00');
+        $response->assertSeeText('TICKETCODE1');
+        $response->assertSeeText('TICKETCODE2');
+        $response->assertSeeText('TICKETCODE3');
         $this->assertEquals(39000, $this->paymentGateway->totalCharges());
-
         $this->assertTrue($program->hasOrderFor('macarie@example.com'));
         $this->assertEquals(3, $program->ordersFor('macarie@example.com')->first()->ticketQuantity());
     }
@@ -82,22 +116,17 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
 
         $this->paymentGateway->beforeFirstCharge(function ($paymentGateway) use ($program) {
-            $response = $this->orderTickets($program, [
-                'stripeEmail' => 'personB@example.com',
-                'ticket_quantity' => 1,
-                'stripeToken' => $this->paymentGateway->getValidTestToken(),
-            ]);
+            $response = $this->orderTickets($program, $this->validParams([
+                'stripeEmail' => 'cool@mc.dude',
+                'ticket_quantity' => 1
+            ]));
 
             $response->assertStatus(422);
             $this->assertFalse($program->hasOrderFor('personB@example.com'));
             $this->assertEquals(0, $this->paymentGateway->totalCharges());
         });
 
-        $this->orderTickets($program, [
-            'stripeEmail' => 'personA@example.com',
-            'ticket_quantity' => 3,
-            'stripeToken' => $this->paymentGateway->getValidTestToken(),
-        ]);
+        $this->orderTickets($program, $this->validParams());
 
         $this->assertEquals(39000, $this->paymentGateway->totalCharges());
         $this->assertTrue($program->hasOrderFor('personA@example.com'));
@@ -109,10 +138,9 @@ class PurchaseTicketTest extends TestCase
     {
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'ticket_quantity' => 3,
-            'stripeToken' => $this->paymentGateway->getValidTestToken(),
-        ]);
+        $params = $this->validParams();
+        unset($params['stripeEmail']);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
 
         $response->assertStatus(422);
         $this->assertArrayHasKey('stripeEmail', $response->decodeResponseJson()['errors']);
@@ -120,15 +148,76 @@ class PurchaseTicketTest extends TestCase
     }
 
     /** @test */
-    function email_must_be_valid_to_purchase_rerigstrations()
+    function participants_array_required()
     {
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'stripeEmail' => 'not-an-email-address',
-            'ticket_quantity' => 3,
-            'stripeToken' => $this->paymentGateway->getValidTestToken(),
-        ]);
+        $params = $this->validParams();
+        unset($params['participants']);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('participants');
+    }
+
+    /** @test */
+    function participant_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $params = $this->validParams();
+        $params['participants'] = [];
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('participants');
+    }
+
+    /** @test */
+    function participant_first_name_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+        $params = $this->validParams();
+        unset($params['participants'][1]['first_name']);
+
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('participants.1.first_name');
+    }
+
+    /** @test */
+    function participant_last_name_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+        $params = $this->validParams();
+        unset($params['participants'][1]['last_name']);
+
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('participants.1.last_name');
+    }
+
+    /** @test */
+    function participant_birthday_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+        $params = $this->validParams();
+        unset($params['participants'][1]['birthday']);
+
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('participants.1.birthday');
+    }
+
+    /** @test */
+    function email_must_be_valid_to_purchase_tickets()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $response = $this->postJson($this->ordersUrlPath($program), $this->validParams(['stripeEmail' => 'not-an-email-address']));
 
         $response->assertStatus(422);
         $this->assertArrayHasKey('stripeEmail', $response->decodeResponseJson()['errors']);
@@ -138,13 +227,11 @@ class PurchaseTicketTest extends TestCase
     function ticket_quantity_is_required_to_purchase_rerigstrations()
     {
         $this->app->instance(PaymentGateway::class, $this->paymentGateway);
-
         $program = factory(Program::class)->states('amCamp', 'published')->create();
+        $params = $this->validParams();
+        unset($params['ticket_quantity']);
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'stripeEmail' => 'not-an-email-address',
-            'stripeToken' => $this->paymentGateway->getValidTestToken(),
-        ]);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
 
         $response->assertStatus(422);
         $this->assertArrayHasKey('ticket_quantity', $response->decodeResponseJson()['errors']);
@@ -155,11 +242,7 @@ class PurchaseTicketTest extends TestCase
     {
         $program = factory(Program::class)->states('amCamp', 'published')->create();
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'stripeEmail' => 'macarie@example.com',
-            'ticket_quantity' => 0,
-            'stripeToken' => $this->paymentGateway->getValidTestToken(),
-        ]);
+        $response = $this->postJson($this->ordersUrlPath($program), $this->validParams(['ticket_quantity' => 0]));
 
         $response->assertStatus(422);
         $this->assertArrayHasKey('ticket_quantity', $response->decodeResponseJson()['errors']);
@@ -170,11 +253,10 @@ class PurchaseTicketTest extends TestCase
     function payment_token_is_required()
     {
         $program = factory(Program::class)->states('amCamp', 'published')->create();
+        $params = $this->validParams();
+        unset($params['stripeToken']);
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'stripeEmail' => 'macarie@example.com',
-            'ticket_quantity' => 0,
-        ]);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
 
         $response->assertStatus(422);
         $this->assertArrayHasKey('stripeToken', $response->decodeResponseJson()['errors']);
@@ -187,11 +269,9 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
         $program->addTickets(3);
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'stripeEmail' => 'macarie@example.com',
-            'ticket_quantity' => 3,
+        $response = $this->postJson($this->ordersUrlPath($program), $this->validParams([
             'stripeToken' => 'invalid-payment-token',
-        ]);
+        ]));
 
         $response->assertStatus(422);
         $this->assertFalse($program->hasOrderFor('macarie@example.com'));
@@ -205,11 +285,7 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'unpublished')->create();
         $program->addTickets(3);
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'stripeEmail' => 'macarie@example.com',
-            'ticket_quantity' => 3,
-            'stripeToken' => $this->paymentGateway->getValidTestToken()
-        ]);
+        $response = $this->postJson($this->ordersUrlPath($program), $this->validParams());
 
         $response->assertStatus(404);
         $this->assertEquals(0, $program->orders()->count());
@@ -222,11 +298,9 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
         $program->addTickets(50);
 
-        $response = $this->postJson($this->ordersUrlPath($program), [
-            'stripeEmail' => 'macarie@example.com',
-            'ticket_quantity' => 51,
-            'stripeToken' => $this->paymentGateway->getValidTestToken()
-        ]);
+        $response = $this->postJson($this->ordersUrlPath($program), $this->validParams([
+            'ticket_quantity' => 51
+        ]));
 
         $response->assertStatus(422);
         $this->assertFalse($program->hasOrderFor('macarie@example.com'));

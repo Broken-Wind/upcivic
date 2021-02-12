@@ -9,6 +9,7 @@ use App\Program;
 use App\Order;
 use App\Reservation;
 use App\Exceptions\NotEnoughTicketsException;
+use App\Http\Requests\StoreProgramOrder;
 
 class ProgramOrdersController extends Controller
 {
@@ -29,20 +30,14 @@ class ProgramOrdersController extends Controller
         return view('tenant.programs.orders.create', compact('program', 'numberOfSpots'));
     }
 
-    public function store(Program $program)
+    public function store(StoreProgramOrder $request, Program $program)
     {
         $program = Program::publishedForTenant()->findOrFail($program->id);
-
-        $this->validate(request(), [
-            'stripeEmail' => ['required', 'email'],
-            'ticket_quantity' => ['required', 'integer', 'min:1'],
-            'stripeToken' => ['required'],
-        ]);
-
+        $validated = $request->validated();
         try {
-            $reservation = $program->reserveTickets(request('ticket_quantity'), request('stripeEmail'));
+            $reservation = $program->reserveTickets($validated['ticket_quantity'], $validated['stripeEmail']);
 
-            $order = $reservation->complete($this->paymentGateway, request('stripeToken'));
+            $order = $reservation->complete($this->paymentGateway, $validated['stripeToken']);
 
             return redirect(tenant()->route('tenant:programs.orders.show', [$program, $order->confirmation_number]));
 

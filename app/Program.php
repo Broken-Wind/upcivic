@@ -222,6 +222,15 @@ class Program extends Model
         return $this->getContributorFromTenant()->published_at;
     }
 
+    public function getParticipantsAttribute()
+    {
+        return $this->tickets->map(function ($ticket) {
+            return $ticket->participant;
+        })->filter(function ($participant) {
+            return !empty($participant);
+        });
+    }
+
     public static function createExample($organization)
     {
         $exampleOrg = Organization::where('name', 'Exampleville Parks & Recreation')->firstOrFail();

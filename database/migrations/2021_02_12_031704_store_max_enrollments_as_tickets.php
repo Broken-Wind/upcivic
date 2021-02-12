@@ -24,6 +24,10 @@ class StoreMaxEnrollmentsAsTickets extends Migration
         Schema::table('programs', function (Blueprint $table) {
             //
             $table->dropColumn('enrollments');
+        });
+
+        Schema::table('programs', function (Blueprint $table) {
+            //
             $table->dropColumn('max_enrollments');
         });
 

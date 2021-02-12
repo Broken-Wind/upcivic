@@ -101,15 +101,25 @@ class PurchaseTicketTest extends TestCase
         $this->assertEquals(url()->current(), config('app.url')."/{$tenantSlug}/programs/{$program->id}/orders/ORDERCONFIRMATION1234");
         // $response->assertSeeText('macarie@example.com');
         $response->assertSeeText('ORDERCONFIRMATION1234');
-        $response->assertSeeText('$390.00');
+        $response->assertSeeText('$99.00');
         $response->assertSeeText('TICKETCODE1');
         $response->assertSeeText('TICKETCODE2');
         $response->assertSeeText('TICKETCODE3');
-        $this->assertEquals(39000, $this->paymentGateway->totalCharges());
+        $this->assertEquals(9900, $this->paymentGateway->totalCharges());
         $this->assertTrue($program->hasOrderFor('personA@example.com'));
         $order = $program->ordersFor('personA@example.com')->first();
         $this->assertEquals(3, $order->ticketQuantity());
         $this->assertEquals(['Lefty', 'Lucy', 'Testy'], $program->participants->pluck('first_name')->toArray());
+    }
+    /** @test */
+    public function cannot_purchase_tickets_when_no_internal_registration()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create(['internal_registration' => false])->addTickets(3);
+
+        $response = $this->orderTickets($program, $this->validParams());
+
+        $response->assertStatus(401);
+        $this->assertCount(0, $program->participants);
     }
 
     /** @test */
@@ -130,7 +140,7 @@ class PurchaseTicketTest extends TestCase
 
         $this->orderTickets($program, $this->validParams());
 
-        $this->assertEquals(39000, $this->paymentGateway->totalCharges());
+        $this->assertEquals(9900, $this->paymentGateway->totalCharges());
         $this->assertTrue($program->hasOrderFor('personA@example.com'));
         $this->assertEquals(3, $program->ordersFor('personA@example.com')->first()->ticketQuantity());
     }

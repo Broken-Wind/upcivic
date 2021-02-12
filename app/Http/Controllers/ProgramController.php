@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contributor;
 use App\County;
+use App\Exceptions\CannotManuallyUpdateInternalRegistrationsException;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\ApproveProgram;
 use App\Http\Requests\RejectProgram;
@@ -235,8 +236,13 @@ class ProgramController extends Controller
             'min_age' => $validated['min_age'],
             'max_age' => $validated['max_age'],
             'min_enrollments' => $validated['min_enrollments'],
-            'max_enrollments' => $validated['max_enrollments'],
         ]);
+
+        try {
+            $program->updateEnrollments($request['enrollments'] ?? null, $request['max_enrollments']);
+        } catch (CannotManuallyUpdateInternalRegistrationsException $e) {
+            return back()->withErrors(['error' => 'Cannot update enrollments manually for sessions accepting internal registrations.']);
+        }
 
         return back()->withSuccess('Program updated successfully.');
     }

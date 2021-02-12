@@ -80,7 +80,7 @@ class ReservationTest extends TestCase
 
         $this->assertEquals('john@example.com', $order->email);
         $this->assertEquals(3, $order->ticketQuantity());
-        $this->assertEquals(39000, $order->amount);
-        $this->assertEquals(39000, $paymentGateway->totalCharges());
+        $this->assertEquals(9900, $order->amount);
+        $this->assertEquals(9900, $paymentGateway->totalCharges());
     }
 }

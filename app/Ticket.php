@@ -48,6 +48,6 @@ class Ticket extends Model
 
     public function getPriceAttribute()
     {
-        return $this->program->contributors->first()->invoice_amount;
+        return $this->program->price;
     }
 }

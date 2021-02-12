@@ -312,15 +312,15 @@ class Program extends Model
     }
 
 
-    public function updateEnrollments(Array $fresh_enrollments) {
-        if (!empty($this->price)) {
+    public function updateEnrollments($enrollments, $maxEnrollments) {
+        if ($this->allowsRegistration()) {
             throw new CannotManuallyUpdateInternalRegistrationsException();
         }
-        $this->setEnrollments($fresh_enrollments[0]);
-        $this->setMaxEnrollments($fresh_enrollments[1]);
-        $this->update([
-            'enrollments_updated' => now(),
-        ]);
+        $this->setEnrollments($enrollments);
+        $this->setMaxEnrollments($maxEnrollments);
+        // $this->update([
+        //     'enrollments_updated' => now(),
+        // ]);
     }
 
     public function setEnrollments($updatedEnrollments) {
@@ -674,8 +674,8 @@ class Program extends Model
         return $this->orders()->where('email', $customerEmail)->get();
     }
 
-    public function getPriceAttribute()
+    public function allowsRegistration()
     {
-        return $this->contributors->sum('invoice_amount');
+        return $this->internal_registration;
     }
 }

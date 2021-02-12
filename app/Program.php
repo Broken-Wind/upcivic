@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\CannotManuallyUpdateInternalRegistrationsException;
 use App\Http\Concerns\Filterable;
 use App\Http\Concerns\HasDatetimeRange;
 use App\Mail\ProposalSent;
@@ -261,10 +262,10 @@ class Program extends Model
                     'min_age' => $proposal['min_age'] ?? $template['min_age'],
                     'max_age' => $proposal['max_age'] ?? $template['max_age'],
                     'min_enrollments' => $template['min_enrollments'],
-                    'max_enrollments' => $template['max_enrollments'],
                     'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()->organization_id,
                     'proposed_at' => $proposal['proposed_at'] ?? null,
                 ]);
+                $program->addTickets($template['max_enrollments']);
                 $proposingContributor = new Contributor([
                     'internal_name' => $template['internal_name'],
                     'invoice_amount' => $template['invoice_amount'],
@@ -310,6 +311,49 @@ class Program extends Model
         return $program;
     }
 
+
+    public function updateEnrollments(Array $fresh_enrollments) {
+        if (!empty($this->price)) {
+            throw new CannotManuallyUpdateInternalRegistrationsException();
+        }
+        $this->setEnrollments($fresh_enrollments[0]);
+        $this->setMaxEnrollments($fresh_enrollments[1]);
+        $this->update([
+            'enrollments_updated' => now(),
+        ]);
+    }
+
+    public function setEnrollments($updatedEnrollments) {
+        $diff = $updatedEnrollments - $this->enrollments;
+        if ($diff > 0) {
+            return $this->claimAnonymousTickets($diff);
+        }
+        return $this->releaseAnonymousTickets(abs($diff));
+    }
+
+    public function setMaxEnrollments($updatedMaxEnrollments) {
+        $diff = $updatedMaxEnrollments - $this->max_enrollments;
+        if ($diff > 0) {
+            return $this->addTickets($diff);
+        }
+        return $this->removeTickets(abs($diff));
+    }
+
+    public function removeTickets($diff)
+    {
+        $this->tickets()->available()->take($diff)->delete();
+    }
+
+    public function claimAnonymousTickets($diff)
+    {
+        $this->tickets()->available()->take($diff)->update(['order_id' => 0]);
+    }
+
+    public function releaseAnonymousTickets($diff)
+    {
+        $this->tickets()->unavailable()->take($diff)->update(['order_id' => null]);
+    }
+
     public function getResourceIdAttribute()
     {
         $locationIds = $this->meetings->pluck('location_id')->filter(function ($locationId) {
@@ -339,6 +383,16 @@ class Program extends Model
     public function getNextMeetingEndDatetimeAttribute()
     {
         return $this->meetings->sortByDesc('start_datetime')->first()['end_datetime']->addDays($this['meeting_interval'])->format('Y-m-d\TH:i');
+    }
+
+    public function getMaxEnrollmentsAttribute()
+    {
+        return $this->tickets()->count();
+    }
+
+    public function getEnrollmentsAttribute()
+    {
+        return $this->tickets()->unavailable()->count();
     }
 
     public function getMeetingIntervalAttribute()

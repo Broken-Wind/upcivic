@@ -79,7 +79,7 @@ class ProgramTest extends TestCase
         $this->assertEquals($program['min_age'], '12');
         $this->assertEquals($program['max_age'], '13');
         $this->assertEquals($program['min_enrollments'], '11');
-        $this->assertEquals($program['max_enrollments'], '111');
+        $this->assertEquals($program->tickets->count(), '111');
         $this->assertEquals($program['ages_type'], 'grades');
         $this->assertEquals($program['formatted_base_fee'], '11.99');
         $this->assertEquals($program['start_time'], '9:00am');

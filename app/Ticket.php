@@ -36,6 +36,11 @@ class Ticket extends Model
         return $this->belongsTo(Program::class);
     }
 
+    public function participant()
+    {
+        return $this->belongsTo(Participant::class);
+    }
+
     public function getPriceAttribute()
     {
         return $this->program->contributors->first()->invoice_amount;

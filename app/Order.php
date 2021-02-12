@@ -43,6 +43,39 @@ class Order extends Model
         return self::where('confirmation_number', $confirmationNumber)->firstOrFail();
     }
 
+    public function attachParticipants($participants, $email, $primaryContact, $alternateContact)
+    {
+        $participants = array_values($participants);
+        if ($this->tickets->count() != count($participants)) {
+            abort(500);
+        }
+        $primaryContact = Person::create([
+            'first_name' => $primaryContact['first_name'],
+            'last_name' => $primaryContact['last_name'],
+            'email' => $email,
+            'phone' => $primaryContact['phone'],
+        ]);
+        if (!empty($alternateContact['first_name'])) {
+            $alternateContact = Person::create([
+                'first_name' => $alternateContact['first_name'],
+                'last_name' => $alternateContact['last_name'],
+                'phone' => $alternateContact['phone'],
+            ]);
+        }
+        $this->tickets->each(function ($ticket, $key) use ($participants, $primaryContact, $alternateContact) {
+            $participant = $participants[$key];
+            $participant = Participant::create([
+                'first_name' => $participant['first_name'],
+                'last_name' => $participant['last_name'],
+                'birthday' => $participant['birthday'],
+                'needs' => $participant['needs']
+            ]);
+            $participant->contacts()->attach($primaryContact);
+            $participant->contacts()->attach($alternateContact);
+            $participant->tickets()->save($ticket);
+        });
+    }
+
     public function toArray()
     {
         return [

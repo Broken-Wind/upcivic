@@ -33,6 +33,10 @@ class StoreProgramOrder extends FormRequest
             'participants.*.first_name' => 'required|string',
             'participants.*.last_name' => 'required|string',
             'participants.*.birthday' => 'required|string',
+            'primary_contact' => 'required|array',
+            'primary_contact.first_name' => 'required|string',
+            'primary_contact.last_name' => 'required|string',
+            'primary_contact.phone' => 'required|string',
         ];
     }
 }

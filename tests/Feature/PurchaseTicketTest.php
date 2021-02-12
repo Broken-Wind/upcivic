@@ -95,7 +95,7 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
         $tenantSlug = $program->contributors->first()->organization->tenant->slug;
 
-        $response = $this->orderTickets($program, $this->validParams(['stripeEmail' => 'macarie@example.com']));
+        $response = $this->orderTickets($program, $this->validParams());
 
         $response->assertStatus(200);
         $this->assertEquals(url()->current(), config('app.url')."/{$tenantSlug}/programs/{$program->id}/orders/ORDERCONFIRMATION1234");
@@ -106,8 +106,10 @@ class PurchaseTicketTest extends TestCase
         $response->assertSeeText('TICKETCODE2');
         $response->assertSeeText('TICKETCODE3');
         $this->assertEquals(39000, $this->paymentGateway->totalCharges());
-        $this->assertTrue($program->hasOrderFor('macarie@example.com'));
-        $this->assertEquals(3, $program->ordersFor('macarie@example.com')->first()->ticketQuantity());
+        $this->assertTrue($program->hasOrderFor('personA@example.com'));
+        $order = $program->ordersFor('personA@example.com')->first();
+        $this->assertEquals(3, $order->ticketQuantity());
+        $this->assertEquals(['Lefty', 'Lucy', 'Testy'], $program->participants->pluck('first_name')->toArray());
     }
 
     /** @test */
@@ -145,6 +147,58 @@ class PurchaseTicketTest extends TestCase
         $response->assertStatus(422);
         $this->assertArrayHasKey('stripeEmail', $response->decodeResponseJson()['errors']);
 
+    }
+
+    /** @test */
+    function primary_contact_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $params = $this->validParams();
+        unset($params['primary_contact']);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('primary_contact');
+    }
+
+    /** @test */
+    function primary_contact_first_name_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $params = $this->validParams();
+        unset($params['primary_contact']['first_name']);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('primary_contact.first_name');
+    }
+
+    /** @test */
+    function primary_contact_last_name_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $params = $this->validParams();
+        unset($params['primary_contact']['last_name']);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('primary_contact.last_name');
+    }
+
+    /** @test */
+    function primary_contact_phone_required()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create();
+
+        $params = $this->validParams();
+        unset($params['primary_contact']['phone']);
+        $response = $this->postJson($this->ordersUrlPath($program), $params);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('primary_contact.phone');
     }
 
     /** @test */

@@ -19,6 +19,7 @@
                         </label>
                         </div>
                     @empty
+                        No instructors yet. Add an istructor <a href="" data-toggle="modal" data-target="#add-instructor-modal">here</a>.
                     @endforelse
                 </form>
             </div>

@@ -32,7 +32,7 @@ class OrderConfirmationEmail extends Mailable
     public function build()
     {
         $message = $this->markdown('emails.order_confirmation')
-                    ->subject("You're enrolled for " . $this->program->name . '!');
+                    ->subject("You're enrolled for {$this->program->name}!");
         return $message;
     }
 }

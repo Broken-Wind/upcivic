@@ -21,7 +21,7 @@ You're enrolled! Here are your order details:
 @endcomponent
 @endforeach
 
-@component('mail::button', ['url' => tenant()->route('tenant:programs.orders.show', [$program, $order->confirmation_number])])
+@component('mail::button', ['url' => $tenant->route('tenant:programs.orders.show', [$program, $order->confirmation_number])])
 View details on {{ config('app.name') }}
 @endcomponent
 

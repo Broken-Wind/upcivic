@@ -55,11 +55,4 @@ class ProposalSentTest extends TestCase
         $this->assertStringContainsString($recipientOrganization->name, $rendered);
         $this->assertStringContainsString(route('root'), $rendered);
     }
-
-    public function render($mailable)
-    {
-        $mailable->build();
-
-        return view($mailable->view(), $mailable->buildViewData())->render();
-    }
 }

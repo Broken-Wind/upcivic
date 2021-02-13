@@ -42,11 +42,4 @@ class OrderConfirmationTest extends TestCase
         $this->assertEquals("You're enrolled for {$program->name }!", $email->build()->subject);
 
     }
-
-    public function render($mailable)
-    {
-        $mailable->build();
-
-        return view($mailable->view(), $mailable->buildViewData())->render();
-    }
 }

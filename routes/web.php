@@ -28,7 +28,6 @@ Route::group(['middleware' => 'verified'], function () {
     Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
 });
 
-Route::get('orders/{confirmationNumber}', 'ProgramOrdersController@show')->name('programs.orders.show');
 
 Route::group([
     'prefix' => '/{tenant}',
@@ -37,9 +36,9 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
+    Route::get('/programs/{program}/orders/{confirmationNumber}', 'ProgramOrdersController@show')->name('programs.orders.show');
     Route::post('/programs/{program}/orders', 'ProgramOrdersController@store')->name('programs.orders.store');
     Route::get('/programs/{program}/orders/create', 'ProgramOrdersController@create')->name('programs.orders.create');
-    Route::get('/programs/{program}/orders/{confirmationNumber}', 'ProgramOrdersController@show')->name('programs.orders.show');
 
     Route::get('/programs', 'RegistrationController@index')->name('programs.index');
     Route::get('/programs/{program}', 'RegistrationController@show')->name('programs.show');

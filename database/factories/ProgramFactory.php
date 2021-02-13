@@ -75,5 +75,5 @@ $factory->afterCreatingState(Program::class, 'withParticipants', function (Progr
     $tickets = factory(Ticket::class, 3)->state('withParticipant')->create([
         'program_id' => $program->id
     ]);
-    $program->tickets()->attach($tickets);
+    $program->tickets()->saveMany($tickets);
 });

@@ -10,6 +10,7 @@ use App\Order;
 use App\Reservation;
 use App\Exceptions\NotEnoughTicketsException;
 use App\Http\Requests\StoreProgramOrder;
+use App\Mail\OrderConfirmationEmail;
 
 class ProgramOrdersController extends Controller
 {
@@ -40,6 +41,8 @@ class ProgramOrdersController extends Controller
 
             $order = $reservation->complete($this->paymentGateway, $validated['stripeToken']);
             $order->attachParticipants($validated['participants'], $validated['stripeEmail'], $validated['primary_contact'], $validated['alternate_contact'] ?? null);
+
+            \Mail::to($order->email)->send(new OrderConfirmationEmail($order, tenant(), $program));
 
             return redirect(tenant()->route('tenant:programs.orders.show', [$program, $order->confirmation_number]));
 

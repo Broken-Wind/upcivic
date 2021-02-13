@@ -18,7 +18,7 @@ class RosterTest extends TestCase
 
     protected function getProgramWithEnrollments(Tenant $tenant)
     {
-        $program = factory(Program::class)->state('amCamp', 'published', 'withParticipants')->create([
+        $program = factory(Program::class)->states(['amCamp', 'published', 'withParticipants'])->create([
             'proposing_organization_id' => $tenant->organization_id,
         ]);
         $contributor = new Contributor();
@@ -39,14 +39,18 @@ class RosterTest extends TestCase
 
         $response->assertStatus(200);
 
+        $this->assertEquals($program->tickets->count(), 3);
         $program->tickets->each(function ($ticket) use ($response) {
             $participant = $ticket->participant;
+            $this->assertNotNull($participant->first_name);
             $response->assertSeeText($participant->first_name);
             $response->assertSeeText($participant->last_name);
             $response->assertSeeText($participant->needs);
             $response->assertSeeText($ticket->code);
             $response->assertSeeText($ticket->order_confirmation_number);
+            $this->assertEquals($participant->contacts->count(), 1);
             $participant->contacts->each(function ($contact) use ($response) {
+                $this->assertNotNull($contact->first_name);
                 $response->assertSeeText($contact->first_name);
                 $response->assertSeeText($contact->last_name);
                 $response->assertSeeText($contact->phone);
@@ -68,14 +72,19 @@ class RosterTest extends TestCase
 
         $response->assertStatus(401);
 
+        $this->assertEquals($program->tickets->count(), 3);
         $program->tickets->each(function ($ticket) use ($response) {
             $participant = $ticket->participant;
+            $this->assertNotNull($participant->first_name);
             $response->assertDontSeeText($participant->first_name);
             $response->assertDontSeeText($participant->last_name);
             $response->assertDontSeeText($participant->needs);
             $response->assertDontSeeText($ticket->code);
-            $response->assertDontSeeText($ticket->order_confirmation_number);
+            $response->assertDontSeeText($ticket->order->confirmation_number);
+            $this->assertEquals($participant->contacts->count(), 1);
             $participant->contacts->each(function ($contact) use ($response) {
+
+                $this->assertNotNull($contact->first_name);
                 $response->assertDontSeeText($contact->first_name);
                 $response->assertDontSeeText($contact->last_name);
                 $response->assertDontSeeText($contact->phone);
@@ -95,14 +104,18 @@ class RosterTest extends TestCase
         $response = $this->followingRedirects()->get(route('tenant:admin.programs.roster.edit', [$tenant->slug, $program]));
 
         $response->assertViewIs('auth.login');
+        $this->assertEquals($program->tickets->count(), 3);
         $program->tickets->each(function ($ticket) use ($response) {
             $participant = $ticket->participant;
+            $this->assertNotNull($participant->first_name);
             $response->assertDontSeeText($participant->first_name);
             $response->assertDontSeeText($participant->last_name);
             $response->assertDontSeeText($participant->needs);
             $response->assertDontSeeText($ticket->code);
-            $response->assertDontSeeText($ticket->order_confirmation_number);
+            $response->assertDontSeeText($ticket->order->confirmation_number);
+            $this->assertEquals($participant->contacts->count(), 1);
             $participant->contacts->each(function ($contact) use ($response) {
+                $this->assertNotNull($contact->first_name);
                 $response->assertDontSeeText($contact->first_name);
                 $response->assertDontSeeText($contact->last_name);
                 $response->assertDontSeeText($contact->phone);

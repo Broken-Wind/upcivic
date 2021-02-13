@@ -3,6 +3,7 @@
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
 use App\Contributor;
+use App\Order;
 use App\Participant;
 use App\Ticket;
 use App\Program;
@@ -23,13 +24,11 @@ $factory->state(App\Ticket::class, 'reserved', function ($faker) {
     ];
 });
 
-$factory->state(App\Ticket::class, 'withParticipant', function (Ticket $ticket) {
-    $participant = factory(Participant::class)->create();
-    $order = factory(Order::class)->create([
-        'program_id' => $ticket->program_id,
-        'participant_id' =>$participant->id
-    ]);
+$factory->afterCreatingState(App\Ticket::class, 'withParticipant', function (Ticket $ticket) {
+    $participant = factory(Participant::class)->state('withContact')->create();
+    $order = factory(Order::class)->create();
     $ticket->order_id = $order->id;
+    $ticket->participant_id = $participant->id;
     $ticket->reserved_at = Carbon::now();
     $ticket->code = 'TEST_CODE';
     $ticket->save();

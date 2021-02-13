@@ -12,10 +12,11 @@ $factory->define(Participant::class, function (Faker $faker) {
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'needs' => $faker->text,
+        'birthday' => $faker->date($format = 'Y-m-d', $max = 'now')
     ];
 });
 
-$factory->state(Participant::class, 'withContact', function (Participant $participant, Faker $faker) {
+$factory->afterCreatingState(Participant::class, 'withContact', function (Participant $participant) {
     $contact = factory(Person::class)->create();
-    $participant->contacts()->attack($contact);
+    $participant->contacts()->attach($contact);
 });

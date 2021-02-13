@@ -13,6 +13,7 @@ use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
+use App\Mail\OrderConfirmationEmail;
 use Illuminate\Http\Request;
 use Mockery;
 
@@ -90,6 +91,7 @@ class PurchaseTicketTest extends TestCase
     /** @test */
     public function can_purchase_tickets_for_a_published_program()
     {
+        Mail::fake();
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');;
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
@@ -110,6 +112,11 @@ class PurchaseTicketTest extends TestCase
         $order = $program->ordersFor('personA@example.com')->first();
         $this->assertEquals(3, $order->ticketQuantity());
         $this->assertEquals(['Lefty', 'Lucy', 'Testy'], $program->participants->pluck('first_name')->toArray());
+
+        Mail::assertSent(OrderConfirmationEmail::class, function ($mail) use ($order) {
+            return $mail->hasTo($order->email)
+            && $mail->order->id == $order->id;
+        });
     }
     /** @test */
     public function cannot_purchase_tickets_when_no_internal_registration()

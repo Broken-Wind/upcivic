@@ -13,6 +13,9 @@ class Participant extends Model
         'birthday',
         'needs'
     ];
+    protected $dates = [
+        'birthday'
+    ];
     public function contacts()
     {
         return $this->belongsToMany(Person::class, 'contacts');

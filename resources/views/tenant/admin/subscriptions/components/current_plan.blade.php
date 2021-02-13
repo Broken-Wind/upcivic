@@ -7,7 +7,7 @@
         <p class="lead">All the tools you need to go paperless, reduce manual data entry, manage instructors, and optimize your activity schedule.</p>
         @if ($user->onTrial())
             <hr/>
-            <p class="lead text-primary"> Trial ends on {{ $user->trialEndsAt()->format('j F, Y') }}. </p>
+            <p class="lead text-primary"> Trial ends {{ Auth::user()->trialEndsAt()->diffForHumans() }}. </p>
             @if (!(tenant()->hasStripeCustomer()))
                 <div class="form-row">
                     <div class="col-md-3">

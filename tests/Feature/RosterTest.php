@@ -31,7 +31,6 @@ class RosterTest extends TestCase
     public function user_can_see_roster()
     {
         //
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->states('hasTenant')->create();
         $tenant = $user->tenants()->first();
         $program = $this->getProgramWithEnrollments($tenant);
@@ -52,6 +51,62 @@ class RosterTest extends TestCase
                 $response->assertSeeText($contact->last_name);
                 $response->assertSeeText($contact->phone);
                 $response->assertSeeText($contact->email);
+            });
+        });
+    }
+
+    /** @test */
+    public function incorrect_user_cannot_see_roster()
+    {
+        //
+        $user = factory(User::class)->states('hasTenant')->create();
+        $badUser = factory(User::class)->states('hasTenant')->create();
+        $tenant = $user->tenants()->first();
+        $program = $this->getProgramWithEnrollments($tenant);
+
+        $response = $this->actingAs($badUser)->followingRedirects()->get(route('tenant:admin.programs.roster.edit', [$tenant->slug, $program]));
+
+        $response->assertStatus(401);
+
+        $program->tickets->each(function ($ticket) use ($response) {
+            $participant = $ticket->participant;
+            $response->assertDontSeeText($participant->first_name);
+            $response->assertDontSeeText($participant->last_name);
+            $response->assertDontSeeText($participant->needs);
+            $response->assertDontSeeText($ticket->code);
+            $response->assertDontSeeText($ticket->order_confirmation_number);
+            $participant->contacts->each(function ($contact) use ($response) {
+                $response->assertDontSeeText($contact->first_name);
+                $response->assertDontSeeText($contact->last_name);
+                $response->assertDontSeeText($contact->phone);
+                $response->assertDontSeeText($contact->email);
+            });
+        });
+    }
+
+    /** @test */
+    public function guest_cannot_see_roster()
+    {
+        //
+        $user = factory(User::class)->states('hasTenant')->create();
+        $tenant = $user->tenants()->first();
+        $program = $this->getProgramWithEnrollments($tenant);
+
+        $response = $this->followingRedirects()->get(route('tenant:admin.programs.roster.edit', [$tenant->slug, $program]));
+
+        $response->assertViewIs('auth.login');
+        $program->tickets->each(function ($ticket) use ($response) {
+            $participant = $ticket->participant;
+            $response->assertDontSeeText($participant->first_name);
+            $response->assertDontSeeText($participant->last_name);
+            $response->assertDontSeeText($participant->needs);
+            $response->assertDontSeeText($ticket->code);
+            $response->assertDontSeeText($ticket->order_confirmation_number);
+            $participant->contacts->each(function ($contact) use ($response) {
+                $response->assertDontSeeText($contact->first_name);
+                $response->assertDontSeeText($contact->last_name);
+                $response->assertDontSeeText($contact->phone);
+                $response->assertDontSeeText($contact->email);
             });
         });
     }

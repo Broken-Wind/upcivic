@@ -1,13 +1,12 @@
 <?php
-
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
-
 use App\Contributor;
 use App\Meeting;
 use App\Organization;
 use App\Program;
 use App\Site;
 use App\Tenant;
+use App\Ticket;
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
@@ -29,73 +28,52 @@ $factory->define(Program::class, function (Faker $faker) {
 
 $factory->afterCreatingState(Program::class, 'amCamp', function (Program $program, Faker $faker) {
     $site = factory(Site::class)->create();
-
     $tenant = factory(Tenant::class)->create();
-
     $contributor = new Contributor();
-
     $contributor['organization_id'] = $tenant->organization_id;
     $contributor['invoice_amount'] = 13000;
     $contributor['invoice_type'] = 'per_participant';
-
     $program->contributors()->save($contributor);
-
     $program->proposing_organization_id = $tenant->organization_id;
-
     $startDatetime = Carbon::parse('9am +2 weeks');
-
     $meetings = collect([]);
-
     for ($m = 1; $m <= 5; $m++) {
         $meeting = Meeting::make([
-
             'start_datetime' => $startDatetime,
-
             'end_datetime' => Carbon::parse($startDatetime.' +3 hours'),
-
             'site_id' => $site->id,
-
         ]);
-
         $meeting['program_id'] = $program->id;
-
         $meeting->save();
-
         $meetings->push($meeting);
-
         $startDatetime = Carbon::parse($startDatetime.' +1 day');
     }
-
     $program->meetings()->saveMany($meetings);
-
     $contributor = Contributor::make([
-
         'invoice_amount' => 1000,
-
         'invoice_type' => 'per participant',
-
         'internal_name' => 'Intername',
-
     ]);
-
     $contributor['organization_id'] = $tenant->organization->id;
-
     $contributor['program_id'] = $program->id;
-
     $contributor->save();
 });
-
 
 $factory->afterCreatingState(Program::class, 'published', function (Program $program, Faker $faker) {
     $firstContributor = $program->contributors->first();
     $firstContributor->published_at = Carbon::parse('-1 weeks');
     $firstContributor->save();
-
 });
 
 $factory->afterCreatingState(Program::class, 'unpublished', function (Program $program, Faker $faker) {
     $firstContributor = $program->contributors->first();
     $firstContributor->published_at = null;
     $firstContributor->save();
+});
 
+$factory->afterCreatingState(Program::class, 'withParticipants', function (Program $program, Faker $faker) {
+    $tickets = factory(Ticket::class, 3)->state('withParticipant')->create([
+        'program_id' => $program->id
+    ]);
+    $program->tickets()->attach($tickets);
 });

@@ -41,6 +41,11 @@ class Ticket extends Model
         return $this->belongsTo(Program::class);
     }
 
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
     public function participant()
     {
         return $this->belongsTo(Participant::class);

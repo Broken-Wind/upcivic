@@ -1,11 +1,11 @@
 @forelse($programGroups as $startDate => $areas)
     <div class="card bg-light mb-3">
         <div class="card-header">
-            <strong>Starting {{ \Carbon\Carbon::parse($startDate)->format('1') }} {{ $startDate }}</strong>
+            <strong>Starting {{ \Carbon\Carbon::parse($startDate)->format('l') }} {{ $startDate }}</strong>
         </div>
-        <div class="card-body pl-0 pr-0">
+        <div class="card-body pl-0 pr-0 pt-2">
             @foreach($areas as $name => $sites)
-                <div class="ml-2">
+                <div class="ml-2 pb-2">
                     <strong>{{ $name }}</strong>
                 </div>
                 @foreach($sites as $programs)

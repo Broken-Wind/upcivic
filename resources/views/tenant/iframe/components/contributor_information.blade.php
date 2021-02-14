@@ -6,7 +6,7 @@
     </div>
     <div class="row">
         @forelse($program->contributors()->publiclyContactable()->get() as $contributor)
-            <div class="col-lg-4">
+            <div class="col-lg-6">
                 <div class="card mb-2">
                     <div class="card-body">
                         <strong>{{ $contributor->name }}</strong>

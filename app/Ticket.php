@@ -14,6 +14,10 @@ class Ticket extends Model
     {
         return $query->whereNull('order_id')->whereNull('reserved_at');
     }
+    public function scopeAnonymous($query)
+    {
+        return $query->where('order_id', 0);
+    }
 
     public function scopeUnavailable($query)
     {

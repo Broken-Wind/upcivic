@@ -113,18 +113,6 @@
                                required>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="min_enrollments">Minimum Enrollments</label>
-                            <input type="number" class="form-control" name="min_enrollments" placeholder="5"
-                                   value="{{ old('min_enrollments') ?: $program['min_enrollments'] }}">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="max_enrollments">Maximum Enrollments</label>
-                            <input type="number" class="form-control" name="max_enrollments" placeholder="12"
-                                   value="{{ old('max_enrollments') ?: $program['max_enrollments'] }}">
-                        </div>
-                    </div>
-                    <div class="form-row">
                         <button type="submit" id="update_program" name="update_program"
                                 class="btn btn-secondary mx-1">Update
                         </button>

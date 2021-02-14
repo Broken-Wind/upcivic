@@ -33,8 +33,6 @@ class UpdateProgram extends FormRequest
             'ages_type' => 'required|string|alpha|max:10',
             'min_age' => 'required|numeric|between:0,999',
             'max_age' => 'required|numeric|between:0,999',
-            'min_enrollments' => 'nullable|numeric|between:0,9999',
-            'max_enrollments' => 'nullable|numeric|between:0,9999',
         ];
     }
 }

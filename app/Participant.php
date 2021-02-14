@@ -28,4 +28,8 @@ class Participant extends Model
     {
         return $this->first_name . ' ' . $this->last_name;
     }
+    public function getFormattedBirthdayAttribute()
+    {
+        return $this->birthday->format('n/j/Y');
+    }
 }

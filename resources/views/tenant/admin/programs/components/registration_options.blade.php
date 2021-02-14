@@ -5,6 +5,18 @@
               action="{{ tenant()->route('tenant:admin.programs.update_registration_options', [$program]) }}">
             @method('put')
             @csrf
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="min_enrollments">Minimum Enrollments</label>
+                    <input type="number" class="form-control" name="min_enrollments" placeholder="5"
+                           value="{{ old('min_enrollments') ?: $program['min_enrollments'] }}">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="max_enrollments">Maximum Enrollments</label>
+                    <input type="number" class="form-control" name="max_enrollments" placeholder="12"
+                           value="{{ old('max_enrollments') ?: $program['max_enrollments'] }}">
+                </div>
+            </div>
             <div class="form-check mb-3">
                 <label class="form-check-label">
                     <input type="checkbox" class="form-check-input" name="internal_registration" id="internal_registration" value="1" {{ $program->internal_registration ? ' checked' : '' }}>
@@ -15,14 +27,14 @@
                 <div class="form-group">
                 <label for="price">Price to Register</label>
 
-                <div class="input-group input-group-sm mb-3">
+                <div class="input-group input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">$</span>
                     </div>
                     <input type="text"
                         class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}">
                     </div>
-                    <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to register.</small>
+                    <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                 </div>
             </div>
             <div id="external_registration_details" {{ $program->internal_registration ? 'style=display:none;' : '' }}>

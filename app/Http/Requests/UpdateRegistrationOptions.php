@@ -28,7 +28,9 @@ class UpdateRegistrationOptions extends FormRequest
             'internal_registration' => 'nullable|numeric',
             'price' => 'exclude_unless:internal_registration,1|required|numeric',
             'enrollment_url' => 'nullable|string',
-            'enrollment_instructions' => 'nullable|string'
+            'enrollment_instructions' => 'nullable|string',
+            'min_enrollments' => 'required|numeric|between:0,9999',
+            'max_enrollments' => 'required|numeric|between:0,9999',
         ];
     }
 }

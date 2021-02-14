@@ -43,7 +43,7 @@ class ProgramController extends Controller
     public function index(ProgramFilters $programFilters)
     {
         //
-        $programs = Program::with(['meetings.site', 'meetings.instructors', 'contributors.organization'])->filter($programFilters)->get()->sortBy('start_datetime');
+        $programs = Program::with(['meetings.site', 'meetings.instructors', 'contributors.organization', 'tickets'])->filter($programFilters)->get()->sortBy('start_datetime');
         $programGroups = Program::groupPrograms($programs);
         $programsExist = Program::get()->count() > 0;
         $groupsIncludeArea = tenant()->organization->hasAreas();
@@ -255,6 +255,8 @@ class ProgramController extends Controller
         $program->price = !empty($validated['price']) ? $validated['price'] * 100 : null;
         $program->enrollment_url = $validated['enrollment_url'] ?? null;
         $program->enrollment_instructions = $validated['enrollment_instructions'] ?? null;
+        $program->min_enrollments = $validated['min_enrollments'];
+        $program->setMaxEnrollments($validated['max_enrollments']);
         $program->save();
         return back()->withSuccess('Program updated successfully.');
     }

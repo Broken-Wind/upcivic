@@ -10,6 +10,7 @@ use App\Exceptions\NotEnoughTicketsException;
 use Carbon\Carbon;
 use DateTime;
 use DB;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Stevebauman\Purify\Facades\Purify;
@@ -321,15 +322,20 @@ class Program extends Model
         if ($this->allowsRegistration()) {
             throw new CannotManuallyUpdateInternalRegistrationsException();
         }
-        $this->setEnrollments($enrollments);
-        $this->setMaxEnrollments($maxEnrollments);
+        if ($enrollments > $this->max_enrollments) {
+            $this->setMaxEnrollments($maxEnrollments);
+            $this->setEnrollments($enrollments);
+        } else  {
+            $this->setEnrollments($enrollments);
+            $this->setMaxEnrollments($maxEnrollments);
+        }
         // $this->update([
         //     'enrollments_updated' => now(),
         // ]);
     }
 
     public function setEnrollments($updatedEnrollments) {
-        $diff = $updatedEnrollments - $this->enrollments;
+        $diff = $updatedEnrollments - $this->fresh()->enrollments;
         if ($diff > 0) {
             return $this->claimAnonymousTickets($diff);
         }
@@ -337,7 +343,7 @@ class Program extends Model
     }
 
     public function setMaxEnrollments($updatedMaxEnrollments) {
-        $diff = $updatedMaxEnrollments - $this->max_enrollments;
+        $diff = $updatedMaxEnrollments - $this->fresh()->max_enrollments;
         if ($diff > 0) {
             return $this->addTickets($diff);
         }
@@ -346,7 +352,15 @@ class Program extends Model
 
     public function removeTickets($diff)
     {
+        $availableTickets = $this->tickets()->available()->get()->count();
+        $anonymousTickets = $this->tickets()->anonymous()->get()->count();
+        if ($diff > ($availableTickets + $anonymousTickets)) {
+            throw new Exception('Error updating enrollments');
+        }
         $this->tickets()->available()->take($diff)->delete();
+        if ($diff > $availableTickets) {
+            $this->tickets()->anonymous()->take($diff - $availableTickets)->delete();
+        }
     }
 
     public function claimAnonymousTickets($diff)
@@ -392,12 +406,40 @@ class Program extends Model
 
     public function getMaxEnrollmentsAttribute()
     {
-        return $this->tickets()->count();
+        return $this->tickets->count();
     }
 
     public function getEnrollmentsAttribute()
     {
-        return $this->tickets()->unavailable()->count();
+        return $this->tickets->filter(function ($ticket) {
+            return $ticket->order_id !== null;
+        })->count();
+    }
+
+    public function getEnrollmentPercentAttribute()
+    {
+        return 100 * ($this->enrollments / $this->max_enrollments);
+    }
+
+    public function getProgressBarClassAttribute()
+    {
+        if ($this->isFull()) {
+            return 'bg-success';
+        }
+        if ($this->isAboveMinimum()){
+            return 'bg-primary';
+        }
+        return 'bg-danger';
+    }
+
+    public function isFull()
+    {
+        return $this->enrollments >= $this->max_enrollments;
+    }
+
+    public function isAboveMinimum()
+    {
+        return $this->enrollments >= $this->min_enrollments;
     }
 
     public function getSuggestedEnrollmentUrlAttribute()
@@ -712,6 +754,11 @@ class Program extends Model
     public function hasEnrollmentUrl()
     {
         return !empty($this->enrollment_url);
+    }
+
+    public function hasEnrollments()
+    {
+        return !empty($this->tickets->firstWhere('reserved_at', '!=', null));
     }
 
     public function hasEnrollmentInstructions()

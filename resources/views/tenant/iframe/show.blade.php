@@ -9,16 +9,30 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    Session Information <text class="text-muted"><em> - {{ tenant()['name'] }} Barcode #{{ $program['id'] }}</em></text>
+                    <span class="text-muted">#{{ $program['id'] }} - </span>{{ $program->name }}
                 </div>
                 <div class="card-body">
-                    <p class="lead">
-                        {{ $program['name'] }} at {{ $program['site']['name'] }}<br />
-                        {{ $program['description_of_meetings'] }}<br />
-                        {{ $program['start_time'] }}-{{ $program['end_time'] }}<br />
-                        {{ ucfirst($program['ages_type']) }} {{ $program['min_age'] }}-{{ $program['max_age'] }}<br />
-                    </p>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-3 text-center">
+                            <i class="fas fa-fw fa-2x fa-calendar-alt text-secondary"></i>
+                        </div>
+                        <div class="col-9">
+                            {{ $program['description_of_meetings'] }}<br />
+                            {{ $program['start_time'] }}-{{ $program['end_time'] }}<br />
+                        </div>
+                    </div>
+                    <div class="row align-items-center mb-3">
+                        <div class="col-3 text-center">
+                            <i class="fas fa-fw fa-2x fa-map-marked-alt text-secondary"></i>
+                        </div>
+                        <div class="col-9">
+                            {{ $program['site']['name'] }}
+                        </div>
+                    </div>
                     <hr>
+                    <small class="text-muted">
+                        For {{ $program['ages_type'] }} {{ $program['min_age'] }}-{{ $program['max_age'] }}<br />
+                    </small>
                     {{ $program['description'] }}
                 </div>
                 @include('tenant.iframe.components.contributor_information')

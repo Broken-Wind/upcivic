@@ -17,6 +17,8 @@ class UserTenantTest extends TestCase
         $tenant = $user->tenants()->first();
         $response = $this->actingAs($user)->followingRedirects()->patch("/{$tenant->slug}/admin/settings", [
             'name' => 'Bobby Dodgekins',
+            'phone' => '415-222-2222',
+            'email' => 'bobby@dodge.kins'
         ]);
         $tenant->refresh();
         $response->assertStatus(200);

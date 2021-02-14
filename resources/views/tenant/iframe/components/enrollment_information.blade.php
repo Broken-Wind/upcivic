@@ -2,7 +2,7 @@
     <div class="card-header">Getting Enrolled</div>
     <div class="card-body">
         @if(!$program->hasEnrollmentInstructions() && !$program->hasEnrollmentUrl() && !$program->allowsRegistration())
-            We couldn't find registration information for this program. Please contact the host.
+            We couldn't find registration information for this program. Please contact the organizer.
         @endif
         @if($program->hasEnrollmentInstructions())
             {{ $program->enrollment_instructions }}

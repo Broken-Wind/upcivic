@@ -15,6 +15,8 @@ class Organization extends GenericAssignableEntity
     protected $fillable = [
         'name',
         'enrollment_url',
+        'phone',
+        'email',
     ];
 
     public function scopeHasAssignmentsTo($query, $organizationId) {
@@ -39,9 +41,19 @@ class Organization extends GenericAssignableEntity
         });
     }
 
+    public function scopePubliclyContactable($query)
+    {
+        return $query->whereNotNull('phone')->orWhereNotNull('email');
+    }
+
     public function getPartnersAttribute()
     {
         return Organization::partneredWith($this->id)->orderBy('name')->get();
+    }
+
+    public function isPubliclyContactable()
+    {
+        return !empty($this->phone) || !empty($this->email);
     }
 
     public function areas()

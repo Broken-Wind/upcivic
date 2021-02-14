@@ -158,6 +158,11 @@
                     </h3>
                 </div>
             @endif
+            @if(tenant() && !tenant()->organization->isPubliclyContactable())
+                <div class="alert alert-warning text-center">
+                    Your organization doesn't have public contact information. Please list your public contact information in <a href="{{ tenant()->route('tenant:admin.edit') }}">settings</a>.
+                </div>
+            @endif
             <div class="alert alert-danger text-center" style="display:none;" id="browser-warning">
                 <h4>
                     Your browser is incompatible with {{ config('app.name') }}.

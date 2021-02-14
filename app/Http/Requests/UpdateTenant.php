@@ -38,6 +38,8 @@ class UpdateTenant extends FormRequest
         return [
             //
             'name' => 'required|max:255',
+            'phone' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
             'publish' => 'nullable|boolean',
             'proposal_next_steps' => 'nullable|string',
         ];

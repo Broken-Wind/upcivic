@@ -50,6 +50,16 @@ class Tenant extends Model
         return $this->organization->name;
     }
 
+    public function getPhoneAttribute()
+    {
+        return $this->organization->phone;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->organization->email;
+    }
+
     public function isPublic()
     {
         return true;

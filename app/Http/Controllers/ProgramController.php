@@ -22,6 +22,7 @@ use App\Site;
 use App\Template;
 use Carbon\Carbon;
 use App\Exports\ProgramsExport;
+use App\Http\Requests\UpdateRegistrationOptions;
 use App\Instructor;
 use App\Task;
 use DB;
@@ -244,6 +245,17 @@ class ProgramController extends Controller
             return back()->withErrors(['error' => 'Cannot update enrollments manually for sessions accepting internal registrations.']);
         }
 
+        return back()->withSuccess('Program updated successfully.');
+    }
+
+    public function updateRegistrationOptions(UpdateRegistrationOptions $request, Program $program)
+    {
+        $validated = $request->validated();
+        $program->internal_registration = $validated['internal_registration'] ?? null;
+        $program->price = !empty($validated['price']) ? $validated['price'] * 100 : null;
+        $program->enrollment_url = $validated['enrollment_url'] ?? null;
+        $program->enrollment_instructions = $validated['enrollment_instructions'] ?? null;
+        $program->save();
         return back()->withSuccess('Program updated successfully.');
     }
 

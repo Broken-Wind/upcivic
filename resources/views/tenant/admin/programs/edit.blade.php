@@ -32,6 +32,9 @@
         <!-- Alerts and main actions -->
         @include('tenant.admin.programs.components.status_actions')
 
+        <!-- Registration Options -->
+        @include('tenant.admin.programs.components.registration_options')
+
         <!-- Program -->
         <div class="card mb-4">
             <div class="card-header">Program</div>

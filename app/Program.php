@@ -395,6 +395,26 @@ class Program extends Model
         return $this->tickets()->unavailable()->count();
     }
 
+    public function getSuggestedEnrollmentUrlAttribute()
+    {
+        return $this->enrollment_url
+            ?? tenant()->organization->enrollment_url
+            ?? $this->contributors->map(function ($contributor) {
+                return $contributor->organization->enrollment_url;
+            })->whereNotNull()->first()
+            ?? null;
+    }
+
+    public function getSuggestedEnrollmentInstructionsAttribute()
+    {
+        return $this->enrollment_instructions
+            ?? tenant()->organization->enrollment_instructions
+            ?? $this->contributors->map(function ($contributor) {
+                return $contributor->organization->enrollment_instructions;
+            })->whereNotNull()->first()
+            ?? null;
+    }
+
     public function getMeetingIntervalAttribute()
     {
         if ($this->meetings->count() < 2) {
@@ -448,6 +468,11 @@ class Program extends Model
         }
 
         return $sites->where('name', $sites->mode('name')[0])->first();
+    }
+
+    public function getFormattedPriceAttribute()
+    {
+        return isset($this->price) ? number_format($this->price / 100, 2, '.', '') : null;
     }
 
     public function getLocationAttribute()

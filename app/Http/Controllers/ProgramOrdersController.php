@@ -48,9 +48,9 @@ class ProgramOrdersController extends Controller
 
         } catch (PaymentFailedException $e) {
             $reservation->cancel();
-            return response()->json([], 422);
+            return response()->json(['Payment failed!'], 422);
         } catch (NotEnoughTicketsException $e) {
-            return response()->json([], 422);
+            return response()->json(['Not enough tickets!'], 422);
         }
     }
 

@@ -11,7 +11,7 @@
             @endif
         @endif
         @if($program->allowsRegistration())
-            <form id="payment-form" action="{{tenant()->route('tenant:programs.orders.create', [$program])}}">
+            <form id="payment-form" action="{{tenant()->route('tenant:programs.orders.create', [$program])}}" target="_blank">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <label class="input-group-text" for="inputGroupSelect01">${{ $program->formatted_price }} x</label>

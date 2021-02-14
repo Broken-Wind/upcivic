@@ -18,6 +18,12 @@ class Contributor extends Model
 
     protected const STATUSES = Program::STATUSES;
 
+    public function scopePubliclyContactable($query)
+    {
+        return $query->whereHas('organization', function ($query) {
+            return $query->whereNotNull('phone')->orWhereNotNull('email');
+        });
+    }
     public function getFormattedInvoiceAmountAttribute()
     {
         return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
@@ -26,6 +32,16 @@ class Contributor extends Model
     public function getNameAttribute()
     {
         return $this->organization->name;
+    }
+
+    public function getPhoneAttribute()
+    {
+        return $this->organization->phone;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->organization->email;
     }
 
     public function program()

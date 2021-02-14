@@ -311,6 +311,11 @@ class Program extends Model
         return $program;
     }
 
+    public function maxTicketOrder()
+    {
+        return min($this->tickets()->available()->count(), 4);
+    }
+
 
     public function updateEnrollments($enrollments, $maxEnrollments) {
         if ($this->allowsRegistration()) {
@@ -702,5 +707,15 @@ class Program extends Model
     public function allowsRegistration()
     {
         return $this->internal_registration;
+    }
+
+    public function hasEnrollmentUrl()
+    {
+        return !empty($this->enrollment_url);
+    }
+
+    public function hasEnrollmentInstructions()
+    {
+        return !empty($this->enrollment_instructions);
     }
 }

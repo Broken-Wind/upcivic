@@ -14,24 +14,6 @@
                 {{ $program['description_of_meetings'] }}<br />
                 {{ $program['start_time'] }}-{{ $program['end_time'] }}
             </p>
-            <form id="payment-form" action="{{tenant()->route('tenant:programs.orders.create', [$program])}}">
-                <div class="form-row align-items-center">
-                    <div class="col-auto my-1">
-                        <label class="my-1" for="numberOfSpots">Number of Participants</label>
-                    </div>
-                    <div class="col-auto my-1">
-                        <select class="form-control" name="numberOfSpots" id="numberOfSpots">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                        </select>
-                    </div>
-                    <div class="col-auto my-1">
-                        <button id="card-button" class="btn btn-primary"> Register </button>
-                    </div>
-                </div>
-            </form>
             <hr />
             {{ $program['description'] }}
             <hr />
@@ -49,40 +31,10 @@
             @endif
         </div>
     </div>
-    @forelse($program->contributors->sortByDesc('organization.enrollment_url') as $contributor)
-        <p />
-        <div class="card">
-            <div class="card-header">
-                About {{ $contributor['name'] }}
-            </div>
-            <div class="card-body">
-                    @if(!empty($contributor->organization['enrollment_instructions']))
-                        <h5>Special Instructions:</h5>
-                        {{ $contributor->organization['enrollment_instructions'] }}
-                        <hr />
-                    @endif
-                    @if(!empty($contributor->organization['enrollment_url']))
-                        <form action="{{ $contributor->organization['enrollment_url'] }}" method="GET" target="_blank">
-                            <button type="submit" class="btn btn-primary btn-block">Enroll via {{ $contributor->organization['name'] }} <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
-                            <small class="form-text text-muted text-center">You will be redirected to the enrollment website of our partner.</small>
-                        </form>
-                        <hr />
-                    @endif
-                @if($contributor->shouldDisplayOrganizationContacts())
-                    @include('tenant.iframe.components.organization_contacts', ['organization' => $contributor->organization])
-                @endif
-                @if($contributor->name == 'Techsplosion')
-                    <h5>Questions about our programs?</h5>
-                    <ul>
-                        <li>Read our <a href="http://techsplosion.org/summer-camp-descriptions/#{{ $program->name }}" target="_blank">camp descriptions</a></li>
-                        <li>Read our <a href="http://techsplosion.org/faq/" target="_blank">FAQ</a></li>
-                        <li>Contact us via camp@techsplosion.org or 415.223.4312 (we can respond to email fastest)</li>
-                    </ul>
-                @endif
-            </div>
-        </div>
-    @empty
-    @endforelse
+    <p />
+    @include('tenant.iframe.components.enrollment_information')
+    <p />
+    @include('tenant.iframe.components.contributor_information')
     <p />
     @include('tenant.iframe.components.map', ['site' => $program->site])
     <p />

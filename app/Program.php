@@ -418,6 +418,9 @@ class Program extends Model
 
     public function getEnrollmentPercentAttribute()
     {
+        if (empty($this->max_enrollemts)) {
+            return 0;
+        }
         return 100 * ($this->enrollments / $this->max_enrollments);
     }
 

@@ -103,6 +103,7 @@ Route::group(['middleware' => 'verified'], function () {
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
         Route::get('/programs/{program}/roster', 'ProgramRosterController@edit')->name('programs.roster.edit');
         Route::post('/programs/{program}/roster', 'ProgramRosterController@update')->name('programs.roster.update');
+        Route::post('/programs/{program}/roster/email_participants', 'ProgramRosterController@emailParticipants')->name('programs.roster.email_participants');
         Route::get('/programs/{program}', 'ProgramController@show')->name('programs.show');
         Route::post('/programs/bulk_action', 'ProgramController@bulkAction')->name('programs.bulkAction');
         Route::put('/programs/{program}/enrollments', 'ProgramEnrollmentController@update')->name('programs.enrollments.update');

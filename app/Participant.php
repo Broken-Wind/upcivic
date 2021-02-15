@@ -32,4 +32,8 @@ class Participant extends Model
     {
         return $this->birthday->format('n/j/Y');
     }
+    public function primaryContact()
+    {
+        return $this->contacts->whereNotNull('email')->first();
+    }
 }

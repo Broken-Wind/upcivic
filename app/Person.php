@@ -39,6 +39,11 @@ class Person extends Model
         return !empty($initials) ? $initials : '??';
     }
 
+    public function hasEmail()
+    {
+        return !empty($this->email);
+    }
+
     public function instructors()
     {
         return $this->hasMany(Instructor::class);

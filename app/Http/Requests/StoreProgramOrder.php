@@ -37,6 +37,10 @@ class StoreProgramOrder extends FormRequest
             'primary_contact.first_name' => 'required|string',
             'primary_contact.last_name' => 'required|string',
             'primary_contact.phone' => 'required|string',
+            'alternate_contact' => 'nullable|array',
+            'alternate_contact.first_name' => 'nullable|string',
+            'alternate_contact.last_name' => 'nullable|string',
+            'alternate_contact.phone' => 'nullable|string',
         ];
     }
 }

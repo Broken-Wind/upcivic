@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EmailParticipants;
 use App\Http\Requests\UpdateProgramRoster;
+use App\Mail\BulkParticipantMessage;
+use App\Person;
 use App\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class ProgramRosterController extends Controller
 {
@@ -29,5 +33,25 @@ class ProgramRosterController extends Controller
         }
         $program->save();
         return back()->withSuccess('Program updated successfully.');
+    }
+
+    public function emailParticipants(EmailParticipants $request, Program $program)
+    {
+        $validated = $request->validated();
+        $emails = $program->participants->map(function ($participant) {
+            return $participant->primaryContact()->email;
+        });
+        $emails = $emails->merge(Person::find($request->contact_ids)->pluck('email'));
+        if (!empty($validated['cc_address_1'])) {
+            $emails = $emails->push($validated['cc_address_1']);
+        }
+        if (!empty($validated['cc_address_2'])) {
+            $emails = $emails->push($validated['cc_address_2']);
+        }
+        $emails = $emails->unique();
+
+        $emails->each(function ($email) use ($validated) {
+            Mail::to($email)->send(new BulkParticipantMessage($validated['subject'], $validated['message']));
+        });
     }
 }

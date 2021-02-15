@@ -1,6 +1,10 @@
+@include('tenant.admin.programs.roster.components.email_participants_modal')
 <div class="card mb-4">
     <div class="card-header">Roster</div>
     <div class="card-body">
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#email-participants-modal">
+            Email Participants
+        </button>
         <table class="table table-striped">
             @foreach($program->tickets()->unavailable()->get()->sortBy('participant.last_name') as $ticket)
                 <tr>
@@ -22,7 +26,7 @@
                         @if(isset($ticket->participant))
                             <br>
                             @forelse($ticket->participant->contacts as $contact)
-                                <small>{{ $contact->name }} - {{ $contact->phone }} - {{ $contact->email }}</small>
+                                <small>{{ $contact->name }} - {{ $contact->phone }} - {{ $contact->email ?? 'No known email address.' }}</small>
                                 @if(!$loop->last)
                                     <br>
                                 @endif

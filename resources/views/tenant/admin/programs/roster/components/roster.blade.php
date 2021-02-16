@@ -2,7 +2,7 @@
 <div class="card mb-4">
     <div class="card-header">Roster</div>
     <div class="card-body">
-        <button class="btn btn-secondary" data-toggle="modal" data-target="#email-participants-modal">
+        <button class="btn btn-secondary mb-3" data-toggle="modal" data-target="#email-participants-modal">
             Email Participants
         </button>
         <table class="table table-striped">

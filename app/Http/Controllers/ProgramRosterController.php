@@ -51,7 +51,8 @@ class ProgramRosterController extends Controller
         $emails = $emails->unique();
 
         $emails->each(function ($email) use ($validated) {
-            Mail::to($email)->send(new BulkParticipantMessage($validated['subject'], $validated['message']));
+            Mail::to($email)->send(new BulkParticipantMessage($validated['subject'], $validated['message'], tenant()->organization));
         });
+        return back()->withSuccess('Emails sent!');
     }
 }

@@ -13,10 +13,12 @@ class BulkParticipantMessage extends Mailable
 
     public $subject;
     public $message;
-    public function __construct($subject, $message)
+    public $sendingOrganization;
+    public function __construct($subject, $message, $sendingOrganization)
     {
         $this->subject = $subject;
         $this->message = $message;
+        $this->sendingOrganization = $sendingOrganization;
     }
 
     /**

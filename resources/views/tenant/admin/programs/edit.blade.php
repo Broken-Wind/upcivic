@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', '#' . $program->id . ' - ' . $program->name . ' Proposal')
+@section('title', '#' . $program->id . ' - ' . $program->name)
 @push('scripts')
 <script>
     @if($newlyCreated)

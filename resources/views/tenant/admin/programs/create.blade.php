@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Add Proposal')
+@section('title', 'Add Program')
 @include('tenant.admin.templates.components.add_template_modal')
 @include('tenant.admin.organizations.components.add_organization_modal')
 @include('tenant.admin.sites.components.add_site_modal')
@@ -8,7 +8,7 @@
 <div class="container">
     @include('shared.form_errors')
     <div class="card">
-        <div class="card-header">Add Proposal</div>
+        <div class="card-header">Add Program</div>
         <div class="card-body">
             <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
                 @csrf

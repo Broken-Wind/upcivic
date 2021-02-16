@@ -45,7 +45,7 @@
         <form method="POST" action="{{tenant()->route('tenant:admin.programs.destroy', [$program])}}" id="delete-program">
             @csrf
             @method('DELETE')
-                <button type="submit" form="delete-program" class="btn btn-danger ml-1" onClick="return confirm('Are you sure you want to cancel this proposal? This cannot be undone.')">Cancel</button>
+                <button type="submit" form="delete-program" class="btn btn-danger ml-1" onClick="return confirm('Are you sure you want to cancel this program? This cannot be undone.')">Cancel</button>
         </form>
 
     </div>

@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ $user['name'] }} canceled this proposal.
+{{ $user['name'] }} canceled this program.
 
 @component('mail::panel')
 ## {{ $program['name'] . " at " . $program->site['name'] }}

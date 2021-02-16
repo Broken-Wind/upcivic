@@ -200,7 +200,7 @@ class Program extends Model
 
     public function isProposalSent()
     {
-        if (!empty($this['proposed_at'])) {
+        if (!empty($this['proposed_at']) || $this->otherContributors()->isEmpty()) {
             return true;
         }
         return false;
@@ -209,6 +209,9 @@ class Program extends Model
     public function canBePublished()
     {
         if ($this->isProposalSent() && $this->isApprovedByAllContributors()) {
+            return true;
+        }
+        if ($this->hasOneContributor()) {
             return true;
         }
         return false;
@@ -275,12 +278,13 @@ class Program extends Model
                 $proposingContributor['program_id'] = $program['id'];
                 $proposingContributor['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
                 $proposingContributor->save();
-
-                $contributor = new Contributor([]);
-                $contributor['program_id'] = $program['id'];
-                $contributor['organization_id'] = $proposal['recipient_organization_id'];
-                if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
-                    $contributor->save();
+                if (!empty($proposal['recipient_organization_id'])) {
+                    $contributor = new Contributor([]);
+                    $contributor['program_id'] = $program['id'];
+                    $contributor['organization_id'] = $proposal['recipient_organization_id'];
+                    if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
+                        $contributor->save();
+                    }
                 }
                 $startTime = $proposal['start_time'];
                 $endTime = $proposal['end_time'] ?? date('H:i:s', strtotime($proposal['start_time'].' +'.$template['meeting_minutes'].' minutes'));
@@ -640,6 +644,11 @@ class Program extends Model
         return $this->proposed_at != null;
     }
 
+    public function hasOneContributor()
+    {
+        return $this->contributors->count() == 1;
+    }
+
     public function getStatus()
     {
         switch (true) {
@@ -649,6 +658,8 @@ class Program extends Model
             //     return 'will_publish';
             case ($this->isApprovedByAllContributors()):
                 return 'approved';
+            case ($this->hasOneContributor()):
+                return 'proposed';
             case ($this->isProposed()):
                 return 'proposed';
             default:

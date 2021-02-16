@@ -25,7 +25,8 @@ class StoreProgram extends FormRequest
     {
         return [
             //
-            'recipient_organization_id' => 'required|numeric',
+            'propose_to_other_org' => 'nullable|boolean',
+            'recipient_organization_id' => 'exclude_unless:propose_to_other_org,1|required|numeric',
             'site_id' => 'nullable|numeric',
             'template_id' => 'required|numeric',
             'start_date' => 'required|date',

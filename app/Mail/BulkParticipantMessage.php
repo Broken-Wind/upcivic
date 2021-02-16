@@ -11,12 +11,12 @@ class BulkParticipantMessage extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $message;
     public $subject;
-    public function __construct($message, $subject)
+    public $message;
+    public function __construct($subject, $message)
     {
-        $this->message = $message;
         $this->subject = $subject;
+        $this->message = $message;
     }
 
     /**

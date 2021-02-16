@@ -71,7 +71,9 @@ class Order extends Model
                 'needs' => $participant['needs']
             ]);
             $participant->contacts()->attach($primaryContact);
-            $participant->contacts()->attach($alternateContact);
+            if (!empty($alternateContact->id)) {
+                $participant->contacts()->attach($alternateContact);
+            }
             $participant->tickets()->save($ticket);
         });
     }

@@ -60,10 +60,6 @@
                         <label>Phone Number</label>
                         <input name="primary_contact[phone]" type="text" class="form-control" required value="{{ old("primary_contact.phone") }}">
                     </div>
-                    <div class="col-md-6 form-group">
-                        <label>Alternate Phone Number</label>
-                        <input name="primary_contact[alternate_phone]" type="text" class="form-control" required value="{{ old("primary_contact.alternate_phone") }}">
-                    </div>
                 </div>
             </div>
         </div>
@@ -87,10 +83,6 @@
                     <div class="col-md-6 form-group">
                         <label>Phone Number</label>
                         <input name="alternate_contact[phone]" type="text" class="form-control" value="{{ old("alternate_contact.phone") }}">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Alternate Phone Number</label>
-                        <input name="alternate_contact[alternate_phone]" type="text" class="form-control" value="{{ old("alternate_contact.alternate_phone") }}">
                     </div>
                 </div>
             </div>

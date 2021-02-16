@@ -44,13 +44,7 @@
             </div>
             <div class="form-row align-items-center">
                 <div class="col-10">
-                    <div class="progress" style="height: 20px">
-                        <div class="progress-bar {{ $program->progress_bar_class }}" role="progressbar" style="width: {{ $program->enrollment_percent }}%;" aria-valuenow="{{ $program->enrollment_percent }}" aria-valuemin="0" aria-valuemax="100"></div>
-                        <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ 100 - $program->enrollment_percent }}%;" aria-valuenow="{{ 100 - $program->enrollment_percent }}" aria-valuemin="0" aria-valuemax="100"></div>
-                        <div class="progress-bar-title" style="position: absolute; text-align: center; line-height: 20px; overflow: hidden; color: #fff; right: 0; left: 0; top: 0;">
-                            {{ $program->enrollments }} of {{ $program->max_enrollments }} enrolled
-                        </div>
-                    </div>
+                    @include('tenant.admin.programs.components.enrollment_progress_bar')
                 </div>
                 <div class="col-2">
                     <a href="{{ tenant()->route('tenant:admin.programs.roster.edit', [$program]) }}" class="btn btn-sm btn-light">

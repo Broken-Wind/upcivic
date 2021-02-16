@@ -1,7 +1,7 @@
 <div class="card-footer">
     <div class="row mb-1">
         <div class="col text-center">
-            <strong class="text-uppercase">Organizers</strong>
+            <strong class="text-uppercase">Organizer{{ !$program->hasOneContributor() ? 's' : '' }}</strong>
         </div>
     </div>
     <div class="row">

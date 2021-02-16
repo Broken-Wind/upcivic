@@ -11,20 +11,26 @@
             @endif
         @endif
         @if($program->allowsRegistration())
-            <form id="payment-form" action="{{tenant()->route('tenant:programs.orders.create', [$program])}}" target="_blank">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">${{ $program->formatted_price }} x</label>
-                    </div>
-                    <select class="form-control" name="numberOfSpots">
-                        @for($i = 1; $i <= $program->maxTicketOrder(); $i++)
-                            <option value="{{ $i }}"{{ $i == 1 ? ' selected' : '' }}>{{ $i }} Participant{{ $i > 1 ? 's' : '' }}</option>
-                        @endfor
-                    </select>
+            @if($program->isFull())
+                <div class="alert alert-warning">
+                    We're sorry, this program is full. Please contact the organizers for more information.
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Enroll Now <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
-                <small class="form-text text-muted text-center">You will be redirected to the registration website.</small>
-            </form>
+            @else
+                <form id="payment-form" action="{{tenant()->route('tenant:programs.orders.create', [$program])}}" target="_blank">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">${{ $program->formatted_price }} x</label>
+                        </div>
+                        <select class="form-control" name="numberOfSpots">
+                            @for($i = 1; $i <= $program->maxTicketOrder(); $i++)
+                                <option value="{{ $i }}"{{ $i == 1 ? ' selected' : '' }}>{{ $i }} Participant{{ $i > 1 ? 's' : '' }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Enroll Now <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
+                    <small class="form-text text-muted text-center">You will be redirected to the registration website.</small>
+                </form>
+            @endif
         @else
             @if($program->hasEnrollmentUrl())
                 <form action="{{ $program->enrollment_url }}" method="GET" target="_blank">

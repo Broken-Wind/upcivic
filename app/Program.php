@@ -236,6 +236,16 @@ class Program extends Model
         });
     }
 
+    public function shouldDisplayMap()
+    {
+        return !empty($this->site->id) && !$this->isVirtual();
+    }
+
+    public function isVirtual()
+    {
+        return $this->site->name == '[VIRTUAL]';
+    }
+
     public static function createExample($organization)
     {
         $exampleOrg = Organization::where('name', 'Exampleville Parks & Recreation')->firstOrFail();

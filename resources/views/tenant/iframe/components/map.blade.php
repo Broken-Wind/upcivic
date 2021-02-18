@@ -1,4 +1,4 @@
-@if(!empty($program->site->id))
+@if($program->shouldDisplayMap())
     <div class="card mt-3">
         <div class="card-img-top text-center">
             <a href="https://www.google.com/maps/search/?api=1&query={{ $site['address'] }}" target="_blank">

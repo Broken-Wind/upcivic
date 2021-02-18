@@ -1,5 +1,7 @@
-@extends('errors::minimal')
+@extends('layouts.errors')
 
-@section('title', __('Server Error'))
-@section('code', '500')
-@section('message', __('Server Error'))
+@section('title', 'Not Working')
+
+@section('code', 500)
+@section('name', 'Not Working')
+@section('description', 'Sorry, but we are not able to handle this request.')

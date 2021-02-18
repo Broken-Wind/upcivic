@@ -1,5 +1,7 @@
-@extends('errors::minimal')
+@extends('layouts.errors')
 
-@section('title', __('Unauthorized'))
-@section('code', '401')
-@section('message', __('Unauthorized'))
+@section('title', 'Unauthorized')
+
+@section('code', 401)
+@section('name', 'Unauthorized')
+@section('description', 'Sorry, but you do not have permission to access this page.')

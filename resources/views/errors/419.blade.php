@@ -1,5 +1,7 @@
-@extends('errors::minimal')
+@extends('layouts.errors')
 
-@section('title', __('Page Expired'))
-@section('code', '419')
-@section('message', __('Page Expired'))
+@section('title', 'Page Expired')
+
+@section('code', 419)
+@section('name', 'Page Expired')
+@section('description', 'Sorry, but the page expired due to inactivity.')

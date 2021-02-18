@@ -1,6 +1,7 @@
+@extends('layouts.errors')
 
-@extends('layouts.app')
 @section('title', 'Not Found')
-@section('content')
-Not Found
-@endsection
+
+@section('code', 404)
+@section('name', 'Not Found')
+@section('description', 'Sorry, but the page you were looking for could not be found.')

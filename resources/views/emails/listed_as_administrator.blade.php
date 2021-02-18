@@ -1,7 +1,7 @@
 @component('mail::message')
-{{ $lister['name'] }} just made it easier for organizations to book programs with you, by listing you as an administrator of {{ $organization['name'] }} on {{ config('app.name') }}! {{ config('app.name') }} is the tool you need to get organized with proposal management.
+{{ $lister['name'] }} just made it easier for organizations to book programs with you, by listing you as an administrator of {{ $organization['name'] }} on {{ config('app.name') }}!
 
-Please verify the following information, and sign up for a free {{ config('app.name') }} account to manage your activity proposals.
+Please verify the following information, and sign up for a free {{ config('app.name') }} account to manage your enrichment proposals and programs.
 
 ## {{ $organization['name'] }} Administrators
 @foreach($organization->administrators as $administrator)

@@ -246,6 +246,13 @@ class Program extends Model
         return $this->site->name == '[VIRTUAL]';
     }
 
+    public function rosterRecipients()
+    {
+        return $this->contributors->map(function ($contributor) {
+            return $contributor->organization->emailableContacts();
+        })->flatten()->merge($this->instructors)->unique('email');
+    }
+
     public static function createExample($organization)
     {
         $exampleOrg = Organization::where('name', 'Exampleville Parks & Recreation')->firstOrFail();

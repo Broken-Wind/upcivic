@@ -11,6 +11,7 @@ use App\Reservation;
 use App\Exceptions\NotEnoughTicketsException;
 use App\Http\Requests\StoreProgramOrder;
 use App\Mail\OrderConfirmationEmail;
+use App\Mail\RosterUpdate;
 
 class ProgramOrdersController extends Controller
 {
@@ -43,6 +44,7 @@ class ProgramOrdersController extends Controller
             $order->attachParticipants($validated['participants'], $validated['stripeEmail'], $validated['primary_contact'], $validated['alternate_contact'] ?? null);
 
             \Mail::to($order->email)->send(new OrderConfirmationEmail($order, tenant(), $program));
+            \Mail::send(new RosterUpdate($program));
 
             return redirect(tenant()->route('tenant:programs.orders.show', [$program, $order->confirmation_number]));
 

@@ -32,6 +32,8 @@
                             @auth
                                 @if(!tenant()->isSubscribed())
                                     <a href="{{ tenant()->route('tenant:admin.subscriptions.index') }}#availablePlans"><h2><span id="upgradeProBadge" class="badge badge-pill badge-primary">Upgrade to Pro</span></h2></a>
+                                @elseif(Auth::user()->onTrial())
+                                    <a href="{{ tenant()->route('tenant:admin.subscriptions.index') }}#availablePlans"><h4><span id="upgradeProBadge" class="badge badge-pill badge-primary mt-2">Trial ends {{ Auth::user()->trialEndsAt()->diffForHumans() }}</span></h4></a>
                                 @endif
                                 @if(Auth::user()->canGenerateDemoData())
                                     <li class="nav-item">

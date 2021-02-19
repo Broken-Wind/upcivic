@@ -5,7 +5,21 @@
     <div class="jumbotron">
         <h1 class="display-4 text-primary">Upcivic Pro</h1>
         <p class="lead">All the tools you need to go paperless, reduce manual data entry, manage instructors, and optimize your activity schedule.</p>
-        @if ($user->isPaymentCardHolder())
+        @if ($user->onTrial())
+            <hr/>
+            <p class="lead text-primary"> Trial ends {{ Auth::user()->trialEndsAt()->diffForHumans() }}. </p>
+            @if (!(tenant()->hasStripeCustomer()))
+                <div class="form-row">
+                    <div class="col-md-3">
+                        <a type="submit" class="btn btn-primary btn-lg mt-1" href="{{ tenant()->route('tenant:admin.subscriptions.create') }}">
+                            Upgrade to Pro
+                        </a>
+                    </div>
+                </div>
+            @else
+                <p class="lead text-primary">Need more seats for your organization? Contact us at <a href="mailto:support@upcivic.com?subject=Increase number of seats">support@upcivic.com</a>.</p>
+            @endif
+        @elseif ($user->isPaymentCardHolder())
             <hr/>
             @if ($user->subscription(config('app.subscription_name'))->onGracePeriod())
                 <p class="lead text-primary"> Cancels on {{ $user->subscription(config('app.subscription_name'))->ends_at->format('j F, Y') }} </p>

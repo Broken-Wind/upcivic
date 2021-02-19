@@ -94,7 +94,7 @@
 
             data-amount="{{ $program->price * $numberOfSpots }}"
 
-            data-name="Default Company"
+            data-name="{{ tenant()->name }}"
 
             data-locale="auto" id="stripe-button">
         </script>

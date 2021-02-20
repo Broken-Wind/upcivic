@@ -340,7 +340,7 @@ class PurchaseTicketTest extends TestCase
         $program = factory(Program::class)->states('amCamp', 'published')->create();
         $program->addTickets(3);
 
-        $response = $this->postJson($this->ordersUrlPath($program), $this->validParams([
+        $response = $this->followingRedirects()->postJson($this->ordersUrlPath($program), $this->validParams([
             'stripeToken' => 'invalid-payment-token',
         ]));
 

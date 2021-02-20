@@ -50,12 +50,17 @@ class ProgramOrdersController extends Controller
 
         } catch (PaymentFailedException $e) {
             $reservation->cancel();
-            return back()->withErrors(['eror' => 'Payment failed.']);
+            return back()->withErrors(['eror' => 'Payment failed.'])
+                ->setStatusCode(422);;
         } catch (NotEnoughTicketsException $e) {
             if ($program->isFull()) {
-                return back()->withErrors(['eror' => "Sorry, this program is now full."]);
+                return back()
+                        ->withErrors(['eror' => "Sorry, this program is now full."])
+                        ->setStatusCode(422);
             }
-            return back()->withErrors(['eror' => "Sorry, there's not enough space left in this program for your order. There are only {$program->tickets()->available()->count()} spaces left."]);
+            return back()
+                    ->withErrors(['eror' => "Sorry, there's not enough space left in this program for your order. There are only {$program->tickets()->available()->count()} spaces left."])
+                    ->setStatusCode(422);
         }
     }
 

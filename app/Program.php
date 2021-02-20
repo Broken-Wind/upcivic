@@ -297,7 +297,7 @@ class Program extends Model
                 $proposingContributor['program_id'] = $program['id'];
                 $proposingContributor['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
                 $proposingContributor->save();
-                if (!empty($proposal['recipient_organization_id'])) {
+                if (!empty($proposal['propose_to_other_org']) && !empty($proposal['recipient_organization_id'])) {
                     $contributor = new Contributor([]);
                     $contributor['program_id'] = $program['id'];
                     $contributor['organization_id'] = $proposal['recipient_organization_id'];

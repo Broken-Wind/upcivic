@@ -18,7 +18,7 @@ class Participant extends Model
     ];
     public function contacts()
     {
-        return $this->belongsToMany(Person::class, 'contacts');
+        return $this->belongsToMany(Person::class, 'contacts')->withPivot('type');
     }
     public function tickets()
     {
@@ -34,6 +34,6 @@ class Participant extends Model
     }
     public function primaryContact()
     {
-        return $this->contacts->whereNotNull('email')->first();
+        return $this->contacts->where('type', 'primary')->first();
     }
 }

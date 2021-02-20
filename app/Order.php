@@ -70,9 +70,9 @@ class Order extends Model
                 'birthday' => $participant['birthday'],
                 'needs' => $participant['needs']
             ]);
-            $participant->contacts()->attach($primaryContact);
+            $participant->contacts()->attach([$primaryContact => ['type' => 'primary']]);
             if (!empty($alternateContact->id)) {
-                $participant->contacts()->attach($alternateContact);
+                $participant->contacts()->attach([$alternateContact => ['type' => 'alternate']]);
             }
             $participant->tickets()->save($ticket);
         });

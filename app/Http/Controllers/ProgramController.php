@@ -255,6 +255,7 @@ class ProgramController extends Controller
         $program->price = !empty($validated['price']) ? $validated['price'] * 100 : null;
         $program->enrollment_url = $validated['enrollment_url'] ?? null;
         $program->enrollment_instructions = $validated['enrollment_instructions'] ?? null;
+        $program->enrollment_message = $validated['enrollment_message'] ?? null;
         $program->min_enrollments = $validated['min_enrollments'];
         $program->setMaxEnrollments($validated['max_enrollments']);
         $program->save();

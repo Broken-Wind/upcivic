@@ -100,7 +100,13 @@
                     <input type="number" class="form-control" name="meeting_minutes" value="{{ old('meeting_minutes') }}" id="meeting_minutes" placeholder="180" required>
                 </div>
 
-                <button type="submit" id="submit" class="btn btn-primary">Add Program</button>
+                <div class="form-group">
+                  <label for="enrollment_message">Enrollment Confirmation Message</label>
+                  <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ old('enrollment_message') }}</textarea>
+                  <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails. You may also edit this message for individual programs.</small>
+                </div>
+
+                <button type="submit" id="submit" class="btn btn-primary">Add Program Template</button>
 
             </form>
         </div>

@@ -61,14 +61,14 @@ class TemplateController extends Controller
             'meeting_count' => $validated['meeting_count'],
             'min_enrollments' => $validated['min_enrollments'],
             'max_enrollments' => $validated['max_enrollments'],
-
+            'enrollment_message' => $validated['enrollment_message'],
         ]);
 
         $template->organization_id = tenant()->organization->id;
 
         $template->save();
 
-        return back()->withSuccess('Program added successfully.');
+        return back()->withSuccess('Program template added successfully.');
     }
 
     /**
@@ -113,10 +113,10 @@ class TemplateController extends Controller
             'meeting_count' => $validated['meeting_count'],
             'min_enrollments' => $validated['min_enrollments'],
             'max_enrollments' => $validated['max_enrollments'],
-
+            'enrollment_message' => $validated['enrollment_message'],
         ]);
 
-        return back()->withSuccess('Program updated successfully.');
+        return back()->withSuccess('Program template updated successfully.');
     }
 
     public function destroy(Template $template)

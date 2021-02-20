@@ -31,6 +31,7 @@ class UpdateRegistrationOptions extends FormRequest
             'enrollment_instructions' => 'nullable|string',
             'min_enrollments' => 'required|numeric|between:0,9999',
             'max_enrollments' => 'required|numeric|between:0,9999',
+            'enrollment_message' => 'nullable|string',
         ];
     }
 }

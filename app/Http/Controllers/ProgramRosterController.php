@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmailParticipants;
 use App\Http\Requests\UpdateProgramRoster;
 use App\Mail\BulkParticipantMessage;
+use App\Mail\PriceChange;
 use App\Person;
 use App\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class ProgramRosterController extends Controller
@@ -22,7 +24,10 @@ class ProgramRosterController extends Controller
     public function update(UpdateProgramRoster $request, Program $program)
     {
         $validated = $request->validated();
-        $program->price = !empty($validated['price']) ? $validated['price'] * 100 : null;
+        if ($program->isProposalSent() && $program->hasOtherContributors() && $program->formatted_price != $validated['price']) {
+            \Mail::send(new PriceChange($program, $validated['price'], tenant(), Auth::user()));
+            $program->price = isset($validated['price']) ? $validated['price'] * 100 : null;
+        }
         $program->min_enrollments = $validated['min_enrollments'];
         // If a program allows registration via Upcivic, we should not allow manual updating of the current enrollments.
         if ($program->getContributorFor(tenant())->allowsRegistration()) {

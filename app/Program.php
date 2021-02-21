@@ -189,10 +189,18 @@ class Program extends Model
 
     public function isProposalSent()
     {
-        if (!empty($this['proposed_at']) || $this->otherContributors()->isEmpty()) {
+        if (!empty($this['proposed_at'])) {
             return true;
         }
         return false;
+    }
+
+    public function isEditable()
+    {
+        if (!empty($this['proposed_at']) && $this->otherContributors()->isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     public function canBePublished()

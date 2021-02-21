@@ -43,14 +43,14 @@
                       id="delete_program">
                     @method('delete')
                     @csrf
-                    @if($program->isProposalSent())
+                    @if(!$program->isEditable())
                         <fieldset disabled="disabled"/>
                     @endif
                 </form>
                 <form method="POST" action="{{ tenant()->route('tenant:admin.programs.update', [$program]) }}">
                     @method('put')
                     @csrf
-                    @if($program->isProposalSent())
+                    @if(!$program->isEditable())
                         <fieldset disabled="disabled"/>
                     @endif
                     <div class="form-group">
@@ -129,7 +129,7 @@
             <div class="card-body">
                 <form method="POST" action="{{ tenant()->route('tenant:admin.programs.meetings.update', [$program]) }}">
                     @csrf
-                    @if($program->isProposalSent())
+                    @if(!$program->isEditable())
                         <fieldset disabled="disabled"/>
                     @endif
                     <table class="table table-striped">
@@ -151,7 +151,7 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for=meeting_start_time"">Start Time</label>
-                            @if($program->isProposalSent())
+                            @if(!$program->isEditable())
                                 <fieldset disabled="disabled"/>
                             @endif
                             <input type="time" class="form-control" name="start_time" id="" placeholder=""
@@ -159,7 +159,7 @@
                         </div>
 
                         <div class="form-group mx-1">
-                            @if($program->isProposalSent())
+                            @if(!$program->isEditable())
                                 <fieldset disabled="disabled"/>
                             @endif
                             <label for="meeting_end_time">End Time</label>
@@ -167,7 +167,7 @@
                                    value="">
                         </div>
                         <div class="form-group mx-1">
-                            @if($program->isProposalSent())
+                            @if(!$program->isEditable())
                                 <fieldset disabled="disabled"/>
                             @endif
                             <label for="site_id">Site</label>
@@ -180,7 +180,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            @if($program->isProposalSent())
+                            @if(!$program->isEditable())
                                 <fieldset disabled="disabled"/>
                             @endif
                             <label for="shift_meetings">Shift Meeting Dates</label>
@@ -191,7 +191,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        @if($program->isProposalSent())
+                        @if(!$program->isEditable())
                             <fieldset disabled="disabled"/>
                         @endif
                         <button type="submit" class="btn btn-secondary mr-1" name="update_all" value="update_all">
@@ -208,7 +208,7 @@
                 <form method="POST"
                       action="{{ tenant()->route('tenant:admin.programs.meetings.store', [$program]) }}">
                     @csrf
-                    @if($program->isProposalSent())
+                    @if(!$program->isEditable())
                         <fieldset disabled="disabled"/>
                     @endif
                     <div class="form-row">
@@ -251,7 +251,7 @@
                       action="{{ tenant()->route('tenant:admin.programs.contributors.update', [$program]) }}">
                     @method('put')
                     @csrf
-                    @if($program->isProposalSent())
+                    @if(!$program->isEditable())
                         <fieldset disabled="disabled"/>
                     @endif
                 </form>

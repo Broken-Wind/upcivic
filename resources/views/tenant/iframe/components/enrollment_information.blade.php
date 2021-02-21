@@ -6,7 +6,7 @@
         @endif
         @if($contributor->hasEnrollmentInstructions())
             {{ $contributor->enrollment_instructions }}
-            @if($contributor->allowsRegistration() || $program->hasEnrollmentUrl() )
+            @if($contributor->allowsRegistration() || $contributor->hasEnrollmentUrl() )
                 <hr />
             @endif
         @endif
@@ -33,7 +33,7 @@
             @endif
         @else
             @if($contributor->hasEnrollmentUrl())
-                <form action="{{ $program->enrollment_url }}" method="GET" target="_blank">
+                <form action="{{ $contributor->enrollment_url }}" method="GET" target="_blank">
                     <button type="submit" class="btn btn-primary btn-block">Register <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
                     <small class="form-text text-muted text-center">You will be redirected to the registration website.</small>
                 </form>

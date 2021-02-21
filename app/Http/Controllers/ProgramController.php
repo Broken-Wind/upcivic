@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use App\Exports\ProgramsExport;
 use App\Http\Requests\UpdateRegistrationOptions;
 use App\Instructor;
+use App\Mail\PriceChange;
 use App\Task;
 use DB;
 use Illuminate\Http\Request;
@@ -244,6 +245,9 @@ class ProgramController extends Controller
     public function updateRegistrationOptions(UpdateRegistrationOptions $request, Program $program)
     {
         $validated = $request->validated();
+        if ($program->isProposalSent() && $program->hasOtherContributors() && $program->formatted_price != $validated['price']) {
+            \Mail::send(new PriceChange($program, $validated['price'], tenant(), Auth::user()));
+        }
         $program->price = !empty($validated['price']) ? $validated['price'] * 100 : null;
         $program->min_enrollments = $validated['min_enrollments'];
         $program->setMaxEnrollments($validated['max_enrollments']);

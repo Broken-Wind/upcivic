@@ -34,7 +34,7 @@
             </form>
         @endif
 
-        @if(!$program->isProposalSent())
+        @if(!$program->isProposalSent() && $program->hasOtherContributors())
             <a class="btn btn-primary" href="" data-toggle="modal" data-target="#preview-program-modal">Preview & Send</a>
             <form method="POST" action="{{tenant()->route('tenant:admin.programs.mark_sent', [$program])}}">
                 @csrf

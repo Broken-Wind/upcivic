@@ -40,7 +40,7 @@ class ProgramOrdersController extends Controller
         try {
             $reservation = $program->reserveTickets($validated['ticket_quantity'], $validated['stripeEmail']);
 
-            $order = $reservation->complete($this->paymentGateway, $validated['stripeToken'], tenant()->stripe_account_id);
+            $order = $reservation->complete($this->paymentGateway, $validated['stripeToken'], tenant()->stripe_account_id, tenant()->organization_id);
             $order->attachParticipants($validated['participants'], $validated['stripeEmail'], $validated['primary_contact'], $validated['alternate_contact'] ?? null);
 
             \Mail::to($order->email)->send(new OrderConfirmationEmail($order, tenant(), $program));

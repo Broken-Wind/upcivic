@@ -28,11 +28,11 @@ class Reservation
         return $this->email;
     }
 
-    public function complete($paymentGateway, $paymentToken, $destinationAccountId)
+    public function complete($paymentGateway, $paymentToken, $destinationAccountId, $organizationId)
     {
         $charge = $paymentGateway->charge($this->totalCost(), $paymentToken, $destinationAccountId);
 
-        return Order::forTickets($this->tickets(), $this->email(), $charge);
+        return Order::forTickets($this->tickets(), $this->email(), $charge, $organizationId);
     }
 
     public function cancel()

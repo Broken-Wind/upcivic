@@ -26,7 +26,7 @@ class StripePaymentGatewayTest extends TestCase
 
         $newCharges = $paymentGateway->newChargesDuring(function ($paymentGateway) {
             $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER), env('STRIPE_TEST_ACCOUNT_ID'));
-        });
+        }, env('STRIPE_TEST_ACCOUNT_TOKEN'));
 
         $this->assertCount(1, $newCharges);
         $this->assertEquals(2500, $newCharges->map->amount()->sum());
@@ -53,14 +53,12 @@ class StripePaymentGatewayTest extends TestCase
 
         $lastStripeCharge = Arr::first(\Stripe\Charge::all([
             'limit' => 1
-        ], ['api_key' => config('services.stripe.secret')])['data']);
-
+        ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
         $this->assertEquals(10000, $lastStripeCharge['amount']);
-        $this->assertNotNull(env('STRIPE_TEST_ACCOUNT_ID'));
-        $this->assertEquals(env('STRIPE_TEST_ACCOUNT_ID'), $lastStripeCharge['destination']);
+        $this->assertEquals(500, $lastStripeCharge['application_fee_amount']);
 
-        $transfer = \Stripe\Transfer::retrieve($lastStripeCharge['transfer'], ['api_key' => config('services.stripe.secret')]);
-        $this->assertEquals(9500, $transfer['amount']);
+        $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
+        $this->assertEquals(500, $applicationFee['amount']);
     }
 
     /** @test */
@@ -72,14 +70,13 @@ class StripePaymentGatewayTest extends TestCase
 
         $lastStripeCharge = Arr::first(\Stripe\Charge::all([
             'limit' => 1
-        ], ['api_key' => config('services.stripe.secret')])['data']);
+        ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
 
         $this->assertEquals(1000, $lastStripeCharge['amount']);
-        $this->assertNotNull(env('STRIPE_TEST_ACCOUNT_ID'));
-        $this->assertEquals(env('STRIPE_TEST_ACCOUNT_ID'), $lastStripeCharge['destination']);
+        $this->assertEquals(100, $lastStripeCharge['application_fee_amount']);
 
-        $transfer = \Stripe\Transfer::retrieve($lastStripeCharge['transfer'], ['api_key' => config('services.stripe.secret')]);
-        $this->assertEquals(900, $transfer['amount']);
+        $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
+        $this->assertEquals(100, $applicationFee['amount']);
     }
 
 }

@@ -23,11 +23,11 @@ class StripePaymentGateway implements PaymentGateway
                 'amount' => $amount,
                 'source' => $token,
                 'currency' => 'usd',
-                'destination' => [
-                    'account' => $destinationAccountId,
-                    'amount' => min($amount - 100, $amount * .95),
-                ],
-            ], ['api_key' => $this->apiKey]);
+                'application_fee' => max(100, $amount * .05),
+            ], [
+                'api_key' => $this->apiKey,
+                'stripe_account' => $destinationAccountId,
+            ]);
 
             return new Charge([
                 'amount' => $stripeCharge['amount'],
@@ -51,11 +51,11 @@ class StripePaymentGateway implements PaymentGateway
         ], ['api_key' => $this->apiKey])->id;
     }
 
-    public function newChargesDuring($callback)
+    public function newChargesDuring($callback, $apiKey = null)
     {
-        $latestCharge = $this->lastCharge();
+        $latestCharge = $this->lastCharge($apiKey);
         $callback($this);
-        return $this->newChargesSince($latestCharge)->map(function ($stripeCharge) {
+        return $this->newChargesSince($latestCharge, $apiKey)->map(function ($stripeCharge) {
             return new Charge([
                 'amount' => $stripeCharge['amount'],
                 'card_last_four' => $stripeCharge['source']['last4'],
@@ -63,18 +63,18 @@ class StripePaymentGateway implements PaymentGateway
         });
     }
 
-    private function lastCharge()
+    private function lastCharge($apiKey = null)
     {
         return Arr::first(\Stripe\Charge::all([
             'limit' => 1
-        ], ['api_key' => $this->apiKey])['data']);
+        ], ['api_key' => $apiKey ?? $this->apiKey])['data']);
     }
 
-    private function newChargesSince($charge = null)
+    private function newChargesSince($charge = null, $apiKey = null)
     {
         $newCharges = \Stripe\Charge::all([
             'ending_before' => $charge ? $charge->id : null,
-        ], ['api_key' => $this->apiKey])['data'];
+        ], ['api_key' => $apiKey ?? $this->apiKey])['data'];
 
         return collect($newCharges);
     }

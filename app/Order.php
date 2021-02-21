@@ -9,13 +9,14 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    public static function forTickets($tickets, $email, $charge)
+    public static function forTickets($tickets, $email, $charge, $organizationId)
     {
         $order = self::create([
             'confirmation_number' => OrderConfirmationNumber::generate(),
             'email' => $email,
             'amount' => $charge->amount(),
             'card_last_four' => $charge->cardLastFour(),
+            'organization_id' => $organizationId
         ]);
 
         $tickets->each->claimFor($order);

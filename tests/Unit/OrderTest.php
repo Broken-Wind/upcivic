@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Program;
 use App\Order;
 use App\Exceptions\NotEnoughTicketsException;
+use App\Organization;
 use App\Ticket;
 use Mockery;
 
@@ -25,12 +26,14 @@ class OrderTest extends TestCase
             Mockery::spy(Ticket::class),
             Mockery::spy(Ticket::class),
         ]);
+        $organization = factory(Organization::class)->create();
 
-        $order = Order::forTickets($tickets, 'jane@techsplosion.org', $charge);
+        $order = Order::forTickets($tickets, 'jane@techsplosion.org', $charge, $organization->id);
 
         $this->assertEquals('jane@techsplosion.org', $order->email);
         $this->assertEquals(900, $order->amount);
         $this->assertEquals(4321, $order->card_last_four);
+        $this->assertEquals($organization->id, $order->organization_id);
         $tickets->each->shouldHaveReceived('claimFor', [$order]);
     }
 

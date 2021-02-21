@@ -685,8 +685,8 @@ class Program extends Model
     public function getStatus()
     {
         switch (true) {
-            // case ($this->isPublishedByAllContributors()):
-            //     return 'published';
+            case ($this->isPublished()):
+                return 'published';
             // case ($this->isWillPublishByAllContributors()):
             //     return 'will_publish';
             case ($this->isApprovedByAllContributors()):

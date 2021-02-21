@@ -11,6 +11,7 @@ use App\Program;
 use App\OrderConfirmationNumberGenerator;
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
+use App\Contributor;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
 use App\Mail\OrderConfirmationEmail;
@@ -96,9 +97,7 @@ class PurchaseTicketTest extends TestCase
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');;
         $program = factory(Program::class)->states('amCamp', 'published')->create(['price' => 9900])->addTickets(3);
-        $contributor = $program->contributors->first();
-        $contributor->save();
-        $tenant = $contributor->organization->tenant;
+        $tenant = $program->contributors->first()->organization->tenant;
         $tenant->stripe_account_id = 'testly_acct_id';
         $tenant->save();
         $tenantSlug = $tenant->slug;
@@ -135,6 +134,49 @@ class PurchaseTicketTest extends TestCase
         $response = $this->orderTickets($program, $this->validParams());
 
         $response->assertStatus(401);
+        $this->assertCount(0, $program->participants);
+    }
+    /** @test */
+    public function can_purchase_tickets_from_allowing_tenant()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
+        $tenant = $program->contributors->first()->organization->tenant;
+        $tenant->stripe_account_id = 'testly_acct_id';
+        $tenant->save();
+        factory(Contributor::class)->create([
+            'program_id' => $program->id,
+            'internal_registration' => false
+        ]);
+
+        $response = $this->orderTickets($program, $this->validParams());
+        $response->assertStatus(200);
+        $this->assertEquals(9900, $this->paymentGateway->totalChargesFor('testly_acct_id'));
+        $order = $program->ordersFor('personA@example.com')->first();
+        $this->assertEquals(3, $order->ticketQuantity());
+        $this->assertCount(3, $program->participants);
+    }
+
+    /** @test */
+    public function cannot_purchase_tickets_from_disallowing_tenant()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
+        $contributor = $program->contributors->first();
+        $contributor->update(['internal_registration' => false]);
+        $tenant = $contributor->organization->tenant;
+        $tenant->stripe_account_id = 'testly_acct_id';
+        $tenant->save();
+        factory(Contributor::class)->create([
+            'program_id' => $program->id,
+            'internal_registration' => true
+        ]);
+
+        $response = $this->orderTickets($program, $this->validParams());
+
+        $response->assertStatus(401);
+        $this->assertCount(0, $program->participants);
+        $this->assertEquals(0, $this->paymentGateway->totalChargesFor('testly_acct_id'));
+        $order = $program->ordersFor('personA@example.com')->first();
+        $this->assertNull($order);
         $this->assertCount(0, $program->participants);
     }
 

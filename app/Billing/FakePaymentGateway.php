@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Billing;
-use App\Billing\PaymentFailedException; 
+use App\Billing\PaymentFailedException;
 use App\Billing\PaymentGateway;
 use Illuminate\Support\Str;
 
@@ -10,15 +10,15 @@ class FakePaymentGateway implements PaymentGateway
 {
     const TEST_CARD_NUMBER = '4242424242424242';
 
-    private $charges;  
-    private $tokens;  
+    private $charges;
+    private $tokens;
     private $beforeFirstChargeCallback;
 
-    public function __construct()                                               
-    {                                                                           
-        $this->charges = collect();                                             
-        $this->tokens = collect();                                             
-    }  
+    public function __construct()
+    {
+        $this->charges = collect();
+        $this->tokens = collect();
+    }
 
     public function getValidTestToken($cardNumber = self::TEST_CARD_NUMBER)
     {
@@ -27,14 +27,14 @@ class FakePaymentGateway implements PaymentGateway
         return $token;
     }
 
-    public function charge($amount, $token)
+    public function charge($amount, $token, $destinationAccountId)
     {
         if ($this->beforeFirstChargeCallback !== null) {
             $callback = $this->beforeFirstChargeCallback;
             $this->beforeFirstChargeCallback = null;
             $callback($this);
         }
-        
+
         if (! $this->tokens->has($token)) {
 
             throw new PaymentFailedException;
@@ -43,6 +43,7 @@ class FakePaymentGateway implements PaymentGateway
         return $this->charges[] = new Charge([
             'amount' => $amount,
             'card_last_four' => substr($this->tokens[$token], -4),
+            'destination' => $destinationAccountId,
         ]);
     }
 
@@ -56,6 +57,24 @@ class FakePaymentGateway implements PaymentGateway
     public function totalCharges()
     {
         return $this->charges->map->amount()->sum();
+    }
+    public function totalChargesFor($accountId)
+    {
+        return $this->charges->filter(function ($charge) use ($accountId) {
+            return $charge->destination() === $accountId;
+        })->map->amount()->sum();
+    }
+
+    /** @test */
+    function can_get_details_about_a_successful_charge()
+    {
+        $paymentGateway = $this->getPaymentGateway();
+
+        $charge = $paymentGateway->charge(2500, $paymentGateway->getValidTestToken($paymentGateway::TEST_CARD_NUMBER), 'test_acct_1234');
+
+        $this->assertEquals(substr($paymentGateway::TEST_CARD_NUMBER, -4), $charge->cardLastFour());
+        $this->assertEquals(2500, $charge->amount());
+        $this->assertEquals('test_acct_1234', $charge->destination());
     }
 
     public function beforeFirstCharge($callback)

@@ -3,8 +3,8 @@
 namespace App\Billing;
 
 interface PaymentGateway
-{                                                                               
-    public function charge($amount, $token);
+{
+    public function charge($amount, $token, $destinationAccountId);
     public function getValidTestToken();
     public function newChargesDuring($callback);
 

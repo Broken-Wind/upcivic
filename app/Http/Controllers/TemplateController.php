@@ -61,7 +61,7 @@ class TemplateController extends Controller
             'meeting_count' => $validated['meeting_count'],
             'min_enrollments' => $validated['min_enrollments'],
             'max_enrollments' => $validated['max_enrollments'],
-            'enrollment_message' => $validated['enrollment_message'],
+            'enrollment_message' => $validated['enrollment_message'] ?? null,
         ]);
 
         $template->organization_id = tenant()->organization->id;
@@ -113,7 +113,7 @@ class TemplateController extends Controller
             'meeting_count' => $validated['meeting_count'],
             'min_enrollments' => $validated['min_enrollments'],
             'max_enrollments' => $validated['max_enrollments'],
-            'enrollment_message' => $validated['enrollment_message'],
+            'enrollment_message' => $validated['enrollment_message'] ?? null,
         ]);
 
         return back()->withSuccess('Program template updated successfully.');

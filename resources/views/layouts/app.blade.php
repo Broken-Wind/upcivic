@@ -127,6 +127,9 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.edit') }}">
                                             Organization Settings
                                         </a>
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.stripe_connect.settings') }}">
+                                            Registration Settings
+                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             Account
                                         </a>

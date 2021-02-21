@@ -91,11 +91,15 @@ class PurchaseTicketTest extends TestCase
     /** @test */
     public function can_purchase_tickets_for_a_published_program()
     {
+        $this->withoutExceptionHandling();
         Mail::fake();
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');;
         $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
-        $tenantSlug = $program->contributors->first()->organization->tenant->slug;
+        $tenant = $program->contributors->first()->organization->tenant;
+        $tenant->stripe_account_id = 'testly_acct_id';
+        $tenant->save();
+        $tenantSlug = $tenant->slug;
 
         $response = $this->orderTickets($program, $this->validParams());
 
@@ -107,7 +111,7 @@ class PurchaseTicketTest extends TestCase
         $response->assertSeeText('TICKETCODE1');
         $response->assertSeeText('TICKETCODE2');
         $response->assertSeeText('TICKETCODE3');
-        $this->assertEquals(9900, $this->paymentGateway->totalCharges());
+        $this->assertEquals(9900, $this->paymentGateway->totalChargesFor('testly_acct_id'));
         $this->assertTrue($program->hasOrderFor('personA@example.com'));
         $order = $program->ordersFor('personA@example.com')->first();
         $this->assertEquals(3, $order->ticketQuantity());

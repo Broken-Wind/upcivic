@@ -20,6 +20,7 @@ Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () 
 });
 
 Route::group(['middleware' => 'verified'], function () {
+    Route::get('/stripe_connect/redirect', 'StripeConnectController@redirect')->name('stripe_connect.redirect');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/organizations/{organization}/tenant', 'OrganizationTenantController@create')->name('organizations.tenant.create');
     Route::post('/organizations/{organization}/tenant', 'OrganizationTenantController@store')->name('organizations.tenant.store');
@@ -68,6 +69,8 @@ Route::group(['middleware' => 'verified'], function () {
         'middleware' => ['tenant', 'tenant.auth'],
         'as' => 'tenant:admin.',
     ], function () {
+        Route::get('/stripe_connect/authorize', 'StripeConnectController@authorizeRedirect')->name('stripe_connect.authorize');
+        Route::get('/stripe_connect/settings', 'StripeConnectController@settings')->name('stripe_connect.settings');
         Route::get('/', 'TenantController@index')->name('index');
         Route::get('/home', 'TenantController@index')->name('home');
         Route::post('/demo', 'DemoProgramController@store')->name('demo.store');

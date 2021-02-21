@@ -47,6 +47,7 @@ class TemplateTest extends TestCase
     /** @test */
     public function user_can_create_template()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->states('hasTenant')->create();
         $tenant = $user->tenants()->first();
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());

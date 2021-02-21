@@ -65,7 +65,7 @@ class ProgramsExport implements FromQuery, WithHeadings, WithMapping
             $program->site->name,
             $program->location->name,
             $program->formatted_base_fee,
-            $program->getContributorFromTenant()->formatted_invoice_amount,
+            $program->getContributorFor(tenant())->formatted_invoice_amount,
             $program->otherContributors()->sum('formatted_invoice_amount'),
             $program->public_notes,
             $program->contributor_notes,

@@ -21,7 +21,6 @@ $factory->define(Program::class, function (Faker $faker) {
         'min_age' => '5',
         'max_age' =>  '7',
         'proposed_at' => Carbon::now(),
-        'internal_registration' => true,
         'price' => 3300
     ];
 });
@@ -33,6 +32,7 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
     $contributor['organization_id'] = $tenant->organization_id;
     $contributor['invoice_amount'] = 13000;
     $contributor['invoice_type'] = 'per_participant';
+    $contributor['internal_registration'] = true;
     $program->contributors()->save($contributor);
     $program->proposing_organization_id = $tenant->organization_id;
     $startDatetime = Carbon::parse('9am +2 weeks');

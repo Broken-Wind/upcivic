@@ -26,7 +26,7 @@ class ProgramRosterController extends Controller
         $program->enrollment_instructions = $validated['enrollment_instructions'] ?? null;
         $program->min_enrollments = $validated['min_enrollments'];
         // If a program allows registration via Upcivic, we should not allow manual updating of the current enrollments.
-        if ($program->allowsRegistration()) {
+        if ($program->getContributorFor(tenant())->allowsRegistration()) {
             $program->setMaxEnrollments($validated['max_enrollments']);
         } else {
             $program->updateEnrollments($validated['enrollments'], $validated['max_enrollments']);

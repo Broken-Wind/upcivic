@@ -7,11 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contributor extends Model
 {
     //
-    protected $fillable = [
-        'internal_name',
-        'invoice_amount',
-        'invoice_type',
-    ];
+    protected $guarded = [];
     protected $dates = [
         'published_at',
     ];
@@ -27,6 +23,21 @@ class Contributor extends Model
     public function getFormattedInvoiceAmountAttribute()
     {
         return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
+    }
+
+    public function allowsRegistration()
+    {
+        return $this->internal_registration;
+    }
+
+    public function hasEnrollmentUrl()
+    {
+        return !empty($this->enrollment_url);
+    }
+
+    public function hasEnrollmentInstructions()
+    {
+        return !empty($this->enrollment_instructions);
     }
 
     public function getNameAttribute()

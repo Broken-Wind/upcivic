@@ -21,9 +21,11 @@ class RosterTest extends TestCase
         $program = factory(Program::class)->states(['amCamp', 'published', 'withParticipants'])->create([
             'proposing_organization_id' => $tenant->organization_id,
         ]);
-        $contributor = new Contributor();
-        $contributor['organization_id'] = $tenant->organization_id;
-        $program->contributors()->save($contributor);
+        $contributor = factory(Contributor::class)->create([
+            'program_id' => $program->id,
+            'organization_id' => $tenant->organization_id,
+            'internal_registration' => true,
+        ]);
         return $program;
     }
 

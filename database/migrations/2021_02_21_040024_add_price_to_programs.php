@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPriceAndInternalRegistrationToPrograms extends Migration
+class AddPriceToPrograms extends Migration
 {
     /**
      * Run the migrations.
@@ -16,7 +16,6 @@ class AddPriceAndInternalRegistrationToPrograms extends Migration
         Schema::table('programs', function (Blueprint $table) {
             //
             $table->integer('price')->nullable();
-            $table->boolean('internal_registration')->nullable();
         });
     }
 
@@ -29,9 +28,7 @@ class AddPriceAndInternalRegistrationToPrograms extends Migration
     {
         Schema::table('programs', function (Blueprint $table) {
             //
-
             $table->dropColumn('price');
-            $table->dropColumn('internal_registration');
         });
     }
 }

@@ -95,8 +95,10 @@ class PurchaseTicketTest extends TestCase
         Mail::fake();
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');;
-        $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
-        $tenant = $program->contributors->first()->organization->tenant;
+        $program = factory(Program::class)->states('amCamp', 'published')->create(['price' => 9900])->addTickets(3);
+        $contributor = $program->contributors->first();
+        $contributor->save();
+        $tenant = $contributor->organization->tenant;
         $tenant->stripe_account_id = 'testly_acct_id';
         $tenant->save();
         $tenantSlug = $tenant->slug;
@@ -107,11 +109,11 @@ class PurchaseTicketTest extends TestCase
         $this->assertEquals(url()->current(), config('app.url')."/{$tenantSlug}/programs/{$program->id}/orders/ORDERCONFIRMATION1234");
         // $response->assertSeeText('macarie@example.com');
         $response->assertSeeText('ORDERCONFIRMATION1234');
-        $response->assertSeeText('$99.00');
+        $response->assertSeeText('$297.00');
         $response->assertSeeText('TICKETCODE1');
         $response->assertSeeText('TICKETCODE2');
         $response->assertSeeText('TICKETCODE3');
-        $this->assertEquals(9900, $this->paymentGateway->totalChargesFor('testly_acct_id'));
+        $this->assertEquals(29700, $this->paymentGateway->totalChargesFor('testly_acct_id'));
         $this->assertTrue($program->hasOrderFor('personA@example.com'));
         $order = $program->ordersFor('personA@example.com')->first();
         $this->assertEquals(3, $order->ticketQuantity());
@@ -125,7 +127,10 @@ class PurchaseTicketTest extends TestCase
     /** @test */
     public function cannot_purchase_tickets_when_no_internal_registration()
     {
-        $program = factory(Program::class)->states('amCamp', 'published')->create(['internal_registration' => false])->addTickets(3);
+        $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
+        $program->contributors->first()->update([
+            'internal_registration' => false
+        ]);
 
         $response = $this->orderTickets($program, $this->validParams());
 

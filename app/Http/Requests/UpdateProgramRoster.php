@@ -30,7 +30,7 @@ class UpdateProgramRoster extends FormRequest
                 'nullable',
                 'numeric',
                 function ($attribute, $value, $fail) {
-                    if (empty($value) && $this->route('program')->allowsRegistration()) {
+                    if (empty($value) && $this->route('program')->getContributorFor(tenant())->allowsRegistration()) {
                         $fail('You must set a price.');
                     }
                 }
@@ -43,7 +43,7 @@ class UpdateProgramRoster extends FormRequest
                 'numeric',
                 'between:0,9999',
                 function ($attribute, $value, $fail) {
-                    if ($value == null && !$this->route('program')->allowsRegistration()) {
+                    if ($value == null && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()) {
                         $fail('You must include the number of current enrollments.');
                     }
                 }

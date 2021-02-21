@@ -15,7 +15,7 @@
                 <div class="form-group">
                     <label for="published_at">Publish On:</label>
                     <input type="date" class="form-control" name="published_at" id="published_at"
-                        value="{{ !empty($program->getContributorFromTenant()['published_at']) ? $program->getContributorFromTenant()['published_at']->format('Y-m-d') : '' }}"
+                        value="{{ !empty($program->getContributorFor(tenant())['published_at']) ? $program->getContributorFor(tenant())['published_at']->format('Y-m-d') : '' }}"
                         aria-describedby="published_at_help">
                     <small id="published_at_help" class="form-text text-muted">The date this program should be published</small>
                 </div>

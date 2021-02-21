@@ -15,7 +15,7 @@
                     <div class="form-group">
                     <label for="minimim_enrollments">Current Enrollments</label>
                     <input type="number"
-                        class="form-control" name="enrollments" id="enrollments" placeholder="10" value="{{ $program->enrollments }}" {{ $program->allowsRegistration() ? 'readonly' : '' }}>
+                        class="form-control" name="enrollments" id="enrollments" placeholder="10" value="{{ $program->enrollments }}" {{ $program->getContributorFor(tenant())->allowsRegistration() ? 'readonly' : '' }}>
                     </div>
                 </div>
                 <div class="col-sm-4">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            @if($program->allowsRegistration())
+            @if($program->getContributorFor(tenant())->allowsRegistration())
                 <div class="form-group">
                 <label for="price">Price to Register</label>
                 <div class="input-group input-group mb-3">

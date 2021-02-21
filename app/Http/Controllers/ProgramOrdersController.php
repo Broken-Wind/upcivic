@@ -35,7 +35,7 @@ class ProgramOrdersController extends Controller
     public function store(StoreProgramOrder $request, Program $program)
     {
         abort_if(!$program->isPublished(), 404);
-        abort_if(!$program->allowsRegistration(), 401);
+        abort_if(!$program->getContributorFor(tenant())->allowsRegistration(), 401);
         $validated = $request->validated();
         try {
             $reservation = $program->reserveTickets($validated['ticket_quantity'], $validated['stripeEmail']);

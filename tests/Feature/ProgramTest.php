@@ -95,11 +95,11 @@ class ProgramTest extends TestCase
         $tenant = $user->tenants()->first();
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
         $program = factory(Program::class)->state('amCamp', 'published')->create([
-            'proposing_organization_id' => $tenant->organization_id,
-            'internal_registration' => false
+            'proposing_organization_id' => $tenant->organization_id
         ]);
         $contributor = new Contributor();
         $contributor['organization_id'] = $tenant->organization_id;
+        $contributor['internal_registration'] = false;
         $program->contributors()->save($contributor);
 
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}", [

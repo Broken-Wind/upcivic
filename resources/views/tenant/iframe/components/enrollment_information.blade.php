@@ -1,16 +1,16 @@
 <div class="card">
     <div class="card-header">Getting Enrolled</div>
     <div class="card-body">
-        @if(!$program->hasEnrollmentInstructions() && !$program->hasEnrollmentUrl() && !$program->allowsRegistration())
+        @if(!$contributor->hasEnrollmentInstructions() && !$contributor->hasEnrollmentUrl() && !$contributor->allowsRegistration())
             We couldn't find registration information for this program. Please contact the organizer.
         @endif
-        @if($program->hasEnrollmentInstructions())
-            {{ $program->enrollment_instructions }}
-            @if($program->allowsRegistration() || $program->hasEnrollmentUrl() )
+        @if($contributor->hasEnrollmentInstructions())
+            {{ $contributor->enrollment_instructions }}
+            @if($contributor->allowsRegistration() || $program->hasEnrollmentUrl() )
                 <hr />
             @endif
         @endif
-        @if($program->allowsRegistration())
+        @if($contributor->allowsRegistration())
             @if($program->isFull())
                 <div class="alert alert-warning">
                     We're sorry, this program is full. Please contact the organizers for more information.
@@ -32,7 +32,7 @@
                 </form>
             @endif
         @else
-            @if($program->hasEnrollmentUrl())
+            @if($contributor->hasEnrollmentUrl())
                 <form action="{{ $program->enrollment_url }}" method="GET" target="_blank">
                     <button type="submit" class="btn btn-primary btn-block">Register <i class="fas fa-fw fa-external-link-alt ml-2"></i></button>
                     <small class="form-text text-muted text-center">You will be redirected to the registration website.</small>

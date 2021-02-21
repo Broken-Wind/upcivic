@@ -68,7 +68,6 @@ class Program extends Model
         'max_enrollments',
         'proposing_organization_id',
         'proposed_at',
-        'enrollment_message',
     ];
 
     public function scopeExcludePast($query)
@@ -166,20 +165,9 @@ class Program extends Model
         return $this->site->area;
     }
 
-    public function getContributorFromTenant($tenant = null)
-    {
-        if (! empty($tenant)) {
-            $organizationId = $tenant['organization_id'];
-        } else {
-            $organizationId = tenant()['organization_id'];
-        }
-
-        return $this->contributors->where('organization_id', $organizationId)->first();
-    }
-
     public function isPublished()
     {
-        return $this->getContributorFromTenant()->isPublished();
+        return $this->getContributorFor(tenant())->isPublished();
     }
 
     public function isApprovedByAllContributors()
@@ -220,12 +208,12 @@ class Program extends Model
 
     public function willPublish()
     {
-        return $this->getContributorFromTenant()->willPublish();
+        return $this->getContributorFor(tenant())->willPublish();
     }
 
     public function getPublishedAtAttribute()
     {
-        return $this->getContributorFromTenant()->published_at;
+        return $this->getContributorFor(tenant())->published_at;
     }
 
     public function getParticipantsAttribute()
@@ -284,7 +272,6 @@ class Program extends Model
                     'min_age' => $proposal['min_age'] ?? $template['min_age'],
                     'max_age' => $proposal['max_age'] ?? $template['max_age'],
                     'min_enrollments' => $template['min_enrollments'],
-                    'enrollment_message' => $template['enrollment_message'] ?? null,
                     'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()->organization_id,
                     'proposed_at' => $proposal['proposed_at'] ?? null,
                 ]);
@@ -293,6 +280,7 @@ class Program extends Model
                     'internal_name' => $template['internal_name'],
                     'invoice_amount' => $template['invoice_amount'],
                     'invoice_type' => $template['invoice_type'],
+                    'enrollment_message' => $template['enrollment_message'] ?? null,
                 ]);
                 $proposingContributor['program_id'] = $program['id'];
                 $proposingContributor['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
@@ -342,7 +330,7 @@ class Program extends Model
 
 
     public function updateEnrollments($enrollments, $maxEnrollments) {
-        if ($this->allowsRegistration()) {
+        if ($this->getContributorFor(tenant())->allowsRegistration()) {
             throw new CannotManuallyUpdateInternalRegistrationsException();
         }
         if ($enrollments > $this->max_enrollments) {
@@ -480,7 +468,7 @@ class Program extends Model
 
     public function getSuggestedEnrollmentInstructionsAttribute()
     {
-        return $this->enrollment_instructions
+        return $this->getContributorFor(tenant())->enrollment_instructions
             ?? tenant()->organization->enrollment_instructions
             ?? $this->contributors->map(function ($contributor) {
                 return $contributor->organization->enrollment_instructions;
@@ -595,6 +583,17 @@ class Program extends Model
     public function contributors()
     {
         return $this->hasMany(Contributor::class);
+    }
+
+    public function getContributorFor($identifier)
+    {
+        if ($identifier instanceof Organization) {
+            return $this->contributors->firstWhere('organization_id', $identifier->id);
+        }
+        if ($identifier instanceof Tenant) {
+            return $this->contributors->firstWhere('organization_id', $identifier->organization_id);
+        }
+        throw new \InvalidArgumentException('Identifier must be a tenant or organization');
     }
 
     public function otherContributors()
@@ -779,23 +778,8 @@ class Program extends Model
         return $this->orders()->where('email', $customerEmail)->get();
     }
 
-    public function allowsRegistration()
-    {
-        return $this->internal_registration;
-    }
-
-    public function hasEnrollmentUrl()
-    {
-        return !empty($this->enrollment_url);
-    }
-
     public function hasEnrollments()
     {
         return !empty($this->tickets->firstWhere('reserved_at', '!=', null));
-    }
-
-    public function hasEnrollmentInstructions()
-    {
-        return !empty($this->enrollment_instructions);
     }
 }

@@ -7,10 +7,10 @@ You're enrolled! Here are your order details:
 * {{ $program['start_time'] }}-{{ $program['end_time'] }}
 * {{ $program['description_of_age_range'] }}
 @endcomponent
-@if(!empty($program['enrollment_message']))
+@if(!empty($program->getContributorFor($tenant)['enrollment_message']))
 ## Additional Information
 @component('mail::panel')
-{{ $program['enrollment_message'] }}
+{{ $program->getContributorFor($tenant)['enrollment_message'] }}
 @endcomponent
 @endif
 

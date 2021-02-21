@@ -64,7 +64,7 @@ class StripePaymentGatewayTest extends TestCase
     }
 
     /** @test */
-    public function minimum_application_charge_is_two_dollars()
+    public function minimum_application_charge_is_one_dollar()
     {
         $paymentGateway = $this->getPaymentGateway();
 
@@ -79,7 +79,7 @@ class StripePaymentGatewayTest extends TestCase
         $this->assertEquals(env('STRIPE_TEST_ACCOUNT_ID'), $lastStripeCharge['destination']);
 
         $transfer = \Stripe\Transfer::retrieve($lastStripeCharge['transfer'], ['api_key' => config('services.stripe.secret')]);
-        $this->assertEquals(800, $transfer['amount']);
+        $this->assertEquals(900, $transfer['amount']);
     }
 
 }

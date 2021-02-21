@@ -25,7 +25,7 @@ class StripePaymentGateway implements PaymentGateway
                 'currency' => 'usd',
                 'destination' => [
                     'account' => $destinationAccountId,
-                    'amount' => min($amount - 200, $amount * .95),
+                    'amount' => min($amount - 100, $amount * .95),
                 ],
             ], ['api_key' => $this->apiKey]);
 

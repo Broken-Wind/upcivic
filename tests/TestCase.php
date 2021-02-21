@@ -17,9 +17,7 @@ abstract class TestCase extends BaseTestCase
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
-        if (env('DB_CONNECTION') == 'sqlite') {
-            $this->hotfixSqlite();
-        }
+        $this->hotfixSqlite();
     }
 
     protected function setUp() :void

@@ -136,6 +136,30 @@ class PurchaseTicketTest extends TestCase
         $response->assertStatus(401);
         $this->assertCount(0, $program->participants);
     }
+
+    /** @test */
+    public function charges_paid_to_correct_tenant_when_multiple()
+    {
+        $program = factory(Program::class)->states('amCamp', 'published')->create()->addTickets(3);
+        $tenant = $program->contributors->first()->organization->tenant;
+        $tenant->stripe_account_id = 'testly_acct_id';
+        $tenant->save();
+        factory(Contributor::class)->states(['hasTenant'])->create([
+            'program_id' => $program->id,
+            'internal_registration' => true,
+        ])->organization->tenant->update([
+            'stripe_account_id' => 'test_acct_2_id',
+        ]);
+
+        $response = $this->orderTickets($program, $this->validParams());
+        $response->assertStatus(200);
+        $this->assertEquals(9900, $this->paymentGateway->totalChargesFor('testly_acct_id'));
+        $this->assertEquals(0, $this->paymentGateway->totalChargesFor('test_acct_2_id'));
+        $order = $program->ordersFor('personA@example.com')->first();
+        $this->assertEquals(3, $order->ticketQuantity());
+        $this->assertCount(3, $program->participants);
+    }
+
     /** @test */
     public function can_purchase_tickets_from_allowing_tenant()
     {
@@ -145,12 +169,15 @@ class PurchaseTicketTest extends TestCase
         $tenant->save();
         factory(Contributor::class)->states(['hasTenant'])->create([
             'program_id' => $program->id,
-            'internal_registration' => false
+            'internal_registration' => false,
+        ])->organization->tenant->update([
+            'stripe_account_id' => 'test_acct_2_id',
         ]);
 
         $response = $this->orderTickets($program, $this->validParams());
         $response->assertStatus(200);
         $this->assertEquals(9900, $this->paymentGateway->totalChargesFor('testly_acct_id'));
+        $this->assertEquals(0, $this->paymentGateway->totalChargesFor('test_acct_2_id'));
         $order = $program->ordersFor('personA@example.com')->first();
         $this->assertEquals(3, $order->ticketQuantity());
         $this->assertCount(3, $program->participants);
@@ -165,9 +192,11 @@ class PurchaseTicketTest extends TestCase
         $tenant = $contributor->organization->tenant;
         $tenant->stripe_account_id = 'testly_acct_id';
         $tenant->save();
-        factory(Contributor::class)->create([
+        factory(Contributor::class)->states(['hasTenant'])->create([
             'program_id' => $program->id,
-            'internal_registration' => true
+            'internal_registration' => true,
+        ])->organization->tenant->update([
+            'stripe_account_id' => 'test_acct_2_id',
         ]);
 
         $response = $this->orderTickets($program, $this->validParams());
@@ -175,6 +204,7 @@ class PurchaseTicketTest extends TestCase
         $response->assertStatus(401);
         $this->assertCount(0, $program->participants);
         $this->assertEquals(0, $this->paymentGateway->totalChargesFor('testly_acct_id'));
+        $this->assertEquals(0, $this->paymentGateway->totalChargesFor('test_acct_2_id'));
         $order = $program->ordersFor('personA@example.com')->first();
         $this->assertNull($order);
         $this->assertCount(0, $program->participants);

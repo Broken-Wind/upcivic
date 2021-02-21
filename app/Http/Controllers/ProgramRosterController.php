@@ -16,14 +16,13 @@ class ProgramRosterController extends Controller
     //
     public function edit(Program $program)
     {
-        return view('tenant.admin.programs.roster.edit', compact('program'));
+        $contributor = $program->getContributorFor(tenant());
+        return view('tenant.admin.programs.roster.edit', compact('program', 'contributor'));
     }
     public function update(UpdateProgramRoster $request, Program $program)
     {
         $validated = $request->validated();
         $program->price = !empty($validated['price']) ? $validated['price'] * 100 : null;
-        $program->enrollment_url = $validated['enrollment_url'] ?? null;
-        $program->enrollment_instructions = $validated['enrollment_instructions'] ?? null;
         $program->min_enrollments = $validated['min_enrollments'];
         // If a program allows registration via Upcivic, we should not allow manual updating of the current enrollments.
         if ($program->getContributorFor(tenant())->allowsRegistration()) {
@@ -32,6 +31,11 @@ class ProgramRosterController extends Controller
             $program->updateEnrollments($validated['enrollments'], $validated['max_enrollments']);
         }
         $program->save();
+        $contributor = $program->getContributorFor(tenant());
+        $contributor->update([
+            'enrollment_url' => $validated['enrollment_url'] ?? null,
+            'enrollment_instructions' => $validated['enrollment_instructions'] ?? null,
+        ]);
         return back()->withSuccess('Program updated successfully.');
     }
 

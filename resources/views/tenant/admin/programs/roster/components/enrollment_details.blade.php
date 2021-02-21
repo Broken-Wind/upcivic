@@ -42,11 +42,11 @@
                 <div class="form-group">
                     <label for="enrollment_url">Enrollment URL</label>
                     <div class="input-group">
-                        <input type="url" class="form-control" name="enrollment_url" value="{{ $program->enrollment_url }}" id="enrollment_url" aria-describedby="enrollment_url_help" placeholder="http://my-registration-website.org">
-                        @if($program->hasEnrollmentUrl())
+                        <input type="url" class="form-control" name="enrollment_url" value="{{ $contributor->enrollment_url }}" id="enrollment_url" aria-describedby="enrollment_url_help" placeholder="http://my-registration-website.org">
+                        @if($contributor->hasEnrollmentUrl())
                             <div class="input-group-append">
                                 <span class="input-group-text">
-                                    <a href="{{ $program->enrollment_url }}" target="_blank">
+                                    <a href="{{ $contributor->enrollment_url }}" target="_blank">
                                         <i class="fas fa-fw fa-external-link-alt ml-2"></i>
                                     </a>
                                 </span>
@@ -58,7 +58,7 @@
             @endif
             <div class="form-group">
                 <label for="enrollmentInstructions">Enrollment Instructions</label>
-                <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $program->enrollment_instructions }}</textarea>
+                <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $contributor->enrollment_instructions }}</textarea>
             </div>
             <button type="submit" class="btn btn-secondary">
                 Update Enrollments

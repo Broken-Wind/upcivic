@@ -71,19 +71,19 @@ class ProgramTest extends TestCase
         $response->assertStatus(200);
         Mail::assertNotSent(ProposalSent::class);
         $program = Program::first();
-        $this->assertEquals($program['name'], 'Template Name');
-        $this->assertEquals($program['internal_name'], 'Internal Name');
-        $this->assertEquals($program['description'], 'Long description');
-        $this->assertEquals($program['public_notes'], 'Pubnotes');
-        $this->assertEquals($program['contributor_notes'], 'Contnotes');
-        $this->assertEquals($program['min_age'], '12');
-        $this->assertEquals($program['max_age'], '13');
-        $this->assertEquals($program['min_enrollments'], '11');
+        $this->assertEquals($program->name, 'Template Name');
+        $this->assertEquals($program->internal_name, 'Internal Name');
+        $this->assertEquals($program->description, 'Long description');
+        $this->assertEquals($program->public_notes, 'Pubnotes');
+        $this->assertEquals($program->contributor_notes, 'Contnotes');
+        $this->assertEquals($program->min_age, '12');
+        $this->assertEquals($program->max_age, '13');
+        $this->assertEquals($program->min_enrollments, '11');
         $this->assertEquals($program->tickets->count(), '111');
-        $this->assertEquals($program['ages_type'], 'grades');
-        $this->assertEquals($program['formatted_base_fee'], '11.99');
-        $this->assertEquals($program['start_time'], '9:00am');
-        $this->assertEquals($program['end_time'], '11:00am');
+        $this->assertEquals($program->ages_type, 'grades');
+        $this->assertEquals($program->formatted_base_fee, '11.99');
+        $this->assertEquals($program->start_time, '9:00am');
+        $this->assertEquals($program->end_time, '11:00am');
         $this->assertEquals(Carbon::parse($program->meetings[0]['start_datetime'])->diffInDays($program->meetings[1]['start_datetime']), 7);
         $this->assertEquals($program->meetings->count(), 3);
     }
@@ -97,10 +97,11 @@ class ProgramTest extends TestCase
         $program = factory(Program::class)->state('amCamp', 'published')->create([
             'proposing_organization_id' => $tenant->organization_id
         ]);
-        $contributor = new Contributor();
-        $contributor['organization_id'] = $tenant->organization_id;
-        $contributor['internal_registration'] = false;
-        $program->contributors()->save($contributor);
+        factory(Contributor::class)->create([
+            'program_id' => $program->id,
+            'organization_id' => $tenant->organization_id,
+            'internal_registration' => false
+        ]);
 
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}", [
             'name' => 'Sweet Radcamp',
@@ -111,21 +112,50 @@ class ProgramTest extends TestCase
             'ages_type' => 'ages',
             'min_age' => '89',
             'max_age' => '99',
-            'min_enrollments' => '393',
-            'max_enrollments' => '494',
         ]);
 		$program->refresh();
 
         $response->assertStatus(200);
-        $this->assertEquals($program['name'], 'Sweet Radcamp');
-        $this->assertEquals($program['internal_name'], 'Sweet');
-        $this->assertEquals($program['description'], 'Radcamp');
-        $this->assertEquals($program['public_notes'], 'Cool beens');
-        $this->assertEquals($program['contributor_notes'], 'Hot notez');
-        $this->assertEquals($program['ages_type'], 'ages');
-        $this->assertEquals($program['min_age'], '89');
-        $this->assertEquals($program['max_age'], '99');
-        $this->assertEquals($program['min_enrollments'], '393');
-        $this->assertEquals($program['max_enrollments'], '494');
+        $this->assertEquals($program->name, 'Sweet Radcamp');
+        $this->assertEquals($program->internal_name, 'Sweet');
+        $this->assertEquals($program->description, 'Radcamp');
+        $this->assertEquals($program->public_notes, 'Cool beens');
+        $this->assertEquals($program->contributor_notes, 'Hot notez');
+        $this->assertEquals($program->ages_type, 'ages');
+        $this->assertEquals($program->min_age, '89');
+        $this->assertEquals($program->max_age, '99');
+    }
+    /** @test */
+    public function user_can_edit_registration_options()
+    {
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->states('hasTenant')->create();
+        $tenant = $user->tenants()->first();
+        $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
+        $program = factory(Program::class)->state('amCamp', 'published')->create([
+            'proposing_organization_id' => $tenant->organization_id
+        ]);
+        factory(Contributor::class)->create([
+            'program_id' => $program->id,
+            'organization_id' => $tenant->organization_id,
+            'internal_registration' => false
+        ]);
+
+        $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}/update_registration_options", [
+            'min_enrollments' => '393',
+            'max_enrollments' => '494',
+            'enrollment_url' => 'https://google.com',
+            'enrollment_message' => 'You rock, homeboy!',
+            'enrollment_instructions' => 'Get enrolled today!',
+        ]);
+		$program->refresh();
+
+        $response->assertStatus(200);
+        $this->assertEquals($program->min_enrollments, '393');
+        $this->assertEquals($program->max_enrollments, '494');
+        $contributor = $program->getContributorFor($tenant);
+        $this->assertEquals($contributor->enrollment_url, 'https://google.com');
+        $this->assertEquals($contributor->enrollment_message, 'You rock, homeboy!');
+        $this->assertEquals($contributor->enrollment_instructions, 'Get enrolled today!');
     }
 }

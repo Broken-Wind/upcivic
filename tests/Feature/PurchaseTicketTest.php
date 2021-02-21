@@ -143,7 +143,7 @@ class PurchaseTicketTest extends TestCase
         $tenant = $program->contributors->first()->organization->tenant;
         $tenant->stripe_account_id = 'testly_acct_id';
         $tenant->save();
-        factory(Contributor::class)->create([
+        factory(Contributor::class)->states(['hasTenant'])->create([
             'program_id' => $program->id,
             'internal_registration' => false
         ]);

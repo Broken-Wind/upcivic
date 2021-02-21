@@ -236,14 +236,7 @@ class ProgramController extends Controller
             'ages_type' => $validated['ages_type'],
             'min_age' => $validated['min_age'],
             'max_age' => $validated['max_age'],
-            'min_enrollments' => $validated['min_enrollments'],
         ]);
-
-        try {
-            $program->updateEnrollments($request['enrollments'] ?? null, $request['max_enrollments']);
-        } catch (CannotManuallyUpdateInternalRegistrationsException $e) {
-            return back()->withErrors(['error' => 'Cannot update enrollments manually for sessions accepting internal registrations.']);
-        }
 
         return back()->withSuccess('Program updated successfully.');
     }
@@ -251,16 +244,17 @@ class ProgramController extends Controller
     public function updateRegistrationOptions(UpdateRegistrationOptions $request, Program $program)
     {
         $validated = $request->validated();
-        $program->internal_registration = $validated['internal_registration'] ?? null;
         $program->price = !empty($validated['price']) ? $validated['price'] * 100 : null;
-        $program->enrollment_url = $validated['enrollment_url'] ?? null;
         $program->min_enrollments = $validated['min_enrollments'];
         $program->setMaxEnrollments($validated['max_enrollments']);
         $program->save();
         $contributor = $program->getContributorFor(tenant());
-        $contributor->enrollment_instructions = $validated['enrollment_instructions'] ?? null;
-        $contributor->enrollment_message = $validated['enrollment_message'] ?? null;
-        $contributor->save();
+        $contributor->update([
+            'internal_registration' => $validated['internal_registration'] ?? null,
+            'enrollment_instructions' => $validated['enrollment_instructions'] ?? null,
+            'enrollment_message' => $validated['enrollment_message'] ?? null,
+            'enrollment_url' => $validated['enrollment_url'] ?? null,
+        ]);
         return back()->withSuccess('Program updated successfully.');
     }
 

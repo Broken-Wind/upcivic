@@ -1,4 +1,5 @@
 @include('tenant.admin.programs.components.preview_program_modal')
+@include('tenant.admin.programs.components.cancel_program_modal')
 
 <form method="POST" id="publish_program" action="{{ tenant()->route('tenant:admin.programs.published.update', [$program]) }}">
     @method('put')
@@ -11,10 +12,6 @@
 </form>
 <form method="POST" id="mark_sent" action="{{tenant()->route('tenant:admin.programs.mark_sent', [$program])}}">
     @csrf
-</form>
-<form method="POST" id="delete_program" action="{{tenant()->route('tenant:admin.programs.destroy', [$program])}}" id="delete-program">
-    @csrf
-    @method('DELETE')
 </form>
 
 <div class="row">
@@ -56,6 +53,6 @@
             <a class="btn btn-primary" href="" data-toggle="modal" data-target="#preview-program-modal">Preview & Send</a>
             <button type="submit" class="btn btn-secondary ml-1" form="mark_sent" onClick="return confirm('You cannot send a proposal email via {{ config('app.name') }} after marking as sent. Are you sure?');">Mark as Sent</button>
         @endif
-        <button type="submit" form="delete_program" class="btn btn-danger ml-1" onClick="return confirm('Are you sure you want to cancel this program? This cannot be undone.')">Cancel</button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#cancel-program-modal">Cancel Program</button>
     </div>
 </div>

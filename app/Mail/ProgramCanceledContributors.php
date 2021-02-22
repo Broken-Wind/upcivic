@@ -13,6 +13,7 @@ class ProgramCanceledContributors extends Mailable
 {
     use Queueable, SerializesModels;
     public $program;
+    public $message;
     public $user;
 
     /**
@@ -20,10 +21,11 @@ class ProgramCanceledContributors extends Mailable
      *
      * @return void
      */
-    public function __construct(Program $program, User $user)
+    public function __construct(Program $program, $message, User $user)
     {
         //
         $this->program = $program;
+        $this->message = $message;
         $this->user = $user;
     }
 

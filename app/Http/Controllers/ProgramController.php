@@ -22,6 +22,7 @@ use App\Site;
 use App\Template;
 use Carbon\Carbon;
 use App\Exports\ProgramsExport;
+use App\Http\Requests\DestroyProgram;
 use App\Http\Requests\UpdateRegistrationOptions;
 use App\Instructor;
 use App\Mail\PriceChange;
@@ -305,25 +306,26 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Program $program)
+    public function destroy(DestroyProgram $request, Program $program)
     {
         //
+        $validated = $request->validated();
         $programId = $program->id;
         if ($program->isProposalSent()) {
             $program->contributors->map(function ($contributor) {
                 return $contributor->organization->emailableContacts();
-            })->flatten()->unique('email')->each(function ($administrator) use ($program) {
-                \Mail::to($administrator['email'])->send(new ProgramCanceledContributors($program, Auth::user()));
+            })->flatten()->unique('email')->each(function ($administrator) use ($program, $validated) {
+                \Mail::to($administrator['email'])->send(new ProgramCanceledContributors($program, $validated['cancellation_message'] ?? null, Auth::user()));
             });
         }
         if ($program->hasParticipants()) {
             $program->participants->map(function ($participant)  {
                 return $participant->primaryContact()->email;
-            })->unique()->each(function ($email) use ($program) {
-                \Mail::to($email)->send(new ProgramCanceledParticipants($program, Auth::user(), tenant()->organization));
+            })->unique()->each(function ($email) use ($program, $validated) {
+                \Mail::to($email)->send(new ProgramCanceledParticipants($program, $validated['cancellation_message'] ?? null, Auth::user(), tenant()->organization));
             });
         }
-        $program->delete();
+        // $program->delete();
         return redirect('https://dashboard.stripe.com/search?query=program_id%3A' . $programId);
 
     }

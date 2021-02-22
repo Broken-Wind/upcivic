@@ -20,6 +20,7 @@ class OrderTest extends TestCase
         $charge = new Charge([
             'amount' => 900,
             'card_last_four' => 4321,
+            'stripe_charge_id' => 'ch_yomama'
         ]);
         $tickets = collect([
             Mockery::spy(Ticket::class),

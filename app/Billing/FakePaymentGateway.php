@@ -44,6 +44,7 @@ class FakePaymentGateway implements PaymentGateway
             'amount' => $amount,
             'card_last_four' => substr($this->tokens[$token], -4),
             'destination' => $destinationAccountId,
+            'stripe_charge_id' => 'ch_fakeid_yo'
         ]);
     }
 

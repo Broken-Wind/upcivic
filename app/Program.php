@@ -203,6 +203,16 @@ class Program extends Model
         return true;
     }
 
+    public function getProposingOrganizationAttribute()
+    {
+        return Organization::find($this->proposing_organization_id);
+    }
+
+    public function canBeDeletedBy(Tenant $tenant)
+    {
+        return $this->proposing_organization_id == $tenant->organization_id;
+    }
+
     public function canBePublished()
     {
         if ($this->isProposalSent() && $this->isApprovedByAllContributors()) {

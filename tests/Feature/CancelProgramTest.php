@@ -48,19 +48,32 @@ class CancelProgramTest extends TestCase
                 return $mail->hasTo($email);
             });
         });
-
-        // Participants refunded
     }
+
+    /** @test */
+    public function non_proposing_organization_cant_cancel_program_with_participants()
+    {
+        Mail::fake();
+        $program = factory(Program::class)->states(['amCamp', 'published', 'withParticipants'])->create();
+        $contributor = factory(Contributor::class)->states(['hasTenant'])->create([
+            'program_id' => $program->id
+        ]);
+        $user = factory(User::class)->create();
+        $tenant = $contributor->organization->tenant;
+        $user->joinTenant($tenant);
+        $this->assertCount(1, $tenant->organization->programs);
+
+        $response = $this->actingAs($user)->followingRedirects()->delete("/{$tenant->slug}/admin/programs/{$program->id}");
+        $tenant->refresh();
+
+        $response->assertStatus(401);
+        $this->assertCount(1, $tenant->organization->programs);
+    }
+
 
     /** @test */
     public function cancelling_program_without_participants()
     {
         // Contributors notified
-    }
-
-    /** @test */
-    public function cannot_cancel_program_with_participants_from_other_contributors()
-    {
-        //do stuff
     }
 }

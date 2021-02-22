@@ -309,6 +309,7 @@ class ProgramController extends Controller
     public function destroy(DestroyProgram $request, Program $program)
     {
         //
+        abort_if(!$program->canBeDeletedBy(tenant()), 401);
         $validated = $request->validated();
         $programId = $program->id;
         if ($program->isProposalSent()) {
@@ -325,7 +326,7 @@ class ProgramController extends Controller
                 \Mail::to($email)->send(new ProgramCanceledParticipants($program, $validated['cancellation_message'] ?? null, Auth::user(), tenant()->organization));
             });
         }
-        // $program->delete();
+        $program->delete();
         return redirect('https://dashboard.stripe.com/search?query=program_id%3A' . $programId);
 
     }

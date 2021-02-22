@@ -232,6 +232,10 @@ class Program extends Model
         return $this->getContributorFor(tenant())->published_at;
     }
 
+    public function hasParticipants()
+    {
+        return $this->participants->isNotEmpty();
+    }
     public function getParticipantsAttribute()
     {
         return $this->tickets->map(function ($ticket) {

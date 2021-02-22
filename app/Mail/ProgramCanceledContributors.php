@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ProgramCanceled extends Mailable
+class ProgramCanceledContributors extends Mailable
 {
     use Queueable, SerializesModels;
     public $program;
@@ -34,17 +34,9 @@ class ProgramCanceled extends Mailable
      */
     public function build()
     {
-        $message = $this->markdown('emails.program_canceled')
+        $message = $this->markdown('emails.program_canceled_contributors')
                     ->subject('[CANCELED] ' . $this->program->internal_name . " at " . $this->program->site->name)
                     ->replyTo($this->user['email'], $this->user['name']);
-
-        $recipients = $this->program->contributors->map(function ($contributor) {
-            return $contributor->organization->emailableContacts();
-        })->flatten()->unique('email');
-
-        foreach ($recipients as $recipient) {
-            $message->to($recipient['email'], $recipient['name'] ?? $recipient['email']);
-        }
 
         return $message;
     }

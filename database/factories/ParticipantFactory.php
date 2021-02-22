@@ -18,5 +18,5 @@ $factory->define(Participant::class, function (Faker $faker) {
 
 $factory->afterCreatingState(Participant::class, 'withContact', function (Participant $participant) {
     $contact = factory(Person::class)->create();
-    $participant->contacts()->attach($contact);
+    $participant->contacts()->attach($contact, ['type' => 'primary']);
 });

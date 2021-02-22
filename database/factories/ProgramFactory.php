@@ -49,14 +49,6 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
         $startDatetime = Carbon::parse($startDatetime.' +1 day');
     }
     $program->meetings()->saveMany($meetings);
-    $contributor = Contributor::make([
-        'invoice_amount' => 1000,
-        'invoice_type' => 'per participant',
-        'internal_name' => 'Intername',
-    ]);
-    $contributor['organization_id'] = $tenant->organization->id;
-    $contributor['program_id'] = $program->id;
-    $contributor->save();
 });
 
 $factory->afterCreatingState(Program::class, 'published', function (Program $program, Faker $faker) {

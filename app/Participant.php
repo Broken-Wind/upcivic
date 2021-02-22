@@ -34,6 +34,6 @@ class Participant extends Model
     }
     public function primaryContact()
     {
-        return $this->contacts->where('type', 'primary')->first();
+        return $this->contacts()->wherePivot('type', 'primary')->first();
     }
 }

@@ -12,7 +12,7 @@ use App\Http\Requests\BulkActionPrograms;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
-use App\Mail\ProgramCanceled;
+use App\Mail\ProgramCanceledContributors;
 use App\Mail\ProgramApproved;
 use App\Mail\ProposalSent;
 use App\Organization;
@@ -25,6 +25,7 @@ use App\Exports\ProgramsExport;
 use App\Http\Requests\UpdateRegistrationOptions;
 use App\Instructor;
 use App\Mail\PriceChange;
+use App\Mail\ProgramCanceledParticipants;
 use App\Task;
 use DB;
 use Illuminate\Http\Request;
@@ -307,13 +308,23 @@ class ProgramController extends Controller
     public function destroy(Program $program)
     {
         //
+        $programId = $program->id;
         if ($program->isProposalSent()) {
-            \Mail::send(new ProgramCanceled($program, Auth::user()));
-            $program->delete();
-            return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled and a cancellation email was sent to any involved organizations.');
+            $program->contributors->map(function ($contributor) {
+                return $contributor->organization->emailableContacts();
+            })->flatten()->unique('email')->each(function ($administrator) use ($program) {
+                \Mail::to($administrator['email'])->send(new ProgramCanceledContributors($program, Auth::user()));
+            });
+        }
+        if ($program->hasParticipants()) {
+            $program->participants->map(function ($participant)  {
+                return $participant->primaryContact()->email;
+            })->unique()->each(function ($email) use ($program) {
+                \Mail::to($email)->send(new ProgramCanceledParticipants($program, Auth::user(), tenant()->organization));
+            });
         }
         $program->delete();
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled.');
+        return redirect('https://dashboard.stripe.com/search?query=program_id%3A' . $programId);
 
     }
 

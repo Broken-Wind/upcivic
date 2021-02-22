@@ -291,7 +291,7 @@ class ProgramController extends Controller
             Auth::user()->approveProgramForContributor($program, $contributor);
         }
 
-        $proposalNextSteps = $validated['proposal_next_steps'];
+        $proposalNextSteps = $validated['proposal_next_steps'] ?? '';
 
         \Mail::send(new ProgramApproved($program, Auth::user(), tenant()->organization, $contributors, $proposalNextSteps));
 

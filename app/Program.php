@@ -214,6 +214,14 @@ class Program extends Model
         return false;
     }
 
+    public function canBeApproved()
+    {
+        if ($this->isProposalSent() && $this->hasOtherContributors() && !$this->isFullyApproved()) {
+            return true;
+        }
+        return false;
+    }
+
     public function willPublish()
     {
         return $this->getContributorFor(tenant())->willPublish();

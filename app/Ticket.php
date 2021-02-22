@@ -21,7 +21,7 @@ class Ticket extends Model
 
     public function scopeUnavailable($query)
     {
-        return $query->whereNotNull('order_id');
+        return $query->whereNotNull('order_id')->orWhereNotNull('reserved_at');
     }
 
     public function release()

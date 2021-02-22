@@ -396,7 +396,7 @@ class Program extends Model
 
     public function releaseAnonymousTickets($diff)
     {
-        $this->tickets()->unavailable()->take($diff)->update(['order_id' => null]);
+        $this->tickets()->anonymous()->take($diff)->update(['order_id' => null]);
     }
 
     public function getResourceIdAttribute()
@@ -438,7 +438,7 @@ class Program extends Model
     public function getEnrollmentsAttribute()
     {
         return $this->tickets->filter(function ($ticket) {
-            return $ticket->order_id !== null;
+            return $ticket->order_id !== null || $ticket->reserved_at !== null;
         })->count();
     }
 

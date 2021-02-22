@@ -18,7 +18,7 @@
                                 <span class="text-muted">- {{ $ticket->participant->formatted_birthday }}</span>
                             @endif
                             @if(!empty($ticket->order))
-                                <small class="text-muted">- {{ $ticket->code }}</small>
+                                <span class="text-muted">- {{ $ticket->code }} - <a href="https://dashboard.stripe.com/payments/{{ $ticket->order->stripe_charge_id }}"><i class="fab fa-fw fa-cc-stripe"></i></a></span>
                             @endif
                         @else
                             Unknown Participant

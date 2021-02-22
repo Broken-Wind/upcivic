@@ -30,7 +30,10 @@ class Reservation
 
     public function complete($paymentGateway, $paymentToken, $destinationAccountId, $organizationId)
     {
-        $charge = $paymentGateway->charge($this->totalCost(), $paymentToken, $destinationAccountId);
+        $metadata = [
+            'program_id' => $this->tickets()->first()->program_id,
+        ];
+        $charge = $paymentGateway->charge($this->totalCost(), $paymentToken, $destinationAccountId, $metadata);
 
         return Order::forTickets($this->tickets(), $this->email(), $charge, $organizationId);
     }

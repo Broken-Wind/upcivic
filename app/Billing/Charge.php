@@ -25,4 +25,9 @@ class Charge
     {
         return $this->data['destination'];
     }
+
+    public function stripeChargeId()
+    {
+        return $this->data['stripe_charge_id'];
+    }
 }

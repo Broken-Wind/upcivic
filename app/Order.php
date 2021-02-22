@@ -16,7 +16,8 @@ class Order extends Model
             'email' => $email,
             'amount' => $charge->amount(),
             'card_last_four' => $charge->cardLastFour(),
-            'organization_id' => $organizationId
+            'organization_id' => $organizationId,
+            'stripe_charge_id' => $charge->stripeChargeId(),
         ]);
 
         $tickets->each->claimFor($order);

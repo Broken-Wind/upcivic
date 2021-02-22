@@ -19,6 +19,9 @@ class CreateOrdersTable extends Migration
             $table->integer('amount');
             $table->string('email');
             $table->string('card_last_four');
+            $table->unsignedBigInteger('organization_id')->nullable();
+            $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
+            $table->string('stripe_charge_id');
             $table->timestamps();
         });
     }

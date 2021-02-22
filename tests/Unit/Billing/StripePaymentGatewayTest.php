@@ -45,7 +45,7 @@ class StripePaymentGatewayTest extends TestCase
     }
 
     /** @test */
-    public function ninety_five_percent_of_the_payment_is_transfered_to_destination_account()
+    public function two_point_one_percent_of_the_payment_is_transfered_to_platform()
     {
         $paymentGateway = $this->getPaymentGateway();
 
@@ -54,15 +54,16 @@ class StripePaymentGatewayTest extends TestCase
         $lastStripeCharge = Arr::first(\Stripe\Charge::all([
             'limit' => 1
         ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
+
         $this->assertEquals(10000, $lastStripeCharge['amount']);
-        $this->assertEquals(500, $lastStripeCharge['application_fee_amount']);
+        $this->assertEquals(210, $lastStripeCharge['application_fee_amount']);
 
         $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
-        $this->assertEquals(500, $applicationFee['amount']);
+        $this->assertEquals(210, $applicationFee['amount']);
     }
 
     /** @test */
-    public function minimum_application_charge_is_one_dollar()
+    public function minimum_application_charge_is_seventy_cents()
     {
         $paymentGateway = $this->getPaymentGateway();
 
@@ -73,10 +74,10 @@ class StripePaymentGatewayTest extends TestCase
         ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
 
         $this->assertEquals(1000, $lastStripeCharge['amount']);
-        $this->assertEquals(100, $lastStripeCharge['application_fee_amount']);
+        $this->assertEquals(70, $lastStripeCharge['application_fee_amount']);
 
         $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
-        $this->assertEquals(100, $applicationFee['amount']);
+        $this->assertEquals(70, $applicationFee['amount']);
     }
 
 }

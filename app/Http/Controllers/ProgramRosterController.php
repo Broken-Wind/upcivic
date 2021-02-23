@@ -47,6 +47,7 @@ class ProgramRosterController extends Controller
         $contributor->update([
             'enrollment_url' => $validated['enrollment_url'] ?? null,
             'enrollment_instructions' => $validated['enrollment_instructions'] ?? null,
+            'enrollment_message' => $validated['enrollment_message'] ?? null,
         ]);
         return back()->withSuccess('Program updated successfully.');
     }

@@ -60,6 +60,11 @@
                 <label for="enrollmentInstructions">Enrollment Instructions</label>
                 <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $contributor->enrollment_instructions }}</textarea>
             </div>
+            <div class="form-group">
+              <label for="enrollment_message">Enrollment Confirmation Message</label>
+              <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ $contributor->enrollment_message }}</textarea>
+              <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails.</small>
+            </div>
             <button type="submit" class="btn btn-secondary">
                 Update Enrollments
             </button>

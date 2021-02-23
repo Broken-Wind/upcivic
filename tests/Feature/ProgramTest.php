@@ -125,6 +125,7 @@ class ProgramTest extends TestCase
         $this->assertEquals($program->min_age, '89');
         $this->assertEquals($program->max_age, '99');
     }
+
     /** @test */
     public function user_can_edit_registration_options()
     {
@@ -132,9 +133,10 @@ class ProgramTest extends TestCase
         $user = factory(User::class)->states('hasTenant')->create();
         $tenant = $user->tenants()->first();
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
-        $program = factory(Program::class)->state('amCamp', 'published')->create([
-            'proposing_organization_id' => $tenant->organization_id
-        ]);
+        $program = factory(Program::class)->state('amCamp', 'published')->create();
+        $program->contributors->first()->update(['internal_registration' => false]);
+        $program->proposing_organization_id = $tenant->organization_id;
+        $program->save();
         factory(Contributor::class)->create([
             'program_id' => $program->id,
             'organization_id' => $tenant->organization_id,
@@ -142,8 +144,8 @@ class ProgramTest extends TestCase
         ]);
 
         $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}/update_registration_options", [
-            'min_enrollments' => '393',
-            'max_enrollments' => '494',
+            'min_enrollments' => 393,
+            'max_enrollments' => 494,
             'enrollment_url' => 'https://google.com',
             'enrollment_message' => 'You rock, homeboy!',
             'enrollment_instructions' => 'Get enrolled today!',
@@ -151,8 +153,43 @@ class ProgramTest extends TestCase
 		$program->refresh();
 
         $response->assertStatus(200);
-        $this->assertEquals($program->min_enrollments, '393');
-        $this->assertEquals($program->max_enrollments, '494');
+        $this->assertEquals($program->min_enrollments, 393);
+        $this->assertEquals($program->max_enrollments, 494);
+        $contributor = $program->getContributorFor($tenant);
+        $this->assertEquals($contributor->enrollment_url, 'https://google.com');
+        $this->assertEquals($contributor->enrollment_message, 'You rock, homeboy!');
+        $this->assertEquals($contributor->enrollment_instructions, 'Get enrolled today!');
+    }
+
+    /** @test */
+    public function other_contributor_can_update_limited_enrollment_info()
+    {
+        $this->withoutExceptionHandling();
+        $user = factory(User::class)->states('hasTenant')->create();
+        $tenant = $user->tenants()->first();
+        $program = factory(Program::class)->state('amCamp', 'published')->create([
+            'min_enrollments' => 3
+        ])->addTickets(10);
+        factory(Contributor::class)->create([
+            'program_id' => $program->id,
+            'organization_id' => $tenant->organization_id,
+            'internal_registration' => false
+        ]);
+
+        $response = $this->actingAs($user)->followingRedirects()->put("/{$tenant->slug}/admin/programs/{$program->id}/update_registration_options", [
+            'min_enrollments' => 393,
+            'min_enrollments' => 10,
+            'max_enrollments' => 494,
+            'enrollment_url' => 'https://google.com',
+            'enrollment_message' => 'You rock, homeboy!',
+            'enrollment_instructions' => 'Get enrolled today!',
+        ]);
+		$program->refresh();
+
+        $response->assertStatus(200);
+        $this->assertEquals($program->min_enrollments, 3);
+        $this->assertEquals($program->enrollments, 0);
+        $this->assertEquals($program->max_enrollments, 10);
         $contributor = $program->getContributorFor($tenant);
         $this->assertEquals($contributor->enrollment_url, 'https://google.com');
         $this->assertEquals($contributor->enrollment_message, 'You rock, homeboy!');

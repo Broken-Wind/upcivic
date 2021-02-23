@@ -19,11 +19,11 @@
             </div>
             <div class="form-check mb-3">
                 <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" name="internal_registration" id="internal_registration" value="1" {{ $program->internal_registration ? ' checked' : '' }}>
+                    <input type="checkbox" class="form-check-input" name="internal_registration" id="internal_registration" value="1" {{ $contributor->allowsRegistration() ? ' checked' : '' }}>
                     Register via {{ config('app.name') }}
                 </label>
             </div>
-            <div {{ !$program->internal_registration ? 'style=display:none;' : '' }} class="alert alert-info" id="internal_registration_details">
+            <div {{ !$contributor->allowsRegistration() ? 'style=display:none;' : '' }} class="alert alert-info" id="internal_registration_details">
                 <div class="form-group">
                 <label for="price">Price to Register</label>
 
@@ -41,18 +41,18 @@
                 <div class="form-group">
                 <label for="price">Enrollment Website</label>
                 <input type="text"
-                    class="form-control" name="enrollment_url" id="enrollment_url" aria-describedby="enrollmentUrlHelp" value="{{ $program->suggested_enrollment_url }}" placeholder="https://my-registration-website.com">
+                    class="form-control" name="enrollment_url" id="enrollment_url" aria-describedby="enrollmentUrlHelp" value="{{ $contributor->enrollment_url ?? $program->suggested_enrollment_url }}" placeholder="https://my-registration-website.com">
                 <small id="enrollmentUrlHelp" class="form-text text-muted">We'll direct participants to this link to register.</small>
                 </div>
             </div>
             <div class="form-group">
                 <label for="enrollmentInstructions">Enrollment Instructions</label>
-                <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $program->enrollment_instructions }}</textarea>
+                <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $contributor->enrollment_instructions }}</textarea>
             </div>
             <div class="form-group">
               <label for="enrollment_message">Enrollment Confirmation Message</label>
-              <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ $program->enrollment_message }}</textarea>
-              <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails. You may also edit this message for individual programs.</small>
+              <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ $contributor->enrollment_message }}</textarea>
+              <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails.</small>
             </div>
             <button type="submit" class="btn btn-secondary">Update</button>
         </form>

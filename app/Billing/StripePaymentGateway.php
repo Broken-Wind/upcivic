@@ -23,7 +23,7 @@ class StripePaymentGateway implements PaymentGateway
                 'amount' => $amount,
                 'source' => $token,
                 'currency' => 'usd',
-                'application_fee' => max(70, $amount * .021),
+                'application_fee' => max(70, round($amount * .021)),
                 'metadata' => $metadata
             ], [
                 'api_key' => $this->apiKey,

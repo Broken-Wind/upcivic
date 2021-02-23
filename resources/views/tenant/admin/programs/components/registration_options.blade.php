@@ -41,9 +41,9 @@
                             </div>
                         </div>
                     @else<div class="alert alert-warning">
-                        <h4><i class="fas fa-fw fa-exclamation-triangle "></i> Configure Registration</h4>
-                        To accept registrations via {{ config('app.name') }}, you must first configure your Stripe Connect account.<br />
-                        <a href="{{ tenant()->route('tenant:admin.stripe_connect.settings') }}" class="btn btn-primary mt-3">Configure Stripe Connect</a>
+                        <h4><i class="fas fa-fw fa-exclamation-triangle "></i> Registration Disabled</h4>
+                        To accept registrations via {{ config('app.name') }}, you must first link your bank account.<br />
+                        <a href="{{ tenant()->route('tenant:admin.stripe_connect.settings') }}" class="btn btn-primary mt-3">Set up Registration</a>
                     </div>
 
                     @endif

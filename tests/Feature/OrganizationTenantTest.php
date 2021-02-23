@@ -32,8 +32,7 @@ class OrganizationTenantTest extends TestCase
         $response = $this->actingAs($user)->followingRedirects()->post("/organizations/{$organization->id}/tenant", ['slug' => 'yaas']);
 
         $response->assertStatus(200);
-        $this->assertEquals(url()->current(), route('tenant:admin.programs.index', $organization->tenant->slug));
+        $this->assertEquals(url()->current(), route('tenant:admin.resource_timeline.meetings', $organization->tenant->slug));
         $response->assertSeeText('Dat Org');
-        $response->assertSeeText('Add program');
     }
 }

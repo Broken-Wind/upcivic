@@ -80,4 +80,22 @@ class StripePaymentGatewayTest extends TestCase
         $this->assertEquals(70, $applicationFee['amount']);
     }
 
+    /** @test */
+    public function application_fees_are_rounded()
+    {
+        $paymentGateway = $this->getPaymentGateway();
+
+        $paymentGateway->charge(39500, $paymentGateway->getValidTestToken(), env('STRIPE_TEST_ACCOUNT_ID'));
+
+        $lastStripeCharge = Arr::first(\Stripe\Charge::all([
+            'limit' => 1
+        ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
+
+        $this->assertEquals(39500, $lastStripeCharge['amount']);
+        $this->assertEquals(830, $lastStripeCharge['application_fee_amount']);
+
+        $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
+        $this->assertEquals(830, $applicationFee['amount']);
+    }
+
 }

@@ -27,7 +27,7 @@ $factory->define(Program::class, function (Faker $faker) {
 
 $factory->afterCreatingState(Program::class, 'amCamp', function (Program $program, Faker $faker) {
     $site = factory(Site::class)->create();
-    $tenant = factory(Tenant::class)->create();
+    $tenant = factory(Tenant::class)->state('hasTwoUsers')->create();
     $contributor = new Contributor();
     $contributor['organization_id'] = $tenant->organization_id;
     $contributor['invoice_amount'] = 13000;

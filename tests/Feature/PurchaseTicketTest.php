@@ -95,7 +95,7 @@ class PurchaseTicketTest extends TestCase
         $this->withoutExceptionHandling();
         Mail::fake();
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
-        TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');;
+        TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
         $program = factory(Program::class)->states('amCamp', 'published')->create(['price' => 9900])->addTickets(3);
         $tenant = $program->contributors->first()->organization->tenant;
         $tenant->stripe_account_id = 'testly_acct_id';

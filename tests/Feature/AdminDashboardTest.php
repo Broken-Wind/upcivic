@@ -22,8 +22,7 @@ class AdminDashboardTest extends TestCase
         $response = $this->actingAs($user)->followingRedirects()->get('/home');
 
         $response->assertStatus(200);
-        $this->assertEquals(url()->current(), config('app.url')."/{$tenant->slug}/admin/programs");
-        $response->assertSeeText('Add program');
+        $this->assertEquals(url()->current(), config('app.url')."/{$tenant->slug}/admin/resource_timeline_meetings");
         $response->assertSeeText($tenant->name);
     }
 

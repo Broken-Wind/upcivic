@@ -35,6 +35,7 @@ $factory->afterCreatingState(Program::class, 'amCamp', function (Program $progra
     $contributor['internal_registration'] = true;
     $program->contributors()->save($contributor);
     $program->proposing_organization_id = $tenant->organization_id;
+    $program->save();
     $startDatetime = Carbon::parse('9am +2 weeks');
     $meetings = collect([]);
     for ($m = 1; $m <= 5; $m++) {

@@ -19,6 +19,7 @@ class CancelProgramTest extends TestCase
     /** @test */
     public function cancelling_program_with_participants()
     {
+        $this->withoutExceptionHandling();
         Mail::fake();
         $program = factory(Program::class)->states(['amCamp', 'published', 'withParticipants'])->create();
         $tenant = $program->contributors->first()->organization->tenant;
@@ -26,7 +27,7 @@ class CancelProgramTest extends TestCase
         $user->joinTenant($tenant);
         $this->assertCount(1, $tenant->organization->programs);
 
-        $response = $this->actingAs($user)->followingRedirects()->delete("/{$tenant->slug}/admin/programs/{$program->id}");
+        $response = $this->actingAs($user)->delete("/{$tenant->slug}/admin/programs/{$program->id}");
         $tenant->refresh();
 
         $this->assertCount(0, $tenant->organization->programs);

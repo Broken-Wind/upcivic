@@ -15,7 +15,7 @@
                     <div class="form-group">
                     <label for="minimim_enrollments">Current Enrollments</label>
                     <input type="number"
-                        class="form-control" name="enrollments" id="enrollments" placeholder="10" value="{{ $program->enrollments }}"  {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
+                        class="form-control" name="enrollments" id="enrollments" placeholder="10" value="{{ $program->enrollments }}"  {{ $program->canUpdateEnrollmentsBy(tenant()) && !$program->acceptsRegistrations() ? '' : 'disabled'}}>
                     </div>
                 </div>
                 <div class="col-sm-4">

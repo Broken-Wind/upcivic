@@ -37,7 +37,7 @@
                     <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                 </div>
             </div>
-            <div id="external_registration_details" {{ $program->internal_registration ? 'style=display:none;' : '' }}>
+            <div id="external_registration_details" {{ $contributor->allowsRegistration() ? 'style=display:none;' : '' }}>
                 <div class="form-group">
                 <label for="price">Enrollment Website</label>
                 <input type="text"

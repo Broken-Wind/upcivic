@@ -30,25 +30,61 @@ class UpdateProgramRoster extends FormRequest
                 'nullable',
                 'numeric',
                 function ($attribute, $value, $fail) {
-                    if (empty($value) && $this->route('program')->getContributorFor(tenant())->allowsRegistration()) {
+                    if (
+                        empty($value)
+                        && $this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && $this->route('program')->canUpdateEnrollmentsBy(tenant())
+                    ) {
                         $fail('You must set a price.');
                     }
                 }
             ],
             'enrollment_url' => 'nullable|string',
             'enrollment_instructions' => 'nullable|string',
-            'min_enrollments' => 'required|numeric|between:0,9999|lte:max_enrollments',
+            'min_enrollments' => [
+                'nullable',
+                'numeric',
+                'between:0,9999',
+                'lte:max_enrollments',
+                function ($attribute, $value, $fail) {
+                    if (
+                        $value == null
+                        && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && $this->route('program')->canUpdateEnrollmentsBy(tenant())
+                    ) {
+                        $fail('You must include the minimum enrollments.');
+                    }
+                }
+            ],
             'enrollments' => [
-                'required',
+                'nullable',
                 'numeric',
                 'between:0,9999',
                 function ($attribute, $value, $fail) {
-                    if ($value == null && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()) {
+                    if (
+                        $value == null
+                        && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && $this->route('program')->canUpdateEnrollmentsBy(tenant())
+                    ) {
                         $fail('You must include the number of current enrollments.');
                     }
                 }
             ],
-            'max_enrollments' => 'required|numeric|between:0,9999|gte:enrollments',
+            'max_enrollments' => [
+                'nullable',
+                'numeric',
+                'between:0,9999',
+                'gte:min_enrollments',
+                function ($attribute, $value, $fail) {
+                    if (
+                        $value == null
+                        && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && $this->route('program')->canUpdateEnrollmentsBy(tenant())
+                    ) {
+                        $fail('You must include the maximum enrollments.');
+                    }
+                }
+            ],
         ];
     }
     /**

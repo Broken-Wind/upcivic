@@ -213,6 +213,11 @@ class Program extends Model
         return $this->proposing_organization_id == $tenant->organization_id;
     }
 
+    public function canUpdateEnrollmentsBy(Tenant $tenant)
+    {
+        return $this->proposing_organization_id == $tenant->organization_id;
+    }
+
     public function canBePublished()
     {
         if ($this->isProposalSent() && $this->isApprovedByAllContributors()) {

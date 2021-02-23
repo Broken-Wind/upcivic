@@ -8,25 +8,25 @@
                     <div class="form-group">
                     <label for="min_enrollments">Minimum Enrollments</label>
                     <input type="number"
-                        class="form-control" name="min_enrollments" id="min_enrollments" placeholder="5" value="{{ $program->min_enrollments }}">
+                        class="form-control" name="min_enrollments" id="min_enrollments" placeholder="5" value="{{ $program->min_enrollments }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                     <label for="minimim_enrollments">Current Enrollments</label>
                     <input type="number"
-                        class="form-control" name="enrollments" id="enrollments" placeholder="10" value="{{ $program->enrollments }}" {{ $program->getContributorFor(tenant())->allowsRegistration() ? 'readonly' : '' }}>
+                        class="form-control" name="enrollments" id="enrollments" placeholder="10" value="{{ $program->enrollments }}"  {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group">
                     <label for="minimim_enrollments">Maximum Enrollments</label>
                     <input type="number"
-                        class="form-control" name="max_enrollments" id="max_enrollments" placeholder="12" value="{{ $program->max_enrollments }}">
+                        class="form-control" name="max_enrollments" id="max_enrollments" placeholder="12" value="{{ $program->max_enrollments }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                     </div>
                 </div>
             </div>
-            @if($program->getContributorFor(tenant())->allowsRegistration())
+            @if($program->allowsRegistration())
                 <div class="form-group">
                 <label for="price">Price to Register</label>
                 <div class="input-group input-group mb-3">
@@ -34,7 +34,7 @@
                         <span class="input-group-text">$</span>
                     </div>
                     <input type="text"
-                        class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}">
+                        class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                     </div>
                     <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                 </div>

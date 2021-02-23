@@ -24,18 +24,25 @@ class ProgramRosterController extends Controller
     public function update(UpdateProgramRoster $request, Program $program)
     {
         $validated = $request->validated();
-        if ($program->isProposalSent() && $program->hasOtherContributors() && $program->formatted_price != $validated['price']) {
+        if (
+            $program->canUpdateEnrollmentsBy(tenant())
+             && $program->isProposalSent()
+             && $program->hasOtherContributors()
+             && $program->formatted_price != $validated['price']
+            ) {
             \Mail::send(new PriceChange($program, $validated['price'], tenant(), Auth::user()));
             $program->price = isset($validated['price']) ? $validated['price'] * 100 : null;
         }
-        $program->min_enrollments = $validated['min_enrollments'];
-        // If a program allows registration via Upcivic, we should not allow manual updating of the current enrollments.
-        if ($program->getContributorFor(tenant())->allowsRegistration()) {
-            $program->setMaxEnrollments($validated['max_enrollments']);
-        } else {
-            $program->updateEnrollments($validated['enrollments'], $validated['max_enrollments']);
+        if ($program->canUpdateEnrollmentsBy(tenant())) {
+            $program->min_enrollments = $validated['min_enrollments'];
+            // If a program allows registration via Upcivic, we should not allow manual updating of the current enrollments.
+            if ($program->getContributorFor(tenant())->allowsRegistration()) {
+                $program->setMaxEnrollments($validated['max_enrollments']);
+            } else {
+                $program->updateEnrollments($validated['enrollments'], $validated['max_enrollments']);
+            }
+            $program->save();
         }
-        $program->save();
         $contributor = $program->getContributorFor(tenant());
         $contributor->update([
             'enrollment_url' => $validated['enrollment_url'] ?? null,

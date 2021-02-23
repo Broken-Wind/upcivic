@@ -25,9 +25,9 @@ class Contributor extends Model
         return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
     }
 
-    public function allowsRegistration()
+    public function acceptsRegistrations()
     {
-        return $this->internal_registration;
+        return $this->tenant->acceptsRegistrations() && $this->internal_registration;
     }
 
     public function hasEnrollmentUrl()
@@ -63,6 +63,11 @@ class Contributor extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function getTenantAttribute()
+    {
+        return $this->organization->tenant;
     }
 
     public function publish($publishedAt = null)

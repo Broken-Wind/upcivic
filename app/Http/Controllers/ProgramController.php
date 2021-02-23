@@ -260,7 +260,7 @@ class ProgramController extends Controller
             $program->price = isset($validated['price']) ? $validated['price'] * 100 : null;
             $program->min_enrollments = $validated['min_enrollments'];
             // If a program allows registration via Upcivic, we should not allow manual updating of the current enrollments.
-            if ($program->getContributorFor(tenant())->allowsRegistration()) {
+            if ($program->getContributorFor(tenant())->acceptsRegistrations()) {
                 $program->setMaxEnrollments($validated['max_enrollments'] ?? $program->max_enrollments);
             } else {
                 $program->updateEnrollments($validated['enrollments'] ?? $program->enrollments, $validated['max_enrollments'] ?? $program->max_enrollments);

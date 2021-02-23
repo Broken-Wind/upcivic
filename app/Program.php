@@ -363,16 +363,16 @@ class Program extends Model
         return min($this->tickets()->available()->count(), 4);
     }
 
-    public function allowsRegistration()
+    public function acceptsRegistrations()
     {
         return $this->contributors->filter(function ($contributor) {
-            return $contributor->allowsRegistration();
+            return $contributor->acceptsRegistrations();
         })->isNotEmpty();
     }
 
 
     public function updateEnrollments($enrollments, $maxEnrollments) {
-        if ($this->allowsRegistration()) {
+        if ($this->acceptsRegistrations()) {
             throw new CannotManuallyUpdateInternalRegistrationsException();
         }
         if ($enrollments > $this->max_enrollments) {

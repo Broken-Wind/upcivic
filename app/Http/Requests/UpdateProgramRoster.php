@@ -32,7 +32,7 @@ class UpdateProgramRoster extends FormRequest
                 function ($attribute, $value, $fail) {
                     if (
                         empty($value)
-                        && $this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && $this->route('program')->getContributorFor(tenant())->acceptsRegistrations()
                         && $this->route('program')->canUpdateEnrollmentsBy(tenant())
                     ) {
                         $fail('You must set a price.');
@@ -50,7 +50,7 @@ class UpdateProgramRoster extends FormRequest
                 function ($attribute, $value, $fail) {
                     if (
                         $value == null
-                        && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && !$this->route('program')->getContributorFor(tenant())->acceptsRegistrations()
                         && $this->route('program')->canUpdateEnrollmentsBy(tenant())
                     ) {
                         $fail('You must include the minimum enrollments.');
@@ -64,7 +64,7 @@ class UpdateProgramRoster extends FormRequest
                 function ($attribute, $value, $fail) {
                     if (
                         $value == null
-                        && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && !$this->route('program')->getContributorFor(tenant())->acceptsRegistrations()
                         && $this->route('program')->canUpdateEnrollmentsBy(tenant())
                     ) {
                         $fail('You must include the number of current enrollments.');
@@ -79,7 +79,7 @@ class UpdateProgramRoster extends FormRequest
                 function ($attribute, $value, $fail) {
                     if (
                         $value == null
-                        && !$this->route('program')->getContributorFor(tenant())->allowsRegistration()
+                        && !$this->route('program')->getContributorFor(tenant())->acceptsRegistrations()
                         && $this->route('program')->canUpdateEnrollmentsBy(tenant())
                     ) {
                         $fail('You must include the maximum enrollments.');

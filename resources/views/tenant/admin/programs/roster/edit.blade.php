@@ -11,7 +11,7 @@
         </div>
     </div>
     @include('tenant.admin.programs.roster.components.enrollment_details')
-    @if($program->allowsRegistration())
+    @if($program->acceptsRegistrations())
         @include('tenant.admin.programs.roster.components.roster')
     @else
     @endif

@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            @if($program->allowsRegistration())
+            @if($program->acceptsRegistrations())
                 <div class="form-group">
                 <label for="price">Price to Register</label>
                 <div class="input-group input-group mb-3">

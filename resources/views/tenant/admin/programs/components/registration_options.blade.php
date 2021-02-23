@@ -19,11 +19,11 @@
             </div>
             <div class="form-check mb-3">
                 <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" name="internal_registration" id="internal_registration" value="1" {{ $contributor->allowsRegistration() ? ' checked' : '' }}>
+                    <input type="checkbox" class="form-check-input" name="internal_registration" id="internal_registration" value="1" {{ $contributor->acceptsRegistrations() ? ' checked' : '' }}>
                     Register via {{ config('app.name') }}
                 </label>
             </div>
-            <div {{ !$contributor->allowsRegistration() ? 'style=display:none;' : '' }} class="alert alert-info" id="internal_registration_details">
+            <div {{ !$contributor->acceptsRegistrations() ? 'style=display:none;' : '' }} class="alert alert-info" id="internal_registration_details">
                 <div class="form-group">
                 <label for="price">Price to Register</label>
 
@@ -37,7 +37,7 @@
                     <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                 </div>
             </div>
-            <div id="external_registration_details" {{ $contributor->allowsRegistration() ? 'style=display:none;' : '' }}>
+            <div id="external_registration_details" {{ $contributor->acceptsRegistrations() ? 'style=display:none;' : '' }}>
                 <div class="form-group">
                 <label for="price">Enrollment Website</label>
                 <input type="text"

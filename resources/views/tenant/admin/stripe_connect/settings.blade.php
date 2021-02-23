@@ -6,7 +6,7 @@
         <div class="card mb-4">
             <div class="card-header">Registration Settings</div>
             <div class="card-body">
-                @if($tenant->canAcceptRegistrations())
+                @if($tenant->acceptsRegistrations())
                 <div class="alert alert-success text-center">
                     <h3>
                         You're all set! {{ $tenant->name }} may accept registrations via {{ config('app.name') }}.

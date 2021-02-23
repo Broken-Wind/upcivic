@@ -1,16 +1,16 @@
 <div class="card">
     <div class="card-header">Getting Enrolled</div>
     <div class="card-body">
-        @if(!$contributor->hasEnrollmentInstructions() && !$contributor->hasEnrollmentUrl() && !$contributor->allowsRegistration())
+        @if(!$contributor->hasEnrollmentInstructions() && !$contributor->hasEnrollmentUrl() && !$contributor->acceptsRegistrations())
             We couldn't find registration information for this program. Please contact the organizer.
         @endif
         @if($contributor->hasEnrollmentInstructions())
             {{ $contributor->enrollment_instructions }}
-            @if($contributor->allowsRegistration() || $contributor->hasEnrollmentUrl() )
+            @if($contributor->acceptsRegistrations() || $contributor->hasEnrollmentUrl() )
                 <hr />
             @endif
         @endif
-        @if($contributor->allowsRegistration())
+        @if($contributor->acceptsRegistrations())
             @if($program->isFull())
                 <div class="alert alert-warning">
                     We're sorry, this program is full. Please contact the organizers for more information.

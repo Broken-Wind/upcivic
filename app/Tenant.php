@@ -18,7 +18,12 @@ class Tenant extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function canAcceptRegistrations()
+    public function acceptsRegistrations()
+    {
+        return $this->isSubscribed() && $this->hasStripeCredentials();
+    }
+
+    public function hasStripeCredentials()
     {
         return !empty($this->stripe_account_id) && !empty($this->stripe_access_token);
     }

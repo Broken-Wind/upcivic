@@ -27,36 +27,23 @@
         td {
             padding: 5px;
         }
+        .footer {
+            width: 100%;
+            text-align: center;
+            position: fixed;
+            bottom: 0px;
+        }
+        .pagenum:before {
+            content: counter(page);
+        }
     </style>
     <title>{{ $assignment->signableDocument->title }}</title>
 </head>
 <body>
-    <h1>{{ $assignment->signableDocument->title }}</h1>
-    {!! $assignment->signableDocument->content !!}
-    <h3>Programs ({{ $programs->count() }} total)</h3>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Name & Location</th>
-            <th>Date & Time</th>
-            <th>Base Fee</th>
-        </tr>
-        @forelse($programs as $program)
-        <tr>
-            <td>{{ $program->id }}</td>
-            <td>
-                {{ $program->name }}<br />
-                {{ $program->site->name }} - {{ $program->location->name }}</td>
-            <td>
-                {{ $program['start_date'] . " - " . $program['end_date'] }}
-                <br />
-                {{ $program['start_time'] }}-{{ $program['end_time'] }}
-            </td>
-            <td>${{ $program->formatted_base_fee }} {{ $program->shared_invoice_type }}</td>
-        </tr>
-        @empty
-        @endforelse
-    </table>
+    <div class="footer">
+        Page <span class="pagenum"></span>
+    </div>
+    @include('tenant.assignments.signable_documents.components.document_content')
 
     <h3>Signatures</h3>
     @include('tenant.assignments.signable_documents.components.signature_area', [

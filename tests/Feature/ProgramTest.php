@@ -94,9 +94,9 @@ class ProgramTest extends TestCase
         $user = factory(User::class)->states('hasTenant')->create();
         $tenant = $user->tenants()->first();
         $this->assertEquals(0, $tenant->organization->templatesWithoutScope->count());
-        $program = factory(Program::class)->state('amCamp', 'published')->create([
-            'proposing_organization_id' => $tenant->organization_id
-        ]);
+        $program = factory(Program::class)->state('amCamp', 'published')->create();
+        $program->proposing_organization_id = $tenant->organization_id;
+        $program->save();
         factory(Contributor::class)->create([
             'program_id' => $program->id,
             'organization_id' => $tenant->organization_id,

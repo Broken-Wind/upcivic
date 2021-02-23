@@ -23,19 +23,33 @@
                     Register via {{ config('app.name') }}
                 </label>
             </div>
-            <div {{ !$contributor->acceptsRegistrations() ? 'style=display:none;' : '' }} class="alert alert-info" id="internal_registration_details">
-                <div class="form-group">
-                <label for="price">Price to Register</label>
+            <div {{ !$contributor->acceptsRegistrations() ? 'style=display:none;' : '' }} id="internal_registration_details">
+                @if(tenant()->isSubscribed())
+                    @if(tenant()->acceptsRegistrations())
+                        <div class="alert alert-info">
+                            <div class="form-group">
+                            <label for="price">Price to Register</label>
 
-                <div class="input-group input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
+                            <div class="input-group input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                </div>
+                                <input type="text"
+                                    class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}">
+                                </div>
+                                <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
+                            </div>
+                        </div>
+                    @else<div class="alert alert-warning">
+                        <h4><i class="fas fa-fw fa-exclamation-triangle "></i> Configure Registration</h4>
+                        To accept registrations via {{ config('app.name') }}, you must first configure your Stripe Connect account.<br />
+                        <a href="{{ tenant()->route('tenant:admin.stripe_connect.settings') }}" class="btn btn-primary mt-3">Configure Stripe Connect</a>
                     </div>
-                    <input type="text"
-                        class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}">
-                    </div>
-                    <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
-                </div>
+
+                    @endif
+                @else
+                    @include('tenant.admin.subscriptions.components.alert_to_subscribe')
+                @endif
             </div>
             <div id="external_registration_details" {{ $contributor->acceptsRegistrations() ? 'style=display:none;' : '' }}>
                 <div class="form-group">

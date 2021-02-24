@@ -42,7 +42,7 @@ class ProgramApproved extends Mailable
     public function build()
     {
         $message = $this->markdown('emails.program_approved')
-                    ->subject('[APPROVED] ' . $this->program->internal_name . " at " . $this->program->site->name)
+                    ->subject('[APPROVED] ' . $this->program->name . " at " . $this->program->site->name)
                     ->replyTo($this->user['email'], $this->user['name']);
 
         $recipients = $this->program->contributors->map(function ($contributor) {

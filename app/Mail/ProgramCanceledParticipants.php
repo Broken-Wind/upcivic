@@ -39,7 +39,7 @@ class ProgramCanceledParticipants extends Mailable
     public function build()
     {
         $message = $this->markdown('emails.program_canceled_participants')
-                    ->subject('[CANCELED] ' . $this->program->internal_name . " at " . $this->program->site->name)
+                    ->subject('[CANCELED] ' . $this->program->name . " at " . $this->program->site->name)
                     ->replyTo($this->user['email'], $this->user['name']);
 
         return $message;

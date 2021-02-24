@@ -37,7 +37,7 @@ class ProgramRejected extends Mailable
     public function build()
     {
         $message = $this->markdown('emails.program_rejected')
-                    ->subject('[REJECTED] ' . $this->program->internal_name . " at " . $this->program->site->name)
+                    ->subject('[REJECTED] ' . $this->program->name . " at " . $this->program->site->name)
                     ->replyTo($this->user['email'], $this->user['name']);
 
         $recipients = $this->program->contributors->map(function ($contributor) {

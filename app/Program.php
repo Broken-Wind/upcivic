@@ -197,7 +197,7 @@ class Program extends Model
 
     public function isEditable()
     {
-        if (!empty($this['proposed_at']) && $this->otherContributors()->isEmpty()) {
+        if ($this->isProposalSent() && $this->otherContributors()->isNotEmpty()) {
             return false;
         }
         return true;

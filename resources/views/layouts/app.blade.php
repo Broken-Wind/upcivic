@@ -127,6 +127,9 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.edit') }}">
                                             Organization Settings
                                         </a>
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.stripe_connect.settings') }}">
+                                            Registration Settings
+                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             Account
                                         </a>
@@ -156,6 +159,11 @@
                     <h3>
                         {{ ucfirst(App::environment()) }}
                     </h3>
+                </div>
+            @endif
+            @if(tenant() && !tenant()->organization->isPubliclyContactable())
+                <div class="alert alert-warning text-center">
+                    Your organization doesn't have public contact information. Please list your public contact information in <a href="{{ tenant()->route('tenant:admin.edit') }}">settings</a>.
                 </div>
             @endif
             <div class="alert alert-danger text-center" style="display:none;" id="browser-warning">

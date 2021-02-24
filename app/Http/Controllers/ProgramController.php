@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contributor;
 use App\County;
+use App\Exceptions\CannotManuallyUpdateInternalRegistrationsException;
 use App\Filters\ProgramFilters;
 use App\Http\Requests\ApproveProgram;
 use App\Http\Requests\RejectProgram;
@@ -11,7 +12,7 @@ use App\Http\Requests\BulkActionPrograms;
 use App\Http\Requests\StoreProgram;
 use App\Http\Requests\UpdateProgram;
 use App\Mail\ProgramRejected;
-use App\Mail\ProgramCanceled;
+use App\Mail\ProgramCanceledContributors;
 use App\Mail\ProgramApproved;
 use App\Mail\ProposalSent;
 use App\Organization;
@@ -21,7 +22,12 @@ use App\Site;
 use App\Template;
 use Carbon\Carbon;
 use App\Exports\ProgramsExport;
+use App\Http\Requests\DestroyProgram;
+use App\Http\Requests\UpdateProgramRoster;
+use App\Http\Requests\UpdateRegistrationOptions;
 use App\Instructor;
+use App\Mail\PriceChange;
+use App\Mail\ProgramCanceledParticipants;
 use App\Task;
 use DB;
 use Illuminate\Http\Request;
@@ -41,7 +47,7 @@ class ProgramController extends Controller
     public function index(ProgramFilters $programFilters)
     {
         //
-        $programs = Program::with(['meetings.site', 'meetings.instructors', 'contributors.organization'])->filter($programFilters)->get()->sortBy('start_datetime');
+        $programs = Program::with(['meetings.site', 'meetings.instructors', 'contributors.organization', 'tickets'])->filter($programFilters)->get()->sortBy('start_datetime');
         $programGroups = Program::groupPrograms($programs);
         $programsExist = Program::get()->count() > 0;
         $groupsIncludeArea = tenant()->organization->hasAreas();
@@ -234,10 +240,40 @@ class ProgramController extends Controller
             'ages_type' => $validated['ages_type'],
             'min_age' => $validated['min_age'],
             'max_age' => $validated['max_age'],
-            'min_enrollments' => $validated['min_enrollments'],
-            'max_enrollments' => $validated['max_enrollments'],
         ]);
 
+        return back()->withSuccess('Program updated successfully.');
+    }
+
+    public function updateRegistrationOptions(UpdateRegistrationOptions $request, Program $program)
+    {
+        $validated = $request->validated();
+        if ($program->canUpdateEnrollmentsBy(tenant())) {
+            if (
+                $program->isProposalSent()
+                && $program->hasOtherContributors()
+                && isset($validated['price'])
+                && $program->formatted_price != $validated['price']
+                ) {
+                \Mail::send(new PriceChange($program, $validated['price'], tenant(), Auth::user()));
+            }
+            $program->price = isset($validated['price']) ? $validated['price'] * 100 : null;
+            $program->min_enrollments = $validated['min_enrollments'];
+            // If a program allows registration via Upcivic, we should not allow manual updating of the current enrollments.
+            if ($program->getContributorFor(tenant())->acceptsRegistrations()) {
+                $program->setMaxEnrollments($validated['max_enrollments'] ?? $program->max_enrollments);
+            } else {
+                $program->updateEnrollments($validated['enrollments'] ?? $program->enrollments, $validated['max_enrollments'] ?? $program->max_enrollments);
+            }
+            $program->save();
+        }
+        $contributor = $program->getContributorFor(tenant());
+        $contributor->update([
+            'enrollment_url' => $validated['enrollment_url'] ?? null,
+            'enrollment_instructions' => $validated['enrollment_instructions'] ?? null,
+            'enrollment_message' => $validated['enrollment_message'] ?? null,
+            'internal_registration' => $validated['internal_registration'] ?? null,
+        ]);
         return back()->withSuccess('Program updated successfully.');
     }
 
@@ -265,7 +301,7 @@ class ProgramController extends Controller
             Auth::user()->approveProgramForContributor($program, $contributor);
         }
 
-        $proposalNextSteps = $validated['proposal_next_steps'];
+        $proposalNextSteps = $validated['proposal_next_steps'] ?? '';
 
         \Mail::send(new ProgramApproved($program, Auth::user(), tenant()->organization, $contributors, $proposalNextSteps));
 
@@ -278,16 +314,28 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Program $program)
+    public function destroy(DestroyProgram $request, Program $program)
     {
         //
+        abort_if(!$program->canBeDeletedBy(tenant()), 401);
+        $validated = $request->validated();
+        $programId = $program->id;
         if ($program->isProposalSent()) {
-            \Mail::send(new ProgramCanceled($program, Auth::user()));
-            $program->delete();
-            return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled and a cancellation email was sent to any involved organizations.');
+            $program->contributors->map(function ($contributor) {
+                return $contributor->organization->emailableContacts();
+            })->flatten()->unique('email')->each(function ($administrator) use ($program, $validated) {
+                \Mail::to($administrator['email'])->send(new ProgramCanceledContributors($program, $validated['cancellation_message'] ?? null, Auth::user()));
+            });
+        }
+        if ($program->hasParticipants()) {
+            $program->participants->map(function ($participant)  {
+                return $participant->primaryContact()->email;
+            })->unique()->each(function ($email) use ($program, $validated) {
+                \Mail::to($email)->send(new ProgramCanceledParticipants($program, $validated['cancellation_message'] ?? null, Auth::user(), tenant()->organization));
+            });
         }
         $program->delete();
-        return redirect()->route('tenant:admin.programs.index', tenant()['slug'])->withSuccess('The program has been canceled.');
+        return redirect('https://dashboard.stripe.com/search?query=program_id%3A' . $programId);
 
     }
 

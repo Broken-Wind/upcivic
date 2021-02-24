@@ -4,10 +4,10 @@
 <div class="container">
     @include('shared.form_errors')
 
-    <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.templates.create') }}">Add Program</a>
+    <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.templates.create') }}">Add Program Template</a>
 
     <div class="card">
-        <div class="card-header">Programs</div>
+        <div class="card-header">Program Templates</div>
 
         <div class="card-body">
 
@@ -40,7 +40,7 @@
 
             @else
 
-                No programs yet. <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program</a>
+                No templates yet. <a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add a program template</a>
 
             @endif
 

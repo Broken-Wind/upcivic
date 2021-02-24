@@ -19,7 +19,9 @@
                                     </div>
                                     <div class="col-sm-4">
                                         {{ $program->site['name'] }}<br />
-                                        <small>{{ $program->otherContributors()->pluck('name')->implode(', ') }}</small>
+                                        @if(!$program->hasOneContributor())
+                                            <small>With {{ $program->otherContributors()->pluck('name')->implode(', ') }}</small>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="row">

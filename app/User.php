@@ -62,7 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function joinTenant(Tenant $tenant)
     {
-        $subscriptionName = config('app.subscription_name');
+        $subscriptionName = config('services.stripe.subscription_name');
         $numberOfUsers = $tenant->users->count() + 1;
 
         foreach($tenant->users->all() as $user) {

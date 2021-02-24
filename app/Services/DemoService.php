@@ -35,6 +35,7 @@ class DemoService
                 $proposal = [
                     'start_date' => $startDate,
                     'start_time' => '09:00',
+                    'propose_to_other_org' => true,
                     'recipient_organization_id' => $demoHost->organization_id,
                     'proposing_organization_id' => $demoProvider->organization_id,
                     'proposed_at' => Carbon::now(),
@@ -42,6 +43,7 @@ class DemoService
                     'location_id' => $demoLocationId,
                 ];
                 $amProgram = Program::fromTemplate($proposal, $template);
+                $amProgram->addTickets($amProgram->max_enrollments);
                 $amContributor = $amProgram->contributors()->where('organization_id', $demoProvider->organization_id)->firstOrFail();
                 $demoProviderUser->approveProgramForContributor($amProgram, $amContributor);
                 if (rand(0, 10) < 5) {
@@ -52,6 +54,7 @@ class DemoService
                     $pmProposal = [
                         'start_date' => $startDate,
                         'start_time' => '13:00',
+                        'propose_to_other_org' => true,
                         'recipient_organization_id' => $demoHost->organization_id,
                         'proposing_organization_id' => $demoProvider->organization_id,
                         'proposed_at' => Carbon::now(),

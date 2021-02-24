@@ -2,28 +2,24 @@
 
 namespace App\Mail;
 
-use App\Program;
-use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ProgramCanceled extends Mailable
+class PriceChange extends Mailable
 {
     use Queueable, SerializesModels;
-    public $program;
-    public $user;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(Program $program, User $user)
+    public $program;
+    public $newPrice;
+    public $tenant;
+    public $user;
+    public function __construct($program, $newPrice, $tenant, $user)
     {
-        //
         $this->program = $program;
+        $this->newPrice = $newPrice;
+        $this->tenant = $tenant;
         $this->user = $user;
     }
 
@@ -34,8 +30,8 @@ class ProgramCanceled extends Mailable
      */
     public function build()
     {
-        $message = $this->markdown('emails.program_canceled')
-                    ->subject('[CANCELED] ' . $this->program->internal_name . " at " . $this->program->site->name)
+        $message = $this->markdown('emails.price_change')
+                    ->subject('[PRICE CHANGE] ' . $this->program->name . " at " . $this->program->site->name)
                     ->replyTo($this->user['email'], $this->user['name']);
 
         $recipients = $this->program->contributors->map(function ($contributor) {

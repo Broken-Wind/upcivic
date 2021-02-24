@@ -13,11 +13,11 @@
             @if($program['shared_invoice_type'])
                 <tr>
                     <th>
-                        Estimated Program Base Fee:
+                        Suggested Program Price:
                     </th>
                     <th>
                         ${{ $program->formatted_base_fee }} {{ $program->shared_invoice_type }}<br>
-                        <small>ESTIMATE ONLY. <i class="fas fa-fw fa-info-circle" title="To charge this amount to register, select 'Register via {{ config('app.name') }}' and set the price."></i></small>
+                        <small>Based on the requested compensation amounts below.</small>
                     </th>
                 </tr>
             @endif

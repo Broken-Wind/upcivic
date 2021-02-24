@@ -36,7 +36,7 @@
     @include('shared.form_errors')
 
     @if($assignment->isSignableDocument())
-        @include('tenant.assignments.signable_documents.components.document')
+        @include('tenant.assignments.signable_documents.components.document_container')
     @else
         @include('tenant.assignments.public_assignment')
     @endif

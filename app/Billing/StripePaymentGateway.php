@@ -19,6 +19,13 @@ class StripePaymentGateway implements PaymentGateway
     public function charge($amount, $token, $destinationAccountId, $metadata = [])
     {
         try {
+            // Stripe Fee: 2.9% + $0.30
+            // Upcivic Fee: 2.1%+ (more if below minimum total fee)
+            // Minimum Total Fee: $1.00
+            // SAMPLE: $100 order
+            // $95 to tenant
+            // $3.20 to Stripe
+            // $1.80 to Upcivic
             $totalFees = max($amount * .05, 100);
             $stripeCharge = \Stripe\Charge::create([
                 'amount' => $amount,

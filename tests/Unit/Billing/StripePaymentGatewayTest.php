@@ -56,7 +56,7 @@ class StripePaymentGatewayTest extends TestCase
         ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
 
         // Stripe Fee: 2.9% + $0.30
-        // Upcivic Fee: 2.1%
+        // Upcivic Fee: 2.1%+ (more if below minimum total fee)
         // Minimum Total Fee: $1.00
         // $100 order
         // $95 to tenant
@@ -81,7 +81,7 @@ class StripePaymentGatewayTest extends TestCase
         ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
 
         // Stripe Fee: 2.9% + $0.30
-        // Upcivic Fee: 2.1%
+        // Upcivic Fee: 2.1%+ (more if below minimum total fee)
         // Minimum Total Fee: $1.00
         // $10 order
         // $9 to tenant

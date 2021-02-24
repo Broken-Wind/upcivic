@@ -17,7 +17,7 @@
                     </th>
                     <th>
                         ${{ $program->formatted_base_fee }} {{ $program->shared_invoice_type }}<br>
-                        <small>Based on the compensation amounts below.</small>
+                        <small>Based on the requested compensation amounts below.</small>
                     </th>
                 </tr>
             @endif

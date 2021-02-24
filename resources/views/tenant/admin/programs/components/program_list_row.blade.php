@@ -105,6 +105,10 @@
             <div class="row">
                 <div class="col-12">
                     <div class="{{ $program->class_string }} font-weight-bold">{{ $program->status_string }}</div>
+                    {{-- TODO: Make use of the publish status instead: https://trello.com/c/E33LWi6W/. --}}
+                    @if($program->isPublished())
+                        <div class="badge badge-dark">Published</div>
+                    @endif
                 </div>
             </div>
         </div>

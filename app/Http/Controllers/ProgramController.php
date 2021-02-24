@@ -61,8 +61,39 @@ class ProgramController extends Controller
         if ($validated['action'] == 'export') {
             $today = Carbon::now()->toDateString();
             return Excel::download(new ProgramsExport($validated['program_ids']), 'Programs-' . $today . '.xlsx');
+        } elseif ($validated['action'] == 'publish') {
+            $programs = $validated['program_ids']; 
+            $publishable_programs = array();
+
+            foreach ($programs as $program) {
+                $program = Program::find($program);
+                if ($program->isApprovedByAllContributors() && empty($program->isPublished())) {
+                    $publishable_programs[] = $program->name;
+                    $program->getContributorFromTenant()->publish();
+                } else {
+                    return back()->withErrors($program->name . ' cannot be pulished because is not fully approved by all contributors.');
+                }
+            }
+            return back()->withSuccess(implode(", ",$publishable_programs) . ' schedule details are published and visible on your website.');
+
+        } elseif ($validated['action'] == 'unpublish') {
+            $programs = $validated['program_ids']; 
+            $unpublishable_programs = array();
+
+            foreach ($programs as $program) {
+                $program = Program::find($program);
+                if ($program->isPublished()) {
+                    $unpublishable_programs[] = $program->name;
+                    $program->getContributorFromTenant()->unpublish();
+                }
+            }
+            if ($unpublishable_programs) {
+                return back()->withSuccess(implode(", ",$unpublishable_programs) . ' schedule details are unpublished and longer visible on your website.');
+            } else {
+                return back()->withErrors('Nothing to unpublish, no published program was selected.');
+            }
         }
-        return back()->withErrors('Error: No action was selected.');
+        return back()->withErrors('No action was selected.');
     }
 
     /**

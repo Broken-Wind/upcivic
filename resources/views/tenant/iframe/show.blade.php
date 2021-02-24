@@ -1,4 +1,5 @@
 @extends('layouts.iframe')
+@section('title', 'Session')
 @section('content')
     <div class="pt-3 pl-3">
         <a href="{{URL::previous()}}">&laquo; Back to Program Listing</a>

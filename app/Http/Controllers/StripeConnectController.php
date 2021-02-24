@@ -22,7 +22,8 @@ class StripeConnectController extends Controller
             http_build_query([
                 'response_type' => 'code',
                 'scope' => 'read_write',
-                'client_id' => config('services.stripe.client_id')
+                'client_id' => config('services.stripe.client_id'),
+                'redirect_uri' =>  route('stripe_connect.redirect'),
             ])
         ]);
         return redirect($url);

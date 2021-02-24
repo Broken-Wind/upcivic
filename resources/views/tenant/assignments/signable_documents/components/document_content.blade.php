@@ -1,4 +1,4 @@
-<h3>{{ $assignment->signableDocument->title ?? 'Untitled Document' }}</h3>
+<h1>{{ $assignment->signableDocument->title ?? 'Untitled Document' }}</h1>
 {!! $assignment->signableDocument->content ?? 'Document not found.' !!}
 <hr>
 <h3>Programs ({{ $programs->count() }} total)</h3>

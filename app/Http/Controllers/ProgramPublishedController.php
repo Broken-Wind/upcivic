@@ -23,12 +23,12 @@ class ProgramPublishedController extends Controller
         if (isset($validated['publish_now'])) {
             $program->getContributorFor(tenant())->publish();
 
-            return back()->withSuccess('Schedule details are published and visible on your website.');
+            return back();
         }
         if (empty($validated['published_at'])) {
             $program->getContributorFor(tenant())->unpublish();
 
-            return back()->withSuccess('Schedule details are unpublished and longer visible on your website.');
+            return back();
         }
         $program->getContributorFor(tenant())->publish($validated['published_at']);
 

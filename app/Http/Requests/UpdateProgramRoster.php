@@ -39,7 +39,7 @@ class UpdateProgramRoster extends FormRequest
                     }
                 }
             ],
-            'enrollment_url' => 'nullable|string',
+            'enrollment_url' => 'nullable|url',
             'enrollment_instructions' => 'nullable|string',
             'enrollment_message' => 'nullable|string',
             'min_enrollments' => [

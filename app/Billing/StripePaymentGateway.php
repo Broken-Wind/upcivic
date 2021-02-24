@@ -19,11 +19,12 @@ class StripePaymentGateway implements PaymentGateway
     public function charge($amount, $token, $destinationAccountId, $metadata = [])
     {
         try {
+            $totalFees = max($amount * .05, 100);
             $stripeCharge = \Stripe\Charge::create([
                 'amount' => $amount,
                 'source' => $token,
                 'currency' => 'usd',
-                'application_fee' => max(70, round($amount * .021)),
+                'application_fee' => round(($totalFees - 30) - ($amount * .029)),
                 'metadata' => $metadata
             ], [
                 'api_key' => $this->apiKey,

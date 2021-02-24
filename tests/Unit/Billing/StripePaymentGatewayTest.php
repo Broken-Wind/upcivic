@@ -45,7 +45,7 @@ class StripePaymentGatewayTest extends TestCase
     }
 
     /** @test */
-    public function two_point_one_percent_of_the_payment_is_transfered_to_platform()
+    public function correct_application_fee_is_transfered_to_platform()
     {
         $paymentGateway = $this->getPaymentGateway();
 
@@ -55,15 +55,22 @@ class StripePaymentGatewayTest extends TestCase
             'limit' => 1
         ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
 
+        // Stripe Fee: 2.9% + $0.30
+        // Upcivic Fee: 2.1%
+        // Minimum Total Fee: $1.00
+        // $100 order
+        // $95 to tenant
+        // $3.20 to Stripe
+        // $1.80 to Upcivic
         $this->assertEquals(10000, $lastStripeCharge['amount']);
-        $this->assertEquals(210, $lastStripeCharge['application_fee_amount']);
+        $this->assertEquals(180, $lastStripeCharge['application_fee_amount']);
 
         $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
-        $this->assertEquals(210, $applicationFee['amount']);
+        $this->assertEquals(180, $applicationFee['amount']);
     }
 
     /** @test */
-    public function minimum_application_charge_is_seventy_cents()
+    public function minimum_total_fee_is_one_dollar()
     {
         $paymentGateway = $this->getPaymentGateway();
 
@@ -73,11 +80,19 @@ class StripePaymentGatewayTest extends TestCase
             'limit' => 1
         ], ['api_key' => env('STRIPE_TEST_ACCOUNT_TOKEN')])['data']);
 
+        // Stripe Fee: 2.9% + $0.30
+        // Upcivic Fee: 2.1%
+        // Minimum Total Fee: $1.00
+        // $10 order
+        // $9 to tenant
+        // $0.59 to Stripe
+        // $0.41 to Upcivic
+
         $this->assertEquals(1000, $lastStripeCharge['amount']);
-        $this->assertEquals(70, $lastStripeCharge['application_fee_amount']);
+        $this->assertEquals(41, $lastStripeCharge['application_fee_amount']);
 
         $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
-        $this->assertEquals(70, $applicationFee['amount']);
+        $this->assertEquals(41, $applicationFee['amount']);
     }
 
     /** @test */

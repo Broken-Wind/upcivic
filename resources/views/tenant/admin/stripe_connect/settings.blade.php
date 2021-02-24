@@ -17,7 +17,7 @@
                         <div class="alert alert-warning text-center">
                             <h3 class="mb-3">{{ $tenant->name }} is not configured to accept registrations via {{ config('app.name') }}</h3>
                             <a href="{{ $tenant->route('tenant:admin.stripe_connect.authorize') }}" class="btn btn-primary">
-                                Configure Registration
+                                Set up Registration
                             </a>
                         </div>
                     @endif

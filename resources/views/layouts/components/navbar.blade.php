@@ -1,8 +1,14 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="{{ tenant() ? tenant()->route('tenant:admin.home') : url('/') }}">
-            {{ tenant() ? tenant()['name'] : config('app.name') }}
-        </a>
+        @if(tenant() && Auth::user() && Auth::user()->memberOfTenant(tenant()))
+            <a class="navbar-brand" href="{{ tenant() ? tenant()->route('tenant:admin.home') : url('/') }}">
+                {{ tenant() ? tenant()['name'] : config('app.name') }}
+            </a>
+        @else
+            <a class="navbar-brand" href="{{ url('/') }}">
+                {{ config('app.name') }}
+            </a>
+        @endif
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>

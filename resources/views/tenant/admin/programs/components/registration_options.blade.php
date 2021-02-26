@@ -9,17 +9,17 @@
                 <div class="form-group col-md-6">
                     <label for="min_enrollments">Minimum Enrollments</label>
                     <input type="number" class="form-control" name="min_enrollments" placeholder="5"
-                           value="{{ old('min_enrollments') ?: $program['min_enrollments'] }}">
+                           value="{{ old('min_enrollments') ?: $program['min_enrollments'] }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="max_enrollments">Maximum Enrollments</label>
                     <input type="number" class="form-control" name="max_enrollments" placeholder="12"
-                           value="{{ old('max_enrollments') ?: $program['max_enrollments'] }}">
+                           value="{{ old('max_enrollments') ?: $program['max_enrollments'] }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                 </div>
             </div>
             <div class="form-check mb-3">
                 <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" name="internal_registration" id="internal_registration" value="1" {{ $contributor->acceptsRegistrations() ? ' checked' : '' }}>
+                    <input type="checkbox" class="form-check-input" name="internal_registration" id="internal_registration" value="1" {{ $contributor->acceptsRegistrations() ? ' checked' : '' }} {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                     Register via {{ config('app.name') }}
                 </label>
             </div>
@@ -35,7 +35,7 @@
                                     <span class="input-group-text">$</span>
                                 </div>
                                 <input type="text"
-                                    class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}">
+                                    class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
                                 </div>
                                 <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                             </div>
@@ -62,6 +62,7 @@
             <div class="form-group">
                 <label for="enrollmentInstructions">Enrollment Instructions</label>
                 <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $contributor->enrollment_instructions }}</textarea>
+                <small>We'll include these instructions in your program listing.</small>
             </div>
             <div class="form-group">
               <label for="enrollment_message">Enrollment Confirmation Message</label>

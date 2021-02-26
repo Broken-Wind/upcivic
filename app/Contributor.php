@@ -7,25 +7,52 @@ use Illuminate\Database\Eloquent\Model;
 class Contributor extends Model
 {
     //
-    protected $fillable = [
-        'internal_name',
-        'invoice_amount',
-        'invoice_type',
-    ];
+    protected $guarded = [];
     protected $dates = [
         'published_at',
     ];
 
     protected const STATUSES = Program::STATUSES;
 
+    public function scopePubliclyContactable($query)
+    {
+        return $query->whereHas('organization', function ($query) {
+            return $query->whereNotNull('phone')->orWhereNotNull('email');
+        });
+    }
     public function getFormattedInvoiceAmountAttribute()
     {
         return isset($this->invoice_amount) ? number_format($this->invoice_amount / 100, 2, '.', '') : null;
     }
 
+    public function acceptsRegistrations()
+    {
+        return $this->tenant->acceptsRegistrations() && $this->internal_registration;
+    }
+
+    public function hasEnrollmentUrl()
+    {
+        return !empty($this->enrollment_url);
+    }
+
+    public function hasEnrollmentInstructions()
+    {
+        return !empty($this->enrollment_instructions);
+    }
+
     public function getNameAttribute()
     {
         return $this->organization->name;
+    }
+
+    public function getPhoneAttribute()
+    {
+        return $this->organization->phone;
+    }
+
+    public function getEmailAttribute()
+    {
+        return $this->organization->email;
     }
 
     public function program()
@@ -36,6 +63,11 @@ class Contributor extends Model
     public function organization()
     {
         return $this->belongsTo(Organization::class);
+    }
+
+    public function getTenantAttribute()
+    {
+        return $this->organization->tenant;
     }
 
     public function publish($publishedAt = null)

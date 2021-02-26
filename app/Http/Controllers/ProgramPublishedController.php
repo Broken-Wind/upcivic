@@ -21,16 +21,16 @@ class ProgramPublishedController extends Controller
     {
         $validated = $request->validated();
         if (isset($validated['publish_now'])) {
-            $program->getContributorFromTenant()->publish();
+            $program->getContributorFor(tenant())->publish();
 
-            return back()->withSuccess('Schedule details are published and visible on your website.');
+            return back();
         }
         if (empty($validated['published_at'])) {
-            $program->getContributorFromTenant()->unpublish();
+            $program->getContributorFor(tenant())->unpublish();
 
-            return back()->withSuccess('Schedule details are unpublished and longer visible on your website.');
+            return back();
         }
-        $program->getContributorFromTenant()->publish($validated['published_at']);
+        $program->getContributorFor(tenant())->publish($validated['published_at']);
 
         return back()->withSuccess('Program scheduled to publish.');
     }

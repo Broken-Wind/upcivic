@@ -20,6 +20,7 @@ Route::middleware(Spatie\Honeypot\ProtectAgainstSpam::class)->group(function () 
 });
 
 Route::group(['middleware' => 'verified'], function () {
+    Route::get('/stripe_connect/redirect', 'StripeConnectController@redirect')->name('stripe_connect.redirect');
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/organizations/{organization}/tenant', 'OrganizationTenantController@create')->name('organizations.tenant.create');
     Route::post('/organizations/{organization}/tenant', 'OrganizationTenantController@store')->name('organizations.tenant.store');
@@ -27,13 +28,8 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('/tenants/create', 'TenantController@create')->middleware('tenant.null');
     Route::post('/tenants', 'TenantController@store')->middleware('tenant.null');
 });
-Route::group([
-    'prefix' => '/{tenant}',
-    'middleware' => ['tenant', 'tenant.auth'],
-    'as' => 'tenant:',
-], function () {
-    Route::get('/', 'PublicTenantController@index');
-});
+
+
 Route::group([
     'prefix' => '/{tenant}',
     'middleware' => ['tenant', 'tenant.public'],
@@ -41,6 +37,14 @@ Route::group([
 ], function () {
     Route::get('/iframe', 'IframeController@index')->name('iframe.index');
     Route::get('/iframe/{program}', 'IframeController@show')->name('iframe.show');
+    Route::post('/programs/{program}/orders', 'ProgramOrdersController@store')->name('programs.orders.store');
+    Route::get('/programs/{program}/orders/create', 'ProgramOrdersController@create')->name('programs.orders.create');
+    Route::get('/programs/{program}/orders/{confirmationNumber}', 'ProgramOrdersController@show')->name('programs.orders.show');
+
+    Route::get('/programs', 'RegistrationController@index')->name('programs.index');
+    Route::get('/programs/{program}', 'RegistrationController@show')->name('programs.show');
+
+
     Route::get('/assignments/{assignment}/pdf', 'AssignmentController@pdf')->name('assignments.pdf');
     Route::post('/assignments/{assignment}/signatures', 'AssignmentSignatureController@store')->name('assignments.signatures.store');
     Route::post('/assignments/{assignment}/complete', 'AssignmentPublicController@complete')->name('assignments.public.complete');
@@ -65,6 +69,8 @@ Route::group(['middleware' => 'verified'], function () {
         'middleware' => ['tenant', 'tenant.auth'],
         'as' => 'tenant:admin.',
     ], function () {
+        Route::get('/stripe_connect/authorize', 'StripeConnectController@authorizeRedirect')->name('stripe_connect.authorize');
+        Route::get('/stripe_connect/settings', 'StripeConnectController@settings')->name('stripe_connect.settings');
         Route::get('/', 'TenantController@index')->name('index');
         Route::get('/home', 'TenantController@index')->name('home');
         Route::post('/demo', 'DemoProgramController@store')->name('demo.store');
@@ -98,10 +104,14 @@ Route::group(['middleware' => 'verified'], function () {
         Route::post('/programs/approve', 'ProgramController@approve')->name('programs.approve');
         Route::post('/programs/reject', 'ProgramController@reject')->name('programs.reject');
         Route::get('/programs/{program}/edit', 'ProgramController@edit')->name('programs.edit');
+        Route::get('/programs/{program}/roster', 'ProgramRosterController@edit')->name('programs.roster.edit');
+        Route::post('/programs/{program}/roster', 'ProgramRosterController@update')->name('programs.roster.update');
+        Route::post('/programs/{program}/roster/email_participants', 'ProgramRosterController@emailParticipants')->name('programs.roster.email_participants');
         Route::get('/programs/{program}', 'ProgramController@show')->name('programs.show');
         Route::post('/programs/bulk_action', 'ProgramController@bulkAction')->name('programs.bulkAction');
         Route::put('/programs/{program}/enrollments', 'ProgramEnrollmentController@update')->name('programs.enrollments.update');
         Route::put('/programs/{program}', 'ProgramController@update')->name('programs.update');
+        Route::put('/programs/{program}/update_registration_options', 'ProgramController@updateRegistrationOptions')->name('programs.update_registration_options');
         Route::delete('/programs/{program}', 'ProgramController@destroy')->name('programs.destroy');
         Route::post('/programs/{program}/send', 'ProgramController@send')->name('programs.send');
         Route::post('/programs/{program}/mark_sent', 'ProgramController@markSent')->name('programs.mark_sent');

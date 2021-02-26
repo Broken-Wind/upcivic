@@ -137,7 +137,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Stripe Subscription IDs
+    | Stripe Subscription IDs - TODO: Move to services.php
     |--------------------------------------------------------------------------
     |
     | Required when addining subscription to a user, passed to the newSubscription method.
@@ -151,6 +151,32 @@ return [
     'subscription_name' => 'Upcivic Pro',
     'subscription_price_id' => env('STRIPE_SUBCRIPTION_PRICE_ID'),
     'stripe_public_key' => env('STRIPE_KEY'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stripe Authentication Keys - TODO: Move to services.php
+    |--------------------------------------------------------------------------
+    |
+    | Required for accessing Stripe.
+    |
+    */
+
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Ticket Code Salt
+    |--------------------------------------------------------------------------
+    |
+    | To ensure ticket codes cannot be guessed, a random salt should be set in .env
+    |
+    */
+
+    'ticket_code_salt' => env('TICKET_CODE_SALT'),
 
     /*
     |--------------------------------------------------------------------------

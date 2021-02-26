@@ -2,12 +2,15 @@
 
 namespace App;
 
+use App\Exceptions\CannotManuallyUpdateInternalRegistrationsException;
 use App\Http\Concerns\Filterable;
 use App\Http\Concerns\HasDatetimeRange;
 use App\Mail\ProposalSent;
+use App\Exceptions\NotEnoughTicketsException;
 use Carbon\Carbon;
 use DateTime;
 use DB;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Stevebauman\Purify\Facades\Purify;
@@ -162,20 +165,9 @@ class Program extends Model
         return $this->site->area;
     }
 
-    public function getContributorFromTenant($tenant = null)
-    {
-        if (! empty($tenant)) {
-            $organizationId = $tenant['organization_id'];
-        } else {
-            $organizationId = tenant()['organization_id'];
-        }
-
-        return $this->contributors->where('organization_id', $organizationId)->first();
-    }
-
     public function isPublished()
     {
-        return $this->getContributorFromTenant()->isPublished();
+        return $this->getContributorFor(tenant())->isPublished();
     }
 
     public function isApprovedByAllContributors()
@@ -203,9 +195,43 @@ class Program extends Model
         return false;
     }
 
+    public function isEditable()
+    {
+        if ($this->isProposalSent() && $this->otherContributors()->isNotEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public function getProposingOrganizationAttribute()
+    {
+        return Organization::find($this->proposing_organization_id);
+    }
+
+    public function canBeDeletedBy(Tenant $tenant)
+    {
+        return $this->proposing_organization_id == $tenant->organization_id;
+    }
+
+    public function canUpdateEnrollmentsBy(Tenant $tenant)
+    {
+        return $this->proposing_organization_id == $tenant->organization_id;
+    }
+
     public function canBePublished()
     {
         if ($this->isProposalSent() && $this->isApprovedByAllContributors()) {
+            return true;
+        }
+        if ($this->hasOneContributor()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function canBeApproved()
+    {
+        if ($this->isProposalSent() && $this->hasOtherContributors() && !$this->isFullyApproved()) {
             return true;
         }
         return false;
@@ -213,12 +239,42 @@ class Program extends Model
 
     public function willPublish()
     {
-        return $this->getContributorFromTenant()->willPublish();
+        return $this->getContributorFor(tenant())->willPublish();
     }
 
     public function getPublishedAtAttribute()
     {
-        return $this->getContributorFromTenant()->published_at;
+        return $this->getContributorFor(tenant())->published_at;
+    }
+
+    public function hasParticipants()
+    {
+        return $this->participants->isNotEmpty();
+    }
+    public function getParticipantsAttribute()
+    {
+        return $this->tickets->map(function ($ticket) {
+            return $ticket->participant;
+        })->filter(function ($participant) {
+            return !empty($participant);
+        });
+    }
+
+    public function shouldDisplayMap()
+    {
+        return !empty($this->site->id) && !$this->isVirtual();
+    }
+
+    public function isVirtual()
+    {
+        return $this->site->name == '[VIRTUAL]';
+    }
+
+    public function rosterRecipients()
+    {
+        return $this->contributors->map(function ($contributor) {
+            return $contributor->organization->emailableContacts();
+        })->flatten()->merge($this->instructors)->unique('email');
     }
 
     public static function createExample($organization)
@@ -251,24 +307,26 @@ class Program extends Model
                     'min_age' => $proposal['min_age'] ?? $template['min_age'],
                     'max_age' => $proposal['max_age'] ?? $template['max_age'],
                     'min_enrollments' => $template['min_enrollments'],
-                    'max_enrollments' => $template['max_enrollments'],
                     'proposing_organization_id' => $proposal['proposing_organization_id'] ?? tenant()->organization_id,
                     'proposed_at' => $proposal['proposed_at'] ?? null,
                 ]);
+                $program->addTickets($template['max_enrollments']);
                 $proposingContributor = new Contributor([
                     'internal_name' => $template['internal_name'],
                     'invoice_amount' => $template['invoice_amount'],
                     'invoice_type' => $template['invoice_type'],
+                    'enrollment_message' => $template['enrollment_message'] ?? null,
                 ]);
                 $proposingContributor['program_id'] = $program['id'];
                 $proposingContributor['organization_id'] = $proposal['proposing_organization_id'] ?? tenant()->organization_id;
                 $proposingContributor->save();
-
-                $contributor = new Contributor([]);
-                $contributor['program_id'] = $program['id'];
-                $contributor['organization_id'] = $proposal['recipient_organization_id'];
-                if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
-                    $contributor->save();
+                if (!empty($proposal['propose_to_other_org']) && !empty($proposal['recipient_organization_id'])) {
+                    $contributor = new Contributor([]);
+                    $contributor['program_id'] = $program['id'];
+                    $contributor['organization_id'] = $proposal['recipient_organization_id'];
+                    if ($contributor['organization_id'] != $proposingContributor['organization_id']) {
+                        $contributor->save();
+                    }
                 }
                 $startTime = $proposal['start_time'];
                 $endTime = $proposal['end_time'] ?? date('H:i:s', strtotime($proposal['start_time'].' +'.$template['meeting_minutes'].' minutes'));
@@ -300,6 +358,74 @@ class Program extends Model
         return $program;
     }
 
+    public function maxTicketOrder()
+    {
+        return min($this->tickets()->available()->count(), 4);
+    }
+
+    public function acceptsRegistrations()
+    {
+        return $this->contributors->filter(function ($contributor) {
+            return $contributor->acceptsRegistrations();
+        })->isNotEmpty();
+    }
+
+
+    public function updateEnrollments($enrollments, $maxEnrollments) {
+        if ($this->acceptsRegistrations()) {
+            throw new CannotManuallyUpdateInternalRegistrationsException();
+        }
+        if ($enrollments > $this->max_enrollments) {
+            $this->setMaxEnrollments($maxEnrollments);
+            $this->setEnrollments($enrollments);
+        } else  {
+            $this->setEnrollments($enrollments);
+            $this->setMaxEnrollments($maxEnrollments);
+        }
+        // $this->update([
+        //     'enrollments_updated' => now(),
+        // ]);
+    }
+
+    public function setEnrollments($updatedEnrollments) {
+        $diff = $updatedEnrollments - $this->fresh()->enrollments;
+        if ($diff > 0) {
+            return $this->claimAnonymousTickets($diff);
+        }
+        return $this->releaseAnonymousTickets(abs($diff));
+    }
+
+    public function setMaxEnrollments($updatedMaxEnrollments) {
+        $diff = $updatedMaxEnrollments - $this->fresh()->max_enrollments;
+        if ($diff > 0) {
+            return $this->addTickets($diff);
+        }
+        return $this->removeTickets(abs($diff));
+    }
+
+    public function removeTickets($diff)
+    {
+        $availableTickets = $this->tickets()->available()->get()->count();
+        $anonymousTickets = $this->tickets()->anonymous()->get()->count();
+        if ($diff > ($availableTickets + $anonymousTickets)) {
+            throw new Exception('Error updating enrollments');
+        }
+        $this->tickets()->available()->take($diff)->delete();
+        if ($diff > $availableTickets) {
+            $this->tickets()->anonymous()->take($diff - $availableTickets)->delete();
+        }
+    }
+
+    public function claimAnonymousTickets($diff)
+    {
+        $this->tickets()->available()->take($diff)->update(['order_id' => 0]);
+    }
+
+    public function releaseAnonymousTickets($diff)
+    {
+        $this->tickets()->anonymous()->take($diff)->update(['order_id' => null]);
+    }
+
     public function getResourceIdAttribute()
     {
         $locationIds = $this->meetings->pluck('location_id')->filter(function ($locationId) {
@@ -329,6 +455,67 @@ class Program extends Model
     public function getNextMeetingEndDatetimeAttribute()
     {
         return $this->meetings->sortByDesc('start_datetime')->first()['end_datetime']->addDays($this['meeting_interval'])->format('Y-m-d\TH:i');
+    }
+
+    public function getMaxEnrollmentsAttribute()
+    {
+        return $this->tickets->count();
+    }
+
+    public function getEnrollmentsAttribute()
+    {
+        return $this->tickets->filter(function ($ticket) {
+            return $ticket->order_id !== null || $ticket->reserved_at !== null;
+        })->count();
+    }
+
+    public function getEnrollmentPercentAttribute()
+    {
+        if (empty($this->max_enrollments)) {
+            return 0;
+        }
+        return 100 * ($this->enrollments / $this->max_enrollments);
+    }
+
+    public function getProgressBarClassAttribute()
+    {
+        if ($this->isFull()) {
+            return 'bg-success';
+        }
+        if ($this->isAboveMinimum()){
+            return 'bg-primary';
+        }
+        return 'bg-danger';
+    }
+
+    public function isFull()
+    {
+        return $this->enrollments >= $this->max_enrollments;
+    }
+
+    public function isAboveMinimum()
+    {
+        return $this->enrollments >= $this->min_enrollments;
+    }
+
+    public function getSuggestedEnrollmentUrlAttribute()
+    {
+        return $this->enrollment_url
+            ?? tenant()->organization->enrollment_url
+            ?? $this->contributors->map(function ($contributor) {
+                return $contributor->organization->enrollment_url;
+            })->whereNotNull()->first()
+            ?? null;
+    }
+
+    public function getSuggestedEnrollmentInstructionsAttribute()
+    {
+        return $this->getContributorFor(tenant())->enrollment_instructions
+            ?? tenant()->organization->enrollment_instructions
+            ?? $this->contributors->map(function ($contributor) {
+                return $contributor->organization->enrollment_instructions;
+            })->whereNotNull()->first()
+            ?? null;
     }
 
     public function getMeetingIntervalAttribute()
@@ -386,6 +573,11 @@ class Program extends Model
         return $sites->where('name', $sites->mode('name')[0])->first();
     }
 
+    public function getFormattedPriceAttribute()
+    {
+        return isset($this->price) ? number_format($this->price / 100, 2, '.', '') : null;
+    }
+
     public function getLocationAttribute()
     {
         $location = collect([]);
@@ -433,6 +625,17 @@ class Program extends Model
     public function contributors()
     {
         return $this->hasMany(Contributor::class);
+    }
+
+    public function getContributorFor($identifier)
+    {
+        if ($identifier instanceof Organization) {
+            return $this->contributors->firstWhere('organization_id', $identifier->id);
+        }
+        if ($identifier instanceof Tenant) {
+            return $this->contributors->firstWhere('organization_id', $identifier->organization_id);
+        }
+        throw new \InvalidArgumentException('Identifier must be a tenant or organization');
     }
 
     public function otherContributors()
@@ -501,15 +704,22 @@ class Program extends Model
         return $this->proposed_at != null;
     }
 
+    public function hasOneContributor()
+    {
+        return $this->contributors->count() == 1;
+    }
+
     public function getStatus()
     {
         switch (true) {
-            // case ($this->isPublishedByAllContributors()):
-            //     return 'published';
+            case ($this->isPublished()):
+                return 'published';
             // case ($this->isWillPublishByAllContributors()):
             //     return 'will_publish';
             case ($this->isApprovedByAllContributors()):
                 return 'approved';
+            case ($this->hasOneContributor()):
+                return 'proposed';
             case ($this->isProposed()):
                 return 'proposed';
             default:
@@ -543,6 +753,7 @@ class Program extends Model
     {
         return self::STATUSES[$this->getStatus()]['status_string'];
     }
+
     public function getStatusDescriptionAttribute()
     {
         $statusStrings = [
@@ -550,8 +761,67 @@ class Program extends Model
             'proposed' => 'Proposed by ' . Purify::clean($this->proposer->name),
             'approved' => 'This program is fully approved.',
             // 'will_publish' => !empty($this->published_at) ? 'You\'re publishing this on ' . $this->published_at->format('m/d/Y') : 'Status error.',
-            // 'published' => 'This program is now listed on your <a href="' . tenant()->route('tenant:admin.edit') . '#publishing">iFrame widget.</a>',
+            'published' => 'This program is now listed on your <a href="' . tenant()->route('tenant:admin.edit') . '#publishing">iFrame widget.</a>',
         ];
         return $statusStrings[$this->getStatus()];
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'tickets');
+    }
+
+    public function tickets() {
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function findTickets($quantity)
+    {
+        $tickets = $this->tickets()->available()->take($quantity)->get();
+
+        if ($tickets->count() < $quantity) {
+            throw new NotEnoughTicketsException;
+        }
+
+        return $tickets;
+    }
+
+    public function reserveTickets($quantity, $email)
+    {
+        $tickets = $this->findTickets($quantity)->each(function ($ticket)
+        {
+            $ticket->reserve();
+        });
+
+        return new Reservation($tickets, $email);
+    }
+
+    public function addTickets($quantity)
+    {
+        foreach (range(1, $quantity) as $i) {
+            $this->tickets()->create([]);
+        }
+
+        return $this;
+    }
+
+    public function ticketsRemaining()
+    {
+        return $this->tickets()->available()->count();
+    }
+
+    public function hasOrderFor($customerEmail)
+    {
+        return $this->orders()->where('email', $customerEmail)->count() > 0;
+    }
+
+    public function ordersFor($customerEmail)
+    {
+        return $this->orders()->where('email', $customerEmail)->get();
+    }
+
+    public function hasEnrollments()
+    {
+        return !empty($this->tickets->firstWhere('reserved_at', '!=', null));
     }
 }

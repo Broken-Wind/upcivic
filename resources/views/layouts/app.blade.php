@@ -32,6 +32,8 @@
                             @auth
                                 @if(!tenant()->isSubscribed())
                                     <a href="{{ tenant()->route('tenant:admin.subscriptions.index') }}#availablePlans"><h2><span id="upgradeProBadge" class="badge badge-pill badge-primary">Upgrade to Pro</span></h2></a>
+                                @elseif(Auth::user()->onTrial())
+                                    <a href="{{ tenant()->route('tenant:admin.subscriptions.index') }}#availablePlans"><h4><span id="upgradeProBadge" class="badge badge-pill badge-primary mt-2">Trial ends {{ Auth::user()->trialEndsAt()->diffForHumans() }}</span></h4></a>
                                 @endif
                                 @if(Auth::user()->canGenerateDemoData())
                                     <li class="nav-item">
@@ -125,6 +127,9 @@
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.edit') }}">
                                             Organization Settings
                                         </a>
+                                        <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.stripe_connect.settings') }}">
+                                            Registration Settings
+                                        </a>
                                         <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.users.edit') }}">
                                             Account
                                         </a>
@@ -154,6 +159,11 @@
                     <h3>
                         {{ ucfirst(App::environment()) }}
                     </h3>
+                </div>
+            @endif
+            @if(tenant() && !tenant()->organization->isPubliclyContactable())
+                <div class="alert alert-warning text-center">
+                    Your organization doesn't have public contact information. Please list your public contact information in <a href="{{ tenant()->route('tenant:admin.edit') }}">settings</a>.
                 </div>
             @endif
             <div class="alert alert-danger text-center" style="display:none;" id="browser-warning">

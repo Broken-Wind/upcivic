@@ -21,14 +21,14 @@
 
                     <div class="row mb-4">
                         <div class="col-4">
-                            <i class="fas fa-check"></i> Instant Proposal Generation <br/>
-                            <i class="fas fa-check"></i> Schedule Summary <br/>
-                            <i class="fas fa-check"></i> Partner Paperwork Submission <br/>
+                            <i class="fas fa-check"></i> Online Registration <br/>
+                            <i class="fas fa-check"></i> Instructor / Facility Management <br/>
+                            <i class="fas fa-check"></i> Document Generation & E-Signing <br/>
                         </div>
                         <div class="col-4">
-                            <i class="fas fa-check"></i> Document Generation & E-Signing <br/>
-                            <i class="fas fa-check"></i> Instructor / Facility Management <br/>
+                            <i class="fas fa-check"></i> Embeddable Widget <br/>
                             <i class="fas fa-check"></i> Full Compliance Management <br/>
+                            <i class="fas fa-check"></i> Partner Paperwork Submission <br/>
                         </div>
                         <div class="col-4">
                             <i class="fas fa-check"></i> One-Click Exports <br/>

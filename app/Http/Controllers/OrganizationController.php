@@ -28,7 +28,7 @@ class OrganizationController extends Controller
 
         $organization = Organization::create([
             'name' => $validated->name,
-            'enrollment_url' => $validated->enrollment_url
+            'enrollment_url' => $validated->enrollment_url ?? ''
         ]);
 
         if ($validated->administrator['email']){
@@ -36,9 +36,9 @@ class OrganizationController extends Controller
                 'first_name' => $validated->administrator['first_name'],
                 'last_name' => $validated->administrator['last_name'],
                 'email' => $validated->administrator['email'],
-                'phone' => $validated->administrator['phone'],
+                'phone' => $validated->administrator['phone'] ?? null,
             ]);
-            $organization->administrators()->save($administrator, ['title' => $validated->administrator['title']]);
+            $organization->administrators()->save($administrator, ['title' => $validated->administrator['title'] ?? null]);
             \Mail::send(new ListedAsAdministrator(\Auth::user(), $organization, $administrator));
         }
 
@@ -57,7 +57,7 @@ class OrganizationController extends Controller
         $organization->update([
 
             'name' => $validated['name'],
-            'enrollment_url' => $validated['enrollment_url'],
+            'enrollment_url' => $validated['enrollment_url'] ?? '',
 
         ]);
 

@@ -1,9 +1,9 @@
 
 <p>Are you an activity provider?</p>
 <ul>
-    <li><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add program</a>, then use it to submit a proposal</li>
+    <li><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add program template</a>, then use it to submit a proposal</li>
     @if(tenant()->organization->templates->count() > 0)
-        <li><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Add proposal</a></li>
+        <li><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Add/Propose a Program</a></li>
     @endif
 </ul>
 <p>Are you a host?</p>

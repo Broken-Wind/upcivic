@@ -14,33 +14,7 @@
 <div class="card my-3">
     <div class="card-header">Document from {{ $assignment->assignedByOrganization->name }}</div>
     <div class="card-body">
-        <h3>{{ $assignment->signableDocument->title ?? 'Untitled Document' }}</h3>
-        {!! $assignment->signableDocument->content ?? 'Document not found.' !!}
-        <hr>
-        <h3>Programs ({{ $programs->count() }} total)</h3>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name & Location</th>
-                <th>Date & Time</th>
-                <th>Base Fee</th>
-            </tr>
-            @forelse($programs as $program)
-                <tr>
-                    <td>{{ $program->id }}</td>
-                    <td>
-                        {{ $program->name }}<br />
-                        {{ $program->site->name }} - {{ $program->location->name }}</td>
-                    <td>
-                        {{ $program['start_date'] . " - " . $program['end_date'] }}
-                        <br />
-                        {{ $program['start_time'] }}-{{ $program['end_time'] }}
-                    </td>
-                    <td>${{ $program->formatted_base_fee }} {{ $program->shared_invoice_type }}</td>
-                </tr>
-            @empty
-            @endforelse
-        </table>
+        @include('tenant.assignments.signable_documents.components.document_content')
         <hr>
         <h3>Signatures</h3>
         @include('tenant.assignments.signable_documents.components.signature_area', [

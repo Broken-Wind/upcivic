@@ -30,4 +30,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+        'subscription_name' => 'Upcivic Pro',
+        'subscription_price_id' => env('STRIPE_SUBCRIPTION_PRICE_ID'),
+        'client_id' => env('STRIPE_CLIENT_ID')
+    ],
+
 ];

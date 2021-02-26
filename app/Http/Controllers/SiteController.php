@@ -61,8 +61,9 @@ class SiteController extends Controller
             'address' => $validated['address'],
             'phone' => $validated['phone'],
         ]);
-
-        $site->areas()->sync($validated['area_id']);
+        if (!empty($validated['area_id'])) {
+            $site->areas()->sync($validated['area_id']);
+        }
 
         // return redirect()->route('tenant:admin.sites.index', tenant()['slug'])->withSuccess('Site added successfully.');
         return back()->withSuccess('Site added successfully.');

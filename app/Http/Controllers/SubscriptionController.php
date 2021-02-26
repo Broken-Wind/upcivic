@@ -49,14 +49,14 @@ class SubscriptionController extends Controller
 
         $paymentMethod = $request['paymentMethod'];
         $numberOfSeats = $request['numberOfSeats'];
-        $subscriptionName = config('app.subscription_name');
+        $subscriptionName = config('services.stripe.subscription_name');
 
         $user->addPaymentMethod($paymentMethod);
 
         try {
             $response = $user->newSubscription(
                 $subscriptionName,
-                config('app.subscription_price_id')
+                config('services.stripe.subscription_price_id')
             )->quantity($numberOfSeats)->create($paymentMethod);
         } catch (\Throwable $th) {
             return json_encode([
@@ -76,7 +76,7 @@ class SubscriptionController extends Controller
         try {
             $user = $request->user();
 
-            $subscriptionName = config('app.subscription_name');
+            $subscriptionName = config('services.stripe.subscription_name');
             $stripeSubscription = $user->subscription($subscriptionName);
             if ($stripeSubscription) {
                 $stripeSubscription->cancel();

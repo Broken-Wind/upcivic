@@ -54,7 +54,7 @@ class OrganizationAdministratorController extends Controller
 
         return back()->withSuccess('Administrator updated successfully.');
     }
-    
+
     public function edit(Organization $organization, Person $administrator)
     {
         return view('tenant.admin.organizations.administrators.edit', compact('organization', 'administrator'));

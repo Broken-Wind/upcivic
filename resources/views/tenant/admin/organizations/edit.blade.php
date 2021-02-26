@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <a href="{{ tenant()->route('tenant:admin.organizations.index')}}">
-        <i class="fas fa-angle-left pb-3"></i> Back to Organizations 
+        <i class="fas fa-angle-left pb-3"></i> Back to Organizations
     </a>
     <div class="card">
         <div class="card-header">Edit {{ $organization['name'] }}</div>
@@ -33,43 +33,43 @@
             </form>
 
             <hr />
-        
+
             <table class="table table-striped">
 
                 <tr>
                     <th class="text-center" colspan="5">Administrators</th>
                 </tr>
 
-                @forelse($organization->administrators as $person)
+                @forelse($organization->administrators as $administrator)
 
                     <tr>
 
                         <td>
 
-                            {{ $person->name}}
+                            {{ $administrator->name}}
 
                         </td>
 
                         <td>
 
-                            {{ $person->email}}
+                            {{ $administrator->email}}
 
                         </td>
 
                         <td>
 
-                                {{ $person->phone}}
+                            {{ $administrator->phone}}
 
                         </td>
 
                         <td>
 
-                                {{ $person->administrator->title}}
+                            {{ $administrator->title}}
 
                         </td>
 
                         <td class="text-right">
-                            <a href="{{ tenant()->route('tenant:admin.organizations.administrators.edit', [$organization, $person]) }}">
+                            <a href="{{ tenant()->route('tenant:admin.organizations.administrators.edit', [$organization, $administrator]) }}">
                                 <i class="far fa-edit mr-2"></i>
                             </a>
                         </td>

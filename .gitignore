@@ -7,6 +7,9 @@
 /vendor
 .env
 .env.backup
+.env.dusk.local
+.env.testing
+.env.dusk.local
 .phpunit.result.cache
 .todo
 .idea/

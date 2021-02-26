@@ -29,7 +29,7 @@
     @include('shared.form_errors')
     @include('tenant.admin.assignments.components.controls')
     @if($assignment->isSignableDocument())
-        @include('tenant.assignments.signable_documents.components.document')
+        @include('tenant.assignments.signable_documents.components.document_container')
     @endif
 </div>
 @endsection

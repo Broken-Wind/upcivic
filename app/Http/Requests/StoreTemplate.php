@@ -40,6 +40,7 @@ class StoreTemplate extends FormRequest
             'meeting_count' => 'required|numeric|max:100',
             'min_enrollments' => 'nullable|numeric|between:0,9999',
             'max_enrollments' => 'nullable|numeric|between:0,9999',
+            'enrollment_message' => 'nullable|string',
         ];
     }
 }

@@ -56,13 +56,13 @@
                 <label for="price">Enrollment Website</label>
                 <input type="text"
                     class="form-control" name="enrollment_url" id="enrollment_url" aria-describedby="enrollmentUrlHelp" value="{{ $contributor->enrollment_url ?? $program->suggested_enrollment_url }}" placeholder="https://my-registration-website.com">
-                <small id="enrollmentUrlHelp" class="form-text text-muted">We'll direct participants to this link to register.</small>
+                <small id="enrollmentUrlHelp" class="form-text text-muted">Participants will be directed to this link to register.</small>
                 </div>
             </div>
             <div class="form-group">
                 <label for="enrollmentInstructions">Enrollment Instructions</label>
                 <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $contributor->enrollment_instructions }}</textarea>
-                <small>We'll include these instructions in your program listing.</small>
+                <small>These instructions will be included in your program listing.</small>
             </div>
             <div class="form-group">
               <label for="enrollment_message">Enrollment Confirmation Message</label>

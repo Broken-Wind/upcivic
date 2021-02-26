@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ $user['name'] }} of {{ $tenant->organization->name }} has change the price of this program.
+{{ $user['name'] }} of {{ $tenant->organization->name }} has changed the price of this program.
 
 @component('mail::panel')
 ## {{ $program['name'] . " at " . $program->site['name'] }}

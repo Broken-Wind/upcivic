@@ -65,8 +65,8 @@ class StripePaymentGatewayTest extends TestCase
         $this->assertEquals(10000, $lastStripeCharge['amount']);
         $this->assertEquals(180, $lastStripeCharge['application_fee_amount']);
 
-        // $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
-        // $this->assertEquals(180, $applicationFee['amount']);
+        $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
+        $this->assertEquals(180, $applicationFee['amount']);
     }
 
     /** @test */
@@ -91,8 +91,8 @@ class StripePaymentGatewayTest extends TestCase
         $this->assertEquals(1000, $lastStripeCharge['amount']);
         $this->assertEquals(41, $lastStripeCharge['application_fee_amount']);
 
-        // $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
-        // $this->assertEquals(41, $applicationFee['amount']);
+        $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
+        $this->assertEquals(41, $applicationFee['amount']);
     }
 
     /** @test */
@@ -115,8 +115,8 @@ class StripePaymentGatewayTest extends TestCase
         $this->assertEquals(39500, $lastStripeCharge['amount']);
         $this->assertEquals(800, $lastStripeCharge['application_fee_amount']);
 
-        // $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
-        // $this->assertEquals(830, $applicationFee['amount']);
+        $applicationFee = \Stripe\ApplicationFee::retrieve($lastStripeCharge['application_fee'], ['api_key' => config('services.stripe.secret')]);
+        $this->assertEquals(800, $applicationFee['amount']);
     }
 
 }

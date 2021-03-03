@@ -13,6 +13,7 @@ use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
 use Stevebauman\Purify\Facades\Purify;
 
 use function GuzzleHttp\Psr7\_caseless_remove;
@@ -201,6 +202,16 @@ class Program extends Model
             return false;
         }
         return true;
+    }
+
+    public function getRosterPdfBinaryAttribute()
+    {
+        $program = $this;
+        $pdf = App::make('dompdf.wrapper');
+        $content = view('tenant.admin.programs.roster.components.roster_pdf', compact('program'));
+        $pdf->loadHTML($content->render());
+
+        return $pdf->stream();
     }
 
     public function getProposingOrganizationAttribute()

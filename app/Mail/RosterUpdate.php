@@ -25,7 +25,10 @@ class RosterUpdate extends Mailable
     public function build()
     {
         $message = $this->markdown('emails.roster_update')
-                    ->subject("Updated roster for #{$this->program->id} - "  . $this->program->name . " at " . $this->program->site->name);
+                    ->subject("Updated roster for #{$this->program->id} - "  . $this->program->name . " at " . $this->program->site->name)
+                    ->attachData($this->program->roster_pdf_binary, 'roster.pdf', [
+                        'mime' => 'application/pdf',
+                    ]);
 
         foreach ($this->program->rosterRecipients() as $recipient) {
             $message->to($recipient['email'], $recipient['name'] ?? $recipient['email']);

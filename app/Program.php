@@ -165,6 +165,11 @@ class Program extends Model
         return $this->site->area;
     }
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
     public function isPublished()
     {
         return $this->getContributorFor(tenant())->isPublished();

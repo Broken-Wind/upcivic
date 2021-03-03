@@ -12,6 +12,7 @@ use App\Program;
 use App\Meeting;
 use App\Organization;
 use App\Scopes\TenantOwnedScope;
+use App\Tag;
 use App\Task;
 use App\Template;
 use App\Tenant;
@@ -84,6 +85,9 @@ class TenantManager
             return $builder->where('organization_id', tenant()->organization_id);
         });
         Area::addGlobalScope('TenantOwnedArea', function (Builder $builder) {
+            return $builder->where('organization_id', tenant()->organization_id);
+        });
+        Tag::addGlobalScope('TenantOwnedTag', function (Builder $builder) {
             return $builder->where('organization_id', tenant()->organization_id);
         });
     }

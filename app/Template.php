@@ -28,6 +28,11 @@ class Template extends Model
         'enrollment_message',
     ];
 
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggable');
+    }
+
     public function getInternalNameAttribute()
     {
         return $this->attributes['internal_name'] ?? $this->name;

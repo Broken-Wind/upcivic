@@ -43,6 +43,7 @@ class TemplateController extends Controller
     {
         //
         $validated = $request->validated();
+        dd($validated);
 
         $template = new Template([
 

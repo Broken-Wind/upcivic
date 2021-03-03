@@ -106,10 +106,21 @@
                   <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails. You may also edit this message for individual programs.</small>
                 </div>
 
+
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <div id="tags"></div>
+                </div>
+
                 <button type="submit" id="submit" class="btn btn-primary">Add Program Template</button>
 
             </form>
         </div>
     </div>
 </div>
+<script type="application/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        new Taggle('tags', {placeholder: ''});
+    });
+</script>
 @endsection

@@ -224,6 +224,16 @@ class Program extends Model
         return $pdf->stream();
     }
 
+    public function getDailyAttendancePdfAttribute()
+    {
+        $program = $this;
+        $pdf = App::make('dompdf.wrapper');
+        $content = view('tenant.admin.programs.roster.components.daily_attendance_pdf', compact('program'));
+        $pdf->loadHTML($content->render());
+
+        return $pdf->stream();
+    }
+
     public function getProposingOrganizationAttribute()
     {
         return Organization::find($this->proposing_organization_id);

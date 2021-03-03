@@ -37,7 +37,7 @@
                     </a>
                     @else
                     <a href="{{ tenant()->route('tenant:admin.programs.edit', ['program' => $program->id]) }}">
-                        {{ $program['id'] }} - {{ $program['internal_name'] }}
+                        #{{ $program['id'] }} - {{ $program['internal_name'] }}
                     </a>
                     @endif
                 </div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-2">
                     <a href="{{ tenant()->route('tenant:admin.programs.roster.edit', [$program]) }}" class="btn btn-sm btn-light">
-                        <i class="fas fa-fw fa-users"></i>
+                        <i class="fas fa-fw fa-id-card"></i>
                     </a>
                 </div>
                     {{-- <div class="form-group input-group mb-0 pb-0">

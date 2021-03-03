@@ -1,14 +1,14 @@
 @extends('layouts.app')
-@section('title', 'Tasks')
+@section('title', 'Task Templates')
 @section('content')
 <div class="container">
 
     </ul>
     @include('shared.form_errors')
-    <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.tasks.create') }}">Add Task</a>
+    <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.tasks.create') }}">Add Task Template</a>
 
     <div class="card">
-        <div class="card-header">Tasks</div>
+        <div class="card-header">Task Templates</div>
 
         <div class="card-body">
 
@@ -24,7 +24,7 @@
 
                             <td class="text-right">
                                 <a href="{{ tenant()->route('tenant:admin.tasks.edit', ['task' => $task]) }}">
-                                    Edit Task
+                                    Edit Template
                                 </a>
                                 &nbsp;|&nbsp;
                                 <a href="{{ tenant()->route('tenant:admin.assignments.create', ['task_id' => $task->id]) }}">
@@ -40,7 +40,7 @@
 
             @else
 
-                No tasks yet. <a href="{{ tenant()->route('tenant:admin.tasks.create') }}">Add a task</a>
+                No tasks yet. <a href="{{ tenant()->route('tenant:admin.tasks.create') }}">Add a task template</a>
 
             @endif
 

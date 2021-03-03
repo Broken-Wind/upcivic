@@ -13,7 +13,7 @@
             <form id="submit" method="POST" action="{{ tenant()->route('tenant:admin.programs.store') }}">
                 @csrf
                 <div class="form-group">
-                    <label for="">Program</label>
+                    <label for="">Program Template</label>
                     <select class="form-control" name="template_id" id="">
                         @forelse($templates as $template)
                             <option value="{{ $template->id }}" {{ request()->input('template_id') == $template->id ? 'selected' : '' }}>
@@ -23,7 +23,7 @@
                             <option disabled>No programs</option>
                         @endforelse
                     </select>
-                    <small id="add-template" class="text-muted">Can't find the program you'd like? <a href="" data-toggle="modal" data-target="#add-template-modal">Add a program </a></small>
+                    <small id="add-template" class="text-muted">Can't find the program template you'd like? <a href="" data-toggle="modal" data-target="#add-template-modal">Add a program template.</a></small>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">

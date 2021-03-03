@@ -2,13 +2,16 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="template-title" id="template-modal-title">Program</h5>
+            <h5 class="template-title" id="template-modal-title">Add Program Template</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
 
             <div class="modal-body" id="modal-body">
+                <div class="alert alert-info">
+                    Once you add a program template, you may add the program to your schedule, or propose it to other organizations.
+                </div>
                 <form method="POST" action="{{ tenant()->route('tenant:admin.templates.store') }}">
                     @csrf
                     <div class="form-group">
@@ -99,7 +102,7 @@
                         <input type="number" class="form-control" name="meeting_minutes" value="{{ old('meeting_minutes') }}" id="meeting_minutes" placeholder="180" required>
                     </div>
 
-                    <button type="submit" id="submit" class="btn btn-primary">Add Program</button>
+                    <button type="submit" id="submit" class="btn btn-primary">Add Program Template</button>
 
                 </form>
             </div>

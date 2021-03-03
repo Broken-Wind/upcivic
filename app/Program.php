@@ -268,7 +268,7 @@ class Program extends Model
             return $ticket->participant;
         })->filter(function ($participant) {
             return !empty($participant);
-        });
+        })->sortBy('last_name');
     }
 
     public function shouldDisplayMap()

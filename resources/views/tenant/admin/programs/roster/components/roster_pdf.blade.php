@@ -26,6 +26,7 @@
         }
         td {
             padding: 5px;
+            border: 1px solid black;
         }
         .footer {
             width: 100%;
@@ -37,13 +38,48 @@
             content: counter(page);
         }
     </style>
-    <title>Heee</title>
+    <title>{{ "#{$program->id} {$program->name} at {$program->site->name} - Roster" }}</title>
 </head>
 <body>
     <div class="footer">
-        Page <span class="pagenum"></span>
+        Page <span class="pagenum"></span>, Generated via {{ config('app.name') }}
     </div>
+    <h2>{{ "#{$program->id} {$program->name} at {$program->site->name} - Roster" }}</h2>
 
-    Heyoooo!
+    <table class="table table-striped">
+        @foreach($program->tickets()->unavailable()->get()->sortBy('participant.last_name') as $ticket)
+            <tr>
+                <td style="text-align: center;">
+                    #{{ $loop->iteration }}
+                </td>
+                <td>
+                    @if(isset($ticket->participant))
+                        <strong>
+                            {{ $ticket->participant->name }}
+                        </strong>
+                        @if(!empty($ticket->participant->needs))
+                            - {{ $ticket->participant->needs }}
+                        @endif
+                        @if(!empty($ticket->participant->birthday))
+                            <span class="text-muted">- {{ $ticket->participant->formatted_birthday }}</span>
+                        @endif
+                    @else
+                        Unknown Participant
+                    @endif
+                    @if(isset($ticket->participant))
+                        <br>
+                        @forelse($ticket->participant->contacts as $contact)
+                            <small>{{ $contact->name }} - {{ $contact->phone }} - {{ $contact->email ?? 'No known email address.' }}</small>
+                            @if(!$loop->last)
+                                <br>
+                            @endif
+                        @empty
+                            <small>No contacts.</small>
+                        @endforelse
+                    @endif
+                </td>
+            </tr>
+        @endforeach
+    </table>
 
 </body>

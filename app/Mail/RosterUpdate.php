@@ -26,7 +26,9 @@ class RosterUpdate extends Mailable
     {
         $message = $this->markdown('emails.roster_update')
                     ->subject("Updated roster for #{$this->program->id} - "  . $this->program->name . " at " . $this->program->site->name)
-                    ->attachData($this->program->roster_pdf_binary, 'roster.pdf', [
+                    ->attachData($this->program->roster_pdf, "Roster #{$this->program->id} {$this->program->name} at {$this->program->site->name}", [
+                        'mime' => 'application/pdf',
+                    ])->attachData($this->program->sign_in_sheet_pdf, "Sign-In #{$this->program->id} {$this->program->name} at {$this->program->site->name}", [
                         'mime' => 'application/pdf',
                     ]);
 

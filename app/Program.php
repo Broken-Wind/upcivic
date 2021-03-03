@@ -204,12 +204,22 @@ class Program extends Model
         return true;
     }
 
-    public function getRosterPdfBinaryAttribute()
+    public function getRosterPdfAttribute()
     {
         $program = $this;
         $pdf = App::make('dompdf.wrapper');
-        $content = view('tenant.admin.programs.roster.components.roster_pdf', compact('program'));
+        $content = view('tenant.admin.programs.roster.components.sign_in_sheet_pdf', compact('program'));
         $pdf->loadHTML($content->render());
+
+        return $pdf->stream();
+    }
+
+    public function getSignInSheetPdfAttribute()
+    {
+        $program = $this;
+        $pdf = App::make('dompdf.wrapper');
+        $content = view('tenant.admin.programs.roster.components.sign_in_sheet_pdf', compact('program'));
+        $pdf->loadHTML($content->render())->setPaper('letter', 'landscape');
 
         return $pdf->stream();
     }

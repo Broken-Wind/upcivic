@@ -34,6 +34,13 @@
         <a class="btn btn-primary mb-4" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
     @endif
     <div class="card">
+        <div class="card-header">
+            @if($isOutgoingFromTenant)
+                Outgoing Assignments
+            @else
+                Incoming Assignments
+            @endif
+        </div>
         <div class="card-body">
 
             @if($organizations->count() > 0)
@@ -70,11 +77,13 @@
                 </table>
 
             @else
-                <br>
-                No tasks assigned yet.
+            <div class="alert alert-info">
                 @if($isOutgoingFromTenant)
-                    Assign tasks to a partner <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
+                    You haven't assigned any tasks yet. Assign tasks to a partner <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
+                @else
+                    No organizations have assigned you any tasks yet. If an organization you partner with assigns you a task, it will appear here.
                 @endif
+            </div>
             @endif
 
         </div>

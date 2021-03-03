@@ -39,6 +39,11 @@
                                 </div>
                                 <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                             </div>
+                            <div class="form-group">
+                              <label for="enrollment_message">Enrollment Confirmation Message</label>
+                              <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ $contributor->enrollment_message }}</textarea>
+                              <small>This will be included in receipt emails.</small>
+                            </div>
                         </div>
                     @else<div class="alert alert-warning">
                         <h4><i class="fas fa-fw fa-exclamation-triangle "></i> Registration Disabled</h4>
@@ -60,14 +65,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="enrollmentInstructions">Enrollment Instructions</label>
+                <label for="enrollmentInstructions">Special Enrollment Instructions</label>
                 <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $contributor->enrollment_instructions }}</textarea>
                 <small>These instructions will be included in your program listing.</small>
-            </div>
-            <div class="form-group">
-              <label for="enrollment_message">Enrollment Confirmation Message</label>
-              <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ $contributor->enrollment_message }}</textarea>
-              <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails.</small>
             </div>
             <button type="submit" class="btn btn-secondary">Update</button>
         </form>

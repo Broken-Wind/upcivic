@@ -79,7 +79,7 @@
             @else
             <div class="alert alert-info">
                 @if($isOutgoingFromTenant)
-                    You haven't assigned any tasks yet. Assign tasks to a partner <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
+                    You haven't assigned any tasks yet. Assign tasks to a partner organization <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">here.</a>
                 @else
                     No organizations have assigned you any tasks yet. If an organization you partner with assigns you a task, it will appear here.
                 @endif

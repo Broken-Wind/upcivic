@@ -58,7 +58,7 @@
                                             </li>
                                         @endif
                                         <li class="nav-item">
-                                            <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">Templates</a>
+                                            <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
                                         </li>
                                     </ul>
                                 </li>

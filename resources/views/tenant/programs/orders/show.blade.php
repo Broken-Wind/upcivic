@@ -35,20 +35,19 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4 class="text-center">Tickets:</h4>
+                        <h4 class="text-center">Participant{{ $order->tickets->count() > 1 ? 's' : '' }}:</h4>
                         @forelse($order->tickets as $ticket)
-                            <h5>{{ $ticket->participant->first_name }} {{ $ticket->participant->last_name }}<span class="text-muted ml-2">{{ $ticket->code }}</span></h5>
-                            <strong>Contacts:</strong>
-                            <ul>
-                            @forelse($ticket->participant->contacts as $contact)
-                                <li>{{ $contact->name }} - {{ $contact->phone }}</li>
-                            @empty
-                                <li>No contacts for {{ $ticket->participant->first_name }}.</li>
-                            @endforelse
-                            </ul>
-
-                            <hr />
-
+                            <div class="alert alert-secondary">
+                                <h5>{{ $ticket->participant->first_name }} {{ $ticket->participant->last_name }}<span class="text-muted ml-2">{{ $ticket->code }}</span></h5>
+                                <strong>Contacts:</strong>
+                                <ul>
+                                @forelse($ticket->participant->contacts as $contact)
+                                    <li>{{ $contact->name }} - {{ $contact->phone }}</li>
+                                @empty
+                                    <li>No contacts for {{ $ticket->participant->first_name }}.</li>
+                                @endforelse
+                                </ul>
+                            </div>
                         @empty
                         @endforelse
                     </div>

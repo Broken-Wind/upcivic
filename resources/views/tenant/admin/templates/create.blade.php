@@ -4,9 +4,12 @@
 <div class="container">
     @include('shared.form_errors')
     <div class="card">
-        <div class="card-header">Add Program</div>
+        <div class="card-header">Add Program Template</div>
 
         <div class="card-body">
+            <div class="alert alert-info">
+                Once you add a program template, you may add the program to your schedule, or propose it to other organizations.
+            </div>
 
             <form method="POST" action="{{ tenant()->route('tenant:admin.templates.store') }}">
 

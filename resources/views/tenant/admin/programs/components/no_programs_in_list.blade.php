@@ -3,7 +3,7 @@
 <ul>
     <li><a href="{{ tenant()->route('tenant:admin.templates.create') }}">Add program template</a>, then use it to submit a proposal</li>
     @if(tenant()->organization->templates->count() > 0)
-        <li><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Add/Propose a Program</a></li>
+        <li><a href="{{ tenant()->route('tenant:admin.programs.create') }}">Add or propose a program</a></li>
     @endif
 </ul>
 <p>Are you a host?</p>

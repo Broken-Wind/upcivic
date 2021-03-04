@@ -208,7 +208,7 @@ class Program extends Model
     {
         $program = $this;
         $pdf = App::make('dompdf.wrapper');
-        $content = view('tenant.admin.programs.roster.components.sign_in_sheet_pdf', compact('program'));
+        $content = view('tenant.admin.programs.roster.components.roster_pdf', compact('program'));
         $pdf->loadHTML($content->render());
 
         return $pdf->stream();

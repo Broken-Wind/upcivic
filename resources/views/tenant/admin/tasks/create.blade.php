@@ -1,14 +1,14 @@
 @extends('layouts.app')
-@section('title', 'Add Task')
+@section('title', 'Add Task Template')
 @include('tenant.admin.tasks.components.document_head_content')
 @section('content')
 <div class="container">
     <a href="{{ tenant()->route('tenant:admin.tasks.index') }}">
-        <i class="fas fa-angle-left pb-3"></i> Back to Tasks
+        <i class="fas fa-angle-left pb-3"></i> Back to Task Templates
     </a>
     @include('shared.form_errors')
     <div class="card mb-4">
-        <div class="card-header">Add Assignable Task</div>
+        <div class="card-header">Add Task Template</div>
 
         <div class="card-body">
             <form method="POST" action="{{ tenant()->route('tenant:admin.tasks.store') }}" enctype="multipart/form-data" id="createOrUpdateTask">

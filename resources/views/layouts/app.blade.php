@@ -58,7 +58,11 @@
                                             </li>
                                         @endif
                                         <li class="nav-item">
-                                            <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">Templates</a>
+                                            <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">Program Templates</a>
+                                        </li>
+                                        <div class="dropdown-divider"></div>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.programs.create') }}">Add/Propose a Program</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -78,6 +82,10 @@
                                             </li>
                                             <li class="nav-item">
                                                 <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.tasks.index') }}">Task Templates</a>
+                                            </li>
+                                            <div class="dropdown-divider"></div>
+                                            <li class="nav-item">
+                                                <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.assignments.create') }}">Assign a Task</a>
                                             </li>
                                         @endif
                                     </ul>

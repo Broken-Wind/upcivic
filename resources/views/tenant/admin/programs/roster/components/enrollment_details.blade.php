@@ -27,16 +27,23 @@
                 </div>
             </div>
             @if($program->acceptsRegistrations())
-                <div class="form-group">
-                <label for="price">Price to Register</label>
-                <div class="input-group input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">$</span>
+                <div class="alert alert-info">
+                    <div class="form-group">
+                    <label for="price">Price to Register</label>
+                    <div class="input-group input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="text"
+                            class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
+                        </div>
+                        <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                     </div>
-                    <input type="text"
-                        class="form-control" name="price" id="price" aria-describedby="priceHelp" placeholder="20.00" value="{{ $program->formatted_price }}" {{ $program->canUpdateEnrollmentsBy(tenant()) ? '' : 'disabled'}}>
+                    <div class="form-group">
+                    <label for="enrollment_message">Enrollment Confirmation Message</label>
+                    <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ $contributor->enrollment_message }}</textarea>
+                    <small>This will be included in receipt emails.</small>
                     </div>
-                    <small id="priceHelp" class="form-text text-muted">We'll charge participants this much to enroll.</small>
                 </div>
             @else
                 <div class="form-group">
@@ -57,16 +64,12 @@
                 </div>
             @endif
             <div class="form-group">
-                <label for="enrollmentInstructions">Enrollment Instructions</label>
+                <label for="enrollmentInstructions">Special Enrollment Instructions</label>
                 <textarea class="form-control" name="enrollment_instructions" id="enrollment_instructions" rows="3">{{ $contributor->enrollment_instructions }}</textarea>
-            </div>
-            <div class="form-group">
-              <label for="enrollment_message">Enrollment Confirmation Message</label>
-              <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ $contributor->enrollment_message }}</textarea>
-              <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails.</small>
+                <small>These instructions will be included in your program listing.</small>
             </div>
             <button type="submit" class="btn btn-secondary">
-                Update Enrollments
+                Update Enrollment Information
             </button>
         </form>
     </div>

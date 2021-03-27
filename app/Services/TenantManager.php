@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Area;
 use App\Assignment;
 use App\AssignmentStatus;
+use App\Category;
 use App\File;
 use App\Instructor;
 use App\InstructorAssignment;
@@ -84,6 +85,9 @@ class TenantManager
             return $builder->where('organization_id', tenant()->organization_id);
         });
         Area::addGlobalScope('TenantOwnedArea', function (Builder $builder) {
+            return $builder->where('organization_id', tenant()->organization_id);
+        });
+        Category::addGlobalScope('TenantOwnedCategory', function (Builder $builder) {
             return $builder->where('organization_id', tenant()->organization_id);
         });
     }

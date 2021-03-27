@@ -9,24 +9,7 @@ class Template extends Model
 {
     //
 
-    protected $fillable = [
-        'name',
-        'internal_name',
-        'description',
-        'public_notes',
-        'contributor_notes',
-        'min_age',
-        'max_age',
-        'ages_type',
-        'invoice_amount',
-        'invoice_type',
-        'meeting_minutes',
-        'meeting_interval',
-        'meeting_count',
-        'min_enrollments',
-        'max_enrollments',
-        'enrollment_message',
-    ];
+    protected $guarded = [];
 
     public function getInternalNameAttribute()
     {
@@ -41,5 +24,17 @@ class Template extends Model
     public function tenant()
     {
         return $this->belongsTo(Organization::class, 'organization_id');
+    }
+
+    public function getCategoryAttribute()
+    {
+        return $this->categories->first() ?? new Category([
+            'name' => 'Miscellaneous'
+        ]);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 }

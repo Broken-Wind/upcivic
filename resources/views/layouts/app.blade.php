@@ -60,6 +60,9 @@
                                         <li class="nav-item">
                                             <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.templates.index') }}">Templates</a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item" href="{{ tenant()->route('tenant:admin.categories.index') }}">Program Categories</a>
+                                        </li>
                                     </ul>
                                 </li>
 

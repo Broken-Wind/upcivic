@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Http\Requests\StoreTemplate;
 use App\Http\Requests\UpdateTemplate;
 use App\Template;
@@ -30,7 +31,9 @@ class TemplateController extends Controller
     public function create()
     {
         //
-        return view('tenant.admin.templates.create');
+        $categories = Category::orderBy('name')->get();
+
+        return view('tenant.admin.templates.create', compact('categories'));
     }
 
     /**
@@ -67,6 +70,7 @@ class TemplateController extends Controller
         $template->organization_id = tenant()->organization->id;
 
         $template->save();
+        $template->categories()->attach($validated['category_id']);
 
         return back()->withSuccess('Program template added successfully.');
     }
@@ -80,8 +84,9 @@ class TemplateController extends Controller
     public function edit(Template $template)
     {
         //
+        $categories = Category::orderBy('name')->get();
 
-        return view('tenant.admin.templates.edit', compact('template'));
+        return view('tenant.admin.templates.edit', compact('template', 'categories'));
     }
 
     /**
@@ -115,6 +120,7 @@ class TemplateController extends Controller
             'max_enrollments' => $validated['max_enrollments'],
             'enrollment_message' => $validated['enrollment_message'] ?? null,
         ]);
+        $template->categories()->sync($validated['category_id']);
 
         return back()->withSuccess('Program template updated successfully.');
     }

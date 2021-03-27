@@ -41,6 +41,7 @@ class StoreTemplate extends FormRequest
             'min_enrollments' => 'nullable|numeric|between:0,9999',
             'max_enrollments' => 'nullable|numeric|between:0,9999',
             'enrollment_message' => 'nullable|string',
+            'category_id' => 'nullable|numeric',
         ];
     }
 }

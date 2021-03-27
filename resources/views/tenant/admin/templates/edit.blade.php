@@ -115,6 +115,20 @@
                   <textarea class="form-control" name="enrollment_message" id="enrollment_message" rows="3">{{ old('enrollment_message') ?: $template['enrollment_message'] }}</textarea>
                   <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails. You may also edit this message for individual programs.</small>
                 </div>
+                <div class="form-group">
+                    <label for="category_id">Category</label>
+                    @if($categories->isNotEmpty())
+                        <input type="hidden" name="has_categories" value="true">
+                        <select class="form-control" name="category_id" id="category_id">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}"{{ $template->category->id == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                            @endforeach
+                            <option value {{ $template->category->id == null ? 'selected' : '' }}>Miscellaneous</option>
+                        </select>
+                    @else
+                        <div class="alert alert-info">Your organization hasn't added any categories yet. <a href="{{ tenant()->route('tenant:admin.categories.create') }}">Click here</a> to add one.</div>
+                    @endif
+                </div>
 
                 <div class="form-row">
                     <button type="submit" id="submit" class="btn btn-primary mx-1">Update</button>

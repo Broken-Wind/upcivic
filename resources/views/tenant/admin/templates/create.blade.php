@@ -106,6 +106,23 @@
                   <small>If you accept registrations via {{ config('app.name') }}, this will be included in receipt emails. You may also edit this message for individual programs.</small>
                 </div>
 
+                <div class="form-group">
+                    <label for="category_id">Category</label>
+                    @if($categories->isNotEmpty())
+                        <input type="hidden" name="has_categories" value="true">
+                        <select class="form-control" name="category_id" id="category_id">
+                            <option value>Select a category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                            <option value="0">Miscellaneous</option>
+                        </select>
+                    @else
+                        <div class="alert alert-info">Your organization hasn't added any categories yet. <a href="{{ tenant()->route('tenant:admin.categories.create') }}">Click here</a> to add one.</div>
+                    @endif
+                </div>
+
+
                 <button type="submit" id="submit" class="btn btn-primary">Add Program Template</button>
 
             </form>
